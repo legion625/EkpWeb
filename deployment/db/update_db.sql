@@ -1,4 +1,6 @@
--- unstaging
+--mh_sp8
+
+-- 0.0.0
 CREATE TABLE `sys_attr` (
   `uid` varchar(45) NOT NULL,
   `type_idx` tinyint DEFAULT NULL,
@@ -16,3 +18,7 @@ CREATE TABLE `system_seq` (
   `max_num` bigint DEFAULT NULL,
   PRIMARY KEY (`item_id`)
 ) ;
+-- mh_pc
+
+-- unstaging
+
