@@ -21,7 +21,7 @@
 		<parameter>
 			<name>url</name>
 			<!--<value>jdbc:mysql://(host=localhost,port=3306,serverTimezone=Asia@2FTaipei,sslMode=DISABLED/legionmodule)</value>--> <!-- MySql8 -->
-			<value>jdbc:mysql://localhost:3306/ekp_web</value> <!-- MySql5 -->
+			<value>jdbc:mysql://localhost:3306/ekp_web_mh</value> <!-- MySql5 -->
 		</parameter>
 		<parameter>
 			<name>username</name>
