@@ -68,4 +68,26 @@
 			<value>legion625@gmail.com</value>
 		</parameter>
 	</Resource>
+	<Resource name="ekp_kernel_rmi">
+		<parameter>
+			<name>dsoClassName</name>
+			<value>legion.datasource.source.RmiDso</value>
+		</parameter>
+		<parameter>
+			<name>url</name>
+			<value>ekp_kernel_rmi@:rmi://localhost:11087/ekpKernelRmiService</value>
+		</parameter>
+		<parameter>
+			<name>serviceName</name>
+			<value>/ekpKernelRmiService</value>
+		</parameter>
+		<parameter>
+			<name>testOnConnectServiceName</name>
+			<value>testCallBack</value>
+		</parameter>
+		<parameter>
+			<name>alertMail</name>
+			<value>legion625@gmail.com</value>
+		</parameter>
+	</Resource>
 </context>

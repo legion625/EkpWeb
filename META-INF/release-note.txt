@@ -1,5 +1,9 @@
+Min-Hua, 2022.09.01
+[lib]
+1. Upgrade ekp_kernel_0.0.0.
+
 ------------------------------------------------------------------------------
-v0.0.0 released by Min-Hua, 2020.08.20
+v0.0.0 released by Min-Hua, 2022.08.20
 [changes]
 1. Init project.
 
