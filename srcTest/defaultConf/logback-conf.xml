@@ -30,7 +30,7 @@
 	</logger>
 	
 	<!-- Test -->
-	<logger name="legion.TestLogMark" additivity="false" level="DEBUG">
+	<logger name="ekp.TestLogMark" additivity="false" level="DEBUG">
 		<appender-ref ref="StdOut" />
 	</logger>
 	

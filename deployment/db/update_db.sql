@@ -1,5 +1,3 @@
---mh_sp8
-
 -- 0.0.0
 CREATE TABLE `sys_attr` (
   `uid` varchar(45) NOT NULL,
@@ -19,6 +17,7 @@ CREATE TABLE `system_seq` (
   PRIMARY KEY (`item_id`)
 ) ;
 -- mh_pc
+--mh_sp8
 
 -- unstaging
 

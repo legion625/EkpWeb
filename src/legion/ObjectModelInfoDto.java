@@ -34,14 +34,11 @@ public class ObjectModelInfoDto {
 		return getUid().hashCode();
 	}
 
+	@Override
 	public boolean equals(Object _obj) {
-		if (_obj == null)
+		if ((_obj == null) || !(_obj instanceof ObjectModelInfoDto) || (this.getClass() != _obj.getClass()))
 			return false;
-		if (!(_obj instanceof ObjectModelRemote))
-			return false;
-		if (this.getClass() != _obj.getClass())
-			return false;
-		return this.getUid().equals(((ObjectModelRemote) _obj).getUid());
+		return this.getUid().equals(((ObjectModelInfoDto) _obj).getUid());
 	}
 
 }
