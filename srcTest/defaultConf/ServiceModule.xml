@@ -12,5 +12,9 @@
 		<Service name="SystemDataService" interface="legion.data.SystemDataService" imp="legion.data.service.system.SystemDataServiceImp">
 			<Parameter name="source" value="ekp_web" />
 		</Service>
+		<!-- -->
+		<Service name="MbomDataService" interface="ekp.data.MbomDataService" imp="ekp.data.service.mbom.MbomDataServiceImp">
+			<Parameter name="srcEkpKernelRmi" value="ekp_kernel_rmi" />
+		</Service>
 	</IntegrationService>
 </root>

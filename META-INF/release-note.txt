@@ -1,5 +1,18 @@
+Min-Hua, 2022.09.09
+[lib]
+1. mysql_connector_java: 5.1.44 -> 8.0.27
+
+Min-Hua, 2022.09.05
+[lib]
+1. ekp_kernel: 0.0.0 -> 0.1.0
+2. legionmodule: 0.10.3 -> 0.10.4
+
+Min-Hua, 2022.09.01
+[lib]
+1. ekp_kernel_0.0.0
+
 ------------------------------------------------------------------------------
-v0.0.0 released by Min-Hua, 2020.08.20
+v0.0.0 released by Min-Hua, 2022.08.20
 [changes]
 1. Init project.
 
