@@ -18,7 +18,7 @@ import ekp.serviceFacade.rmi.mbom.PartCreateObjRemote;
 import ekp.serviceFacade.rmi.mbom.PartRemote;
 import legion.DataServiceFactory;
 
-public class TestMbomDataService extends AbstractEkpInitTest {
+public class MbomDataServiceTest extends AbstractEkpInitTest {
 //	private Logger log = LoggerFactory.getLogger(TestLogMark.class);
 	private static MbomDataService dataService;
 
