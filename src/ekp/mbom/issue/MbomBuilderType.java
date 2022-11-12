@@ -10,6 +10,9 @@ import ekp.mbom.issue.part.PartBuilder0;
 import ekp.mbom.issue.partAcq.PartAcqBuilder0;
 import ekp.mbom.issue.partAcqRoutingStep.PartAcqRoutingStepBuilder0;
 import ekp.mbom.issue.partCfg.PartCfgEditingBpu;
+import ekp.mbom.issue.prod.ProdBuilder0;
+import ekp.mbom.issue.prodCtl.ProdCtlBuilder;
+import ekp.mbom.issue.prodCtl.ProdCtlBuilder0;
 import ekp.mbom.issue.partCfg.PartCfgBuilder0;
 import ekp.mbom.type.PartCfgStatus;
 import legion.biz.BizObjBuilderType;
@@ -24,6 +27,9 @@ public enum MbomBuilderType implements BizObjBuilderType {
 	/**/
 	PART_CFG_0(PartCfgBuilder0.class), //
 	PART_CFG_EDITING(PartCfgEditingBpu.class, PartCfgInfo.class), //
+	/**/
+	PROD_0(ProdBuilder0.class), //
+	PROD_CTL_0(ProdCtlBuilder0.class), //
 
 	;
 
@@ -44,7 +50,7 @@ public enum MbomBuilderType implements BizObjBuilderType {
 	public Class[] getArgsClasses() {
 		return argsClasses;
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	@Override
 	public boolean matchBiz(Object... _args) {
@@ -60,7 +66,11 @@ public enum MbomBuilderType implements BizObjBuilderType {
 		case PART_CFG_0:
 			return true;
 		case PART_CFG_EDITING:
-			return matchBizPartCfgAssignPartAcq((PartCfgInfo)_args[0]); 
+			return matchBizPartCfgAssignPartAcq((PartCfgInfo) _args[0]);
+		/**/
+		case PROD_0:
+		case PROD_CTL_0:
+			return true;
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + this);
 		}

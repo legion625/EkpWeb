@@ -14,6 +14,8 @@ import ekp.data.service.mbom.PartAcqRoutingStepInfo;
 import ekp.data.service.mbom.PartAcquisitionInfo;
 import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartInfo;
+import ekp.data.service.mbom.ProdCtlInfo;
+import ekp.data.service.mbom.ProdInfo;
 import ekp.mbom.issue.MbomBuilderType;
 import ekp.mbom.issue.parsPart.ParsPartBuilder0;
 import ekp.mbom.issue.parsProc.ParsProcBuilder0;
@@ -22,6 +24,8 @@ import ekp.mbom.issue.partAcq.PartAcqBuilder0;
 import ekp.mbom.issue.partAcqRoutingStep.PartAcqRoutingStepBuilder0;
 import ekp.mbom.issue.partCfg.PartCfgBuilder0;
 import ekp.mbom.issue.partCfg.PartCfgEditingBpu;
+import ekp.mbom.issue.prod.ProdBuilder0;
+import ekp.mbom.issue.prodCtl.ProdCtlBuilder0;
 import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartCfgStatus;
 import legion.biz.IssueFacade;
@@ -291,6 +295,112 @@ public class MbomBuilderDelegate {
 		// none
 		
 		return b;
+	}
+	
+	// -------------------------------------------------------------------------------
+	// -------------------------------------Part--------------------------------------
+	public ProdInfo buildProd0(TimeTraveler _tt) {
+		ProdBuilder0 pb = issueFacade.getBuilder(MbomBuilderType.PROD_0);
+		pb.appendId("TEST_ID").appendName("TEST_NAME");
+
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(pb.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(pb.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		ProdInfo p = pb.build(msgBuild, _tt);
+		assertNotNull(msgBuild.toString(), p);
+
+		// check
+		assertEquals("TEST_ID", p.getId());
+		assertEquals("TEST_NAME", p.getName());
+
+		return p;
+	}
+	
+	// -------------------------------------------------------------------------------
+	// ------------------------------------PartCtl------------------------------------
+	public ProdCtlInfo buildProdCtl01(TimeTraveler _tt) {
+		ProdCtlBuilder0 pcb = issueFacade.getBuilder(MbomBuilderType.PROD_CTL_0);
+		pcb.appendId("TEST_LV1_ID").appendLv(1).appendName("TEST_LV1_NAME").appendReq(true);
+
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(pcb.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(pcb.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		ProdCtlInfo pc = pcb.build(msgBuild, _tt);
+		assertNotNull(msgBuild.toString(), pc);
+
+		// check
+		assertEquals("TEST_LV1_ID", pc.getId());
+		assertEquals(1, pc.getLv());
+		assertEquals("TEST_LV1_NAME", pc.getName());
+		assertEquals(true, pc.isReq());
+
+		return pc;
+	}
+	
+	public ProdCtlInfo buildProdCtl02(TimeTraveler _tt) {
+		ProdCtlBuilder0 pcb = issueFacade.getBuilder(MbomBuilderType.PROD_CTL_0);
+		pcb.appendId("TEST_LV2_ID").appendLv(2).appendName("TEST_LV2_NAME").appendReq(true);
+
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(pcb.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(pcb.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		ProdCtlInfo pc = pcb.build(msgBuild, _tt);
+		assertNotNull(msgBuild.toString(), pc);
+
+		// check
+		assertEquals("TEST_LV2_ID", pc.getId());
+		assertEquals(2, pc.getLv());
+		assertEquals("TEST_LV2_NAME", pc.getName());
+		assertEquals(true, pc.isReq());
+
+		return pc;
+	}
+	
+	public ProdCtlInfo buildProdCtl03(TimeTraveler _tt) {
+		ProdCtlBuilder0 pcb = issueFacade.getBuilder(MbomBuilderType.PROD_CTL_0);
+		pcb.appendId("TEST_LV3_ID").appendLv(3).appendName("TEST_LV3_NAME").appendReq(true);
+
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(pcb.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(pcb.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		ProdCtlInfo pc = pcb.build(msgBuild, _tt);
+		assertNotNull(msgBuild.toString(), pc);
+
+		// check
+		assertEquals("TEST_LV3_ID", pc.getId());
+		assertEquals(3, pc.getLv());
+		assertEquals("TEST_LV3_NAME", pc.getName());
+		assertEquals(true, pc.isReq());
+
+		return pc;
 	}
 
 }

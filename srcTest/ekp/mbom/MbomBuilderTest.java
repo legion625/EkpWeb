@@ -23,6 +23,8 @@ import ekp.data.service.mbom.PartAcquisitionInfo;
 import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartCreateObj;
 import ekp.data.service.mbom.PartInfo;
+import ekp.data.service.mbom.ProdCtlInfo;
+import ekp.data.service.mbom.ProdInfo;
 import ekp.serviceFacade.rmi.mbom.PartCreateObjRemote;
 import ekp.serviceFacade.rmi.mbom.PartRemote;
 import legion.DataServiceFactory;
@@ -61,19 +63,26 @@ public class MbomBuilderTest extends AbstractEkpInitTest {
 	@Test
 	public void testMbomScenario() {
 		log.debug("test 1");
-		/* Part */
-		PartInfo p = mbomDel.buildPartType0(tt);
-		PartAcquisitionInfo pa1 = mbomDel.buildPartAcqType01(p, tt);
-		PartAcqRoutingStepInfo pars1 = mbomDel.buildPartAcqRoutingStepType0(pa1.getUid(), tt);
-		ParsProcInfo pproc1 = mbomDel.buildParsProc0(pars1.getUid(), tt);
-		ParsPartInfo ppart1 = mbomDel.buildParsPart0(pars1.getUid(), tt);
-
-		PartAcquisitionInfo pa2 = mbomDel.buildPartAcqType02(p, tt);
-		PartAcquisitionInfo pa3 = mbomDel.buildPartAcqType03(p, tt);
+//		/* Part */
+//		PartInfo p = mbomDel.buildPartType0(tt);
+//		PartAcquisitionInfo pa1 = mbomDel.buildPartAcqType01(p, tt);
+//		PartAcqRoutingStepInfo pars1 = mbomDel.buildPartAcqRoutingStepType0(pa1.getUid(), tt);
+//		ParsProcInfo pproc1 = mbomDel.buildParsProc0(pars1.getUid(), tt);
+//		ParsPartInfo ppart1 = mbomDel.buildParsPart0(pars1.getUid(), tt);
+//
+//		PartAcquisitionInfo pa2 = mbomDel.buildPartAcqType02(p, tt);
+//		PartAcquisitionInfo pa3 = mbomDel.buildPartAcqType03(p, tt);
+//		
+//		/* PartCfg */
+//		PartCfgInfo pc = mbomDel.buildPartCfg0(p.getUid(), p.getPin(), tt);
+//		mbomDel.runPartCfgEditing(pc, tt, pa1);
 		
-		/* PartCfg */
-		PartCfgInfo pc = mbomDel.buildPartCfg0(p.getUid(), p.getPin(), tt);
-		mbomDel.runPartCfgEditing(pc, tt, pa1);
+		/* Prod */
+		ProdInfo prod = mbomDel.buildProd0(tt);
+		ProdCtlInfo prodCtl1 = mbomDel.buildProdCtl01(tt);
+		ProdCtlInfo prodCtl2 = mbomDel.buildProdCtl02(tt);
+		ProdCtlInfo prodCtl3 = mbomDel.buildProdCtl03(tt);
+		
 		
 	}
 

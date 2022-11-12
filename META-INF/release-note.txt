@@ -6,6 +6,7 @@ Min-Hua, 2022.11.12
 2. [MBOM]實作商業服務。
   -1. PartBuilder, PartAcqBuilder, PartAcqRoutingStep, ParsProc, ParsPart
   -2. PartCfg, PartCfgConj
+  -3. Prod, ProdCtl
 
 [deployment]
 1. [ServiceModule] Add MbomService.
