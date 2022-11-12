@@ -1,7 +1,7 @@
 package ekp.data.service.mbom;
 
+import ekp.ObjectModelInfo;
 import ekp.mbom.type.PartCfgStatus;
-import legion.ObjectModelInfo;
 
 public interface PartCfgInfo extends ObjectModelInfo {
 

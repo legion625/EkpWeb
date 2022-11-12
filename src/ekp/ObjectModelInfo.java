@@ -1,4 +1,4 @@
-package legion;
+package ekp;
 
 import legion.serviceFacade.rmi.ObjectModelRemote;
 
