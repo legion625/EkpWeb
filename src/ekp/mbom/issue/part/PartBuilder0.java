@@ -1,4 +1,4 @@
-package ekp.mbom;
+package ekp.mbom.issue.part;
 
 import ekp.data.service.mbom.PartInfo;
 import legion.biz.BizObjBuilder;
@@ -12,20 +12,20 @@ public class PartBuilder0 extends PartBuilder {
 
 	// -------------------------------------------------------------------------------
 	@Override
-	protected BizObjBuilder<PartInfo> appendBase() {
+	protected PartBuilder0 appendBase() {
 		// none
 		return this;
 	}
 
 	// -------------------------------------------------------------------------------
 	@Override
-	public PartBuilder appendPin(String pin) {
-		return super.appendPin(pin);
+	public PartBuilder0 appendPin(String pin) {
+		return (PartBuilder0) super.appendPin(pin);
 	}
 
 	@Override
-	public PartBuilder appendName(String name) {
-		return super.appendName(name);
+	public PartBuilder0 appendName(String name) {
+		return (PartBuilder0) super.appendName(name);
 	}
 
 }

@@ -1,9 +1,9 @@
-package ekp.mbom;
+package ekp.mbom.issue.part;
 
 import legion.biz.BizObjBuilderType;
 
 public enum PartBuilderType implements BizObjBuilderType {
-	TYPE0(PartBuilder0.class), //
+	T0(PartBuilder0.class), //
 	;
 
 	private Class builderClass;
@@ -27,7 +27,7 @@ public enum PartBuilderType implements BizObjBuilderType {
 	@Override
 	public boolean matchBiz(Object... _args) {
 		switch (this) {
-		case TYPE0: {
+		case T0: {
 			return true;
 		}
 		default:

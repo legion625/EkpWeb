@@ -1,4 +1,4 @@
-package ekp.mbom;
+package ekp.mbom.issue.part;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,7 @@ import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
 public abstract class PartBuilder extends BizObjBuilder<PartInfo> {
-//	protected Logger log = LoggerFactory.getLogger(PartBuilder.class);
+	protected Logger log = LoggerFactory.getLogger(PartBuilder.class);
 	private static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
 
 	/* base */
@@ -43,19 +43,21 @@ public abstract class PartBuilder extends BizObjBuilder<PartInfo> {
 	public String getName() {
 		return name;
 	}
-
+	
+	// -------------------------------------------------------------------------------
 	private PartCreateObj packPartCreateObj() {
 		PartCreateObj dto = new PartCreateObj();
 		dto.setPin(getPin());
 		dto.setName(getName());
 		return dto;
 	}
-
+	
+	// -------------------------------------------------------------------------------
 	@Override
 	public boolean validate(StringBuilder _msg) {
 		return true;
 	}
-	
+
 	@Override
 	public boolean verify(StringBuilder _msg) {
 		boolean v = true;
@@ -77,22 +79,21 @@ public abstract class PartBuilder extends BizObjBuilder<PartInfo> {
 
 		return v;
 	}
-	
+
 
 	@Override
 	protected PartInfo buildProcess(TimeTraveler _tt) {
 		TimeTraveler tt = new TimeTraveler();
 
-		// 
+		//
 		PartInfo p = mbomDataService.createPart(packPartCreateObj());
-		log.debug("tt.getSiteCount(): {}", tt.getSiteCount());
 		if (p == null) {
 			tt.travel();
 			log.error("mbomDataSerivce.createPart return null.");
 			return null;
 		}
 		tt.addSite("revert createPart", () -> mbomDataService.deletePart(p.getUid()));
-		log.debug("tt.getSiteCount(): {}", tt.getSiteCount());
+		log.info("mbomDataService.createPart [{}][{}]", p.getUid(), p.getPin());
 
 		//
 		if (_tt != null)

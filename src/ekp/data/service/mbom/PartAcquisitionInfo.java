@@ -14,5 +14,10 @@ public interface PartAcquisitionInfo extends ObjectModelInfo {
 	String getName();
 
 	PartAcquisitionType getType();
+	
+	// -------------------------------------------------------------------------------
+	default String getTypeName() {
+		return (getType() == null ? PartAcquisitionType.UNDEFINED : getType()).getName();
+	}
 
 }
