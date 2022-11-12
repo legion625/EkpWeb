@@ -1,6 +1,15 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-	<panel vflex="1">
-		<panelchildren>mbom function page</panelchildren>
+	<panel vflex="1" apply="ekp.web.control.zk.mbom.MbomFnComposer">
+		<panelchildren>
+			mbom function page
+			<listbox id="lbxPart" vflex="1" checkmark="true">
+				<listhead>
+					<listheader width="40px" />
+					<listheader label="Pin" />
+					<listheader label="Name" />
+				</listhead>
+			</listbox>
+		</panelchildren>
 	</panel>
 </zk>

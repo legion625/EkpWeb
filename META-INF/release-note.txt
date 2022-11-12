@@ -1,3 +1,11 @@
+Min-Hua, 2022.11.12
+[change]
+1. [LM]改寫AbstractMySqlDao。
+2. [LM]改寫FnCntProxy。
+
+[deployment]
+1. [ServiceModule] Add MbomService.
+
 ------------------------------------------------------------------------------
 v0.1.1 released by Min-Hua, 2022.11.12
 [lib]
