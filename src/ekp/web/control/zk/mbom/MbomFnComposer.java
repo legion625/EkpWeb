@@ -9,18 +9,22 @@ import org.slf4j.event.Level;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.SelectorComposer;
+import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.ListitemRenderer;
+import org.zkoss.zul.Toolbarbutton;
 
 import ekp.data.service.mbom.PartInfo;
 import ekp.mbom.MbomService;
 import legion.BusinessServiceFactory;
 import legion.util.LogUtil;
 import legion.web.control.zk.legionmodule.pageTemplate.FnCntProxy;
+import legion.web.zk.ZkMsgBox;
+import legion.web.zk.ZkNotification;
 
 public class MbomFnComposer extends SelectorComposer<Component> {
 	private Logger log = LoggerFactory.getLogger(MbomFnComposer.class);
@@ -56,8 +60,21 @@ public class MbomFnComposer extends SelectorComposer<Component> {
 	// -------------------------------------------------------------------------------
 	private void init() {
 		ListitemRenderer<PartInfo> partRenderer = (li, p, i) -> {
-			li.appendChild(new Listcell());
+			Listcell lc;
+			// delete
+			lc = new Listcell();
+			Toolbarbutton btn  =new Toolbarbutton();
+			btn.setIconSclass("fa fa-minus");
+			btn.addEventListener(Events.ON_CLICK, e -> {
+				ZkMsgBox.confirm("test", () -> {
+					ZkNotification.info("deleted!");
+				});
+			});
+			lc.appendChild(btn);
+			li.appendChild(lc);
+			//
 			li.appendChild(new Listcell(p.getPin()));
+			//
 			li.appendChild(new Listcell(p.getName()));
 
 			li.addEventListener(Events.ON_CLICK, e -> {
@@ -69,9 +86,21 @@ public class MbomFnComposer extends SelectorComposer<Component> {
 		lbxPart.setItemRenderer(partRenderer);
 	}
 
+	// -------------------------------------------------------------------------------
+	@Listen(Events.ON_CLICK+"=#btnAddPart")
+	public void btnAddPart_clicked() {
+//		ZkMsgBox.confirm("btnAddPart?", _runAction);
+		ZkNotification.info("not implemented yet..");
+	}
+	
+	
+	// -------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------
 	private void setPartList(List<PartInfo> _partList) {
 		ListModelList<PartInfo> model =_partList==null?new ListModelList<>(): new ListModelList<>(_partList);
 		lbxPart.setModel(model);
 	}
+	
+	
 
 }

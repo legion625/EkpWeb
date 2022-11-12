@@ -1,6 +1,6 @@
 package ekp.data.service.mbom;
 
-import ekp.ObjectModelInfo;
+import legion.ObjectModelInfo;
 import ekp.mbom.type.PartAcquisitionType;
 
 public interface PartAcquisitionInfo extends ObjectModelInfo {

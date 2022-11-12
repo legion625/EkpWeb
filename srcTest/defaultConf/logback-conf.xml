@@ -28,6 +28,14 @@
 	<logger name="legion.BusinessServiceFactory" additivity="false" level="INFO">
 		<appender-ref ref="StdOut" />
 	</logger>
+	<logger name="legion.util.TimeTraveler" additivity="false" level="INFO">
+		<appender-ref ref="StdOut" />
+	</logger>
+	
+	<!-- logger->ekp -->
+	<logger name="ekp" additivity="false" level="WARN">
+		<appender-ref ref="StdOut" />
+	</logger>
 	
 	<!-- Test -->
 	<logger name="ekp.TestLogMark" additivity="false" level="DEBUG">
@@ -35,7 +43,7 @@
 	</logger>
 	
 	<!-- developing debug -->
-	<!-- <logger name="legion.SystemInfoDefault" additivity="false" level="DEBUG">
+	<!--<logger name="legion.SystemInfoDefault" additivity="false" level="DEBUG">
 		<appender-ref ref="StdOut" />
 	</logger>
 	<logger name="legion.web.InitLegionWebAppsListener" additivity="false" level="DEBUG">
@@ -50,14 +58,8 @@
 	<logger name="legion.util" additivity="false" level="DEBUG">
 		<appender-ref ref="StdOut" />
 	</logger>
-	<logger name="legion.data" additivity="false" level="DEBUG">
-		<appender-ref ref="StdOut" />
-	</logger>
 	<logger name="legion.datasource" additivity="false" level="DEBUG">
 		<appender-ref ref="StdOut" />
-	</logger>
-	<logger name="legion.DataServiceFactory" additivity="false" level="DEBUG">
-		<appender-ref ref="StdOut" />
-	</logger> -->
+	</logger>-->
 	
 </configuration>
