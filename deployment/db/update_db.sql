@@ -17,7 +17,7 @@ CREATE TABLE `system_seq` (
   PRIMARY KEY (`item_id`)
 ) ;
 -- mh_pc
---mh_sp8
+-- mh_sp8
 
 -- unstaging
 
