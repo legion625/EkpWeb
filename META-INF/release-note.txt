@@ -1,3 +1,7 @@
+Min-Hua, 2022.11.12
+[lib]
+1. legionmodule: 0.11.0 -> 0.12.0
+
 Min-Hua, 2022.11.03
 [lib]
 1. legionmodule: 0.10.4 -> 0.11.0
