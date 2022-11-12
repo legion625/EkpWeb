@@ -1,0 +1,94 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<panel vflex="1" apply="ekp.web.control.zk.mbom.PartInfoComposer">
+		<panelchildren>
+			<hlayout>
+				<label value="Pin" />
+				<label id="lbPin" value="PIN1" />
+				<label value="Name" />
+				<label id="lbName" value="NAME1"/>
+			</hlayout>
+			<groupbox title="Part acquisition">
+				<grid id="gridPartAcq">
+					<columns>
+						<column label="id" />
+						<column label="name" />
+						<column label="type" />
+					</columns>
+					<rows>
+						<row>
+							<cell>
+								<label value="PartAcq1-ID"></label>
+								<label value="PartAcq1-NAME"></label>
+								<label value="PartAcq1-TYPE"></label>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+				
+				<label value="Routing step"></label>
+					<listbox>
+						<listhead>
+							<listheader label="ID" />
+							<listheader label="NAME" />
+							<listheader label="DESCRIPTION" />
+						</listhead>
+						<listitem>
+						<listcell label="RS1-ID"></listcell>
+						<listcell label="RS1-Name"></listcell>
+						<listcell label="RS1-Description"></listcell>
+						</listitem>
+					</listbox>
+					<tabbox>
+					<tabs>
+					<tab label="Procedure"></tab>
+					<tab label="Part"></tab>
+					</tabs>
+					<tabpanels>
+					<tabpanel>
+					<listbox>
+					<listhead>
+							<listheader label="Seq" />
+							<listheader label="Name" />
+							<listheader label="Description" />
+						</listhead>
+						<listitem>
+						<listcell label="PROC1-010"></listcell>
+						<listcell label="PROC1-Name"></listcell>
+						<listcell label="PROC1-Description"></listcell>
+						</listitem>
+						<listitem>
+						<listcell label="PROC2-020"></listcell>
+						<listcell label="PROC2-Name"></listcell>
+						<listcell label="PROC2-Description"></listcell>
+						</listitem>
+					
+					</listbox>
+					</tabpanel>
+					
+					<tabpanel>
+						<listbox>
+					<listhead>
+							<listheader label="Part pin" />
+							<listheader label="Part required " />
+							<listheader label="Description" />
+						</listhead>
+						<listitem>
+						<listcell label="PROC1-010"></listcell>
+						<listcell label="PROC1-Name"></listcell>
+						<listcell label="PROC1-Description"></listcell>
+						</listitem>
+						<listitem>
+						<listcell label="PROC2-020"></listcell>
+						<listcell label="PROC2-Name"></listcell>
+						<listcell label="PROC2-Description"></listcell>
+						</listitem>
+					
+					</listbox>
+					</tabpanel>
+					</tabpanels>
+					</tabbox>
+			</groupbox>
+		</panelchildren>
+	</panel>
+</zk>

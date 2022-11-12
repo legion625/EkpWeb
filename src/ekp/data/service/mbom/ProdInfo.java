@@ -2,9 +2,9 @@ package ekp.data.service.mbom;
 
 import ekp.ObjectModelInfo;
 
-public interface PartInfo extends ObjectModelInfo{
+public interface ProdInfo extends ObjectModelInfo{
 
-	String getPin();
+	String getId();
 
 	String getName();
 

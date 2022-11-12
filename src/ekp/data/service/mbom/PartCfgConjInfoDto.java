@@ -2,33 +2,36 @@ package ekp.data.service.mbom;
 
 import ekp.ObjectModelInfoDto;
 
-public class PartInfoDto extends ObjectModelInfoDto implements PartInfo {
-	protected PartInfoDto(String uid, long objectCreateTime, long objectUpdateTime) {
+public class PartCfgConjInfoDto extends ObjectModelInfoDto implements PartCfgConjInfo {
+
+	protected PartCfgConjInfoDto(String uid, long objectCreateTime, long objectUpdateTime) {
 		super(uid, objectCreateTime, objectUpdateTime);
 	}
 
 	// -------------------------------------------------------------------------------
 	// -----------------------------------attribute-----------------------------------
-	private String pin;
-	private String name;
+	private String partCfgUid;
+
+	private String partAcqUid;
 
 	// -------------------------------------------------------------------------------
 	// ---------------------------------getter&setter---------------------------------
 	@Override
-	public String getPin() {
-		return pin;
+	public String getPartCfgUid() {
+		return partCfgUid;
 	}
 
-	void setPin(String pin) {
-		this.pin = pin;
+	void setPartCfgUid(String partCfgUid) {
+		this.partCfgUid = partCfgUid;
 	}
 
 	@Override
-	public String getName() {
-		return name;
+	public String getPartAcqUid() {
+		return partAcqUid;
 	}
 
-	void setName(String name) {
-		this.name = name;
+	void setPartAcqUid(String partAcqUid) {
+		this.partAcqUid = partAcqUid;
 	}
+
 }
