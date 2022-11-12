@@ -1,6 +1,6 @@
 package ekp.data.service.mbom;
 
-import legion.ObjectModelInfo;
+import ekp.ObjectModelInfo;
 
 public interface ParsPartInfo extends ObjectModelInfo {
 
