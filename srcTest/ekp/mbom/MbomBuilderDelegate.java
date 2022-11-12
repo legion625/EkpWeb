@@ -21,6 +21,7 @@ import ekp.mbom.issue.part.PartBuilder0;
 import ekp.mbom.issue.partAcq.PartAcqBuilder0;
 import ekp.mbom.issue.partAcqRoutingStep.PartAcqRoutingStepBuilder0;
 import ekp.mbom.issue.partCfg.PartCfgBuilder0;
+import ekp.mbom.issue.partCfg.PartCfgEditingBpu;
 import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartCfgStatus;
 import legion.biz.IssueFacade;
@@ -266,6 +267,30 @@ public class MbomBuilderDelegate {
 		assertEquals(PartCfgStatus.EDITING, pc.getStatus());
 		
 		return pc;
+	}
+	
+	public boolean runPartCfgEditing(PartCfgInfo _pc, TimeTraveler _tt, PartAcquisitionInfo... _partAcqs) {
+		PartCfgEditingBpu bpu = issueFacade.getBuilder(MbomBuilderType.PART_CFG_EDITING, _pc);
+		for (PartAcquisitionInfo _partAcq : _partAcqs)
+			bpu.appendPartAcq(_partAcq);
+
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(bpu.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(bpu.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		boolean b = bpu.build(msgBuild, _tt);
+		assertTrue(b, msgBuild.toString());
+
+		// check
+		// none
+		
+		return b;
 	}
 
 }

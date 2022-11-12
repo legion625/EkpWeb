@@ -73,6 +73,7 @@ public class MbomBuilderTest extends AbstractEkpInitTest {
 		
 		/* PartCfg */
 		PartCfgInfo pc = mbomDel.buildPartCfg0(p.getUid(), p.getPin(), tt);
+		mbomDel.runPartCfgEditing(pc, tt, pa1);
 		
 	}
 

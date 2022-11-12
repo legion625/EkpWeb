@@ -1,11 +1,17 @@
 package ekp.mbom.issue;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ekp.data.service.mbom.PartCfgInfo;
 import ekp.mbom.issue.parsPart.ParsPartBuilder0;
 import ekp.mbom.issue.parsProc.ParsProcBuilder0;
 import ekp.mbom.issue.part.PartBuilder0;
 import ekp.mbom.issue.partAcq.PartAcqBuilder0;
 import ekp.mbom.issue.partAcqRoutingStep.PartAcqRoutingStepBuilder0;
+import ekp.mbom.issue.partCfg.PartCfgEditingBpu;
 import ekp.mbom.issue.partCfg.PartCfgBuilder0;
+import ekp.mbom.type.PartCfgStatus;
 import legion.biz.BizObjBuilderType;
 
 public enum MbomBuilderType implements BizObjBuilderType {
@@ -17,6 +23,7 @@ public enum MbomBuilderType implements BizObjBuilderType {
 	PARS_PART_0(ParsPartBuilder0.class), //
 	/**/
 	PART_CFG_0(PartCfgBuilder0.class), //
+	PART_CFG_EDITING(PartCfgEditingBpu.class, PartCfgInfo.class), //
 
 	;
 
@@ -37,7 +44,8 @@ public enum MbomBuilderType implements BizObjBuilderType {
 	public Class[] getArgsClasses() {
 		return argsClasses;
 	}
-
+	
+	// -------------------------------------------------------------------------------
 	@Override
 	public boolean matchBiz(Object... _args) {
 		switch (this) {
@@ -51,8 +59,27 @@ public enum MbomBuilderType implements BizObjBuilderType {
 		/**/
 		case PART_CFG_0:
 			return true;
+		case PART_CFG_EDITING:
+			return matchBizPartCfgAssignPartAcq((PartCfgInfo)_args[0]); 
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + this);
 		}
+	}
+
+	// -------------------------------------------------------------------------------
+	private Logger log = LoggerFactory.getLogger(MbomBuilderType.class);
+
+	private boolean matchBizPartCfgAssignPartAcq(PartCfgInfo _pc) {
+		if (_pc == null) {
+			log.warn("_pc null.");
+			return false;
+		}
+
+		if (PartCfgStatus.EDITING != _pc.getStatus()) {
+			log.info("_pc.getStatus should be EDITING.");
+			return false;
+		}
+
+		return true;
 	}
 }

@@ -9,7 +9,8 @@ import legion.ObjectModelInfo;
 import legion.util.LogUtil;
 import legion.util.TimeTraveler;
 
-public abstract class BizObjBuilder<U extends ObjectModelInfo> {
+//public abstract class BizObjBuilder<U extends ObjectModelInfo> {
+public abstract class BizObjBuilder<U> {
 	protected Logger log = LoggerFactory.getLogger(BizObjBuilder.class);
 
 	protected Object[] args;
