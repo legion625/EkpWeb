@@ -16,5 +16,8 @@ public interface PartCfgInfo extends ObjectModelInfo {
 	String getName();
 
 	String getDesp();
+	
+	// -------------------------------------------------------------------------------
+	PartCfgInfo reload();
 
 }

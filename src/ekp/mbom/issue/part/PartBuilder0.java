@@ -1,8 +1,5 @@
 package ekp.mbom.issue.part;
 
-import ekp.data.service.mbom.PartInfo;
-import legion.biz.BizObjBuilder;
-
 public class PartBuilder0 extends PartBuilder {
 	/* base */
 	// none

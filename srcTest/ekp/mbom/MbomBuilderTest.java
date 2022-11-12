@@ -20,6 +20,7 @@ import ekp.data.service.mbom.ParsPartInfo;
 import ekp.data.service.mbom.ParsProcInfo;
 import ekp.data.service.mbom.PartAcqRoutingStepInfo;
 import ekp.data.service.mbom.PartAcquisitionInfo;
+import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartCreateObj;
 import ekp.data.service.mbom.PartInfo;
 import ekp.serviceFacade.rmi.mbom.PartCreateObjRemote;
@@ -58,9 +59,9 @@ public class MbomBuilderTest extends AbstractEkpInitTest {
 	}
 
 	@Test
-	public void testPartBuilder0() {
+	public void testMbomScenario() {
 		log.debug("test 1");
-		//
+		/* Part */
 		PartInfo p = mbomDel.buildPartType0(tt);
 		PartAcquisitionInfo pa1 = mbomDel.buildPartAcqType01(p, tt);
 		PartAcqRoutingStepInfo pars1 = mbomDel.buildPartAcqRoutingStepType0(pa1.getUid(), tt);
@@ -69,6 +70,10 @@ public class MbomBuilderTest extends AbstractEkpInitTest {
 
 		PartAcquisitionInfo pa2 = mbomDel.buildPartAcqType02(p, tt);
 		PartAcquisitionInfo pa3 = mbomDel.buildPartAcqType03(p, tt);
+		
+		/* PartCfg */
+		PartCfgInfo pc = mbomDel.buildPartCfg0(p.getUid(), p.getPin(), tt);
+		
 	}
 
 }

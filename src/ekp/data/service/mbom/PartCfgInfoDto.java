@@ -1,6 +1,9 @@
 package ekp.data.service.mbom;
 
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
+import ekp.data.BizObjLoader;
+import ekp.data.MbomDataService;
 import ekp.mbom.type.PartCfgStatus;
 
 public class PartCfgInfoDto extends ObjectModelInfoDto implements PartCfgInfo {
@@ -70,6 +73,12 @@ public class PartCfgInfoDto extends ObjectModelInfoDto implements PartCfgInfo {
 
 	void setDesp(String desp) {
 		this.desp = desp;
+	}
+	
+	// -------------------------------------------------------------------------------
+	@Override
+	public PartCfgInfo reload() {
+		return DataServiceFactory.getInstance().getService(MbomDataService.class).loadPartCfg(this.getUid());
 	}
 
 }

@@ -12,6 +12,7 @@ import ekp.data.service.mbom.ParsPartInfo;
 import ekp.data.service.mbom.ParsProcInfo;
 import ekp.data.service.mbom.PartAcqRoutingStepInfo;
 import ekp.data.service.mbom.PartAcquisitionInfo;
+import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.mbom.issue.MbomBuilderType;
 import ekp.mbom.issue.parsPart.ParsPartBuilder0;
@@ -19,7 +20,9 @@ import ekp.mbom.issue.parsProc.ParsProcBuilder0;
 import ekp.mbom.issue.part.PartBuilder0;
 import ekp.mbom.issue.partAcq.PartAcqBuilder0;
 import ekp.mbom.issue.partAcqRoutingStep.PartAcqRoutingStepBuilder0;
+import ekp.mbom.issue.partCfg.PartCfgBuilder0;
 import ekp.mbom.type.PartAcquisitionType;
+import ekp.mbom.type.PartCfgStatus;
 import legion.biz.IssueFacade;
 import legion.util.TimeTraveler;
 
@@ -231,6 +234,38 @@ public class MbomBuilderDelegate {
 		assertEquals(_parsUid, ppart.getParsUid());
 
 		return ppart;
+	}
+	
+	// -------------------------------------------------------------------------------
+	// ------------------------------------PartCfg------------------------------------
+	public PartCfgInfo buildPartCfg0(String _rootPartUid, String _rootPartPin, TimeTraveler _tt) {
+		PartCfgBuilder0 pcb = issueFacade.getBuilder(MbomBuilderType.PART_CFG_0);
+		pcb.appendRootPartUid(_rootPartUid).appendRootPartPin(_rootPartPin);
+		pcb.appendId("TEST_PC_ID").appendName("TEST_PC_NAME").appendDesp("TEST_PC_DESP");
+
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(pcb.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(pcb.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		PartCfgInfo pc = pcb.build(msgBuild, _tt);
+		assertNotNull(msgBuild.toString(), pc);
+
+		// check
+		assertEquals(_rootPartUid, pc.getRootPartUid());
+		assertEquals(_rootPartPin, pc.getRootPartPin());
+		assertEquals("TEST_PC_ID", pc.getId());
+		assertEquals("TEST_PC_NAME", pc.getName());
+		assertEquals("TEST_PC_DESP", pc.getDesp());
+		
+		assertEquals(PartCfgStatus.EDITING, pc.getStatus());
+		
+		return pc;
 	}
 
 }
