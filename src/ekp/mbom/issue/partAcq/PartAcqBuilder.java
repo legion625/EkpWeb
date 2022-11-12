@@ -6,8 +6,6 @@ import org.slf4j.LoggerFactory;
 import ekp.data.MbomDataService;
 import ekp.data.service.mbom.PartAcquisitionCreateObj;
 import ekp.data.service.mbom.PartAcquisitionInfo;
-import ekp.data.service.mbom.PartInfo;
-import ekp.mbom.issue.part.PartBuilder;
 import ekp.mbom.type.PartAcquisitionType;
 import legion.DataServiceFactory;
 import legion.biz.BizObjBuilder;
@@ -88,7 +86,7 @@ public abstract class PartAcqBuilder extends BizObjBuilder<PartAcquisitionInfo> 
 		dto.setType(getType());
 		return dto;
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	@Override
 	public boolean validate(StringBuilder _msg) {
@@ -98,20 +96,20 @@ public abstract class PartAcqBuilder extends BizObjBuilder<PartAcquisitionInfo> 
 	@Override
 	public boolean verify(StringBuilder _msg) {
 		boolean v = true;
-		
+
 		// partUid
 		if(DataFO.isEmptyString(getPartUid())) {
 			_msg.append("PartUid should not be empty.").append(System.lineSeparator());
 			v = false;
 		}
-		
+
 		// partPin
 		if (DataFO.isEmptyString(getPartPin())) {
 			_msg.append("PartPin should not be empty.").append(System.lineSeparator());
 			v = false;
 		}
-		
-		
+
+
 		// id
 		if (DataFO.isEmptyString(getId())) {
 			_msg.append("Id should not be empty.").append(System.lineSeparator());
@@ -123,11 +121,13 @@ public abstract class PartAcqBuilder extends BizObjBuilder<PartAcquisitionInfo> 
 //			}
 		}
 
+		// name
 		if (DataFO.isEmptyString(getName())) {
 			_msg.append("Name should not be empty.").append(System.lineSeparator());
 			v = false;
 		}
 
+		// type
 		if (getType() == null || PartAcquisitionType.UNDEFINED == getType()) {
 			_msg.append("Type error.").append(System.lineSeparator());
 			v = false;
@@ -158,7 +158,7 @@ public abstract class PartAcqBuilder extends BizObjBuilder<PartAcquisitionInfo> 
 
 		return pa;
 	}
-	
-	
+
+
 
 }

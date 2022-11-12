@@ -16,6 +16,9 @@ import org.slf4j.LoggerFactory;
 import ekp.AbstractEkpInitTest;
 import ekp.TestLogMark;
 import ekp.data.MbomDataService;
+import ekp.data.service.mbom.ParsPartInfo;
+import ekp.data.service.mbom.ParsProcInfo;
+import ekp.data.service.mbom.PartAcqRoutingStepInfo;
 import ekp.data.service.mbom.PartAcquisitionInfo;
 import ekp.data.service.mbom.PartCreateObj;
 import ekp.data.service.mbom.PartInfo;
@@ -53,20 +56,19 @@ public class MbomBuilderTest extends AbstractEkpInitTest {
 		System.out.println("test");
 		log.debug("testEkpKernelServiceRemoteCallBack: {}", dataService.testEkpKernelServiceRemoteCallBack());
 	}
-	
+
 	@Test
 	public void testPartBuilder0() {
-//		TimeTraveler tt = new TimeTraveler();
 		log.debug("test 1");
 		//
 		PartInfo p = mbomDel.buildPartType0(tt);
-		PartAcquisitionInfo pa1 = mbomDel.buildPartType01(p, tt);
-		PartAcquisitionInfo pa2 = mbomDel.buildPartType02(p, tt);
-		PartAcquisitionInfo pa3 = mbomDel.buildPartType03(p, tt);
-		
-//		tt.travel();
+		PartAcquisitionInfo pa1 = mbomDel.buildPartAcqType01(p, tt);
+		PartAcqRoutingStepInfo pars1 = mbomDel.buildPartAcqRoutingStepType0(pa1.getUid(), tt);
+		ParsProcInfo pproc1 = mbomDel.buildParsProc0(pars1.getUid(), tt);
+		ParsPartInfo ppart1 = mbomDel.buildParsPart0(pars1.getUid(), tt);
+
+		PartAcquisitionInfo pa2 = mbomDel.buildPartAcqType02(p, tt);
+		PartAcquisitionInfo pa3 = mbomDel.buildPartAcqType03(p, tt);
 	}
-	
-	
 
 }
