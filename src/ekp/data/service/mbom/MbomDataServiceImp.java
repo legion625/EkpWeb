@@ -359,7 +359,7 @@ public class MbomDataServiceImp implements MbomDataService {
 	}
 
 	@Override
-	public boolean parsePartRevertAssignPart(String _uid) {
+	public boolean parsPartRevertAssignPart(String _uid) {
 		try {
 			return getEkpKernelRmi().parsePartRevertAssignPart(_uid);
 		} catch (Throwable e) {

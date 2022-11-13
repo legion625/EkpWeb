@@ -1,0 +1,8 @@
+[zk-component]
+btn: button, toolbarbutton
+lb: label
+lbx: listbox
+
+[zk-font-icon: label-iconSclass]
+Add: fa fa-plus
+Delete: fa fa-minus 

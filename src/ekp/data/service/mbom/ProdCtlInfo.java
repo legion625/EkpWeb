@@ -1,6 +1,6 @@
 package ekp.data.service.mbom;
 
-import ekp.ObjectModelInfo;
+import legion.ObjectModelInfo;
 
 public interface ProdCtlInfo extends ObjectModelInfo{
 

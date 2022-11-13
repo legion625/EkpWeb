@@ -15,6 +15,7 @@ import legion.ISystemWebInfo;
 import legion.LegionContext;
 import legion.SystemInfoDefault;
 import legion.web.InitLegionWebAppsListener;
+import legion.web.zk.ZkMsgBox;
 
 public class InitEkpWebAppsListenerDefault extends InitLegionWebAppsListener implements ServletContextListener {
 
@@ -96,6 +97,9 @@ public class InitEkpWebAppsListenerDefault extends InitLegionWebAppsListener imp
 			for(String key: systemInfo.getAttributes().keySet()) {
 				log.debug("{}\t{}", key,systemInfo.getAttributes().get(key) );
 			}
+			
+			/* other procedures */
+			ZkMsgBox.title = LegionContext.getInstance().getSystemInfo().getName(); // 設定ZkMsgBox的標題顯示為系統名稱。
 			
 			
 		} catch (Exception e) {

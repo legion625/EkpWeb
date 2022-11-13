@@ -14,12 +14,14 @@ import ekp.AbstractEkpInitTest;
 import ekp.TestLogMark;
 import ekp.data.service.mbom.PartCreateObj;
 import ekp.data.service.mbom.PartInfo;
+import ekp.mbom.MbomBuilderDelegate;
 import ekp.serviceFacade.rmi.mbom.PartCreateObjRemote;
 import ekp.serviceFacade.rmi.mbom.PartRemote;
 import legion.DataServiceFactory;
+import legion.util.TimeTraveler;
 
 public class MbomDataServiceTest extends AbstractEkpInitTest {
-//	private Logger log = LoggerFactory.getLogger(TestLogMark.class);
+	private static Logger log = LoggerFactory.getLogger(TestLogMark.class);
 	private static MbomDataService dataService;
 
 	@BeforeClass
@@ -47,11 +49,19 @@ public class MbomDataServiceTest extends AbstractEkpInitTest {
 
 	@Test
 	public void testLoadPart() {
-		PartInfo part1 = dataService.loadPart("2022!7!8!1");
-		PartInfo part2 = dataService.loadPartByPin("A2");
-		log.debug("{}\t{}", part1.getUid(), part2.getUid());
-		assertTrue(part1.equals(part2));
+		// TODO 待RMi改寫後再測測看還會不會跳出error的log。
+//		PartInfo part1 = dataService.loadPart("2022!7!8!1");
+//		PartInfo part2 = dataService.loadPartByPin("A2");
+		
+		PartInfo part1 = dataService.loadPartByPin("A1");
+		PartInfo part2 = dataService.loadPartByPin("A1");
+		log.debug("hashcode: {}\t{}", part1.hashCode(), part2.hashCode());
+		log.debug("uid: {}\t{}", part1.getUid(), part2.getUid());
+		log.debug("equals: {}", part1.equals(part2));
+//		assertTrue(part1.equals(part2));
 
 	}
+	
 
+	
 }

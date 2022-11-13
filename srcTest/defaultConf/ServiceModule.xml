@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
+	<!-- BusinessService -->
 	<BusinessService>
-		<Service name="SystemService" interface="legion.system.SystemService" imp="legion.system.SystemServiceImp"></Service>
+		<!-- legionmodule -->
+		<Service name="SystemService" interface="legion.system.SystemService" imp="legion.system.SystemServiceImp" />
+		<!-- ekp -->
+		<Service name="MbomService" interface="ekp.mbom.MbomService" imp="ekp.mbom.MbomServiceImp" />
 	</BusinessService>
 	<!-- IntegrationService -->
 	<IntegrationService>
+		<!-- legionmodule -->
 		<Service name="ObjectSeqDataService" interface="legion.data.ObjectSeqDataService" imp="legion.data.service.ObjectSeqDataServiceImp">
 			<Parameter name="source" value="ekp_web" />
 			<Parameter name="serverId" value="0" />
@@ -12,7 +17,7 @@
 		<Service name="SystemDataService" interface="legion.data.SystemDataService" imp="legion.data.service.system.SystemDataServiceImp">
 			<Parameter name="source" value="ekp_web" />
 		</Service>
-		<!-- -->
+		<!-- ekp -->
 		<Service name="MbomDataService" interface="ekp.data.MbomDataService" imp="ekp.data.service.mbom.MbomDataServiceImp">
 			<Parameter name="srcEkpKernelRmi" value="ekp_kernel_rmi" />
 		</Service>

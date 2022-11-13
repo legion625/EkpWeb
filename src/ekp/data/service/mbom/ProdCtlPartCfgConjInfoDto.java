@@ -1,6 +1,6 @@
 package ekp.data.service.mbom;
 
-import ekp.ObjectModelInfoDto;
+import legion.ObjectModelInfoDto;
 
 public class ProdCtlPartCfgConjInfoDto extends ObjectModelInfoDto implements ProdCtlPartCfgConjInfo {
 

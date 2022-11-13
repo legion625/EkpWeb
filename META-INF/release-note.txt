@@ -1,7 +1,7 @@
 Min-Hua, 2022.11.12
 [change]
-1. [LM]æ”¹å¯«Legionmoduleéƒ¨åˆ†ç¨‹å¼ç¢¼ï¼ŒåŒ…å«AbstractMySqlDaoã€FnCntProxyã€å’ŒBizObjBuilderçš„æ³›å‹ä»‹é¢ã€‚
-2. [MBOM]å¯¦ä½œå•†æ¥­æœå‹™ã€‚
+1. [LM]§ï¼gLegionmodule³¡¤Àµ{¦¡½X¡A¥]§tAbstractMySqlDao¡BFnCntProxy¡B©MBizObjBuilderªºªx«¬¤¶­±¡C
+2. [MBOM]¹ê§@°Ó·~ªA°È¡C
   -1. PartBuilder, PartAcqBuilder, PartAcqRoutingStep, ParsProc, ParsPart
   -2. PartCfg, PartCfgConj
   -3. Prod, ProdCtl
