@@ -1,6 +1,8 @@
 package ekp.data.service.mbom;
 
-import ekp.ObjectModelInfoDto;
+import ekp.data.MbomDataService;
+import legion.DataServiceFactory;
+import legion.ObjectModelInfoDto;
 
 public class ParsPartInfoDto extends ObjectModelInfoDto implements ParsPartInfo {
 
@@ -64,5 +66,12 @@ public class ParsPartInfoDto extends ObjectModelInfoDto implements ParsPartInfo 
 	void setPartReqQty(double partReqQty) {
 		this.partReqQty = partReqQty;
 	}
+	
+	// -------------------------------------------------------------------------------
+	@Override
+	public ParsPartInfo reload() {
+		return DataServiceFactory.getInstance().getService(MbomDataService.class).loadParsPart(this.getUid());
+	}
+		
 
 }

@@ -1,6 +1,6 @@
 package ekp.data.service.mbom;
 
-import ekp.ObjectModelInfo;
+import legion.ObjectModelInfo;
 
 public interface ParsPartInfo extends ObjectModelInfo {
 
@@ -14,4 +14,6 @@ public interface ParsPartInfo extends ObjectModelInfo {
 
 	double getPartReqQty();
 
+	// -------------------------------------------------------------------------------
+	ParsPartInfo reload();
 }

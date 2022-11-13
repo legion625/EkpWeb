@@ -1,6 +1,6 @@
 package ekp.data.service.mbom;
 
-import ekp.ObjectModelInfo;
+import legion.ObjectModelInfo;
 import ekp.mbom.type.PartAcquisitionType;
 
 public interface PartAcquisitionInfo extends ObjectModelInfo {
@@ -14,5 +14,10 @@ public interface PartAcquisitionInfo extends ObjectModelInfo {
 	String getName();
 
 	PartAcquisitionType getType();
+	
+	// -------------------------------------------------------------------------------
+	default String getTypeName() {
+		return (getType() == null ? PartAcquisitionType.UNDEFINED : getType()).getName();
+	}
 
 }

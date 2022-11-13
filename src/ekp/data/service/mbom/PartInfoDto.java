@@ -1,6 +1,6 @@
 package ekp.data.service.mbom;
 
-import ekp.ObjectModelInfoDto;
+import legion.ObjectModelInfoDto;
 
 public class PartInfoDto extends ObjectModelInfoDto implements PartInfo {
 	protected PartInfoDto(String uid, long objectCreateTime, long objectUpdateTime) {

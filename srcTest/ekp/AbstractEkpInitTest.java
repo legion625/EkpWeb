@@ -12,6 +12,8 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import legion.BusinessServiceFactory;
 import legion.DataServiceFactory;
@@ -22,6 +24,7 @@ import legion.util.DataFO;
 import legion.util.LogUtil;
 
 public class AbstractEkpInitTest extends EkpInitLogTest {
+	private static Logger log = LoggerFactory.getLogger(AbstractEkpInitTest.class);
 	private static volatile boolean initFlag = false;
 
 	@BeforeClass
@@ -77,6 +80,8 @@ public class AbstractEkpInitTest extends EkpInitLogTest {
 		initDatasource(datasourceFile);
 		initIntegrationServiceModule(serviceModuleFile);
 		initBusinessServiceModule(serviceModuleFile);
+		
+		
 		// initFw
 		// initAspectManager(_sysInfo);
 //		verifyLegionConn(datasourceFile);

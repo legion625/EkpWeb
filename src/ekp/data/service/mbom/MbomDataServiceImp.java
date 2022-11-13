@@ -138,9 +138,9 @@ public class MbomDataServiceImp implements MbomDataService {
 	}
 
 	@Override
-	public PartAcquisitionInfo loadPartAcquisitionById(String _id) {
+	public PartAcquisitionInfo loadPartAcquisition(String _partPin, String _id) {
 		try {
-			return MbomFO.parsePartAcquisition(getEkpKernelRmi().loadPartAcquisitionById(_id));
+			return MbomFO.parsePartAcquisition(getEkpKernelRmi().loadPartAcquisition(_partPin, _id));
 		} catch (Throwable e) {
 			LogUtil.log(log, e, Level.ERROR);
 			return null;
@@ -325,6 +325,16 @@ public class MbomDataServiceImp implements MbomDataService {
 	}
 
 	@Override
+	public ParsPartInfo loadParsPart(String _parsUid, String _partuid) {
+		try {
+			return MbomFO.parseParsPart(getEkpKernelRmi().loadParsPart(_parsUid, _partuid));
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
 	public List<ParsPartInfo> loadParsPartList(String _parsUid) {
 		try {
 			List<ParsPartRemote> remoteList = getEkpKernelRmi().loadParsPartList(_parsUid);
@@ -359,9 +369,9 @@ public class MbomDataServiceImp implements MbomDataService {
 	}
 
 	@Override
-	public boolean parsePartRevertAssignPart(String _uid) {
+	public boolean parsPartRevertAssignPart(String _uid) {
 		try {
-			return getEkpKernelRmi().parsePartRevertAssignPart(_uid);
+			return getEkpKernelRmi().parsPartRevertAssignPart(_uid);
 		} catch (Throwable e) {
 			LogUtil.log(log, e, Level.ERROR);
 			return false;
@@ -394,6 +404,16 @@ public class MbomDataServiceImp implements MbomDataService {
 	public PartCfgInfo loadPartCfg(String _uid) {
 		try {
 			return MbomFO.parsePartCfg(getEkpKernelRmi().loadPartCfg(_uid));
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
+	public PartCfgInfo loadPartCfgById(String _id) {
+		try {
+			return MbomFO.parsePartCfg(getEkpKernelRmi().loadPartCfgById(_id));
 		} catch (Throwable e) {
 			LogUtil.log(log, e, Level.ERROR);
 			return null;
@@ -485,6 +505,16 @@ public class MbomDataServiceImp implements MbomDataService {
 	}
 
 	@Override
+	public PartCfgConjInfo loadPartCfgConj(String _partCfgUid, String _partAcqUid) {
+		try {
+			return MbomFO.parsePartCfgConj(getEkpKernelRmi().loadPartCfgConj(_partCfgUid, _partAcqUid));
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
 	public List<PartCfgConjInfo> loadPartCfgConjList(String _partCfgUid) {
 		try {
 			List<PartCfgConjRemote> remoteList = getEkpKernelRmi().loadPartCfgConjList(_partCfgUid);
@@ -529,6 +559,16 @@ public class MbomDataServiceImp implements MbomDataService {
 	}
 
 	@Override
+	public ProdInfo loadProdById(String _id) {
+		try {
+			return MbomFO.parseProd(getEkpKernelRmi().loadProdById(_id));
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
 	public List<ProdInfo> loadProdList() {
 		try {
 			List<ProdRemote> remoteList = getEkpKernelRmi().loadProdList();
@@ -566,6 +606,16 @@ public class MbomDataServiceImp implements MbomDataService {
 	public ProdCtlInfo loadProdCtl(String _uid) {
 		try {
 			return MbomFO.parseProdCtl(getEkpKernelRmi().loadProdCtl(_uid));
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
+	public ProdCtlInfo loadProdCtlById(String _id) {
+		try {
+			return MbomFO.parseProdCtl(getEkpKernelRmi().loadProdCtlById(_id));
 		} catch (Throwable e) {
 			LogUtil.log(log, e, Level.ERROR);
 			return null;
@@ -669,6 +719,16 @@ public class MbomDataServiceImp implements MbomDataService {
 	}
 
 	@Override
+	public ProdCtlPartCfgConjInfo loadProdCtlPartCfgConj(String _prodCtlUid, String _partCfgUid) {
+		try {
+			return MbomFO.parseProdCtlPartCfgConj(getEkpKernelRmi().loadProdCtlPartCfgConj(_prodCtlUid, _partCfgUid));
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
 	public List<ProdCtlPartCfgConjInfo> loadProdCtlPartCfgConjList1(String _prodCtlUid) {
 		try {
 			List<ProdCtlPartCfgConjRemote> remoteList = getEkpKernelRmi().loadProdCtlPartCfgConjList1(_prodCtlUid);
@@ -727,6 +787,16 @@ public class MbomDataServiceImp implements MbomDataService {
 	}
 
 	@Override
+	public ProdModInfo loadProdModById(String _id) {
+		try {
+			return MbomFO.parseProdMod(getEkpKernelRmi().loadProdModById(_id));
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
 	public List<ProdModInfo> loadProdModList(String _prodUid) {
 		try {
 			List<ProdModRemote> remoteList = getEkpKernelRmi().loadProdModList(_prodUid);
@@ -764,6 +834,26 @@ public class MbomDataServiceImp implements MbomDataService {
 	public ProdModItemInfo loadProdModItem(String _uid) {
 		try {
 			return MbomFO.parseProdModItem(getEkpKernelRmi().loadProdModItem(_uid));
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
+	public ProdModItemInfo loadProdModItem(String _prodModUid, String _prodCtlUid) {
+		try {
+			return MbomFO.parseProdModItem(getEkpKernelRmi().loadProdModItem(_prodModUid, _prodCtlUid));
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
+	public ProdModItemInfo loadProdModItem(String _prodModUid, String _prodCtlUid, String _partCfgUid) {
+		try {
+			return MbomFO.parseProdModItem(getEkpKernelRmi().loadProdModItem(_prodModUid, _prodCtlUid, _partCfgUid));
 		} catch (Throwable e) {
 			LogUtil.log(log, e, Level.ERROR);
 			return null;

@@ -1,14 +1,23 @@
-Min-Hua, 2022.11.12
+Min-Hua, 2022.11.13
 [lib]
-1. legionmodule: 0.12.0 -> 0.12.1
+1. ekp_kernel: 0.1.1 -> 0.1.2
 
-Min-Hua, 2022.11.12
-[lib]
-1. legionmodule: 0.11.0 -> 0.12.0
+------------------------------------------------------------------------------
+v0.1.2 released by Min-Hua, 2022.11.13
+[change]
+1. [LM]改寫Legionmodule部分程式碼，包含AbstractMySqlDao、FnCntProxy、和BizObjBuilder的泛型介面。
+2. [MBOM]實作商業服務。
+  -1. PartBuilder, PartAcqBuilder, PartAcqRoutingStep, ParsProc, ParsPart
+  -2. PartCfg, PartCfgConj
+  -3. Prod, ProdCtl
 
-Min-Hua, 2022.11.03
+[deployment]
+1. [ServiceModule] Add MbomService.
+
+------------------------------------------------------------------------------
+v0.1.1 released by Min-Hua, 2022.11.12
 [lib]
-1. legionmodule: 0.10.4 -> 0.11.0
+1. legionmodule: 0.10.4 -> 0.12.1
 2. ekp_kernel: 0.1.0 -> 0.1.1
 
 ------------------------------------------------------------------------------
