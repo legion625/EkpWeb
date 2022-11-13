@@ -6,10 +6,10 @@ import org.slf4j.LoggerFactory;
 import ekp.data.MbomDataService;
 import ekp.data.service.mbom.ProdInfo;
 import legion.DataServiceFactory;
-import legion.biz.BizObjBuilder;
+import legion.biz.Bpu;
 import legion.util.TimeTraveler;
 
-public abstract class ProdBpu extends BizObjBuilder<Boolean> {
+public abstract class ProdBpu extends Bpu<Boolean> {
 	protected Logger log = LoggerFactory.getLogger(ProdBpu.class);
 	protected static MbomDataService mbomDataService = DataServiceFactory.getInstance()
 			.getService(MbomDataService.class);

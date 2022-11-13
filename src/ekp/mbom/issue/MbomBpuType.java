@@ -17,13 +17,12 @@ import ekp.mbom.issue.partCfg.PartCfgBpuEditing;
 import ekp.mbom.issue.prod.ProdBuilder0;
 import ekp.mbom.issue.prod.ProdBpuEditCtl;
 import ekp.mbom.issue.prodCtl.ProdCtlBpuPartCfgConj;
-import ekp.mbom.issue.prodCtl.ProdCtlBuilder;
 import ekp.mbom.issue.prodCtl.ProdCtlBuilder0;
 import ekp.mbom.issue.partCfg.PartCfgBuilder0;
 import ekp.mbom.type.PartCfgStatus;
-import legion.biz.BizObjBuilderType;
+import legion.biz.BpuType;
 
-public enum MbomBuilderType implements BizObjBuilderType {
+public enum MbomBpuType implements BpuType {
 	/**/
 	PART_0(PartBuilder0.class), //
 	PART_ACQ_0(PartAcqBuilder0.class), //
@@ -45,7 +44,7 @@ public enum MbomBuilderType implements BizObjBuilderType {
 	private Class builderClass;
 	private Class[] argsClasses;
 
-	private MbomBuilderType(Class builderClass, Class... argsClasses) {
+	private MbomBpuType(Class builderClass, Class... argsClasses) {
 		this.builderClass = builderClass;
 		this.argsClasses = argsClasses;
 	}
@@ -93,7 +92,7 @@ public enum MbomBuilderType implements BizObjBuilderType {
 	}
 
 	// -------------------------------------------------------------------------------
-	private Logger log = LoggerFactory.getLogger(MbomBuilderType.class);
+	private Logger log = LoggerFactory.getLogger(MbomBpuType.class);
 
 	private boolean matchBizParsPart1(PartAcqRoutingStepInfo _pars) {
 		if (_pars == null) {

@@ -6,11 +6,11 @@ import org.slf4j.LoggerFactory;
 import ekp.data.MbomDataService;
 import ekp.data.service.mbom.ParsPartInfo;
 import legion.DataServiceFactory;
-import legion.biz.BizObjBuilder;
+import legion.biz.Bpu;
 import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
-public abstract class ParsPartBuilder extends BizObjBuilder<ParsPartInfo> {
+public abstract class ParsPartBuilder extends Bpu<ParsPartInfo> {
 	protected Logger log = LoggerFactory.getLogger(ParsPartBuilder.class);
 	protected static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
 

@@ -7,11 +7,11 @@ import ekp.data.MbomDataService;
 import ekp.data.service.mbom.PartCreateObj;
 import ekp.data.service.mbom.PartInfo;
 import legion.DataServiceFactory;
-import legion.biz.BizObjBuilder;
+import legion.biz.Bpu;
 import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
-public abstract class PartBuilder extends BizObjBuilder<PartInfo> {
+public abstract class PartBuilder extends Bpu<PartInfo> {
 	protected Logger log = LoggerFactory.getLogger(PartBuilder.class);
 	private static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
 
@@ -43,7 +43,7 @@ public abstract class PartBuilder extends BizObjBuilder<PartInfo> {
 	public String getName() {
 		return name;
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	private PartCreateObj packPartCreateObj() {
 		PartCreateObj dto = new PartCreateObj();
@@ -51,7 +51,7 @@ public abstract class PartBuilder extends BizObjBuilder<PartInfo> {
 		dto.setName(getName());
 		return dto;
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	@Override
 	public boolean validate(StringBuilder _msg) {
@@ -79,7 +79,6 @@ public abstract class PartBuilder extends BizObjBuilder<PartInfo> {
 
 		return v;
 	}
-
 
 	@Override
 	protected PartInfo buildProcess(TimeTraveler _tt) {

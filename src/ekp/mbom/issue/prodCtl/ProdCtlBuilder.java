@@ -8,11 +8,11 @@ import ekp.data.service.mbom.ProdCtlCreateObj;
 import ekp.data.service.mbom.ProdCtlInfo;
 import ekp.data.service.mbom.ProdInfo;
 import legion.DataServiceFactory;
-import legion.biz.BizObjBuilder;
+import legion.biz.Bpu;
 import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
-public abstract class ProdCtlBuilder extends BizObjBuilder<ProdCtlInfo> {
+public abstract class ProdCtlBuilder extends Bpu<ProdCtlInfo> {
 	protected Logger log = LoggerFactory.getLogger(ProdCtlBuilder.class);
 	private static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
 
