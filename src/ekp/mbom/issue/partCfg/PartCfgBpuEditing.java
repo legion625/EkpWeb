@@ -9,7 +9,7 @@ import ekp.data.service.mbom.PartAcquisitionInfo;
 import ekp.data.service.mbom.PartCfgConjInfo;
 import ekp.data.service.mbom.PartCfgInfo;
 import ekp.mbom.type.PartCfgStatus;
-import legion.biz.BizObjBuilder;
+import legion.biz.Bpu;
 import legion.util.TimeTraveler;
 
 public class PartCfgBpuEditing extends PartCfgBpu{

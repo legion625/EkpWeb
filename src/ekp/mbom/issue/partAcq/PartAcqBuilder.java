@@ -8,11 +8,11 @@ import ekp.data.service.mbom.PartAcquisitionCreateObj;
 import ekp.data.service.mbom.PartAcquisitionInfo;
 import ekp.mbom.type.PartAcquisitionType;
 import legion.DataServiceFactory;
-import legion.biz.BizObjBuilder;
+import legion.biz.Bpu;
 import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
-public abstract class PartAcqBuilder extends BizObjBuilder<PartAcquisitionInfo> {
+public abstract class PartAcqBuilder extends Bpu<PartAcquisitionInfo> {
 	protected Logger log = LoggerFactory.getLogger(PartAcqBuilder.class);
 	private static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
 

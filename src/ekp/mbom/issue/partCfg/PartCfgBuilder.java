@@ -7,11 +7,11 @@ import ekp.data.MbomDataService;
 import ekp.data.service.mbom.PartCfgCreateObj;
 import ekp.data.service.mbom.PartCfgInfo;
 import legion.DataServiceFactory;
-import legion.biz.BizObjBuilder;
+import legion.biz.Bpu;
 import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
-public abstract class PartCfgBuilder extends BizObjBuilder<PartCfgInfo> {
+public abstract class PartCfgBuilder extends Bpu<PartCfgInfo> {
 	protected Logger log = LoggerFactory.getLogger(PartCfgBuilder.class);
 	private static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
 

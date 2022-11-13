@@ -7,11 +7,11 @@ import ekp.data.MbomDataService;
 import ekp.data.service.mbom.PartAcqRoutingStepCreateObj;
 import ekp.data.service.mbom.PartAcqRoutingStepInfo;
 import legion.DataServiceFactory;
-import legion.biz.BizObjBuilder;
+import legion.biz.Bpu;
 import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
-public abstract class PartAcqRoutingStepBuilder extends BizObjBuilder<PartAcqRoutingStepInfo> {
+public abstract class PartAcqRoutingStepBuilder extends Bpu<PartAcqRoutingStepInfo> {
 	protected Logger log = LoggerFactory.getLogger(PartAcqRoutingStepBuilder.class);
 	private static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
 

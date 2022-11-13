@@ -7,11 +7,11 @@ import ekp.data.MbomDataService;
 import ekp.data.service.mbom.ProdCreateObj;
 import ekp.data.service.mbom.ProdInfo;
 import legion.DataServiceFactory;
-import legion.biz.BizObjBuilder;
+import legion.biz.Bpu;
 import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
-public abstract class ProdBuilder extends BizObjBuilder<ProdInfo> {
+public abstract class ProdBuilder extends Bpu<ProdInfo> {
 	protected Logger log = LoggerFactory.getLogger(ProdBuilder.class);
 	private static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
 
