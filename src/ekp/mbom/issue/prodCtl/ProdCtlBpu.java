@@ -1,37 +1,38 @@
-package ekp.mbom.issue.partCfg;
+package ekp.mbom.issue.prodCtl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ekp.data.MbomDataService;
-import ekp.data.service.mbom.PartCfgInfo;
+import ekp.data.service.mbom.ProdCtlInfo;
 import legion.DataServiceFactory;
 import legion.biz.BizObjBuilder;
 import legion.util.TimeTraveler;
 
-public abstract class PartCfgBpu extends BizObjBuilder<Boolean> {
-	protected Logger log = LoggerFactory.getLogger(PartCfgBpu.class);
-	protected static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
+public abstract class ProdCtlBpu extends BizObjBuilder<Boolean> {
+	protected Logger log = LoggerFactory.getLogger(ProdCtlBpu.class);
+	protected static MbomDataService mbomDataService = DataServiceFactory.getInstance()
+			.getService(MbomDataService.class);
 
 	/* base */
-	private PartCfgInfo partCfg;
+	private ProdCtlInfo prodCtl;
 
 	/* data */
 	// none
 
 	// -------------------------------------------------------------------------------
 	// -----------------------------------appender------------------------------------
-	protected PartCfgBpu appendPartCfg(PartCfgInfo partCfg) {
-		this.partCfg = partCfg;
+	protected ProdCtlBpu appendProdCtl(ProdCtlInfo prodCtl) {
+		this.prodCtl = prodCtl;
 		return this;
 	}
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------------getter-------------------------------------
-	public PartCfgInfo getPartCfg() {
-		return partCfg;
+	public ProdCtlInfo getProdCtl() {
+		return prodCtl;
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	@Override
 	public abstract boolean validate(StringBuilder _msg);

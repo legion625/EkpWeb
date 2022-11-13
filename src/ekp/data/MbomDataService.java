@@ -110,7 +110,7 @@ public interface MbomDataService extends IntegrationService {
 
 	public boolean parsPartAssignPart(String _uid, String _partUid, String _partPin, double _partReqQty);
 
-	public boolean parsePartRevertAssignPart(String _uid);
+	public boolean parsPartRevertAssignPart(String _uid);
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------------PartCfg------------------------------------

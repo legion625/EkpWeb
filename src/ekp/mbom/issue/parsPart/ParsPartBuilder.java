@@ -12,7 +12,7 @@ import legion.util.TimeTraveler;
 
 public abstract class ParsPartBuilder extends BizObjBuilder<ParsPartInfo> {
 	protected Logger log = LoggerFactory.getLogger(ParsPartBuilder.class);
-	private static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
+	protected static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
 
 	/* base */
 	private String parsUid; // ref data key
@@ -51,11 +51,15 @@ public abstract class ParsPartBuilder extends BizObjBuilder<ParsPartInfo> {
 		return v;
 	}
 
+
 	@Override
-	protected ParsPartInfo buildProcess(TimeTraveler _tt) {
+	protected abstract ParsPartInfo buildProcess(TimeTraveler _tt);
+	
+//	@Override
+//	protected ParsPartInfo buildProcess(TimeTraveler _tt) {
+	protected ParsPartInfo buildPpart(TimeTraveler _tt) {
 		TimeTraveler tt = new TimeTraveler();
 
-		//
 		ParsPartInfo parsPart = mbomDataService.createParsPart(getParsUid());
 		if (parsPart == null) {
 			tt.travel();

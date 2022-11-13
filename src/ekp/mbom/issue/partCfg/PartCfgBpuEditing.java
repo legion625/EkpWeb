@@ -12,21 +12,20 @@ import ekp.mbom.type.PartCfgStatus;
 import legion.biz.BizObjBuilder;
 import legion.util.TimeTraveler;
 
-public class PartCfgEditingBpu extends PartCfgBpu{
+public class PartCfgBpuEditing extends PartCfgBpu{
 
 	/* base */
 	private PartCfgInfo partCfg;
 
 	/* data */
 	private Map<String, PartAcquisitionInfo> partAcqMap;
-	// none;
 
 	// -------------------------------------------------------------------------------
 	@Override
-	protected BizObjBuilder<Boolean> appendBase() {
+	protected PartCfgBpuEditing appendBase() {
 		/* base */
 		partCfg = (PartCfgInfo) args[0];
-		super.appendPartCfg(partCfg);
+		appendPartCfg(partCfg);
 
 		/* data */
 		partAcqMap = new HashMap<>();
@@ -35,15 +34,15 @@ public class PartCfgEditingBpu extends PartCfgBpu{
 	}
 	
 	// -------------------------------------------------------------------------------
-	public PartCfgEditingBpu appendPartAcq(PartAcquisitionInfo _partAcq) {
+	public PartCfgBpuEditing appendPartAcq(PartAcquisitionInfo _partAcq) {
 		if (_partAcq != null)
-			partAcqMap.putIfAbsent(_partAcq.getUid(), _partAcq);
+			partAcqMap.put(_partAcq.getUid(), _partAcq);
 		else
 			log.warn("_partAcq null.");
 		return this;
 	}
 
-	public PartCfgEditingBpu removePartAcq(PartAcquisitionInfo _partAcq) {
+	public PartCfgBpuEditing removePartAcq(PartAcquisitionInfo _partAcq) {
 		if (_partAcq != null)
 			partAcqMap.remove(_partAcq.getUid());
 		else
@@ -108,7 +107,7 @@ public class PartCfgEditingBpu extends PartCfgBpu{
 
 		/* PartAcq */
 		List<PartAcquisitionInfo> partAcqList = getPartAcqList();
-		if (partAcqList == null || getPartAcqList().size() <= 0) {
+		if (partAcqList == null || partAcqList.size() <= 0) {
 			_msg.append("partAcqList should not be empty.").append(System.lineSeparator());
 			v = false;
 		} else {
@@ -121,7 +120,6 @@ public class PartCfgEditingBpu extends PartCfgBpu{
 //			}
 		}
 		
-
 		return v;
 	}
 

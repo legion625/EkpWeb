@@ -4,6 +4,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,13 +21,16 @@ import ekp.data.service.mbom.ProdCtlInfo;
 import ekp.data.service.mbom.ProdInfo;
 import ekp.mbom.issue.MbomBuilderType;
 import ekp.mbom.issue.parsPart.ParsPartBuilder0;
+import ekp.mbom.issue.parsPart.ParsPartBuilder1;
 import ekp.mbom.issue.parsProc.ParsProcBuilder0;
 import ekp.mbom.issue.part.PartBuilder0;
 import ekp.mbom.issue.partAcq.PartAcqBuilder0;
 import ekp.mbom.issue.partAcqRoutingStep.PartAcqRoutingStepBuilder0;
 import ekp.mbom.issue.partCfg.PartCfgBuilder0;
-import ekp.mbom.issue.partCfg.PartCfgEditingBpu;
+import ekp.mbom.issue.partCfg.PartCfgBpuEditing;
 import ekp.mbom.issue.prod.ProdBuilder0;
+import ekp.mbom.issue.prod.ProdBpuEditCtl;
+import ekp.mbom.issue.prodCtl.ProdCtlBpuPartCfgConj;
 import ekp.mbom.issue.prodCtl.ProdCtlBuilder0;
 import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartCfgStatus;
@@ -48,9 +54,10 @@ public class MbomBuilderDelegate {
 
 	// -------------------------------------------------------------------------------
 	// -------------------------------------Part--------------------------------------
-	public PartInfo buildPartType0(TimeTraveler _tt) {
+	public PartInfo buildPartType0(TimeTraveler _tt, String _pin, String _name) {
 		PartBuilder0 pb = issueFacade.getBuilder(MbomBuilderType.PART_0);
-		pb.appendPin("TEST_PIN").appendName("TEST_NAME");
+//		pb.appendPin("TEST_PIN").appendName("TEST_NAME");
+		pb.appendPin(_pin).appendName(_name);
 
 		// validate
 		StringBuilder msgValidate = new StringBuilder();
@@ -66,18 +73,25 @@ public class MbomBuilderDelegate {
 		assertNotNull(msgBuild.toString(), p);
 
 		// check
-		assertEquals("TEST_PIN", p.getPin());
-		assertEquals("TEST_NAME", p.getName());
-
+//		assertEquals("TEST_PIN", p.getPin());
+//		assertEquals("TEST_NAME", p.getName());
+		assertEquals(_pin, p.getPin());
+		assertEquals(_name, p.getName());
+		
 		return p;
 	}
 
+	public PartInfo buildPartType0(TimeTraveler _tt) {
+		return buildPartType0(_tt, "TEST_PIN", "TEST_NAME");
+	}
+	
 	// -------------------------------------------------------------------------------
 	// ------------------------------------PartAcq------------------------------------
-	public PartAcquisitionInfo buildPartAcqType01(PartInfo _p, TimeTraveler _tt) {
+	public PartAcquisitionInfo buildPartAcqType0(PartInfo _p, TimeTraveler _tt, String _id, String _name,
+			PartAcquisitionType _type) {
 		PartAcqBuilder0 pab = issueFacade.getBuilder(MbomBuilderType.PART_ACQ_0);
 		pab.appendPartUid(_p.getUid()).appendPartPin(_p.getPin());
-		pab.appendId("TEST_ACQ_ID_1").appendName("TEST_ACQ_NAME_1").appendType(PartAcquisitionType.PURCHASING);
+		pab.appendId(_id).appendName(_name).appendType(_type);
 
 		// validate
 		StringBuilder msgValidate = new StringBuilder();
@@ -95,75 +109,112 @@ public class MbomBuilderDelegate {
 		// check
 		assertEquals(_p.getUid(), pa.getPartUid());
 		assertEquals(_p.getPin(), pa.getPartPin());
-		assertEquals("TEST_ACQ_ID_1", pa.getId());
-		assertEquals("TEST_ACQ_NAME_1", pa.getName());
-		assertEquals(PartAcquisitionType.PURCHASING, pa.getType());
+		assertEquals(_id, pa.getId());
+		assertEquals(_name, pa.getName());
+		assertEquals(_type, pa.getType());
 
 		return pa;
+	}
+	
+	public PartAcquisitionInfo buildPartAcqType01(PartInfo _p, TimeTraveler _tt) {
+		return buildPartAcqType0(_p, _tt, "TEST_ACQ_ID_1", "TEST_ACQ_NAME_1", PartAcquisitionType.PURCHASING);
+		
+//		PartAcqBuilder0 pab = issueFacade.getBuilder(MbomBuilderType.PART_ACQ_0);
+//		pab.appendPartUid(_p.getUid()).appendPartPin(_p.getPin());
+//		pab.appendId("TEST_ACQ_ID_1").appendName("TEST_ACQ_NAME_1").appendType(PartAcquisitionType.PURCHASING);
+////		pab.appendId(_id).appendName(_name).appendType(_type);
+//
+//		// validate
+//		StringBuilder msgValidate = new StringBuilder();
+//		assertTrue(pab.validate(msgValidate), msgValidate.toString());
+//
+//		// verify
+//		StringBuilder msgVerify = new StringBuilder();
+//		assertTrue(pab.verify(msgVerify), msgVerify.toString());
+//
+//		// build
+//		StringBuilder msgBuild = new StringBuilder();
+//		PartAcquisitionInfo pa = pab.build(msgBuild, _tt);
+//		assertNotNull(msgBuild.toString(), pa);
+//
+//		// check
+//		assertEquals(_p.getUid(), pa.getPartUid());
+//		assertEquals(_p.getPin(), pa.getPartPin());
+//		assertEquals("TEST_ACQ_ID_1", pa.getId());
+//		assertEquals("TEST_ACQ_NAME_1", pa.getName());
+//		assertEquals(PartAcquisitionType.PURCHASING, pa.getType());
+////		assertEquals(_id, pa.getId());
+////		assertEquals(_name, pa.getName());
+////		assertEquals(_type, pa.getType());
+//
+//		return pa;
 	}
 
 	public PartAcquisitionInfo buildPartAcqType02(PartInfo _p, TimeTraveler _tt) {
-		PartAcqBuilder0 pab = issueFacade.getBuilder(MbomBuilderType.PART_ACQ_0);
-		pab.appendPartUid(_p.getUid()).appendPartPin(_p.getPin());
-		pab.appendId("TEST_ACQ_ID_2").appendName("TEST_ACQ_NAME_2").appendType(PartAcquisitionType.SELF_PRODUCING);
-
-		// validate
-		StringBuilder msgValidate = new StringBuilder();
-		assertTrue(pab.validate(msgValidate), msgValidate.toString());
-
-		// verify
-		StringBuilder msgVerify = new StringBuilder();
-		assertTrue(pab.verify(msgVerify), msgVerify.toString());
-
-		// build
-		StringBuilder msgBuild = new StringBuilder();
-		PartAcquisitionInfo pa = pab.build(msgBuild, _tt);
-		assertNotNull(msgBuild.toString(), pa);
-
-		// check
-		assertEquals(_p.getUid(), pa.getPartUid());
-		assertEquals(_p.getPin(), pa.getPartPin());
-		assertEquals("TEST_ACQ_ID_2", pa.getId());
-		assertEquals("TEST_ACQ_NAME_2", pa.getName());
-		assertEquals(PartAcquisitionType.SELF_PRODUCING, pa.getType());
-
-		return pa;
+		return buildPartAcqType0(_p, _tt, "TEST_ACQ_ID_2", "TEST_ACQ_NAME_2", PartAcquisitionType.OUTSOURCING);
+//		PartAcqBuilder0 pab = issueFacade.getBuilder(MbomBuilderType.PART_ACQ_0);
+//		pab.appendPartUid(_p.getUid()).appendPartPin(_p.getPin());
+//		pab.appendId("TEST_ACQ_ID_2").appendName("TEST_ACQ_NAME_2").appendType(PartAcquisitionType.SELF_PRODUCING);
+//
+//		// validate
+//		StringBuilder msgValidate = new StringBuilder();
+//		assertTrue(pab.validate(msgValidate), msgValidate.toString());
+//
+//		// verify
+//		StringBuilder msgVerify = new StringBuilder();
+//		assertTrue(pab.verify(msgVerify), msgVerify.toString());
+//
+//		// build
+//		StringBuilder msgBuild = new StringBuilder();
+//		PartAcquisitionInfo pa = pab.build(msgBuild, _tt);
+//		assertNotNull(msgBuild.toString(), pa);
+//
+//		// check
+//		assertEquals(_p.getUid(), pa.getPartUid());
+//		assertEquals(_p.getPin(), pa.getPartPin());
+//		assertEquals("TEST_ACQ_ID_2", pa.getId());
+//		assertEquals("TEST_ACQ_NAME_2", pa.getName());
+//		assertEquals(PartAcquisitionType.SELF_PRODUCING, pa.getType());
+//
+//		return pa;
 	}
 
 	public PartAcquisitionInfo buildPartAcqType03(PartInfo _p, TimeTraveler _tt) {
-		PartAcqBuilder0 pab = issueFacade.getBuilder(MbomBuilderType.PART_ACQ_0);
-		pab.appendPartUid(_p.getUid()).appendPartPin(_p.getPin());
-		pab.appendId("TEST_ACQ_ID_3").appendName("TEST_ACQ_NAME_3").appendType(PartAcquisitionType.SELF_PRODUCING);
-
-		// validate
-		StringBuilder msgValidate = new StringBuilder();
-		assertTrue(pab.validate(msgValidate), msgValidate.toString());
-
-		// verify
-		StringBuilder msgVerify = new StringBuilder();
-		assertTrue(pab.verify(msgVerify), msgVerify.toString());
-
-		// build
-		StringBuilder msgBuild = new StringBuilder();
-		PartAcquisitionInfo pa = pab.build(msgBuild, _tt);
-		assertNotNull(msgBuild.toString(), pa);
-
-		// check
-		assertEquals(_p.getUid(), pa.getPartUid());
-		assertEquals(_p.getPin(), pa.getPartPin());
-		assertEquals("TEST_ACQ_ID_3", pa.getId());
-		assertEquals("TEST_ACQ_NAME_3", pa.getName());
-		assertEquals(PartAcquisitionType.SELF_PRODUCING, pa.getType());
-
-		return pa;
+		return buildPartAcqType0(_p, _tt, "TEST_ACQ_ID_3", "TEST_ACQ_NAME_3", PartAcquisitionType.SELF_PRODUCING);
+//		PartAcqBuilder0 pab = issueFacade.getBuilder(MbomBuilderType.PART_ACQ_0);
+//		pab.appendPartUid(_p.getUid()).appendPartPin(_p.getPin());
+//		pab.appendId("TEST_ACQ_ID_3").appendName("TEST_ACQ_NAME_3").appendType(PartAcquisitionType.SELF_PRODUCING);
+//
+//		// validate
+//		StringBuilder msgValidate = new StringBuilder();
+//		assertTrue(pab.validate(msgValidate), msgValidate.toString());
+//
+//		// verify
+//		StringBuilder msgVerify = new StringBuilder();
+//		assertTrue(pab.verify(msgVerify), msgVerify.toString());
+//
+//		// build
+//		StringBuilder msgBuild = new StringBuilder();
+//		PartAcquisitionInfo pa = pab.build(msgBuild, _tt);
+//		assertNotNull(msgBuild.toString(), pa);
+//
+//		// check
+//		assertEquals(_p.getUid(), pa.getPartUid());
+//		assertEquals(_p.getPin(), pa.getPartPin());
+//		assertEquals("TEST_ACQ_ID_3", pa.getId());
+//		assertEquals("TEST_ACQ_NAME_3", pa.getName());
+//		assertEquals(PartAcquisitionType.SELF_PRODUCING, pa.getType());
+//
+//		return pa;
 	}
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------PartAcqRoutingStep-------------------------------
-	public PartAcqRoutingStepInfo buildPartAcqRoutingStepType0(String _partAcqUid, TimeTraveler _tt) {
+	public PartAcqRoutingStepInfo buildPartAcqRoutingStepType0(String _partAcqUid, TimeTraveler _tt, String _id, String _name, String _desp) {
 		PartAcqRoutingStepBuilder0 parsb = issueFacade.getBuilder(MbomBuilderType.PART_ACQ_ROUTING_STEP_0);
 		parsb.appendPartAcqUid(_partAcqUid);
-		parsb.appendId("TEST_PARS_ID").appendName("TEST_PARS_NAME").appendDesp("TEST_PARS_DESP");
+//		parsb.appendId("TEST_PARS_ID").appendName("TEST_PARS_NAME").appendDesp("TEST_PARS_DESP");
+		parsb.appendId(_id).appendName(_name).appendDesp(_desp);
 
 		// validate
 		StringBuilder msgValidate = new StringBuilder();
@@ -180,11 +231,18 @@ public class MbomBuilderDelegate {
 
 		// check
 		assertEquals(_partAcqUid, pars.getPartAcqUid());
-		assertEquals("TEST_PARS_ID", pars.getId());
-		assertEquals("TEST_PARS_NAME", pars.getName());
-		assertEquals("TEST_PARS_DESP", pars.getDesp());
+//		assertEquals("TEST_PARS_ID", pars.getId());
+//		assertEquals("TEST_PARS_NAME", pars.getName());
+//		assertEquals("TEST_PARS_DESP", pars.getDesp());
+		assertEquals(_id, pars.getId());
+		assertEquals(_name, pars.getName());
+		assertEquals(_desp, pars.getDesp());
 
 		return pars;
+	}
+	
+	public PartAcqRoutingStepInfo buildPartAcqRoutingStepType0(String _partAcqUid, TimeTraveler _tt) {
+		return buildPartAcqRoutingStepType0(_partAcqUid, _tt, "TEST_PARS_ID", "TEST_PARS_NAME", "TEST_PARS_DESP");
 	}
 
 	// -------------------------------------------------------------------------------
@@ -240,7 +298,35 @@ public class MbomBuilderDelegate {
 
 		return ppart;
 	}
-	
+
+	public ParsPartInfo buildParsPart1(PartAcqRoutingStepInfo _pars, TimeTraveler _tt, PartInfo _part,
+			double _partReqQty) {
+		ParsPartBuilder1 ppartb = issueFacade.getBuilder(MbomBuilderType.PARS_PART_1, _pars);
+		ppartb.appendPart(_part).appendPartReqQty(_partReqQty);
+
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(ppartb.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(ppartb.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		ParsPartInfo ppart = ppartb.build(msgBuild, _tt);
+		assertNotNull(msgBuild.toString(), ppart);
+
+		// check
+		assertEquals(_pars.getUid(), ppart.getParsUid());
+		assertEquals(true, ppart.isAssignPart());
+		assertEquals(_part.getUid(), ppart.getPartUid());
+		assertEquals(_part.getPin(), ppart.getPartPin());
+		assertEquals(_partReqQty, ppart.getPartReqQty());
+
+		return ppart;
+	}
+
 	// -------------------------------------------------------------------------------
 	// ------------------------------------PartCfg------------------------------------
 	public PartCfgInfo buildPartCfg0(String _rootPartUid, String _rootPartPin, TimeTraveler _tt) {
@@ -274,7 +360,7 @@ public class MbomBuilderDelegate {
 	}
 	
 	public boolean runPartCfgEditing(PartCfgInfo _pc, TimeTraveler _tt, PartAcquisitionInfo... _partAcqs) {
-		PartCfgEditingBpu bpu = issueFacade.getBuilder(MbomBuilderType.PART_CFG_EDITING, _pc);
+		PartCfgBpuEditing bpu = issueFacade.getBuilder(MbomBuilderType.PART_CFG_$EDITING, _pc);
 		for (PartAcquisitionInfo _partAcq : _partAcqs)
 			bpu.appendPartAcq(_partAcq);
 
@@ -323,6 +409,37 @@ public class MbomBuilderDelegate {
 		return p;
 	}
 	
+	public boolean runProdEditCtl(ProdInfo _p, TimeTraveler _tt, Map<ProdCtlInfo, ProdCtlInfo> _prodCtlParentMap) {
+		ProdBpuEditCtl bpu = issueFacade.getBuilder(MbomBuilderType.PROD_$EDIT_CTL, _p);
+		for (Entry<ProdCtlInfo, ProdCtlInfo> entry : _prodCtlParentMap.entrySet()) {
+			ProdCtlInfo pcChild = entry.getKey();
+			ProdCtlInfo pcParent = entry.getValue();
+			if (pcParent == null) {
+				bpu.appendProdCtl(pcChild);
+			} else {
+				bpu.appendProdCtl(pcChild, pcParent);
+			}
+		}
+
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(bpu.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(bpu.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		boolean b = bpu.build(msgBuild, _tt);
+		assertTrue(b, msgBuild.toString());
+
+		// check
+		// none
+
+		return b;
+	}
+
 	// -------------------------------------------------------------------------------
 	// ------------------------------------PartCtl------------------------------------
 	public ProdCtlInfo buildProdCtl01(TimeTraveler _tt) {
@@ -401,6 +518,30 @@ public class MbomBuilderDelegate {
 		assertEquals(true, pc.isReq());
 
 		return pc;
+	}
+
+	public boolean runProdCtlPartCfgConj(ProdCtlInfo _prodCtl, TimeTraveler _tt, PartCfgInfo... _partCfgs) {
+		ProdCtlBpuPartCfgConj bpu = issueFacade.getBuilder(MbomBuilderType.PROD_CTL_$PART_CFG_CONJ, _prodCtl);
+		for (PartCfgInfo _partCfg : _partCfgs)
+			bpu.appendPartCfg(_partCfg);
+
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(bpu.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(bpu.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		boolean b = bpu.build(msgBuild, _tt);
+		assertTrue(b, msgBuild.toString());
+
+		// check
+		// none
+
+		return b;
 	}
 
 }

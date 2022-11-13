@@ -14,4 +14,6 @@ public interface ParsPartInfo extends ObjectModelInfo {
 
 	double getPartReqQty();
 
+	// -------------------------------------------------------------------------------
+	ParsPartInfo reload();
 }
