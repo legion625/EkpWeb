@@ -1,4 +1,11 @@
 Min-Hua, 2022.11.13
+[bugs]
+1. Fix minor bugs.
+  - Update loadObject-related services and prevent from throwing exception with 'null' values.
+  - 修正ParsPartBuilder1的parsPartRevertAssignPart沒有正確執行的錯誤。
+2. [LM]改寫TimeTraveler執行錯誤時的顯示文字。 
+
+Min-Hua, 2022.11.13
 [lib]
 1. legionmodule: 0.12.1 -> 0.12.2
 
