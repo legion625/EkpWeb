@@ -15,7 +15,7 @@ import ekp.data.service.mbom.ProdCtlPartCfgConjInfo;
 import ekp.data.service.mbom.ProdInfo;
 import ekp.mbom.issue.prod.ProdBpuEditCtl;
 import legion.DataServiceFactory;
-import legion.biz.BizObjBuilder;
+import legion.biz.Bpu;
 import legion.util.TimeTraveler;
 
 public class ProdCtlBpuPartCfgConj extends ProdCtlBpu {

@@ -1,6 +1,5 @@
 package ekp.data;
 
-import java.rmi.RemoteException;
 import java.util.List;
 
 import ekp.data.service.mbom.ParsPartInfo;
@@ -23,24 +22,6 @@ import ekp.data.service.mbom.ProdInfo;
 import ekp.data.service.mbom.ProdModCreateObj;
 import ekp.data.service.mbom.ProdModInfo;
 import ekp.data.service.mbom.ProdModItemInfo;
-import ekp.serviceFacade.rmi.mbom.ParsPartRemote;
-import ekp.serviceFacade.rmi.mbom.ParsProcCreateObjRemote;
-import ekp.serviceFacade.rmi.mbom.ParsProcRemote;
-import ekp.serviceFacade.rmi.mbom.PartAcqRoutingStepCreateObjRemote;
-import ekp.serviceFacade.rmi.mbom.PartAcqRoutingStepRemote;
-import ekp.serviceFacade.rmi.mbom.PartAcquisitionCreateObjRemote;
-import ekp.serviceFacade.rmi.mbom.PartAcquisitionRemote;
-import ekp.serviceFacade.rmi.mbom.PartCfgConjRemote;
-import ekp.serviceFacade.rmi.mbom.PartCfgCreateObjRemote;
-import ekp.serviceFacade.rmi.mbom.PartCfgRemote;
-import ekp.serviceFacade.rmi.mbom.ProdCreateObjRemote;
-import ekp.serviceFacade.rmi.mbom.ProdCtlCreateObjRemote;
-import ekp.serviceFacade.rmi.mbom.ProdCtlPartCfgConjRemote;
-import ekp.serviceFacade.rmi.mbom.ProdCtlRemote;
-import ekp.serviceFacade.rmi.mbom.ProdModCreateObjRemote;
-import ekp.serviceFacade.rmi.mbom.ProdModItemRemote;
-import ekp.serviceFacade.rmi.mbom.ProdModRemote;
-import ekp.serviceFacade.rmi.mbom.ProdRemote;
 import legion.IntegrationService;
 
 public interface MbomDataService extends IntegrationService {
@@ -64,7 +45,7 @@ public interface MbomDataService extends IntegrationService {
 
 	public PartAcquisitionInfo loadPartAcquisition(String _uid);
 
-	public PartAcquisitionInfo loadPartAcquisitionById(String _id);
+	public PartAcquisitionInfo loadPartAcquisition(String _partPin, String _id);
 
 	public List<PartAcquisitionInfo> loadPartAcquisitionList(String _partUid);
 
@@ -103,6 +84,8 @@ public interface MbomDataService extends IntegrationService {
 	public boolean deleteParsPart(String _uid);
 
 	public ParsPartInfo loadParsPart(String _uid);
+	
+	public ParsPartInfo loadParsPart(String _parsUid, String _partuid);
 
 	public List<ParsPartInfo> loadParsPartList(String _parsUid);
 
@@ -119,6 +102,8 @@ public interface MbomDataService extends IntegrationService {
 	public boolean deletePartCfg(String _uid);
 
 	public PartCfgInfo loadPartCfg(String _uid);
+	
+	public PartCfgInfo loadPartCfgById(String _id);
 
 	public List<PartCfgInfo> loadPartCfgList(String _rootPartUid);
 
@@ -137,6 +122,8 @@ public interface MbomDataService extends IntegrationService {
 	public boolean deletePartCfgConj(String _uid);
 
 	public PartCfgConjInfo loadPartCfgConj(String _uid);
+	
+	public PartCfgConjInfo loadPartCfgConj(String _partCfgUid, String _partAcqUid);
 
 	public List<PartCfgConjInfo> loadPartCfgConjList(String _partCfgUid);
 
@@ -147,6 +134,8 @@ public interface MbomDataService extends IntegrationService {
 	public boolean deleteProd(String _uid);
 
 	public ProdInfo loadProd(String _uid);
+	
+	public ProdInfo loadProdById(String _id);
 
 	public List<ProdInfo> loadProdList();
 
@@ -157,6 +146,8 @@ public interface MbomDataService extends IntegrationService {
 	public boolean deleteProdCtl(String _uid);
 
 	public ProdCtlInfo loadProdCtl(String _uid);
+	
+	public ProdCtlInfo loadProdCtlById(String _id);
 
 	public List<ProdCtlInfo> loadProdCtlList(String _parentUid);
 
@@ -177,6 +168,8 @@ public interface MbomDataService extends IntegrationService {
 	public boolean deleteProdCtlPartCfgConj(String _uid);
 
 	public ProdCtlPartCfgConjInfo loadProdCtlPartCfgConj(String _uid);
+	
+	public ProdCtlPartCfgConjInfo loadProdCtlPartCfgConj(String _prodCtlUid, String _partCfgUid);
 
 	public List<ProdCtlPartCfgConjInfo> loadProdCtlPartCfgConjList1(String _prodCtlUid);
 
@@ -189,6 +182,8 @@ public interface MbomDataService extends IntegrationService {
 	public boolean deleteProdMod(String _uid);
 
 	public ProdModInfo loadProdMod(String _uid);
+	
+	public ProdModInfo loadProdModById(String _id);
 
 	public List<ProdModInfo> loadProdModList(String _prodUid);
 
@@ -199,6 +194,8 @@ public interface MbomDataService extends IntegrationService {
 	public boolean deleteProdModItem(String _uid);
 
 	public ProdModItemInfo loadProdModItem(String _uid);
+	public ProdModItemInfo loadProdModItem(String _prodModUid, String _prodCtlUid);
+	public ProdModItemInfo loadProdModItem(String _prodModUid, String _prodCtlUid, String _partCfgUid);
 
 	public List<ProdModItemInfo> loadProdModItemList(String _prodModUid);
 

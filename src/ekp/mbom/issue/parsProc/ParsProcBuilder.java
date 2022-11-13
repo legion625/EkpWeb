@@ -7,11 +7,11 @@ import ekp.data.MbomDataService;
 import ekp.data.service.mbom.ParsProcCreateObj;
 import ekp.data.service.mbom.ParsProcInfo;
 import legion.DataServiceFactory;
-import legion.biz.BizObjBuilder;
+import legion.biz.Bpu;
 import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
-public abstract class ParsProcBuilder extends BizObjBuilder<ParsProcInfo> {
+public abstract class ParsProcBuilder extends Bpu<ParsProcInfo> {
 	protected Logger log = LoggerFactory.getLogger(ParsProcBuilder.class);
 	private static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
 

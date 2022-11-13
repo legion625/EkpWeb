@@ -19,7 +19,7 @@ import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.data.service.mbom.ProdCtlInfo;
 import ekp.data.service.mbom.ProdInfo;
-import ekp.mbom.issue.MbomBuilderType;
+import ekp.mbom.issue.MbomBpuType;
 import ekp.mbom.issue.parsPart.ParsPartBuilder0;
 import ekp.mbom.issue.parsPart.ParsPartBuilder1;
 import ekp.mbom.issue.parsProc.ParsProcBuilder0;
@@ -34,7 +34,7 @@ import ekp.mbom.issue.prodCtl.ProdCtlBpuPartCfgConj;
 import ekp.mbom.issue.prodCtl.ProdCtlBuilder0;
 import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartCfgStatus;
-import legion.biz.IssueFacade;
+import legion.biz.BpuFacade;
 import legion.util.TimeTraveler;
 
 public class MbomBuilderDelegate {
@@ -50,12 +50,12 @@ public class MbomBuilderDelegate {
 	}
 
 	// -------------------------------------------------------------------------------
-	private final IssueFacade issueFacade = IssueFacade.getInstance();
+	private final BpuFacade bpuFacade = BpuFacade.getInstance();
 
 	// -------------------------------------------------------------------------------
 	// -------------------------------------Part--------------------------------------
 	public PartInfo buildPartType0(TimeTraveler _tt, String _pin, String _name) {
-		PartBuilder0 pb = issueFacade.getBuilder(MbomBuilderType.PART_0);
+		PartBuilder0 pb = bpuFacade.getBuilder(MbomBpuType.PART_0);
 //		pb.appendPin("TEST_PIN").appendName("TEST_NAME");
 		pb.appendPin(_pin).appendName(_name);
 
@@ -89,7 +89,7 @@ public class MbomBuilderDelegate {
 	// ------------------------------------PartAcq------------------------------------
 	public PartAcquisitionInfo buildPartAcqType0(PartInfo _p, TimeTraveler _tt, String _id, String _name,
 			PartAcquisitionType _type) {
-		PartAcqBuilder0 pab = issueFacade.getBuilder(MbomBuilderType.PART_ACQ_0);
+		PartAcqBuilder0 pab = bpuFacade.getBuilder(MbomBpuType.PART_ACQ_0);
 		pab.appendPartUid(_p.getUid()).appendPartPin(_p.getPin());
 		pab.appendId(_id).appendName(_name).appendType(_type);
 
@@ -211,7 +211,7 @@ public class MbomBuilderDelegate {
 	// -------------------------------------------------------------------------------
 	// ------------------------------PartAcqRoutingStep-------------------------------
 	public PartAcqRoutingStepInfo buildPartAcqRoutingStepType0(String _partAcqUid, TimeTraveler _tt, String _id, String _name, String _desp) {
-		PartAcqRoutingStepBuilder0 parsb = issueFacade.getBuilder(MbomBuilderType.PART_ACQ_ROUTING_STEP_0);
+		PartAcqRoutingStepBuilder0 parsb = bpuFacade.getBuilder(MbomBpuType.PART_ACQ_ROUTING_STEP_0);
 		parsb.appendPartAcqUid(_partAcqUid);
 //		parsb.appendId("TEST_PARS_ID").appendName("TEST_PARS_NAME").appendDesp("TEST_PARS_DESP");
 		parsb.appendId(_id).appendName(_name).appendDesp(_desp);
@@ -248,7 +248,7 @@ public class MbomBuilderDelegate {
 	// -------------------------------------------------------------------------------
 	// -----------------------------------ParsProc------------------------------------
 	public ParsProcInfo buildParsProc0(String _parsUid, TimeTraveler _tt) {
-		ParsProcBuilder0 pprocb = issueFacade.getBuilder(MbomBuilderType.PARS_PROC_0);
+		ParsProcBuilder0 pprocb = bpuFacade.getBuilder(MbomBpuType.PARS_PROC_0);
 		pprocb.appendParsUid(_parsUid);
 		pprocb.appendSeq("TEST_PARS_PROC_SEQ").appendName("TEST_PARS_PROC_NAME").appendDesp("TEST_PARS_PROC_DESP");
 
@@ -277,7 +277,7 @@ public class MbomBuilderDelegate {
 	// -------------------------------------------------------------------------------
 	// -----------------------------------ParsPart------------------------------------
 	public ParsPartInfo buildParsPart0(String _parsUid, TimeTraveler _tt) {
-		ParsPartBuilder0 ppartb = issueFacade.getBuilder(MbomBuilderType.PARS_PART_0);
+		ParsPartBuilder0 ppartb = bpuFacade.getBuilder(MbomBpuType.PARS_PART_0);
 		ppartb.appendParsUid(_parsUid);
 
 		// validate
@@ -301,7 +301,7 @@ public class MbomBuilderDelegate {
 
 	public ParsPartInfo buildParsPart1(PartAcqRoutingStepInfo _pars, TimeTraveler _tt, PartInfo _part,
 			double _partReqQty) {
-		ParsPartBuilder1 ppartb = issueFacade.getBuilder(MbomBuilderType.PARS_PART_1, _pars);
+		ParsPartBuilder1 ppartb = bpuFacade.getBuilder(MbomBpuType.PARS_PART_1, _pars);
 		ppartb.appendPart(_part).appendPartReqQty(_partReqQty);
 
 		// validate
@@ -330,7 +330,7 @@ public class MbomBuilderDelegate {
 	// -------------------------------------------------------------------------------
 	// ------------------------------------PartCfg------------------------------------
 	public PartCfgInfo buildPartCfg0(String _rootPartUid, String _rootPartPin, TimeTraveler _tt) {
-		PartCfgBuilder0 pcb = issueFacade.getBuilder(MbomBuilderType.PART_CFG_0);
+		PartCfgBuilder0 pcb = bpuFacade.getBuilder(MbomBpuType.PART_CFG_0);
 		pcb.appendRootPartUid(_rootPartUid).appendRootPartPin(_rootPartPin);
 		pcb.appendId("TEST_PC_ID").appendName("TEST_PC_NAME").appendDesp("TEST_PC_DESP");
 
@@ -360,7 +360,7 @@ public class MbomBuilderDelegate {
 	}
 	
 	public boolean runPartCfgEditing(PartCfgInfo _pc, TimeTraveler _tt, PartAcquisitionInfo... _partAcqs) {
-		PartCfgBpuEditing bpu = issueFacade.getBuilder(MbomBuilderType.PART_CFG_$EDITING, _pc);
+		PartCfgBpuEditing bpu = bpuFacade.getBuilder(MbomBpuType.PART_CFG_$EDITING, _pc);
 		for (PartAcquisitionInfo _partAcq : _partAcqs)
 			bpu.appendPartAcq(_partAcq);
 
@@ -386,7 +386,7 @@ public class MbomBuilderDelegate {
 	// -------------------------------------------------------------------------------
 	// -------------------------------------Part--------------------------------------
 	public ProdInfo buildProd0(TimeTraveler _tt) {
-		ProdBuilder0 pb = issueFacade.getBuilder(MbomBuilderType.PROD_0);
+		ProdBuilder0 pb = bpuFacade.getBuilder(MbomBpuType.PROD_0);
 		pb.appendId("TEST_ID").appendName("TEST_NAME");
 
 		// validate
@@ -410,7 +410,7 @@ public class MbomBuilderDelegate {
 	}
 	
 	public boolean runProdEditCtl(ProdInfo _p, TimeTraveler _tt, Map<ProdCtlInfo, ProdCtlInfo> _prodCtlParentMap) {
-		ProdBpuEditCtl bpu = issueFacade.getBuilder(MbomBuilderType.PROD_$EDIT_CTL, _p);
+		ProdBpuEditCtl bpu = bpuFacade.getBuilder(MbomBpuType.PROD_$EDIT_CTL, _p);
 		for (Entry<ProdCtlInfo, ProdCtlInfo> entry : _prodCtlParentMap.entrySet()) {
 			ProdCtlInfo pcChild = entry.getKey();
 			ProdCtlInfo pcParent = entry.getValue();
@@ -443,7 +443,7 @@ public class MbomBuilderDelegate {
 	// -------------------------------------------------------------------------------
 	// ------------------------------------PartCtl------------------------------------
 	public ProdCtlInfo buildProdCtl01(TimeTraveler _tt) {
-		ProdCtlBuilder0 pcb = issueFacade.getBuilder(MbomBuilderType.PROD_CTL_0);
+		ProdCtlBuilder0 pcb = bpuFacade.getBuilder(MbomBpuType.PROD_CTL_0);
 		pcb.appendId("TEST_LV1_ID").appendLv(1).appendName("TEST_LV1_NAME").appendReq(true);
 
 		// validate
@@ -469,7 +469,7 @@ public class MbomBuilderDelegate {
 	}
 	
 	public ProdCtlInfo buildProdCtl02(TimeTraveler _tt) {
-		ProdCtlBuilder0 pcb = issueFacade.getBuilder(MbomBuilderType.PROD_CTL_0);
+		ProdCtlBuilder0 pcb = bpuFacade.getBuilder(MbomBpuType.PROD_CTL_0);
 		pcb.appendId("TEST_LV2_ID").appendLv(2).appendName("TEST_LV2_NAME").appendReq(true);
 
 		// validate
@@ -495,7 +495,7 @@ public class MbomBuilderDelegate {
 	}
 	
 	public ProdCtlInfo buildProdCtl03(TimeTraveler _tt) {
-		ProdCtlBuilder0 pcb = issueFacade.getBuilder(MbomBuilderType.PROD_CTL_0);
+		ProdCtlBuilder0 pcb = bpuFacade.getBuilder(MbomBpuType.PROD_CTL_0);
 		pcb.appendId("TEST_LV3_ID").appendLv(3).appendName("TEST_LV3_NAME").appendReq(true);
 
 		// validate
@@ -521,7 +521,7 @@ public class MbomBuilderDelegate {
 	}
 
 	public boolean runProdCtlPartCfgConj(ProdCtlInfo _prodCtl, TimeTraveler _tt, PartCfgInfo... _partCfgs) {
-		ProdCtlBpuPartCfgConj bpu = issueFacade.getBuilder(MbomBuilderType.PROD_CTL_$PART_CFG_CONJ, _prodCtl);
+		ProdCtlBpuPartCfgConj bpu = bpuFacade.getBuilder(MbomBpuType.PROD_CTL_$PART_CFG_CONJ, _prodCtl);
 		for (PartCfgInfo _partCfg : _partCfgs)
 			bpu.appendPartCfg(_partCfg);
 

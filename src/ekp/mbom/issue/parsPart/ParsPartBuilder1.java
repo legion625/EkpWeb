@@ -103,7 +103,7 @@ public class ParsPartBuilder1 extends ParsPartBuilder {
 			log.error("mbomDataService.parsPartAssignPart return false.");
 			return null;
 		}
-		tt.addSite("revert parsPartAssignPart", () -> mbomDataService.parsPartRevertAssignPart(getParsUid()));
+		tt.addSite("revert parsPartAssignPart", () -> mbomDataService.parsPartRevertAssignPart(ppart.getUid()));
 		log.info("mbomDataService.parsPartAssignPart [{}][{}]", ppart.getUid(), getPart().getUid(), getPart().getPin(),
 				getPartReqQty());
 
