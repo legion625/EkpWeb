@@ -1,3 +1,14 @@
+Min-Hua, 2022.11.12
+[change]
+1. [LM]改寫Legionmodule部分程式碼，包含AbstractMySqlDao、FnCntProxy、和BizObjBuilder的泛型介面。
+2. [MBOM]實作商業服務。
+  -1. PartBuilder, PartAcqBuilder, PartAcqRoutingStep, ParsProc, ParsPart
+  -2. PartCfg, PartCfgConj
+  -3. Prod, ProdCtl
+
+[deployment]
+1. [ServiceModule] Add MbomService.
+
 ------------------------------------------------------------------------------
 v0.1.1 released by Min-Hua, 2022.11.12
 [lib]
