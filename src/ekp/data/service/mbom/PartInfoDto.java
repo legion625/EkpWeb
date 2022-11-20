@@ -1,5 +1,10 @@
 package ekp.data.service.mbom;
 
+import java.util.List;
+
+import ekp.data.BizObjLoader;
+import ekp.data.MbomDataService;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
 public class PartInfoDto extends ObjectModelInfoDto implements PartInfo {
@@ -30,5 +35,30 @@ public class PartInfoDto extends ObjectModelInfoDto implements PartInfo {
 
 	void setName(String name) {
 		this.name = name;
+	}
+
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<List<PartAcqInfo>> paListLoader = BizObjLoader.of(
+			() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadPartAcquisitionList(getUid()));
+
+	@Override
+	public List<PartAcqInfo> getPaList(boolean _reload) {
+		return paListLoader.getObj(_reload);
+	}
+
+	private BizObjLoader<List<PpartInfo>> ppartListLoader = BizObjLoader.of(
+			() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadParsPartListByPart(getUid()));
+
+	@Override
+	public List<PpartInfo> getPpartList(boolean _reload) {
+		return ppartListLoader.getObj(_reload);
+	}
+	
+	private BizObjLoader<List<PartCfgInfo>> partCfgListLoader = BizObjLoader.of(
+			() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadPartCfgList(getUid()));
+	
+	@Override
+	public List<PartCfgInfo> getPartCfgList(boolean _reload){
+		return partCfgListLoader.getObj(_reload);
 	}
 }

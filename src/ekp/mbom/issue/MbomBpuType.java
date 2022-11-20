@@ -1,15 +1,21 @@
 package ekp.mbom.issue;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ekp.data.service.mbom.ParsInfo;
+import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.mbom.PartCfgInfo;
+import ekp.data.service.mbom.PartInfo;
+import ekp.data.service.mbom.PpartInfo;
 import ekp.data.service.mbom.ProdCtlInfo;
 import ekp.data.service.mbom.ProdInfo;
 import ekp.mbom.issue.parsPart.ParsPartBuilder0;
 import ekp.mbom.issue.parsPart.ParsPartBuilder1;
 import ekp.mbom.issue.parsProc.ParsProcBuilder0;
+import ekp.mbom.issue.part.PartBpuDel0;
 import ekp.mbom.issue.part.PartBuilder0;
 import ekp.mbom.issue.partAcq.PartAcqBuilder0;
 import ekp.mbom.issue.partAcqRoutingStep.PartAcqRoutingStepBuilder0;
@@ -25,6 +31,7 @@ import legion.biz.BpuType;
 public enum MbomBpuType implements BpuType {
 	/**/
 	PART_0(PartBuilder0.class), //
+	PART_$DEL0(PartBpuDel0.class, PartInfo.class), //
 	PART_ACQ_0(PartAcqBuilder0.class), //
 	PART_ACQ_ROUTING_STEP_0(PartAcqRoutingStepBuilder0.class), //
 	PARS_PROC_0(ParsProcBuilder0.class), //
@@ -65,6 +72,9 @@ public enum MbomBpuType implements BpuType {
 		switch (this) {
 		/**/
 		case PART_0:
+			return true;
+		case PART_$DEL0:
+			return matchBizPartDel0((PartInfo) _args[0]);
 		case PART_ACQ_0:
 		case PART_ACQ_ROUTING_STEP_0:
 		case PARS_PROC_0:
@@ -94,6 +104,33 @@ public enum MbomBpuType implements BpuType {
 	// -------------------------------------------------------------------------------
 	private Logger log = LoggerFactory.getLogger(MbomBpuType.class);
 
+	private boolean matchBizPartDel0(PartInfo _p) {
+		if (_p == null) {
+			log.warn("_p null.");
+			return false;
+		}
+
+		List<PartAcqInfo> paList = _p.getPaList(true);
+		if (!paList.isEmpty()) {
+			log.info("paList should be empty.");
+			return false;
+		}
+
+		List<PpartInfo> ppartList = _p.getPpartList(true);
+		if (!ppartList.isEmpty()) {
+			log.info("ppartList should be empty.");
+			return false;
+		}
+
+		List<PartCfgInfo> partCfgList = _p.getPartCfgList(true);
+		if (!partCfgList.isEmpty()) {
+			log.info("partCfgList should be empty.");
+			return false;
+		}
+
+		return true;
+	}
+	
 	private boolean matchBizParsPart1(ParsInfo _pars) {
 		if (_pars == null) {
 			log.warn("_pars null.");

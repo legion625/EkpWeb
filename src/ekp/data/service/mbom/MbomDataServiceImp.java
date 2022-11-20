@@ -1,6 +1,7 @@
 package ekp.data.service.mbom;
 
 import java.rmi.RemoteException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
 import ekp.data.MbomDataService;
+import ekp.data.service.mbom.query.PartQueryParam;
 import ekp.serviceFacade.rmi.EkpKernelServiceRemote;
 import ekp.serviceFacade.rmi.mbom.ParsPartRemote;
 import ekp.serviceFacade.rmi.mbom.ParsProcRemote;
@@ -26,6 +28,7 @@ import ekp.serviceFacade.rmi.mbom.ProdModRemote;
 import ekp.serviceFacade.rmi.mbom.ProdRemote;
 import legion.datasource.manager.DSManager;
 import legion.util.LogUtil;
+import legion.util.query.QueryOperation;
 
 public class MbomDataServiceImp implements MbomDataService {
 	private Logger log = LoggerFactory.getLogger(MbomDataServiceImp.class);
@@ -101,6 +104,24 @@ public class MbomDataServiceImp implements MbomDataService {
 		try {
 			PartRemote remote = getEkpKernelRmi().loadPartByPin(_pin);
 			return remote == null ? null : MbomFO.parsePart(remote);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+	
+	@Override
+	public QueryOperation<PartQueryParam, PartInfo> searchPart(QueryOperation<PartQueryParam, PartInfo> _param) {
+		try {
+			QueryOperation<PartQueryParam, PartRemote> paramRemote = (QueryOperation<PartQueryParam, PartRemote>) _param
+					.copy();
+			paramRemote = getEkpKernelRmi().searchPart(paramRemote);
+			List<PartInfo> list = paramRemote.getQueryResult().stream().map(MbomFO::parsePart)
+					.collect(Collectors.toList());
+			list = list.stream().sorted(Comparator.comparing(PartInfo::getPin)).collect(Collectors.toList());
+			_param.setQueryResult(list);
+			_param.setTotal(paramRemote.getTotal());
+			return _param;
 		} catch (Throwable e) {
 			LogUtil.log(log, e, Level.ERROR);
 			return null;

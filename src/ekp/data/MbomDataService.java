@@ -22,7 +22,9 @@ import ekp.data.service.mbom.ProdInfo;
 import ekp.data.service.mbom.ProdModCreateObj;
 import ekp.data.service.mbom.ProdModInfo;
 import ekp.data.service.mbom.ProdModItemInfo;
+import ekp.data.service.mbom.query.PartQueryParam;
 import legion.IntegrationService;
+import legion.util.query.QueryOperation;
 
 public interface MbomDataService extends IntegrationService {
 	public boolean testEkpKernelServiceRemoteCallBack();
@@ -36,6 +38,8 @@ public interface MbomDataService extends IntegrationService {
 	public PartInfo loadPart(String _uid);
 
 	public PartInfo loadPartByPin(String _pin);
+	
+	public QueryOperation<PartQueryParam, PartInfo> searchPart(QueryOperation<PartQueryParam, PartInfo> _param);
 
 	// -------------------------------------------------------------------------------
 	// --------------------------------PartAcquisition--------------------------------
