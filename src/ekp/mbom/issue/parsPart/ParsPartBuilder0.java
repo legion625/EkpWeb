@@ -1,6 +1,6 @@
 package ekp.mbom.issue.parsPart;
 
-import ekp.data.service.mbom.ParsPartInfo;
+import ekp.data.service.mbom.PpartInfo;
 import ekp.mbom.issue.parsProc.ParsProcBuilder0;
 import legion.util.TimeTraveler;
 
@@ -28,7 +28,7 @@ public class ParsPartBuilder0 extends ParsPartBuilder {
 	// -------------------------------------------------------------------------------
 	// -------------------------------------build-------------------------------------
 	@Override
-	protected ParsPartInfo buildProcess(TimeTraveler _tt) {
+	protected PpartInfo buildProcess(TimeTraveler _tt) {
 		return buildPpart(_tt);
 		
 	}

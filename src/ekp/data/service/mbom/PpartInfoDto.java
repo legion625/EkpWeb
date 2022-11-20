@@ -4,9 +4,9 @@ import ekp.data.MbomDataService;
 import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
-public class ParsPartInfoDto extends ObjectModelInfoDto implements ParsPartInfo {
+public class PpartInfoDto extends ObjectModelInfoDto implements PpartInfo {
 
-	protected ParsPartInfoDto(String uid, long objectCreateTime, long objectUpdateTime) {
+	protected PpartInfoDto(String uid, long objectCreateTime, long objectUpdateTime) {
 		super(uid, objectCreateTime, objectUpdateTime);
 	}
 
@@ -69,7 +69,7 @@ public class ParsPartInfoDto extends ObjectModelInfoDto implements ParsPartInfo 
 	
 	// -------------------------------------------------------------------------------
 	@Override
-	public ParsPartInfo reload() {
+	public PpartInfo reload() {
 		return DataServiceFactory.getInstance().getService(MbomDataService.class).loadParsPart(this.getUid());
 	}
 		

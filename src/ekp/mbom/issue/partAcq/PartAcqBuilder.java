@@ -4,15 +4,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ekp.data.MbomDataService;
-import ekp.data.service.mbom.PartAcquisitionCreateObj;
-import ekp.data.service.mbom.PartAcquisitionInfo;
+import ekp.data.service.mbom.PartAcqCreateObj;
+import ekp.data.service.mbom.PartAcqInfo;
 import ekp.mbom.type.PartAcquisitionType;
 import legion.DataServiceFactory;
 import legion.biz.Bpu;
 import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
-public abstract class PartAcqBuilder extends Bpu<PartAcquisitionInfo> {
+public abstract class PartAcqBuilder extends Bpu<PartAcqInfo> {
 	protected Logger log = LoggerFactory.getLogger(PartAcqBuilder.class);
 	private static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
 
@@ -77,8 +77,8 @@ public abstract class PartAcqBuilder extends Bpu<PartAcquisitionInfo> {
 	}
 
 	// -------------------------------------------------------------------------------
-	private PartAcquisitionCreateObj packPartAcquisitionCreateObj() {
-		PartAcquisitionCreateObj dto = new PartAcquisitionCreateObj();
+	private PartAcqCreateObj packPartAcquisitionCreateObj() {
+		PartAcqCreateObj dto = new PartAcqCreateObj();
 		dto.setPartUid(getPartUid());
 		dto.setPartPin(getPartPin());
 		dto.setId(getId());
@@ -138,11 +138,11 @@ public abstract class PartAcqBuilder extends Bpu<PartAcquisitionInfo> {
 
 
 	@Override
-	protected PartAcquisitionInfo buildProcess(TimeTraveler _tt) {
+	protected PartAcqInfo buildProcess(TimeTraveler _tt) {
 		TimeTraveler tt = new TimeTraveler();
 
 		//
-		PartAcquisitionInfo pa = mbomDataService.createPartAcquisition(packPartAcquisitionCreateObj());
+		PartAcqInfo pa = mbomDataService.createPartAcquisition(packPartAcquisitionCreateObj());
 		if (pa == null) {
 			tt.travel();
 			log.error("mbomDataSerivce.createPartAcquisition return null.");

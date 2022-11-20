@@ -41,7 +41,7 @@ public class MbomFO {
 
 	// -------------------------------------------------------------------------------
 	// --------------------------------PartAcquisition--------------------------------
-	public static PartAcquisitionInfo parsePartAcquisition(PartAcquisitionRemote _remote) {
+	public static PartAcqInfo parsePartAcquisition(PartAcquisitionRemote _remote) {
 		PartAcquisitionInfoDto dto = new PartAcquisitionInfoDto(_remote.getUid(), _remote.getObjectCreateTime(),
 				_remote.getObjectUpdateTime());
 		dto.setPartUid(_remote.getPartUid());
@@ -52,7 +52,7 @@ public class MbomFO {
 		return dto;
 	}
 
-	public static PartAcquisitionCreateObjRemote parsePartAcquisitionCreateObjRemote(PartAcquisitionCreateObj _dto) {
+	public static PartAcquisitionCreateObjRemote parsePartAcquisitionCreateObjRemote(PartAcqCreateObj _dto) {
 		PartAcquisitionCreateObjRemote remote = new PartAcquisitionCreateObjRemote();
 		remote.setPartUid(_dto.getPartUid());
 		remote.setPartPin(_dto.getPartPin());
@@ -64,8 +64,8 @@ public class MbomFO {
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------PartAcqRoutingStep-------------------------------
-	public static PartAcqRoutingStepInfo parsePartAcqRoutingStep(PartAcqRoutingStepRemote _remote) {
-		PartAcqRoutingStepInfoDto dto = new PartAcqRoutingStepInfoDto(_remote.getUid(), _remote.getObjectCreateTime(),
+	public static ParsInfo parsePartAcqRoutingStep(PartAcqRoutingStepRemote _remote) {
+		ParsInfoDto dto = new ParsInfoDto(_remote.getUid(), _remote.getObjectCreateTime(),
 				_remote.getObjectUpdateTime());
 		dto.setPartAcqUid(_remote.getPartAcqUid());
 		dto.setId(_remote.getId());
@@ -74,7 +74,7 @@ public class MbomFO {
 		return dto;
 	}
 
-	public static PartAcqRoutingStepCreateObjRemote parsePartAcqRoutingStepCreateObjRemote(PartAcqRoutingStepCreateObj _dto) {
+	public static PartAcqRoutingStepCreateObjRemote parsePartAcqRoutingStepCreateObjRemote(ParsCreateObj _dto) {
 		PartAcqRoutingStepCreateObjRemote remote = new PartAcqRoutingStepCreateObjRemote();
 		remote.setPartAcqUid(_dto.getPartAcqUid());
 		remote.setId(_dto.getId());
@@ -85,8 +85,8 @@ public class MbomFO {
 
 	// -------------------------------------------------------------------------------
 	// -----------------------------------ParsProc------------------------------------
-	public static ParsProcInfo parseParsProc(ParsProcRemote _remote) {
-		ParsProcInfoDto dto = new ParsProcInfoDto(_remote.getUid(), _remote.getObjectCreateTime(),
+	public static PprocInfo parseParsProc(ParsProcRemote _remote) {
+		PprocInfoDto dto = new PprocInfoDto(_remote.getUid(), _remote.getObjectCreateTime(),
 				_remote.getObjectUpdateTime());
 		dto.setParsUid(_remote.getParsUid());
 		dto.setSeq(_remote.getSeq());
@@ -98,7 +98,7 @@ public class MbomFO {
 		return dto;
 	}
 
-	public static ParsProcCreateObjRemote parseParsProcCreateObjRemote(ParsProcCreateObj _dto) {
+	public static ParsProcCreateObjRemote parseParsProcCreateObjRemote(PprocCreateObj _dto) {
 		ParsProcCreateObjRemote remote = new ParsProcCreateObjRemote();
 		remote.setParsUid(_dto.getParsUid());
 		remote.setSeq(_dto.getSeq());
@@ -109,8 +109,8 @@ public class MbomFO {
 
 	// -------------------------------------------------------------------------------
 	// -----------------------------------ParsPart------------------------------------
-	public static ParsPartInfo parseParsPart(ParsPartRemote _remote) {
-		ParsPartInfoDto dto = new ParsPartInfoDto(_remote.getUid(), _remote.getObjectCreateTime(),
+	public static PpartInfo parseParsPart(ParsPartRemote _remote) {
+		PpartInfoDto dto = new PpartInfoDto(_remote.getUid(), _remote.getObjectCreateTime(),
 				_remote.getObjectUpdateTime());
 		dto.setParsUid(_remote.getParsUid());
 		dto.setAssignPart(_remote.isAssignPart());

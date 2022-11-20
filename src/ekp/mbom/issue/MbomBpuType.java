@@ -3,7 +3,7 @@ package ekp.mbom.issue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ekp.data.service.mbom.PartAcqRoutingStepInfo;
+import ekp.data.service.mbom.ParsInfo;
 import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.ProdCtlInfo;
 import ekp.data.service.mbom.ProdInfo;
@@ -29,7 +29,7 @@ public enum MbomBpuType implements BpuType {
 	PART_ACQ_ROUTING_STEP_0(PartAcqRoutingStepBuilder0.class), //
 	PARS_PROC_0(ParsProcBuilder0.class), //
 	PARS_PART_0(ParsPartBuilder0.class), //
-	PARS_PART_1(ParsPartBuilder1.class, PartAcqRoutingStepInfo.class), //
+	PARS_PART_1(ParsPartBuilder1.class, ParsInfo.class), //
 	/**/
 	PART_CFG_0(PartCfgBuilder0.class), //
 	PART_CFG_$EDITING(PartCfgBpuEditing.class, PartCfgInfo.class), //
@@ -71,7 +71,7 @@ public enum MbomBpuType implements BpuType {
 		case PARS_PART_0:
 			return true;
 		case PARS_PART_1:
-			return matchBizParsPart1((PartAcqRoutingStepInfo) _args[0]);
+			return matchBizParsPart1((ParsInfo) _args[0]);
 		/**/
 		case PART_CFG_0:
 			return true;
@@ -94,7 +94,7 @@ public enum MbomBpuType implements BpuType {
 	// -------------------------------------------------------------------------------
 	private Logger log = LoggerFactory.getLogger(MbomBpuType.class);
 
-	private boolean matchBizParsPart1(PartAcqRoutingStepInfo _pars) {
+	private boolean matchBizParsPart1(ParsInfo _pars) {
 		if (_pars == null) {
 			log.warn("_pars null.");
 			return false;

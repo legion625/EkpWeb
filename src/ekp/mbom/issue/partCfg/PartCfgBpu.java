@@ -3,6 +3,7 @@ package ekp.mbom.issue.partCfg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ekp.TestLogMark;
 import ekp.data.MbomDataService;
 import ekp.data.service.mbom.PartCfgInfo;
 import legion.DataServiceFactory;

@@ -4,14 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ekp.data.MbomDataService;
-import ekp.data.service.mbom.PartAcqRoutingStepCreateObj;
-import ekp.data.service.mbom.PartAcqRoutingStepInfo;
+import ekp.data.service.mbom.ParsCreateObj;
+import ekp.data.service.mbom.ParsInfo;
 import legion.DataServiceFactory;
 import legion.biz.Bpu;
 import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
-public abstract class PartAcqRoutingStepBuilder extends Bpu<PartAcqRoutingStepInfo> {
+public abstract class PartAcqRoutingStepBuilder extends Bpu<ParsInfo> {
 	protected Logger log = LoggerFactory.getLogger(PartAcqRoutingStepBuilder.class);
 	private static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
 
@@ -66,8 +66,8 @@ public abstract class PartAcqRoutingStepBuilder extends Bpu<PartAcqRoutingStepIn
 	}
 
 	// -------------------------------------------------------------------------------
-	private PartAcqRoutingStepCreateObj packPartAcqRoutingStepCreateObj() {
-		PartAcqRoutingStepCreateObj dto = new PartAcqRoutingStepCreateObj();
+	private ParsCreateObj packPartAcqRoutingStepCreateObj() {
+		ParsCreateObj dto = new ParsCreateObj();
 		dto.setPartAcqUid(getPartAcqUid());
 		dto.setId(getId());
 		dto.setName(getName());
@@ -112,11 +112,11 @@ public abstract class PartAcqRoutingStepBuilder extends Bpu<PartAcqRoutingStepIn
 	}
 
 	@Override
-	protected PartAcqRoutingStepInfo buildProcess(TimeTraveler _tt) {
+	protected ParsInfo buildProcess(TimeTraveler _tt) {
 		TimeTraveler tt = new TimeTraveler();
 
 		//
-		PartAcqRoutingStepInfo pars = mbomDataService.createPartAcqRoutingStep(packPartAcqRoutingStepCreateObj());
+		ParsInfo pars = mbomDataService.createPartAcqRoutingStep(packPartAcqRoutingStepCreateObj());
 		if (pars == null) {
 			tt.travel();
 			log.error("mbomDataSerivce.createPartAcqRoutingStep return null.");

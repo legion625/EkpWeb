@@ -2,7 +2,7 @@ package ekp.data.service.mbom;
 
 import legion.ObjectModelInfo;
 
-public interface ParsProcInfo extends ObjectModelInfo{
+public interface PprocInfo extends ObjectModelInfo{
 
 	String getParsUid();
 

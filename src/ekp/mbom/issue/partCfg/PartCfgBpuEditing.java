@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ekp.data.service.mbom.PartAcquisitionInfo;
+import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.mbom.PartCfgConjInfo;
 import ekp.data.service.mbom.PartCfgInfo;
 import ekp.mbom.type.PartCfgStatus;
@@ -18,7 +18,7 @@ public class PartCfgBpuEditing extends PartCfgBpu{
 	private PartCfgInfo partCfg;
 
 	/* data */
-	private Map<String, PartAcquisitionInfo> partAcqMap;
+	private Map<String, PartAcqInfo> partAcqMap;
 
 	// -------------------------------------------------------------------------------
 	@Override
@@ -34,7 +34,7 @@ public class PartCfgBpuEditing extends PartCfgBpu{
 	}
 	
 	// -------------------------------------------------------------------------------
-	public PartCfgBpuEditing appendPartAcq(PartAcquisitionInfo _partAcq) {
+	public PartCfgBpuEditing appendPartAcq(PartAcqInfo _partAcq) {
 		if (_partAcq != null)
 			partAcqMap.put(_partAcq.getUid(), _partAcq);
 		else
@@ -42,7 +42,7 @@ public class PartCfgBpuEditing extends PartCfgBpu{
 		return this;
 	}
 
-	public PartCfgBpuEditing removePartAcq(PartAcquisitionInfo _partAcq) {
+	public PartCfgBpuEditing removePartAcq(PartAcqInfo _partAcq) {
 		if (_partAcq != null)
 			partAcqMap.remove(_partAcq.getUid());
 		else
@@ -51,11 +51,11 @@ public class PartCfgBpuEditing extends PartCfgBpu{
 	}
 	
 	// -------------------------------------------------------------------------------
-	private Map<String, PartAcquisitionInfo> getPartAcqMap() {
+	private Map<String, PartAcqInfo> getPartAcqMap() {
 		return partAcqMap;
 	}
 
-	public List<PartAcquisitionInfo> getPartAcqList() {
+	public List<PartAcqInfo> getPartAcqList() {
 		return new ArrayList<>(getPartAcqMap().values());
 	}
 
@@ -65,16 +65,16 @@ public class PartCfgBpuEditing extends PartCfgBpu{
 		boolean v = true;
 
 		/* PartAcq */
-		List<PartAcquisitionInfo> partAcqList = getPartAcqList();
+		List<PartAcqInfo> partAcqList = getPartAcqList();
 		if (partAcqList == null || getPartAcqList().size() <= 0) {
 			// none
 		} else {
 			// 檢查不同的PartAcq對應到相同的Part
 			boolean b = false;
 			for (int i = 0; i < partAcqList.size() - 1; i++) {
-				for (int j = i + 1; i < partAcqList.size(); j++) {
-					PartAcquisitionInfo pai = partAcqList.get(i);
-					PartAcquisitionInfo paj = partAcqList.get(j);
+				for (int j = i + 1; j < partAcqList.size(); j++) {
+					PartAcqInfo pai = partAcqList.get(i);
+					PartAcqInfo paj = partAcqList.get(j);
 					if (pai.getPartUid().equals(paj.getPartUid())) {
 						_msg.append("Duplicated partAcqs in the same part.").append(System.lineSeparator());
 						v = false;
@@ -106,7 +106,7 @@ public class PartCfgBpuEditing extends PartCfgBpu{
 		}
 
 		/* PartAcq */
-		List<PartAcquisitionInfo> partAcqList = getPartAcqList();
+		List<PartAcqInfo> partAcqList = getPartAcqList();
 		if (partAcqList == null || partAcqList.size() <= 0) {
 			_msg.append("partAcqList should not be empty.").append(System.lineSeparator());
 			v = false;
@@ -129,8 +129,8 @@ public class PartCfgBpuEditing extends PartCfgBpu{
 		TimeTraveler tt = new TimeTraveler();
 
 		// createPartCfgConj
-		List<PartAcquisitionInfo> partAcqList = getPartAcqList();
-		for (PartAcquisitionInfo pa : partAcqList) {
+		List<PartAcqInfo> partAcqList = getPartAcqList();
+		for (PartAcqInfo pa : partAcqList) {
 			PartCfgConjInfo pcc = mbomDataService.createPartCfgConj(getPartCfg().getUid(), pa.getUid());
 			if (pcc == null) {
 				tt.travel();

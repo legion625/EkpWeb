@@ -2,9 +2,9 @@ package ekp.data.service.mbom;
 
 import legion.ObjectModelInfoDto;
 
-public class PartAcqRoutingStepInfoDto extends ObjectModelInfoDto implements PartAcqRoutingStepInfo {
+public class ParsInfoDto extends ObjectModelInfoDto implements ParsInfo {
 
-	protected PartAcqRoutingStepInfoDto(String uid, long objectCreateTime, long objectUpdateTime) {
+	protected ParsInfoDto(String uid, long objectCreateTime, long objectUpdateTime) {
 		super(uid, objectCreateTime, objectUpdateTime);
 	}
 

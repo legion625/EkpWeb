@@ -3,7 +3,7 @@ package ekp.data.service.mbom;
 import legion.ObjectModelInfoDto;
 import ekp.mbom.type.PartAcquisitionType;
 
-public class PartAcquisitionInfoDto extends ObjectModelInfoDto implements PartAcquisitionInfo {
+public class PartAcquisitionInfoDto extends ObjectModelInfoDto implements PartAcqInfo {
 
 	protected PartAcquisitionInfoDto(String uid, long objectCreateTime, long objectUpdateTime) {
 		super(uid, objectCreateTime, objectUpdateTime);

@@ -2,7 +2,7 @@ package ekp.data.service.mbom;
 
 import legion.ObjectModelInfo;
 
-public interface ParsPartInfo extends ObjectModelInfo {
+public interface PpartInfo extends ObjectModelInfo {
 
 	String getParsUid();
 
@@ -15,5 +15,5 @@ public interface ParsPartInfo extends ObjectModelInfo {
 	double getPartReqQty();
 
 	// -------------------------------------------------------------------------------
-	ParsPartInfo reload();
+	PpartInfo reload();
 }

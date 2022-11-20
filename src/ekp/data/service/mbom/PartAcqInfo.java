@@ -3,7 +3,7 @@ package ekp.data.service.mbom;
 import legion.ObjectModelInfo;
 import ekp.mbom.type.PartAcquisitionType;
 
-public interface PartAcquisitionInfo extends ObjectModelInfo {
+public interface PartAcqInfo extends ObjectModelInfo {
 
 	String getPartUid();
 
