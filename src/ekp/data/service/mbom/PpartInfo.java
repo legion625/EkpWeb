@@ -16,4 +16,10 @@ public interface PpartInfo extends ObjectModelInfo {
 
 	// -------------------------------------------------------------------------------
 	PpartInfo reload();
+	
+	PartInfo getPart();
+	
+	default String getPartName() {
+		return isAssignPart()?getPart().getName():"(unassigned)";
+	}
 }

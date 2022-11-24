@@ -103,6 +103,7 @@ public class MbomFnComposer extends SelectorComposer<Component> {
 			//
 			li.appendChild(new Listcell(p.getName()));
 
+			// click event -> show part
 			li.addEventListener(Events.ON_CLICK, e -> {
 				fnCntProxy.refreshCntUri(PartInfoComposer.URI);
 				PartInfoComposer partComposer = fnCntProxy.getComposer(PartInfoComposer.class);

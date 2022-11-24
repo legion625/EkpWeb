@@ -1,5 +1,10 @@
 package ekp.data.service.mbom;
 
+import java.util.List;
+
+import ekp.data.BizObjLoader;
+import ekp.data.MbomDataService;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
 public class ParsInfoDto extends ObjectModelInfoDto implements ParsInfo {
@@ -52,6 +57,23 @@ public class ParsInfoDto extends ObjectModelInfoDto implements ParsInfo {
 
 	void setDesp(String desp) {
 		this.desp = desp;
+	}
+	
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<List<PprocInfo>> pprocListLoader = BizObjLoader.of(
+			() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadParsProcList(getUid()));
+	
+	@Override
+	public List<PprocInfo> getPprocList(){
+		return pprocListLoader.getObj();
+	}
+	
+	private BizObjLoader<List<PpartInfo>> ppartListLoader = BizObjLoader.of(
+			() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadParsPartList(getUid()));
+	
+	@Override
+	public List<PpartInfo> getPpartList(){
+		return ppartListLoader.getObj();
 	}
 
 }

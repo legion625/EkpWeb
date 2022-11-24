@@ -6,6 +6,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import ekp.data.service.mbom.PartCfgInfo;
+import ekp.data.service.mbom.PartInfo;
 import legion.DataServiceFactory;
 
 public class BizObjLoader<T> {
@@ -52,6 +53,7 @@ public class BizObjLoader<T> {
 	
 	// -------------------------------------------------------------------------------
 	private static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
+	public final static Supplier<BizObjLoader<PartInfo>> PART = () -> of(mbomDataService::loadPart);
 	public final static Supplier<BizObjLoader<PartCfgInfo>> PART_CFG = () -> of(mbomDataService::loadPartCfg);
 	
 }

@@ -15,7 +15,7 @@
 						<column label="name" />
 						<column label="type" />
 					</columns>
-					<rows>
+					<!-- <rows>
 						<row>
 							<cell>
 								<label value="PartAcq1-ID"></label>
@@ -23,22 +23,22 @@
 								<label value="PartAcq1-TYPE"></label>
 							</cell>
 						</row>
-					</rows>
+					</rows> -->
 				</grid>
 				
 				<label value="Routing step"></label>
-					<listbox>
-						<listhead>
-							<listheader label="ID" />
-							<listheader label="NAME" />
-							<listheader label="DESCRIPTION" />
-						</listhead>
-						<listitem>
+					<grid id="gridPars">
+						<columns>
+							<column label="ID" />
+							<column label="NAME" />
+							<column label="DESCRIPTION" />
+						</columns>
+						<!-- <listitem>
 						<listcell label="RS1-ID"></listcell>
 						<listcell label="RS1-Name"></listcell>
 						<listcell label="RS1-Description"></listcell>
-						</listitem>
-					</listbox>
+						</listitem> -->
+					</grid>
 					<tabbox>
 					<tabs>
 					<tab label="Procedure"></tab>
@@ -46,13 +46,13 @@
 					</tabs>
 					<tabpanels>
 					<tabpanel>
-					<listbox>
-					<listhead>
-							<listheader label="Seq" />
-							<listheader label="Name" />
-							<listheader label="Description" />
-						</listhead>
-						<listitem>
+					<grid id="gridPproc">
+					<columns>
+							<column label="Seq" />
+							<column label="Name" />
+							<column label="Description" />
+						</columns>
+					<!-- 	<listitem>
 						<listcell label="PROC1-010"></listcell>
 						<listcell label="PROC1-Name"></listcell>
 						<listcell label="PROC1-Description"></listcell>
@@ -61,19 +61,19 @@
 						<listcell label="PROC2-020"></listcell>
 						<listcell label="PROC2-Name"></listcell>
 						<listcell label="PROC2-Description"></listcell>
-						</listitem>
+						</listitem> -->
 					
-					</listbox>
+					</grid>
 					</tabpanel>
 					
 					<tabpanel>
-						<listbox>
-					<listhead>
-							<listheader label="Part pin" />
-							<listheader label="Part required " />
-							<listheader label="Description" />
-						</listhead>
-						<listitem>
+						<grid id="gridPpart">
+					<columns>
+							<column label="Part pin" />
+							<column label="Part name " />
+							<column label="Part required quantity" />
+						</columns>
+					<!-- 	<listitem>
 						<listcell label="PROC1-010"></listcell>
 						<listcell label="PROC1-Name"></listcell>
 						<listcell label="PROC1-Description"></listcell>
@@ -83,8 +83,8 @@
 						<listcell label="PROC2-Name"></listcell>
 						<listcell label="PROC2-Description"></listcell>
 						</listitem>
-					
-					</listbox>
+					 -->
+					</grid>
 					</tabpanel>
 					</tabpanels>
 					</tabbox>

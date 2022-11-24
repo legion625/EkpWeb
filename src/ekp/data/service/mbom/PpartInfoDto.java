@@ -1,5 +1,6 @@
 package ekp.data.service.mbom;
 
+import ekp.data.BizObjLoader;
 import ekp.data.MbomDataService;
 import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
@@ -71,6 +72,13 @@ public class PpartInfoDto extends ObjectModelInfoDto implements PpartInfo {
 	@Override
 	public PpartInfo reload() {
 		return DataServiceFactory.getInstance().getService(MbomDataService.class).loadParsPart(this.getUid());
+	}
+	
+	private BizObjLoader<PartInfo> partLoader = BizObjLoader.PART.get(); 
+	
+	@Override
+	public PartInfo getPart() {
+		return isAssignPart() ? partLoader.getObj(getPartUid()) : null;
 	}
 		
 
