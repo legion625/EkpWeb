@@ -6,7 +6,7 @@ Min-Hua, 2022.11.20
   - create pa, delete pa, create pars, delete pars, create ppart, delete ppart
 
 [lib]
-1. ekp_kernel: 0.1.2 -> unstaging
+1. ekp_kernel: 0.1.2 -> 0.1.3
 
 ------------------------------------------------------------------------------
 v0.1.3 released by Min-Hua, 2022.11.13
