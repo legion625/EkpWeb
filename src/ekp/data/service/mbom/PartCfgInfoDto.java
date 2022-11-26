@@ -81,4 +81,10 @@ public class PartCfgInfoDto extends ObjectModelInfoDto implements PartCfgInfo {
 		return DataServiceFactory.getInstance().getService(MbomDataService.class).loadPartCfg(this.getUid());
 	}
 
+	private BizObjLoader<PartInfo> partLoader = BizObjLoader.PART.get();
+
+	@Override
+	public PartInfo getRootPart() {
+		return partLoader.getObj(getRootPartUid());
+	}
 }

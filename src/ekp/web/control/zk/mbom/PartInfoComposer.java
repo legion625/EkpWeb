@@ -12,8 +12,11 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zul.A;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Doublebox;
+import org.zkoss.zul.Hlayout;
+import org.zkoss.zul.Include;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
@@ -26,6 +29,7 @@ import org.zkoss.zul.Window;
 import ekp.DebugLogMark;
 import ekp.data.service.mbom.ParsInfo;
 import ekp.data.service.mbom.PartAcqInfo;
+import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.data.service.mbom.PpartInfo;
 import ekp.data.service.mbom.PprocInfo;
@@ -62,12 +66,17 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 	@Wire
 	private Listbox lbxPartAcq, lbxPars, lbxPproc, lbxPpart;
 
+	
+	@Wire
+	private Include icdPartAcqPage;
+	private PartCfgTreePageComposer partCfgTreePageComposer;
+	
 	// -------------------------------------------------------------------------------
 	private FnCntProxy fnCntProxy;
 
 	private MbomService mbomService = BusinessServiceFactory.getInstance().getService(MbomService.class);
 	private PartInfo part;
-
+	
 	// -------------------------------------------------------------------------------
 	@Override
 	public void doAfterCompose(Component comp) {
@@ -126,6 +135,16 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 			li.appendChild(new Listcell(pa.getName()));
 			// type
 			li.appendChild(new Listcell(pa.getTypeName()));
+			//  partCfgList
+			lc = new Listcell();
+			List<PartCfgInfo> partCfgList = pa.getPartCfgList(false);
+			Hlayout hlayout = new Hlayout();
+			for (PartCfgInfo partCfg : partCfgList) {
+				A a = new A(partCfg.getId());
+				hlayout.appendChild(a);
+			}
+			lc.appendChild(hlayout);
+			li.appendChild(lc);
 
 			// click event -> show pars
 			li.addEventListener(Events.ON_CLICK, e -> {
@@ -244,6 +263,10 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(ppart.getPartReqQty(), 3)));
 		};
 		lbxPpart.setItemRenderer(ppartRowRenderer);
+		
+		
+		/* partCfgTreePage */
+		partCfgTreePageComposer = PartCfgTreePageComposer.of(icdPartAcqPage);
 	}
 
 	// -------------------------------------------------------------------------------

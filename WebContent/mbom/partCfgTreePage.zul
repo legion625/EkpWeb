@@ -1,0 +1,16 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<panel id="pnPargCfgTreePage" vflex="1" apply="ekp.web.control.zk.mbom.PartCfgTreePageComposer">
+		<panelchildren>
+			<tree id="treePartCfg" vflex="1" checkmark="true">
+				<treecols sizable="true">
+					<treecol label="Pin" width="200px" />
+					<treecol label="Name" width="180px"/>
+					<treecol label="Unit" width="100px"/>
+					<treecol label="Required quantity" width="150px" />
+				</treecols>
+			</tree>
+		</panelchildren>
+	</panel>
+
+</zk>

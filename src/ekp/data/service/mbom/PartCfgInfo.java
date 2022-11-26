@@ -19,5 +19,7 @@ public interface PartCfgInfo extends ObjectModelInfo {
 	
 	// -------------------------------------------------------------------------------
 	PartCfgInfo reload();
+	
+	PartInfo getRootPart();
 
 }

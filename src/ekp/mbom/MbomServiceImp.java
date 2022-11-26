@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ekp.data.MbomDataService;
+import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.data.service.mbom.query.PartQueryParam;
 import legion.DataServiceFactory;
@@ -38,6 +39,13 @@ public class MbomServiceImp implements MbomService{
 	@Override
 	public QueryOperation<PartQueryParam, PartInfo> searchPart(QueryOperation<PartQueryParam, PartInfo> _param){
 		return dataService.searchPart(_param);
+	}
+	
+	// -------------------------------------------------------------------------------
+	// ------------------------------------PartCfg------------------------------------
+	@Override
+	public PartCfgInfo loadPartCfgById(String _id) {
+		return dataService.loadPartCfgById(_id);
 	}
 
 }
