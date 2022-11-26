@@ -23,7 +23,7 @@ public class ParsBpuDel0 extends ParsBpu {
 		return this;
 	}
 
-// -------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------
 	@Override
 	public boolean validate(StringBuilder _msg) {
 		return true;
@@ -41,7 +41,15 @@ public class ParsBpuDel0 extends ParsBpu {
 
 	@Override
 	protected Boolean buildProcess(TimeTraveler _tt) {
-		return mbomDataService.deletePartAcqRoutingStep(getPars().getUid());
+		if (!mbomDataService.deletePartAcqRoutingStep(getPars().getUid())) {
+			log.error("mbomDataSerivce.deletePartAcqRoutingStep [{}][{}][{}] return false.", pars.getUid(),
+					pars.getPartAcqUid(), pars.getId());
+			return false;
+		}
+		log.info("mbomDataService.deletePartAcqRoutingStep [{}][{}][{}]", pars.getUid(), pars.getPartAcqUid(),
+				pars.getId());
+
+		return true;
 	}
 
 }

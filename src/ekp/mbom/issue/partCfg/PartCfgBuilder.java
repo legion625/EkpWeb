@@ -113,10 +113,10 @@ public abstract class PartCfgBuilder extends Bpu<PartCfgInfo> {
 			_msg.append("Id should not be empty.").append(System.lineSeparator());
 			v = false;
 		} else {
-//			if (mbomDataService.loadPartCfgById(getId()) != null) { // FIXME
-//				_msg.append("Duplicated id.").append(System.lineSeparator());
-//				v = false;
-//			}
+			if (mbomDataService.loadPartCfgById(getId()) != null) {
+				_msg.append("Duplicated id.").append(System.lineSeparator());
+				v = false;
+			}
 		}
 
 		if (DataFO.isEmptyString(getName())) {

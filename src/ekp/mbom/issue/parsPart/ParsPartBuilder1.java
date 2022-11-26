@@ -67,11 +67,11 @@ public class ParsPartBuilder1 extends ParsPartBuilder {
 		if (getPart() == null) {
 			_msg.append("Part should be assigned.").append(System.lineSeparator());
 			v = false;
-		}else {
-//			if(mbomDataService.loadParsPart(getParsUid(), getPart().getUid())!=null) { // FIXME
-//				_msg.append("Duplicate assign part.").append(System.lineSeparator());
-//				v = false;
-//			}
+		} else {
+			if (mbomDataService.loadParsPart(getParsUid(), getPart().getUid()) != null) {
+				_msg.append("Duplicate assign part.").append(System.lineSeparator());
+				v = false;
+			}
 		}
 
 		if (getPartReqQty() == 0) {

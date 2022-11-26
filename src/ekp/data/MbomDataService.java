@@ -130,6 +130,8 @@ public interface MbomDataService extends IntegrationService {
 	public PartCfgConjInfo loadPartCfgConj(String _partCfgUid, String _partAcqUid);
 
 	public List<PartCfgConjInfo> loadPartCfgConjList(String _partCfgUid);
+	
+	public List<PartCfgConjInfo> loadPartCfgConjListByPartAcq(String _partAcqUid);
 
 	// -------------------------------------------------------------------------------
 	// -------------------------------------Prod--------------------------------------

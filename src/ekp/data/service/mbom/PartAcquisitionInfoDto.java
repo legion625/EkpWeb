@@ -80,4 +80,12 @@ public class PartAcquisitionInfoDto extends ObjectModelInfoDto implements PartAc
 		return parsListLoader.getObj(_reload);
 	}
 
+	private BizObjLoader<List<PartCfgConjInfo>> pccListLoader = BizObjLoader.of(() -> DataServiceFactory.getInstance()
+			.getService(MbomDataService.class).loadPartCfgConjListByPartAcq(getUid()));
+
+	@Override
+	public List<PartCfgConjInfo> getPartCfgConjList(boolean _reload) {
+		return pccListLoader.getObj(_reload);
+	}
+
 }

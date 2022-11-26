@@ -560,6 +560,18 @@ public class MbomDataServiceImp implements MbomDataService {
 			return null;
 		}
 	}
+	
+	@Override
+	public List<PartCfgConjInfo> loadPartCfgConjListByPartAcq(String _partAcqUid){
+		try {
+			List<PartCfgConjRemote> remoteList = getEkpKernelRmi().loadPartCfgConjListByPartAcq(_partAcqUid);
+			List<PartCfgConjInfo> list = remoteList.stream().map(MbomFO::parsePartCfgConj).collect(Collectors.toList());
+			return list;
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
 
 	// -------------------------------------------------------------------------------
 	// -------------------------------------Prod--------------------------------------

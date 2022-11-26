@@ -41,6 +41,12 @@ public class PartBpuDel0 extends PartBpu {
 	
 	@Override
 	protected Boolean buildProcess(TimeTraveler _tt) {
-		return mbomDataService.deletePart(getPart().getUid());
+		if(!mbomDataService.deletePart(getPart().getUid())) {
+			log.error("mbomDataService.deletePart return false. [{}][{}][{}]", part.getUid(), part.getPin(), part.getName());
+			return false;
+		}
+		log.info("mbomDataService.deletePart. [{}][{}][{}]", part.getUid(), part.getPin(), part.getName());
+		
+		return true;
 	}
 }

@@ -111,13 +111,13 @@ public class PartCfgBpuEditing extends PartCfgBpu{
 			_msg.append("partAcqList should not be empty.").append(System.lineSeparator());
 			v = false;
 		} else {
-//			for (PartAcquisitionInfo pa : partAcqList) {
-//				if (mbomDataService.loadPartCfgConj(getPartCfg().getUid(), pa.getUid()) != null) { // FIXME
-//					_msg.append("Some conjunctions exist.").append(System.lineSeparator());
-//					v = false;
-//					break;
-//				}
-//			}
+			for (PartAcqInfo pa : partAcqList) {
+				if (mbomDataService.loadPartCfgConj(getPartCfg().getUid(), pa.getUid()) != null) {
+					_msg.append("Some conjunctions exist.").append(System.lineSeparator());
+					v = false;
+					break;
+				}
+			}
 		}
 		
 		return v;

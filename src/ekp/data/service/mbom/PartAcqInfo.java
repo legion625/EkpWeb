@@ -28,4 +28,6 @@ public interface PartAcqInfo extends ObjectModelInfo {
 	default List<ParsInfo> getParsList(){
 		return getParsList(false);
 	}
+	
+	List<PartCfgConjInfo> getPartCfgConjList(boolean _reload);
 }

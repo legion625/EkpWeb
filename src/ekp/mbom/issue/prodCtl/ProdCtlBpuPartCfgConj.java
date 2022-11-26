@@ -87,13 +87,13 @@ public class ProdCtlBpuPartCfgConj extends ProdCtlBpu {
 		if (partCfgList == null || partCfgList.size() <= 0) {
 			_msg.append("partCfgList should not be empty.").append(System.lineSeparator());
 			v = false;
-		}else {
-//			for(PartCfgInfo partCfg: partCfgList) {
-//				if (mbomDataService.loadProdCtlPartCfgConj(getProdCtl().getUid(), partCfg.getUid()) != null) {// FIXME
-//					_msg.append("Some conjunctions exist.").append(System.lineSeparator());
-//					v = false;
-//				}
-//			}
+		} else {
+			for (PartCfgInfo partCfg : partCfgList) {
+				if (mbomDataService.loadProdCtlPartCfgConj(getProdCtl().getUid(), partCfg.getUid()) != null) {
+					_msg.append("Some conjunctions exist.").append(System.lineSeparator());
+					v = false;
+				}
+			}
 		}
 		
 		return v;

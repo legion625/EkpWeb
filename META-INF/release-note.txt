@@ -3,7 +3,7 @@ Min-Hua, 2022.11.20
 1. [MBOM] Implementing part list page functions.
   - load all part list, create part, delete part
   - Part info page.
-  - create pars, delete pars
+  - create pa, delete pa, create pars, delete pars, create ppart, delete ppart
 
 [lib]
 1. ekp_kernel: 0.1.2 -> unstaging

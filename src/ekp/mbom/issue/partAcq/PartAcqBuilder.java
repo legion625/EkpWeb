@@ -115,10 +115,10 @@ public abstract class PartAcqBuilder extends Bpu<PartAcqInfo> {
 			_msg.append("Id should not be empty.").append(System.lineSeparator());
 			v = false;
 		} else {
-//			if (mbomDataService.loadPartAcquisition(getPartPin(), getId()) != null) { // FIXME
-//				_msg.append("Duplicated id.").append(System.lineSeparator());
-//				v = false;
-//			}
+			if (mbomDataService.loadPartAcquisition(getPartPin(), getId()) != null) {
+				_msg.append("Duplicated id.").append(System.lineSeparator());
+				v = false;
+			}
 		}
 
 		// name
