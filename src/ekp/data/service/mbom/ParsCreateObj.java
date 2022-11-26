@@ -1,6 +1,6 @@
 package ekp.data.service.mbom;
 
-public class PartAcqRoutingStepCreateObj {
+public class ParsCreateObj {
 	private String partAcqUid; // ref data key
 
 	private String id; // routing step id

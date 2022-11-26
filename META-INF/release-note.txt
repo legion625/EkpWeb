@@ -1,3 +1,13 @@
+Min-Hua, 2022.11.20
+[change]
+1. [MBOM] Implementing part list page functions.
+  - load all part list, create part, delete part
+  - Part info page.
+  - create pa, delete pa, create pars, delete pars, create ppart, delete ppart
+
+[lib]
+1. ekp_kernel: 0.1.2 -> 0.1.3
+
 ------------------------------------------------------------------------------
 v0.1.3 released by Min-Hua, 2022.11.13
 [bugs]

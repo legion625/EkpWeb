@@ -1,39 +1,38 @@
-package ekp.mbom.issue.partCfg;
+package ekp.mbom.issue.part;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ekp.TestLogMark;
 import ekp.data.MbomDataService;
-import ekp.data.service.mbom.PartCfgInfo;
+import ekp.data.service.mbom.PartInfo;
 import legion.DataServiceFactory;
 import legion.biz.Bpu;
 import legion.util.TimeTraveler;
 
-public abstract class PartCfgBpu extends Bpu<Boolean> {
-	protected Logger log = LoggerFactory.getLogger(PartCfgBpu.class);
-	protected static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
+public abstract class PartBpu extends Bpu<Boolean> {
+	protected Logger log = LoggerFactory.getLogger(PartBpu.class);
+	protected static MbomDataService mbomDataService = DataServiceFactory.getInstance()
+			.getService(MbomDataService.class);
 
 	/* base */
-	private PartCfgInfo partCfg;
+	private PartInfo part;
 
 	/* data */
 	// none
 
 	// -------------------------------------------------------------------------------
 	// -----------------------------------appender------------------------------------
-	protected PartCfgBpu appendPartCfg(PartCfgInfo partCfg) {
-		this.partCfg = partCfg;
+	protected PartBpu appendPart(PartInfo part) {
+		this.part = part;
 		return this;
 	}
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------------getter-------------------------------------
-	public PartCfgInfo getPartCfg() {
-		return partCfg;
+	public PartInfo getPart() {
+		return part;
 	}
-	
-	// -------------------------------------------------------------------------------
+
 	@Override
 	public abstract boolean validate(StringBuilder _msg);
 

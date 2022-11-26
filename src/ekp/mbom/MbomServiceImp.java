@@ -7,7 +7,9 @@ import org.slf4j.LoggerFactory;
 
 import ekp.data.MbomDataService;
 import ekp.data.service.mbom.PartInfo;
+import ekp.data.service.mbom.query.PartQueryParam;
 import legion.DataServiceFactory;
+import legion.util.query.QueryOperation;
 
 public class MbomServiceImp implements MbomService{
 
@@ -31,6 +33,11 @@ public class MbomServiceImp implements MbomService{
 	@Override
 	public PartInfo loadPartByPin(String _pin) {
 		return dataService.loadPartByPin(_pin);
+	}
+	
+	@Override
+	public QueryOperation<PartQueryParam, PartInfo> searchPart(QueryOperation<PartQueryParam, PartInfo> _param){
+		return dataService.searchPart(_param);
 	}
 
 }

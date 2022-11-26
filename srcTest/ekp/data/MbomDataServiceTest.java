@@ -14,11 +14,13 @@ import ekp.AbstractEkpInitTest;
 import ekp.TestLogMark;
 import ekp.data.service.mbom.PartCreateObj;
 import ekp.data.service.mbom.PartInfo;
+import ekp.data.service.mbom.query.PartQueryParam;
 import ekp.mbom.MbomBuilderDelegate;
 import ekp.serviceFacade.rmi.mbom.PartCreateObjRemote;
 import ekp.serviceFacade.rmi.mbom.PartRemote;
 import legion.DataServiceFactory;
 import legion.util.TimeTraveler;
+import legion.util.query.QueryOperation;
 
 public class MbomDataServiceTest extends AbstractEkpInitTest {
 	private static Logger log = LoggerFactory.getLogger(TestLogMark.class);
@@ -60,6 +62,16 @@ public class MbomDataServiceTest extends AbstractEkpInitTest {
 		log.debug("equals: {}", part1.equals(part2));
 //		assertTrue(part1.equals(part2));
 
+	}
+	
+	@Test
+	public void testSearchPart() {
+		QueryOperation<PartQueryParam, PartInfo> param = new QueryOperation<>();
+		param.setLimit(5);
+		param = dataService.searchPart(param);
+		log.debug("param.getTotal(): {}", param.getTotal());
+		log.debug("limit: {}\t{}", param.getLimit()[0], param.getLimit()[1]);
+		log.debug("param.getQueryResult().size(): {}", param.getQueryResult().size());
 	}
 	
 

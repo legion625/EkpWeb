@@ -2,9 +2,9 @@ package ekp.data.service.mbom;
 
 import legion.ObjectModelInfoDto;
 
-public class ParsProcInfoDto extends ObjectModelInfoDto implements ParsProcInfo {
+public class PprocInfoDto extends ObjectModelInfoDto implements PprocInfo {
 
-	protected ParsProcInfoDto(String uid, long objectCreateTime, long objectUpdateTime) {
+	protected PprocInfoDto(String uid, long objectCreateTime, long objectUpdateTime) {
 		super(uid, objectCreateTime, objectUpdateTime);
 	}
 

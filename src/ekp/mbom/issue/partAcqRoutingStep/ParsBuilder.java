@@ -4,15 +4,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ekp.data.MbomDataService;
-import ekp.data.service.mbom.PartAcqRoutingStepCreateObj;
-import ekp.data.service.mbom.PartAcqRoutingStepInfo;
+import ekp.data.service.mbom.ParsCreateObj;
+import ekp.data.service.mbom.ParsInfo;
 import legion.DataServiceFactory;
 import legion.biz.Bpu;
 import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
-public abstract class PartAcqRoutingStepBuilder extends Bpu<PartAcqRoutingStepInfo> {
-	protected Logger log = LoggerFactory.getLogger(PartAcqRoutingStepBuilder.class);
+public abstract class ParsBuilder extends Bpu<ParsInfo> {
+	protected Logger log = LoggerFactory.getLogger(ParsBuilder.class);
 	private static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
 
 	/* base */
@@ -27,22 +27,22 @@ public abstract class PartAcqRoutingStepBuilder extends Bpu<PartAcqRoutingStepIn
 
 	// -------------------------------------------------------------------------------
 	// -----------------------------------appender------------------------------------
-	protected PartAcqRoutingStepBuilder appendPartAcqUid(String partAcqUid) {
+	protected ParsBuilder appendPartAcqUid(String partAcqUid) {
 		this.partAcqUid = partAcqUid;
 		return this;
 	}
 
-	protected PartAcqRoutingStepBuilder appendId(String id) {
+	protected ParsBuilder appendId(String id) {
 		this.id = id;
 		return this;
 	}
 
-	protected PartAcqRoutingStepBuilder appendName(String name) {
+	protected ParsBuilder appendName(String name) {
 		this.name = name;
 		return this;
 	}
 
-	protected PartAcqRoutingStepBuilder appendDesp(String desp) {
+	protected ParsBuilder appendDesp(String desp) {
 		this.desp = desp;
 		return this;
 	}
@@ -66,8 +66,8 @@ public abstract class PartAcqRoutingStepBuilder extends Bpu<PartAcqRoutingStepIn
 	}
 
 	// -------------------------------------------------------------------------------
-	private PartAcqRoutingStepCreateObj packPartAcqRoutingStepCreateObj() {
-		PartAcqRoutingStepCreateObj dto = new PartAcqRoutingStepCreateObj();
+	private ParsCreateObj packPartAcqRoutingStepCreateObj() {
+		ParsCreateObj dto = new ParsCreateObj();
 		dto.setPartAcqUid(getPartAcqUid());
 		dto.setId(getId());
 		dto.setName(getName());
@@ -112,11 +112,11 @@ public abstract class PartAcqRoutingStepBuilder extends Bpu<PartAcqRoutingStepIn
 	}
 
 	@Override
-	protected PartAcqRoutingStepInfo buildProcess(TimeTraveler _tt) {
+	protected ParsInfo buildProcess(TimeTraveler _tt) {
 		TimeTraveler tt = new TimeTraveler();
 
 		//
-		PartAcqRoutingStepInfo pars = mbomDataService.createPartAcqRoutingStep(packPartAcqRoutingStepCreateObj());
+		ParsInfo pars = mbomDataService.createPartAcqRoutingStep(packPartAcqRoutingStepCreateObj());
 		if (pars == null) {
 			tt.travel();
 			log.error("mbomDataSerivce.createPartAcqRoutingStep return null.");

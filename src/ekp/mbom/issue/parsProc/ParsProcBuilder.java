@@ -4,14 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ekp.data.MbomDataService;
-import ekp.data.service.mbom.ParsProcCreateObj;
-import ekp.data.service.mbom.ParsProcInfo;
+import ekp.data.service.mbom.PprocCreateObj;
+import ekp.data.service.mbom.PprocInfo;
 import legion.DataServiceFactory;
 import legion.biz.Bpu;
 import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
-public abstract class ParsProcBuilder extends Bpu<ParsProcInfo> {
+public abstract class ParsProcBuilder extends Bpu<PprocInfo> {
 	protected Logger log = LoggerFactory.getLogger(ParsProcBuilder.class);
 	private static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
 
@@ -67,8 +67,8 @@ public abstract class ParsProcBuilder extends Bpu<ParsProcInfo> {
 	}
 
 	// -------------------------------------------------------------------------------
-	private ParsProcCreateObj packParsProcCreateObj() {
-		ParsProcCreateObj dto = new ParsProcCreateObj();
+	private PprocCreateObj packParsProcCreateObj() {
+		PprocCreateObj dto = new PprocCreateObj();
 		dto.setParsUid(getParsUid());
 		dto.setSeq(getSeq());
 		dto.setName(getName());
@@ -107,11 +107,11 @@ public abstract class ParsProcBuilder extends Bpu<ParsProcInfo> {
 	}
 	
 	@Override
-	protected ParsProcInfo buildProcess(TimeTraveler _tt) {
+	protected PprocInfo buildProcess(TimeTraveler _tt) {
 		TimeTraveler tt = new TimeTraveler();
 
 		//
-		ParsProcInfo parsProc = mbomDataService.createParsProc(packParsProcCreateObj());
+		PprocInfo parsProc = mbomDataService.createParsProc(packParsProcCreateObj());
 		if (parsProc == null) {
 			tt.travel();
 			log.error("mbomDataSerivce.createParsProc return null.");

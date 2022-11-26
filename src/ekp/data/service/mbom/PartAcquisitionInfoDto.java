@@ -1,9 +1,15 @@
 package ekp.data.service.mbom;
 
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
+
+import java.util.List;
+
+import ekp.data.BizObjLoader;
+import ekp.data.MbomDataService;
 import ekp.mbom.type.PartAcquisitionType;
 
-public class PartAcquisitionInfoDto extends ObjectModelInfoDto implements PartAcquisitionInfo {
+public class PartAcquisitionInfoDto extends ObjectModelInfoDto implements PartAcqInfo {
 
 	protected PartAcquisitionInfoDto(String uid, long objectCreateTime, long objectUpdateTime) {
 		super(uid, objectCreateTime, objectUpdateTime);
@@ -63,6 +69,23 @@ public class PartAcquisitionInfoDto extends ObjectModelInfoDto implements PartAc
 
 	void setType(PartAcquisitionType type) {
 		this.type = type;
+	}
+	
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<List<ParsInfo>> parsListLoader = BizObjLoader.of(() -> DataServiceFactory.getInstance()
+			.getService(MbomDataService.class).loadPartAcqRoutingStepList(getUid()));
+	
+	@Override
+	public List<ParsInfo> getParsList(boolean _reload){
+		return parsListLoader.getObj(_reload);
+	}
+
+	private BizObjLoader<List<PartCfgConjInfo>> pccListLoader = BizObjLoader.of(() -> DataServiceFactory.getInstance()
+			.getService(MbomDataService.class).loadPartCfgConjListByPartAcq(getUid()));
+
+	@Override
+	public List<PartCfgConjInfo> getPartCfgConjList(boolean _reload) {
+		return pccListLoader.getObj(_reload);
 	}
 
 }

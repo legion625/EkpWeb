@@ -6,88 +6,127 @@
 				<label value="Pin" />
 				<label id="lbPin" value="PIN1" />
 				<label value="Name" />
-				<label id="lbName" value="NAME1"/>
+				<label id="lbName" value="NAME1" />
 			</hlayout>
 			<groupbox title="Part acquisition">
-				<grid id="gridPartAcq">
-					<columns>
-						<column label="id" />
-						<column label="name" />
-						<column label="type" />
-					</columns>
-					<rows>
-						<row>
-							<cell>
-								<label value="PartAcq1-ID"></label>
-								<label value="PartAcq1-NAME"></label>
-								<label value="PartAcq1-TYPE"></label>
-							</cell>
-						</row>
-					</rows>
-				</grid>
-				
+				<listbox id="lbxPartAcq" emptyMessage="(No data)">
+					<listhead sizable="true">
+						<listheader width="50px">
+							<toolbarbutton id="btnAddPa" iconSclass="fa fa-plus" />
+						</listheader>
+						<listheader label="id" />
+						<listheader label="name" />
+						<listheader label="type" />
+					</listhead>
+				</listbox>
+				<window id="wdCreatePa" title="Create part acquisition" width="400px" height="130px" mode="highlighted"
+					closable="true" visible="false" sizable="true">
+					<hlayout>
+						<label value="Id" />
+						<textbox id="txbId" />
+						<label value="Name" />
+						<textbox id="txbName" />
+					</hlayout>
+					<label value="Type" />
+					<combobox id="cbbType" />
+					<hlayout></hlayout>
+					<separator spacing="5px" />
+					<div align="center">
+						<button id="btnSubmit" label="Submit" />
+						<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
+					</div>
+				</window>
+
+				<separator spacing="5px" />
 				<label value="Routing step"></label>
-					<listbox>
-						<listhead>
-							<listheader label="ID" />
-							<listheader label="NAME" />
-							<listheader label="DESCRIPTION" />
-						</listhead>
-						<listitem>
-						<listcell label="RS1-ID"></listcell>
-						<listcell label="RS1-Name"></listcell>
-						<listcell label="RS1-Description"></listcell>
-						</listitem>
-					</listbox>
-					<tabbox>
+				<listbox id="lbxPars" emptyMessage="(No data)">
+					<listhead sizable="true">
+						<listheader width="50px">
+							<toolbarbutton id="btnAddPars" iconSclass="fa fa-plus" />
+						</listheader>
+						<listheader label="ID" />
+						<listheader label="NAME" />
+						<listheader label="DESCRIPTION" />
+					</listhead>
+				</listbox>
+				<window id="wdCreatePars" title="Create pars" width="400px" height="130px" mode="highlighted"
+					closable="true" visible="false" sizable="true">
+					<hlayout>
+						<label value="Id" />
+						<textbox id="txbId" />
+						<label value="Name" />
+						<textbox id="txbName" />
+					</hlayout>
+					<label value="Desp" />
+					<textbox id="txbDesp" />
+					<hlayout></hlayout>
+					<separator spacing="5px" />
+					<div align="center">
+						<button id="btnSubmit" label="Submit" />
+						<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
+					</div>
+				</window>
+				<separator spacing="5px" />
+				<tabbox>
 					<tabs>
-					<tab label="Procedure"></tab>
-					<tab label="Part"></tab>
+						<tab label="Part"></tab>
+						<tab label="Procedure"></tab>
+
 					</tabs>
 					<tabpanels>
-					<tabpanel>
-					<listbox>
-					<listhead>
-							<listheader label="Seq" />
-							<listheader label="Name" />
-							<listheader label="Description" />
-						</listhead>
-						<listitem>
-						<listcell label="PROC1-010"></listcell>
-						<listcell label="PROC1-Name"></listcell>
-						<listcell label="PROC1-Description"></listcell>
-						</listitem>
-						<listitem>
-						<listcell label="PROC2-020"></listcell>
-						<listcell label="PROC2-Name"></listcell>
-						<listcell label="PROC2-Description"></listcell>
-						</listitem>
-					
-					</listbox>
-					</tabpanel>
-					
-					<tabpanel>
-						<listbox>
-					<listhead>
-							<listheader label="Part pin" />
-							<listheader label="Part required " />
-							<listheader label="Description" />
-						</listhead>
-						<listitem>
-						<listcell label="PROC1-010"></listcell>
-						<listcell label="PROC1-Name"></listcell>
-						<listcell label="PROC1-Description"></listcell>
-						</listitem>
-						<listitem>
-						<listcell label="PROC2-020"></listcell>
-						<listcell label="PROC2-Name"></listcell>
-						<listcell label="PROC2-Description"></listcell>
-						</listitem>
-					
-					</listbox>
-					</tabpanel>
+
+						<tabpanel>
+							<listbox id="lbxPpart" emptyMessage="(No data)">
+								<listhead sizable="true">
+									<listheader width="50px">
+										<toolbarbutton id="btnAddPpart" iconSclass="fa fa-plus" />
+									</listheader>
+									<listheader label="Part pin" />
+									<listheader label="Part name" />
+									<listheader label="Part required quantity" />
+								</listhead>
+							</listbox>
+
+
+
+							<window id="wdCreatePpart" title="Part acquisition routing step - create part" width="400px"
+								height="530px" mode="highlighted" closable="true" visible="false" sizable="true">
+
+								<listbox id="lbxPart" height="400px" checkmark="true" emptyMessage="(No data)">
+									<listhead sizable="true">
+										<listheader label="Pin" sort="auto(pin)" />
+										<listheader label="Name" sort="auto(name)" />
+									</listhead>
+								</listbox>
+								<hlayout>
+									<label value="Selected part:" />
+									<label id="lbSelPart" />
+								</hlayout>
+								<hlayout>
+									<label value="required qty" />
+									<doublebox id="dbbReqQty" />
+								</hlayout>
+
+
+								<separator spacing="5px" />
+								<div align="center">
+									<button id="btnSubmit" label="Submit" />
+									<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
+								</div>
+							</window>
+						</tabpanel>
+						<tabpanel>
+							<listbox id="lbxPproc" emptyMessage="(No data)">
+								<listhead sizable="true">
+									<listheader label="Seq" />
+									<listheader label="Name" />
+									<listheader label="Description" />
+								</listhead>
+							</listbox>
+						</tabpanel>
+
 					</tabpanels>
-					</tabbox>
+				</tabbox>
 			</groupbox>
 		</panelchildren>
 	</panel>

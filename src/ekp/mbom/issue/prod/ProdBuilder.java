@@ -66,10 +66,10 @@ public abstract class ProdBuilder extends Bpu<ProdInfo> {
 			_msg.append("Id should not be empty.").append(System.lineSeparator());
 			v = false;
 		} else {
-//			if (mbomDataService.loadProdById(getId()) != null) { // FIXME
-//				_msg.append("Duplicated id.").append(System.lineSeparator());
-//				v = false;
-//			}
+			if (mbomDataService.loadProdById(getId()) != null) {
+				_msg.append("Duplicated id.").append(System.lineSeparator());
+				v = false;
+			}
 		}
 
 		if (DataFO.isEmptyString(getName())) {

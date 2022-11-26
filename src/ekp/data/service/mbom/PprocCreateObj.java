@@ -1,6 +1,6 @@
 package ekp.data.service.mbom;
 
-public class ParsProcCreateObj {
+public class PprocCreateObj {
 	private String parsUid; // ref data key
 
 	//

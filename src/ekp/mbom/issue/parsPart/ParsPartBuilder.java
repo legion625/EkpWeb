@@ -4,13 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ekp.data.MbomDataService;
-import ekp.data.service.mbom.ParsPartInfo;
+import ekp.data.service.mbom.PpartInfo;
 import legion.DataServiceFactory;
 import legion.biz.Bpu;
 import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
-public abstract class ParsPartBuilder extends Bpu<ParsPartInfo> {
+public abstract class ParsPartBuilder extends Bpu<PpartInfo> {
 	protected Logger log = LoggerFactory.getLogger(ParsPartBuilder.class);
 	protected static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
 
@@ -53,14 +53,14 @@ public abstract class ParsPartBuilder extends Bpu<ParsPartInfo> {
 
 
 	@Override
-	protected abstract ParsPartInfo buildProcess(TimeTraveler _tt);
+	protected abstract PpartInfo buildProcess(TimeTraveler _tt);
 	
 //	@Override
 //	protected ParsPartInfo buildProcess(TimeTraveler _tt) {
-	protected ParsPartInfo buildPpart(TimeTraveler _tt) {
+	protected PpartInfo buildPpart(TimeTraveler _tt) {
 		TimeTraveler tt = new TimeTraveler();
 
-		ParsPartInfo parsPart = mbomDataService.createParsPart(getParsUid());
+		PpartInfo parsPart = mbomDataService.createParsPart(getParsUid());
 		if (parsPart == null) {
 			tt.travel();
 			log.error("mbomDataSerivce.createParsPart return null.");
