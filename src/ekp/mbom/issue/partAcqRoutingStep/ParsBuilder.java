@@ -11,8 +11,8 @@ import legion.biz.Bpu;
 import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
-public abstract class PartAcqRoutingStepBuilder extends Bpu<ParsInfo> {
-	protected Logger log = LoggerFactory.getLogger(PartAcqRoutingStepBuilder.class);
+public abstract class ParsBuilder extends Bpu<ParsInfo> {
+	protected Logger log = LoggerFactory.getLogger(ParsBuilder.class);
 	private static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
 
 	/* base */
@@ -27,22 +27,22 @@ public abstract class PartAcqRoutingStepBuilder extends Bpu<ParsInfo> {
 
 	// -------------------------------------------------------------------------------
 	// -----------------------------------appender------------------------------------
-	protected PartAcqRoutingStepBuilder appendPartAcqUid(String partAcqUid) {
+	protected ParsBuilder appendPartAcqUid(String partAcqUid) {
 		this.partAcqUid = partAcqUid;
 		return this;
 	}
 
-	protected PartAcqRoutingStepBuilder appendId(String id) {
+	protected ParsBuilder appendId(String id) {
 		this.id = id;
 		return this;
 	}
 
-	protected PartAcqRoutingStepBuilder appendName(String name) {
+	protected ParsBuilder appendName(String name) {
 		this.name = name;
 		return this;
 	}
 
-	protected PartAcqRoutingStepBuilder appendDesp(String desp) {
+	protected ParsBuilder appendDesp(String desp) {
 		this.desp = desp;
 		return this;
 	}

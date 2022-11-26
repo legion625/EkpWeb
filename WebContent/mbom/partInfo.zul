@@ -6,88 +6,89 @@
 				<label value="Pin" />
 				<label id="lbPin" value="PIN1" />
 				<label value="Name" />
-				<label id="lbName" value="NAME1"/>
+				<label id="lbName" value="NAME1" />
 			</hlayout>
 			<groupbox title="Part acquisition">
-				<grid id="gridPartAcq">
-					<columns>
-						<column label="id" />
-						<column label="name" />
-						<column label="type" />
-					</columns>
-					<!-- <rows>
-						<row>
-							<cell>
-								<label value="PartAcq1-ID"></label>
-								<label value="PartAcq1-NAME"></label>
-								<label value="PartAcq1-TYPE"></label>
-							</cell>
-						</row>
-					</rows> -->
-				</grid>
-				
-				<label value="Routing step"></label>
-					<grid id="gridPars">
-						<columns>
-							<column label="ID" />
-							<column label="NAME" />
-							<column label="DESCRIPTION" />
-						</columns>
-						<!-- <listitem>
-						<listcell label="RS1-ID"></listcell>
-						<listcell label="RS1-Name"></listcell>
-						<listcell label="RS1-Description"></listcell>
-						</listitem> -->
-					</grid>
-					<tabbox>
-					<tabs>
+			<listbox id="lbxPartAcq" checkmark="true" emptyMessage="(No data)">
+				<listhead>
+					<listheader label="id" />
+					<listheader label="name" />
+					<listheader label="type" />
+				</listhead>
+			</listbox>
+
+<separator spacing="5px"/>
+			<label value="Routing step"></label>
+			<listbox id="lbxPars" emptyMessage="(No data)">
+				<listhead>
+					<listheader width="50px">
+						<toolbarbutton id="btnAddPars" iconSclass="fa fa-plus" />
+					</listheader>
+					<listheader label="ID" />
+					<listheader label="NAME" />
+					<listheader label="DESCRIPTION" />
+				</listhead>
+			</listbox>
+			<window id="wdCreatePars" title="Create pars" width="400px" height="130px" mode="highlighted"
+				closable="true" visible="false" sizable="true">
+				<hlayout>
+					<label value="Id" />
+					<textbox id="txbId" />
+					<label value="Name" />
+					<textbox id="txbName" />
+				</hlayout>
+					<label value="Desp" />
+					<textbox id="txbDesp" />
+				<hlayout>
+				</hlayout>
+				<separator spacing="5px" />
+				<div align="center">
+					<button id="btnSubmit" label="Submit" />
+					<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
+				</div>
+			</window>
+			<separator spacing="5px"/>
+			<tabbox>
+				<tabs>
 					<tab label="Procedure"></tab>
 					<tab label="Part"></tab>
-					</tabs>
-					<tabpanels>
+				</tabs>
+				<tabpanels>
 					<tabpanel>
-					<grid id="gridPproc">
-					<columns>
+						<!-- <grid id="gridPproc">
+							<columns>
 							<column label="Seq" />
 							<column label="Name" />
 							<column label="Description" />
-						</columns>
-					<!-- 	<listitem>
-						<listcell label="PROC1-010"></listcell>
-						<listcell label="PROC1-Name"></listcell>
-						<listcell label="PROC1-Description"></listcell>
-						</listitem>
-						<listitem>
-						<listcell label="PROC2-020"></listcell>
-						<listcell label="PROC2-Name"></listcell>
-						<listcell label="PROC2-Description"></listcell>
-						</listitem> -->
-					
-					</grid>
+							</columns>
+							</grid> -->
+						<listbox id="lbxPproc" emptyMessage="(No data)">
+							<listhead>
+								<listheader label="Seq" />
+								<listheader label="Name" />
+								<listheader label="Description" />
+							</listhead>
+						</listbox>
 					</tabpanel>
-					
+
 					<tabpanel>
-						<grid id="gridPpart">
-					<columns>
+						<listbox id="lbxPpart" emptyMessage="(No data)">
+							<listhead>
+								<listheader label="Part pin" />
+								<listheader label="Part name" />
+								<listheader label="Part required quantity" />
+							</listhead>
+						</listbox>
+						<!-- <grid id="gridPpart">
+							<columns>
 							<column label="Part pin" />
 							<column label="Part name " />
 							<column label="Part required quantity" />
-						</columns>
-					<!-- 	<listitem>
-						<listcell label="PROC1-010"></listcell>
-						<listcell label="PROC1-Name"></listcell>
-						<listcell label="PROC1-Description"></listcell>
-						</listitem>
-						<listitem>
-						<listcell label="PROC2-020"></listcell>
-						<listcell label="PROC2-Name"></listcell>
-						<listcell label="PROC2-Description"></listcell>
-						</listitem>
-					 -->
-					</grid>
+							</columns>
+							</grid> -->
 					</tabpanel>
-					</tabpanels>
-					</tabbox>
+				</tabpanels>
+			</tabbox>
 			</groupbox>
 		</panelchildren>
 	</panel>

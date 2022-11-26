@@ -25,7 +25,7 @@ import ekp.mbom.issue.parsPart.ParsPartBuilder1;
 import ekp.mbom.issue.parsProc.ParsProcBuilder0;
 import ekp.mbom.issue.part.PartBuilder0;
 import ekp.mbom.issue.partAcq.PartAcqBuilder0;
-import ekp.mbom.issue.partAcqRoutingStep.PartAcqRoutingStepBuilder0;
+import ekp.mbom.issue.partAcqRoutingStep.ParsBuilder0;
 import ekp.mbom.issue.partCfg.PartCfgBuilder0;
 import ekp.mbom.issue.partCfg.PartCfgBpuEditing;
 import ekp.mbom.issue.prod.ProdBuilder0;
@@ -128,7 +128,7 @@ public class MbomBuilderDelegate {
 	// -------------------------------------------------------------------------------
 	// ------------------------------PartAcqRoutingStep-------------------------------
 	public ParsInfo buildParsType0(String _partAcqUid, TimeTraveler _tt, String _id, String _name, String _desp) {
-		PartAcqRoutingStepBuilder0 parsb = bpuFacade.getBuilder(MbomBpuType.PART_ACQ_ROUTING_STEP_0);
+		ParsBuilder0 parsb = bpuFacade.getBuilder(MbomBpuType.PARS_0);
 		parsb.appendPartAcqUid(_partAcqUid);
 		parsb.appendId(_id).appendName(_name).appendDesp(_desp);
 

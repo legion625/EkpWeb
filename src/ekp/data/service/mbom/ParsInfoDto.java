@@ -64,16 +64,16 @@ public class ParsInfoDto extends ObjectModelInfoDto implements ParsInfo {
 			() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadParsProcList(getUid()));
 	
 	@Override
-	public List<PprocInfo> getPprocList(){
-		return pprocListLoader.getObj();
+	public List<PprocInfo> getPprocList(boolean _reload){
+		return pprocListLoader.getObj(_reload);
 	}
 	
 	private BizObjLoader<List<PpartInfo>> ppartListLoader = BizObjLoader.of(
 			() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadParsPartList(getUid()));
 	
 	@Override
-	public List<PpartInfo> getPpartList(){
-		return ppartListLoader.getObj();
+	public List<PpartInfo> getPpartList(boolean _reload){
+		return ppartListLoader.getObj(_reload);
 	}
 
 }
