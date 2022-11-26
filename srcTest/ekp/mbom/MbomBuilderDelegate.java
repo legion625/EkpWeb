@@ -34,6 +34,7 @@ import ekp.mbom.issue.prodCtl.ProdCtlBpuPartCfgConj;
 import ekp.mbom.issue.prodCtl.ProdCtlBuilder0;
 import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartCfgStatus;
+import ekp.mbom.type.PartUnit;
 import legion.biz.BpuFacade;
 import legion.util.TimeTraveler;
 
@@ -54,9 +55,9 @@ public class MbomBuilderDelegate {
 
 	// -------------------------------------------------------------------------------
 	// -------------------------------------Part--------------------------------------
-	public PartInfo buildPartType0(TimeTraveler _tt, String _pin, String _name) {
+	public PartInfo buildPartType0(TimeTraveler _tt, String _pin, String _name, PartUnit _unit) {
 		PartBuilder0 pb = bpuFacade.getBuilder(MbomBpuType.PART_0);
-		pb.appendPin(_pin).appendName(_name);
+		pb.appendPin(_pin).appendName(_name).appendUnit(_unit);
 
 		// validate
 		StringBuilder msgValidate = new StringBuilder();
@@ -74,14 +75,14 @@ public class MbomBuilderDelegate {
 		// check
 		assertEquals(_pin, p.getPin());
 		assertEquals(_name, p.getName());
-		
+
 		return p;
 	}
 
 	public PartInfo buildPartType0(TimeTraveler _tt) {
-		return buildPartType0(_tt, "TEST_PIN", "TEST_NAME");
+		return buildPartType0(_tt, "TEST_PIN", "TEST_NAME", PartUnit.EA);
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	// ------------------------------------PartAcq------------------------------------
 	public PartAcqInfo buildPartAcqType0(PartInfo _p, TimeTraveler _tt, String _id, String _name,
@@ -147,7 +148,7 @@ public class MbomBuilderDelegate {
 
 		// check
 		assertEquals(_partAcqUid, pars.getPartAcqUid());
-		assertEquals(_id, pars.getId());
+		assertEquals(_id, pars.getSeq());
 		assertEquals(_name, pars.getName());
 		assertEquals(_desp, pars.getDesp());
 

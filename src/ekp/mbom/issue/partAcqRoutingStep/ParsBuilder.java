@@ -69,7 +69,7 @@ public abstract class ParsBuilder extends Bpu<ParsInfo> {
 	private ParsCreateObj packPartAcqRoutingStepCreateObj() {
 		ParsCreateObj dto = new ParsCreateObj();
 		dto.setPartAcqUid(getPartAcqUid());
-		dto.setId(getId());
+		dto.setSeq(getId());
 		dto.setName(getName());
 		dto.setDesp(getDesp());
 		return dto;
@@ -124,7 +124,7 @@ public abstract class ParsBuilder extends Bpu<ParsInfo> {
 		}
 		tt.addSite("revert createPartAcqRoutingStep", () -> mbomDataService.deletePartAcqRoutingStep(pars.getUid()));
 		log.info("mbomDataService.createPartAcqRoutingStep [{}][{}][{}]", pars.getUid(), pars.getPartAcqUid(),
-				pars.getId());
+				pars.getSeq());
 
 		//
 		if (_tt != null)

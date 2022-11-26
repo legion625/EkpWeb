@@ -29,6 +29,7 @@ public class MbomFO {
 				_remote.getObjectUpdateTime());
 		dto.setPin(_remote.getPin());
 		dto.setName(_remote.getName());
+		dto.setUnit(_remote.getUnit());
 		return dto;
 	}
 
@@ -36,6 +37,7 @@ public class MbomFO {
 		PartCreateObjRemote remote = new PartCreateObjRemote();
 		remote.setPin(_dto.getPin());
 		remote.setName(_dto.getName());
+		remote.setUnit(_dto.getUnit());
 		return remote;
 	}
 
@@ -68,7 +70,7 @@ public class MbomFO {
 		ParsInfoDto dto = new ParsInfoDto(_remote.getUid(), _remote.getObjectCreateTime(),
 				_remote.getObjectUpdateTime());
 		dto.setPartAcqUid(_remote.getPartAcqUid());
-		dto.setId(_remote.getId());
+		dto.setSeq(_remote.getSeq());
 		dto.setName(_remote.getName());
 		dto.setDesp(_remote.getDesp());
 		return dto;
@@ -77,7 +79,7 @@ public class MbomFO {
 	public static PartAcqRoutingStepCreateObjRemote parsePartAcqRoutingStepCreateObjRemote(ParsCreateObj _dto) {
 		PartAcqRoutingStepCreateObjRemote remote = new PartAcqRoutingStepCreateObjRemote();
 		remote.setPartAcqUid(_dto.getPartAcqUid());
-		remote.setId(_dto.getId());
+		remote.setSeq(_dto.getSeq());
 		remote.setName(_dto.getName());
 		remote.setDesp(_dto.getDesp());
 		return remote;
