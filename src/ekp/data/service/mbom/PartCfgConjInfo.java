@@ -7,5 +7,8 @@ public interface PartCfgConjInfo extends ObjectModelInfo{
 	String getPartCfgUid();
 
 	String getPartAcqUid();
+	
+	// -------------------------------------------------------------------------------
+	PartCfgInfo getPartCfg();
 
 }

@@ -38,6 +38,12 @@ public class PartInfoDto extends ObjectModelInfoDto implements PartInfo {
 	}
 
 	// -------------------------------------------------------------------------------
+	@Override
+	public PartInfo reload() {
+		return DataServiceFactory.getInstance().getService(MbomDataService.class).loadPart(getUid());
+	}
+
+	// -------------------------------------------------------------------------------
 	private BizObjLoader<List<PartAcqInfo>> paListLoader = BizObjLoader.of(
 			() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadPartAcquisitionList(getUid()));
 

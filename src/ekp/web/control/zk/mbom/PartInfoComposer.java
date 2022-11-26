@@ -1,6 +1,7 @@
 package ekp.web.control.zk.mbom;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
@@ -21,12 +23,16 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
+import ekp.DebugLogMark;
 import ekp.data.service.mbom.ParsInfo;
 import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.data.service.mbom.PpartInfo;
 import ekp.data.service.mbom.PprocInfo;
+import ekp.mbom.MbomService;
 import ekp.mbom.issue.MbomBpuType;
+import ekp.mbom.issue.parsPart.ParsPartBuilder1;
+import ekp.mbom.issue.parsPart.PpartBpuDel0;
 import ekp.mbom.issue.part.PartBpuDel0;
 import ekp.mbom.issue.part.PartBuilder0;
 import ekp.mbom.issue.partAcq.PaBpuDel0;
@@ -34,6 +40,7 @@ import ekp.mbom.issue.partAcq.PartAcqBuilder0;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBpuDel0;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBuilder0;
 import ekp.mbom.type.PartAcquisitionType;
+import legion.BusinessServiceFactory;
 import legion.biz.BpuFacade;
 import legion.util.LogUtil;
 import legion.util.NumberFormatUtil;
@@ -57,7 +64,8 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 
 	// -------------------------------------------------------------------------------
 	private FnCntProxy fnCntProxy;
-	
+
+	private MbomService mbomService = BusinessServiceFactory.getInstance().getService(MbomService.class);
 	private PartInfo part;
 
 	// -------------------------------------------------------------------------------
@@ -90,19 +98,20 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 					return;
 				}
 
-				PaBpuDel0 b =  BpuFacade.getInstance().getBuilder(MbomBpuType.PART_ACQ_$DEL0, pa);
+				PaBpuDel0 b = BpuFacade.getInstance().getBuilder(MbomBpuType.PART_ACQ_$DEL0, pa);
 				if (b == null) {
 					ZkNotification.error();
 					return;
 				}
-				
+
 				ZkMsgBox.confirm("Confirm delete?", () -> {
 					boolean d = b.build(new StringBuilder(), new TimeTraveler());
 					if (d) {
-						ZkNotification.info("Delete part acuisition [" + pa.getId() + "]["
-								+ pa.getName() + "] success.");
+						ZkNotification
+								.info("Delete part acuisition [" + pa.getId() + "][" + pa.getName() + "] success.");
 						ListModelList<PartAcqInfo> model = (ListModelList) lbxPartAcq.getModel();
 						model.remove(pa);
+						part.getPaList(true); // reload
 					} else {
 						ZkNotification.error();
 					}
@@ -110,7 +119,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 			});
 			lc.appendChild(btn);
 			li.appendChild(lc);
-			
+
 			// id
 			li.appendChild(new Listcell(pa.getId()));
 			// name
@@ -154,6 +163,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 								+ pars.getName() + "] success.");
 						ListModelList<ParsInfo> model = (ListModelList) lbxPars.getModel();
 						model.remove(pars);
+						getSelectedPa().getParsList(true); // reload
 					} else {
 						ZkNotification.error();
 					}
@@ -161,7 +171,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 			});
 			lc.appendChild(btn);
 			li.appendChild(lc);
-			
+
 			// id
 			li.appendChild(new Listcell(pars.getId()));
 			// name
@@ -194,17 +204,48 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 
 		/* Ppart */
 		ListitemRenderer<PpartInfo> ppartRowRenderer = (li, ppart, i) -> {
+			Listcell lc;
+			// delete
+			lc = new Listcell();
+			Toolbarbutton btn = new Toolbarbutton();
+			btn.setIconSclass("fa fa-minus");
+			btn.addEventListener(Events.ON_CLICK, e -> {
+				boolean match = MbomBpuType.PPART_$DEL0.match(ppart);
+				if (!match) {
+					ZkNotification.warning("This routing step part cannot be deleted.");
+					return;
+				}
+				PpartBpuDel0 b = BpuFacade.getInstance().getBuilder(MbomBpuType.PPART_$DEL0, ppart);
+				if (b == null) {
+					ZkNotification.error();
+					return;
+				}
+
+				ZkMsgBox.confirm("Confirm delete?", () -> {
+					boolean d = b.build(new StringBuilder(), new TimeTraveler());
+					if (d) {
+						ZkNotification.info("Delete routing step part [" + ppart.getPartPin() + "]["
+								+ ppart.getPartName() + "] success.");
+						ListModelList<PpartInfo> model = (ListModelList) lbxPpart.getModel();
+						model.remove(ppart);
+						getSelectedPars().getPpartList(true); // reload
+					} else {
+						ZkNotification.error();
+					}
+				});
+			});
+			lc.appendChild(btn);
+			li.appendChild(lc);
 			// part pin
 			li.appendChild(new Listcell(ppart.getPartPin()));
 			// part name
 			li.appendChild(new Listcell(ppart.getPartName()));
 			// part req qty
-			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(ppart.getPartReqQty(), 0)));
+			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(ppart.getPartReqQty(), 3)));
 		};
 		lbxPpart.setItemRenderer(ppartRowRenderer);
-
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	private PartAcqInfo getSelectedPa() {
 		ListModelList<PartAcqInfo> model = (ListModelList) lbxPartAcq.getModel();
@@ -212,7 +253,18 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 		return it.hasNext() ? it.next() : null;
 	}
 
-	
+	private ParsInfo getSelectedPars() {
+		ListModelList<ParsInfo> model = (ListModelList) lbxPars.getModel();
+		Iterator<ParsInfo> it = model.getSelection().iterator();
+		return it.hasNext() ? it.next() : null;
+	}
+
+	private PartInfo getCreatePpartSelectedPart() {
+		ListModelList<PartInfo> model = (ListModelList) lbxCreatePpartPart.getListModel();
+		Iterator<PartInfo> it = model.getSelection().iterator();
+		return it.hasNext() ? it.next() : null;
+	}
+
 	// -------------------------------------------------------------------------------
 	// ----------------------------------wdCreatePa-----------------------------------
 	@Wire
@@ -272,6 +324,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 						+ pa.getTypeName() + "] success.");
 				ListModelList<PartAcqInfo> model = (ListModelList) lbxPartAcq.getModel();
 				model.add(pa);
+				part.getPaList(true); // reload
 			}
 			// 失敗
 			else {
@@ -305,7 +358,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 	@Listen(Events.ON_CLICK + "=#btnAddPars")
 	public void btnAddPars_clicked() {
 		PartAcqInfo pa = getSelectedPa();
-		if(pa==null) {
+		if (pa == null) {
 			ZkNotification.warning("Please select part acquisition.");
 			return;
 		}
@@ -349,6 +402,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 						"Create part acquition routing step [" + pars.getId() + "][" + pars.getName() + "] success.");
 				ListModelList<ParsInfo> model = (ListModelList) lbxPars.getModel();
 				model.add(pars);
+				pa.getParsList(true); // reload
 			}
 			// 失敗
 			else {
@@ -367,6 +421,117 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 	public void wdCreatePars_closed(Event _evt) {
 		_evt.stopPropagation();
 		wdCreatePars.setVisible(false);
+	}
+
+	// -------------------------------------------------------------------------------
+	// ---------------------------------wdCreatePpart---------------------------------
+	@Wire
+	private Window wdCreatePpart;
+	@Wire("#wdCreatePpart #lbxPart")
+	private Listbox lbxCreatePpartPart;
+	@Wire("#wdCreatePpart #lbSelPart")
+	private Label lbCreatePpartSelPart;
+	@Wire("#wdCreatePpart #dbbReqQty")
+	private Doublebox dbbCreatePpartReqQty;
+
+	@Listen(Events.ON_CLICK + "=#btnAddPpart")
+	public void btnAddPpart_clicked() {
+		if (getSelectedPars() == null) {
+			ZkNotification.warning("Please select part acquisition routing step.");
+			return;
+		}
+
+		showWdCreatePpart();
+	}
+
+	private void showWdCreatePpart() {
+		resetWdCreatePpartBlanks();
+		wdCreatePpart.setVisible(true);
+	}
+
+	private void resetWdCreatePpartBlanks() {
+		/**/
+		ParsInfo pars = getSelectedPars();
+		List<PpartInfo> ppartList = pars.getPpartList(true);
+
+		ListitemRenderer<PartInfo> partRowRenderer = (li, part, i) -> {
+			// pin
+			li.appendChild(new Listcell(part.getPin()));
+			// name
+			li.appendChild(new Listcell(part.getName()));
+
+			//
+			boolean match = ppartList.stream().anyMatch(ppart -> ppart.getPartUid().equals(part.getUid()));
+			li.setDisabled(match);
+		};
+		lbxCreatePpartPart.setItemRenderer(partRowRenderer);
+
+		//
+		ListModelList<PartInfo> model = new ListModelList<>(mbomService.loadPartList());
+		lbxCreatePpartPart.setModel(model);
+
+		/**/
+		lbCreatePpartSelPart.setValue(null);
+		dbbCreatePpartReqQty.setValue(null);
+	}
+
+	@Listen(Events.ON_SELECT + "=#wdCreatePpart #lbxPart")
+	public void wdCreatePpart_lbxPart_selected() {
+		PartInfo selPart = getCreatePpartSelectedPart();
+		lbCreatePpartSelPart.setValue(selPart.getPin() + "\t" + selPart.getName());
+	}
+
+	@Listen(Events.ON_CLICK + "=#wdCreatePpart #btnSubmit")
+	public void wdCreatePpart_btnSubmit_clicked() {
+		ParsInfo pars = getSelectedPars();
+
+		if (pars == null) {
+			ZkNotification.warning("Please select target part acquisition routing step.");
+			return;
+		}
+
+		ParsPartBuilder1 b = BpuFacade.getInstance().getBuilder(MbomBpuType.PARS_PART_1, getSelectedPars());
+		PartInfo selPart = getCreatePpartSelectedPart();
+		if (selPart != null)
+			log.debug("selPart: {}\t{}", selPart.getPin(), selPart.getName());
+		else
+			log.debug("selPart: null");
+		b.appendPart(selPart);
+		Double reqQty = dbbCreatePpartReqQty.getValue();
+		b.appendPartReqQty(reqQty == null ? 0 : reqQty);
+
+		StringBuilder msg = new StringBuilder();
+		if (!b.verify(msg)) {
+			ZkMsgBox.exclamation(msg.toString());
+			return;
+		}
+
+		ZkMsgBox.confirm("Confirm create?", () -> {
+			PpartInfo ppart = b.build(new StringBuilder(), new TimeTraveler());
+			// 成功
+			if (ppart != null) {
+				ZkNotification.info("Create routing step part [" + ppart.getPartPin() + "][" + ppart.getPartName()
+						+ "][" + ppart.getPartReqQty() + "] success.");
+				ListModelList<PpartInfo> model = (ListModelList) lbxPpart.getModel();
+				model.add(ppart);
+				pars.getPpartList(true); // reload
+			}
+			// 失敗
+			else {
+				ZkNotification.error();
+			}
+		});
+	}
+
+	@Listen(Events.ON_CLICK + "=#wdCreatePpart #btnResetBlanks")
+	public void wdCreatePpart_btnResetBlanks_clicked() {
+		resetWdCreatePpartBlanks();
+	}
+
+	@Listen(Events.ON_CLOSE + "=#wdCreatePpart")
+	public void wdCreatePpart_closed(Event _evt) {
+		_evt.stopPropagation();
+		wdCreatePpart.setVisible(false);
 	}
 
 	// -------------------------------------------------------------------------------

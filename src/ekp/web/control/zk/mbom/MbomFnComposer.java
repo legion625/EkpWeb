@@ -114,6 +114,7 @@ public class MbomFnComposer extends SelectorComposer<Component> {
 	}
 
 	// -------------------------------------------------------------------------------
+	// ---------------------------------wdCreatePart----------------------------------
 	@Wire
 	private Window wdCreatePart;
 	@Wire("#wdCreatePart #txbPin")

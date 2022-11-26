@@ -11,6 +11,8 @@ public interface PartInfo extends ObjectModelInfo{
 	String getName();
 
 	// -------------------------------------------------------------------------------
+	PartInfo reload();
+	
 	List<PartAcqInfo> getPaList(boolean _reload);
 	
 	List<PpartInfo> getPpartList(boolean _reload);

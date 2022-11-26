@@ -1,6 +1,7 @@
 package ekp.mbom.issue;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import ekp.data.service.mbom.ProdCtlInfo;
 import ekp.data.service.mbom.ProdInfo;
 import ekp.mbom.issue.parsPart.ParsPartBuilder0;
 import ekp.mbom.issue.parsPart.ParsPartBuilder1;
+import ekp.mbom.issue.parsPart.PpartBpuDel0;
 import ekp.mbom.issue.parsProc.ParsProcBuilder0;
 import ekp.mbom.issue.part.PartBpuDel0;
 import ekp.mbom.issue.part.PartBuilder0;
@@ -42,10 +44,12 @@ public enum MbomBpuType implements BpuType {
 	/* pars */
 	PARS_0(ParsBuilder0.class), //
 	PARS_$DEL0(ParsBpuDel0.class, ParsInfo.class), //
-	/**/
+	/* pproc */
 	PARS_PROC_0(ParsProcBuilder0.class), //
+	/* ppart */
 	PARS_PART_0(ParsPartBuilder0.class), //
 	PARS_PART_1(ParsPartBuilder1.class, ParsInfo.class), //
+	PPART_$DEL0(PpartBpuDel0.class, PpartInfo.class), //
 	/**/
 	PART_CFG_0(PartCfgBuilder0.class), //
 	PART_CFG_$EDITING(PartCfgBpuEditing.class, PartCfgInfo.class), //
@@ -102,6 +106,8 @@ public enum MbomBpuType implements BpuType {
 			return true;
 		case PARS_PART_1:
 			return matchBizParsPart1((ParsInfo) _args[0]);
+		case PPART_$DEL0:
+			return matchBizPpartDel0((PpartInfo) _args[0]);
 		/* part cfg*/
 		case PART_CFG_0:
 			return true;
@@ -211,6 +217,23 @@ public enum MbomBpuType implements BpuType {
 	private boolean matchBizParsPart1(ParsInfo _pars) {
 		if (_pars == null) {
 			log.warn("_pars null.");
+			return false;
+		}
+
+		return true;
+	}
+	
+	private boolean matchBizPpartDel0(PpartInfo _ppart) {
+		if (_ppart == null) {
+			log.warn("_ppart null.");
+			return false;
+		}
+
+		// 檢查是否有相關構型，且有任何一個構型已經凍結
+		boolean somePartCfgPublished = _ppart.getPars().getPa().getPartCfgConjList(true).stream()
+				.map(PartCfgConjInfo::getPartCfg).anyMatch(partCfg -> PartCfgStatus.PUBLISHED == partCfg.getStatus());
+		if (somePartCfgPublished) {
+			log.info("Some part configuration published.");
 			return false;
 		}
 

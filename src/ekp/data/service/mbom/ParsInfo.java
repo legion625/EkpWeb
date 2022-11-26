@@ -14,6 +14,9 @@ public interface ParsInfo extends ObjectModelInfo {
 	String getDesp();
 	
 	// -------------------------------------------------------------------------------
+	PartAcqInfo getPa();
+	
+	// -------------------------------------------------------------------------------
 	List<PprocInfo> getPprocList(boolean _reload);
 	default List<PprocInfo> getPprocList(){
 		return getPprocList(false);

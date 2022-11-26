@@ -60,6 +60,14 @@ public class ParsInfoDto extends ObjectModelInfoDto implements ParsInfo {
 	}
 	
 	// -------------------------------------------------------------------------------
+	private BizObjLoader<PartAcqInfo> paLoader = BizObjLoader.PART_ACQ.get();
+
+	@Override
+	public PartAcqInfo getPa() {
+		return paLoader.getObj(getPartAcqUid());
+	}
+
+	// -------------------------------------------------------------------------------
 	private BizObjLoader<List<PprocInfo>> pprocListLoader = BizObjLoader.of(
 			() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadParsProcList(getUid()));
 	

@@ -67,19 +67,27 @@ public class PpartInfoDto extends ObjectModelInfoDto implements PpartInfo {
 	void setPartReqQty(double partReqQty) {
 		this.partReqQty = partReqQty;
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	@Override
 	public PpartInfo reload() {
 		return DataServiceFactory.getInstance().getService(MbomDataService.class).loadParsPart(this.getUid());
 	}
-	
-	private BizObjLoader<PartInfo> partLoader = BizObjLoader.PART.get(); 
-	
+
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<ParsInfo> parsLoader = BizObjLoader.PARS.get();
+
+	@Override
+	public ParsInfo getPars() {
+		return parsLoader.getObj(getParsUid());
+	}
+
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<PartInfo> partLoader = BizObjLoader.PART.get();
+
 	@Override
 	public PartInfo getPart() {
 		return isAssignPart() ? partLoader.getObj(getPartUid()) : null;
 	}
-		
 
 }
