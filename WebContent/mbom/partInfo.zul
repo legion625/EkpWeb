@@ -3,10 +3,12 @@
 	<panel vflex="1" apply="ekp.web.control.zk.mbom.PartInfoComposer">
 		<panelchildren>
 			<hlayout>
-				<label value="Pin" />
-				<label id="lbPin" value="PIN1" />
-				<label value="Name" />
-				<label id="lbName" value="NAME1" />
+				<label value="Pin: " />
+				<label id="lbPin"  />
+				<label value="Name: " />
+				<label id="lbName"  />
+								<label value="Unit: " />
+				<label id="lbUnit" />
 			</hlayout>
 			<groupbox title="Part acquisition">
 				<listbox id="lbxPartAcq" emptyMessage="(No data)">

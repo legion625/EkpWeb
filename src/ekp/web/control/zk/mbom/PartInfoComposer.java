@@ -57,7 +57,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 
 	// -------------------------------------------------------------------------------
 	@Wire
-	private Label lbPin, lbName;
+	private Label lbPin, lbName, lbUnit;
 
 	@Wire
 	private Listbox lbxPartAcq, lbxPars, lbxPproc, lbxPpart;
@@ -159,7 +159,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 				ZkMsgBox.confirm("Confirm delete?", () -> {
 					boolean d = b.build(new StringBuilder(), new TimeTraveler());
 					if (d) {
-						ZkNotification.info("Delete part acuisition routing step [" + pars.getId() + "]["
+						ZkNotification.info("Delete part acuisition routing step [" + pars.getSeq() + "]["
 								+ pars.getName() + "] success.");
 						ListModelList<ParsInfo> model = (ListModelList) lbxPars.getModel();
 						model.remove(pars);
@@ -173,7 +173,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 			li.appendChild(lc);
 
 			// id
-			li.appendChild(new Listcell(pars.getId()));
+			li.appendChild(new Listcell(pars.getSeq()));
 			// name
 			li.appendChild(new Listcell(pars.getName()));
 			// desp
@@ -399,7 +399,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 			// 成功
 			if (pars != null) {
 				ZkNotification.info(
-						"Create part acquition routing step [" + pars.getId() + "][" + pars.getName() + "] success.");
+						"Create part acquition routing step [" + pars.getSeq() + "][" + pars.getName() + "] success.");
 				ListModelList<ParsInfo> model = (ListModelList) lbxPars.getModel();
 				model.add(pars);
 				pa.getParsList(true); // reload
@@ -544,6 +544,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 		/* part */
 		lbPin.setValue(_part.getPin());
 		lbName.setValue(_part.getName());
+		lbUnit.setValue(_part.getUnitName());
 
 		/* part acq */
 		ListModelList<PartAcqInfo> paModel = new ListModelList<>(_part.getPaList(false));

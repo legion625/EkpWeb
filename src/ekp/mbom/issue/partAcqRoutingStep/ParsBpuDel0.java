@@ -43,11 +43,11 @@ public class ParsBpuDel0 extends ParsBpu {
 	protected Boolean buildProcess(TimeTraveler _tt) {
 		if (!mbomDataService.deletePartAcqRoutingStep(getPars().getUid())) {
 			log.error("mbomDataSerivce.deletePartAcqRoutingStep [{}][{}][{}] return false.", pars.getUid(),
-					pars.getPartAcqUid(), pars.getId());
+					pars.getPartAcqUid(), pars.getSeq());
 			return false;
 		}
 		log.info("mbomDataService.deletePartAcqRoutingStep [{}][{}][{}]", pars.getUid(), pars.getPartAcqUid(),
-				pars.getId());
+				pars.getSeq());
 
 		return true;
 	}

@@ -7,7 +7,7 @@ import legion.ObjectModelInfo;
 public interface ParsInfo extends ObjectModelInfo {
 	String getPartAcqUid();
 
-	String getId();
+	String getSeq();
 
 	String getName();
 

@@ -17,7 +17,7 @@ public class ParsInfoDto extends ObjectModelInfoDto implements ParsInfo {
 	// -----------------------------------attribute-----------------------------------
 	private String partAcqUid; // ref data key
 
-	private String id; // routing step id
+	private String seq; // routing step id
 	private String name;
 	private String desp;
 
@@ -33,12 +33,12 @@ public class ParsInfoDto extends ObjectModelInfoDto implements ParsInfo {
 	}
 
 	@Override
-	public String getId() {
-		return id;
+	public String getSeq() {
+		return seq;
 	}
 
-	void setId(String id) {
-		this.id = id;
+	void setSeq(String seq) {
+		this.seq = seq;
 	}
 
 	@Override

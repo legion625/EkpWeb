@@ -38,16 +38,16 @@ public class MbomDataServiceTest extends AbstractEkpInitTest {
 		log.debug("testEkpKernelServiceRemoteCallBack: {}", dataService.testEkpKernelServiceRemoteCallBack());
 	}
 
-	@Test
-	public void testCreatePart() {
-		PartCreateObj partCo = new PartCreateObj();
-		partCo.setPin("A2");
-		partCo.setName("聰明機器貓");
-
-		PartInfo part = dataService.createPart(partCo);
-		assertNotNull(part);
-		log.debug("{}\t{}\t{}", part.getUid(), part.getPin(), part.getName());
-	}
+//	@Test
+//	public void testCreatePart() {
+//		PartCreateObj partCo = new PartCreateObj();
+//		partCo.setPin("A2");
+//		partCo.setName("聰明機器貓");
+//
+//		PartInfo part = dataService.createPart(partCo);
+//		assertNotNull(part);
+//		log.debug("{}\t{}\t{}", part.getUid(), part.getPin(), part.getName());
+//	}
 
 	@Test
 	public void testLoadPart() {
