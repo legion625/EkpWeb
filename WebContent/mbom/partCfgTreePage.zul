@@ -2,14 +2,56 @@
 <zk>
 	<panel id="pnPargCfgTreePage" vflex="1" apply="ekp.web.control.zk.mbom.PartCfgTreePageComposer">
 		<panelchildren>
-			<tree id="treePartCfg" vflex="1" checkmark="true">
-				<treecols sizable="true">
-					<treecol label="Pin" width="200px" />
-					<treecol label="Name" width="180px"/>
-					<treecol label="Unit" width="100px"/>
-					<treecol label="Required quantity" width="150px" />
-				</treecols>
-			</tree>
+		<tabbox vflex="1">
+			<tabs>
+				<tab label="tab1" />
+				<tab label="tab2" />
+				<tab label="tab3" />
+			</tabs>
+			<tabpanels>
+				<tabpanel vflex="1">
+					<tree id="treePartCfg" vflex="1" checkmark="true">
+						<treecols sizable="true">
+							<treecol label="Pin" width="200px" />
+							<treecol label="Name" width="180px" />
+							<treecol label="Unit" width="100px" />
+							<treecol label="Required quantity" width="150px" />
+						</treecols>
+					</tree>
+				</tabpanel>
+				<tabpanel vflex="1">
+					<tree id="tree2" vflex="1" checkmark="true">
+						<treecols sizable="true">
+
+
+							<treecol label="Part pin" width="200px" />
+							<treecol label="Part name" width="180px" />
+							<treecol label="Part unit" width="100px" />
+							<treecol label="Acq id" width="100px" />
+							<treecol label="Acq name" width="100px" />
+							<treecol label="Acq type" width="100px" />
+							<treecol label="Required quantity" width="150px" />
+						</treecols>
+					</tree>
+				</tabpanel>
+				<tabpanel vflex="1">
+					<tree id="tree3" vflex="1" checkmark="true">
+						<treecols sizable="true">
+
+
+							<treecol label="Part pin" width="200px" />
+							<treecol label="Part name" width="180px" />
+							<treecol label="Part unit" width="100px" />
+							<treecol label="Acq id" width="100px" />
+							<treecol label="Acq name" width="100px" />
+							<treecol label="Acq type" width="100px" />
+							<treecol label="Required quantity" width="150px" />
+						</treecols>
+					</tree>
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
+
 		</panelchildren>
 	</panel>
 
