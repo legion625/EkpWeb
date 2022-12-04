@@ -12,6 +12,7 @@ import ekp.serviceFacade.rmi.mbom.PartCfgCreateObjRemote;
 import ekp.serviceFacade.rmi.mbom.PartCfgRemote;
 import ekp.serviceFacade.rmi.mbom.PartCreateObjRemote;
 import ekp.serviceFacade.rmi.mbom.PartRemote;
+import ekp.serviceFacade.rmi.mbom.PpartSkewerRemote;
 import ekp.serviceFacade.rmi.mbom.ProdCreateObjRemote;
 import ekp.serviceFacade.rmi.mbom.ProdCtlCreateObjRemote;
 import ekp.serviceFacade.rmi.mbom.ProdCtlPartCfgConjRemote;
@@ -121,7 +122,44 @@ public class MbomFO {
 		dto.setPartReqQty(_remote.getPartReqQty());
 		return dto;
 	}
+	
+	// -------------------------------------------------------------------------------
+	// ----------------------------------PpartSkewer----------------------------------
+	public static PpartSkewer parsePpartSkewer(PpartSkewerRemote _remote) {
+		PpartSkewer skewer = new PpartSkewer();
+		/* p */
+		skewer.setpUid(_remote.getpUid());
+		skewer.setpPin(_remote.getpPin());
+		skewer.setpName(_remote.getpName());
 
+		/* pa */
+		skewer.setPaUid(_remote.getPaUid());
+		skewer.setPaId(_remote.getPaId());
+		skewer.setPaName(_remote.getPaName());
+
+		/* pars */
+		skewer.setParsSeq(_remote.getParsSeq());
+		skewer.setParsName(_remote.getParsName());
+		skewer.setParsDesp(_remote.getParsDesp());
+
+		/* ppart */
+		skewer.setUid(_remote.getUid());
+		skewer.setObjectCreateTime(_remote.getObjectCreateTime());
+		skewer.setObjectUpdateTime(_remote.getObjectUpdateTime());
+		skewer.setParsUid(_remote.getParsUid());
+
+		// assign part
+		skewer.setAssignPart(_remote.isAssignPart());
+		skewer.setPartUid(_remote.getPartUid());
+		skewer.setPartPin(_remote.getPartPin());
+		skewer.setPartReqQty(_remote.getPartReqQty());
+
+		/* ppart-p */
+		skewer.setPartName(_remote.getPartName());
+
+		return skewer;
+	}
+	
 	// -------------------------------------------------------------------------------
 	// ------------------------------------PartCfg------------------------------------
 	public static PartCfgInfo parsePartCfg(PartCfgRemote _remote) {

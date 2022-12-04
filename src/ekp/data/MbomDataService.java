@@ -1,8 +1,10 @@
 package ekp.data;
 
 import java.util.List;
+import java.util.Map;
 
 import ekp.data.service.mbom.PpartInfo;
+import ekp.data.service.mbom.PpartSkewer;
 import ekp.data.service.mbom.PprocCreateObj;
 import ekp.data.service.mbom.PprocInfo;
 import ekp.data.service.mbom.ParsCreateObj;
@@ -23,8 +25,11 @@ import ekp.data.service.mbom.ProdModCreateObj;
 import ekp.data.service.mbom.ProdModInfo;
 import ekp.data.service.mbom.ProdModItemInfo;
 import ekp.data.service.mbom.query.PartQueryParam;
+import ekp.data.service.mbom.query.PpartSkewerQueryParam;
+import ekp.serviceFacade.rmi.mbom.PpartSkewerRemote;
 import legion.IntegrationService;
 import legion.util.query.QueryOperation;
+import legion.util.query.QueryOperation.QueryValue;
 
 public interface MbomDataService extends IntegrationService {
 	public boolean testEkpKernelServiceRemoteCallBack();
@@ -99,6 +104,14 @@ public interface MbomDataService extends IntegrationService {
 
 	public boolean parsPartRevertAssignPart(String _uid);
 
+	// -------------------------------------------------------------------------------
+	// ----------------------------------PpartSkewer----------------------------------
+	public PpartSkewer loadPpartSkewer(String _uid);
+	
+	public QueryOperation<PpartSkewerQueryParam, PpartSkewer> searchPpartSkewer(
+			QueryOperation<PpartSkewerQueryParam, PpartSkewer> _param,
+			Map<PpartSkewerQueryParam, QueryValue[]> _existsQvMap);
+	
 	// -------------------------------------------------------------------------------
 	// ------------------------------------PartCfg------------------------------------
 	public PartCfgInfo createPartCfg(PartCfgCreateObj _dto);
