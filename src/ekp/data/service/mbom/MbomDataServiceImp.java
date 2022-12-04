@@ -12,6 +12,7 @@ import org.slf4j.event.Level;
 
 import ekp.data.MbomDataService;
 import ekp.data.service.mbom.query.PartQueryParam;
+import ekp.data.service.mbom.query.PpartSkewerQueryParam;
 import ekp.serviceFacade.rmi.EkpKernelServiceRemote;
 import ekp.serviceFacade.rmi.mbom.ParsPartRemote;
 import ekp.serviceFacade.rmi.mbom.ParsProcRemote;
@@ -21,6 +22,7 @@ import ekp.serviceFacade.rmi.mbom.PartCfgConjRemote;
 import ekp.serviceFacade.rmi.mbom.PartCfgRemote;
 import ekp.serviceFacade.rmi.mbom.PartCreateObjRemote;
 import ekp.serviceFacade.rmi.mbom.PartRemote;
+import ekp.serviceFacade.rmi.mbom.PpartSkewerRemote;
 import ekp.serviceFacade.rmi.mbom.ProdCtlPartCfgConjRemote;
 import ekp.serviceFacade.rmi.mbom.ProdCtlRemote;
 import ekp.serviceFacade.rmi.mbom.ProdModItemRemote;
@@ -29,6 +31,7 @@ import ekp.serviceFacade.rmi.mbom.ProdRemote;
 import legion.datasource.manager.DSManager;
 import legion.util.LogUtil;
 import legion.util.query.QueryOperation;
+import legion.util.query.QueryOperation.QueryValue;
 
 public class MbomDataServiceImp implements MbomDataService {
 	private Logger log = LoggerFactory.getLogger(MbomDataServiceImp.class);
@@ -406,6 +409,39 @@ public class MbomDataServiceImp implements MbomDataService {
 		} catch (Throwable e) {
 			LogUtil.log(log, e, Level.ERROR);
 			return false;
+		}
+	}
+
+	// -------------------------------------------------------------------------------
+	// ----------------------------------PpartSkewer----------------------------------
+	@Override
+	public PpartSkewer loadPpartSkewer(String _uid) {
+		try {
+			PpartSkewerRemote remote = getEkpKernelRmi().loadPpartSkewer(_uid);
+			return remote == null ? null : MbomFO.parsePpartSkewer(remote);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
+	public QueryOperation<PpartSkewerQueryParam, PpartSkewer> searchPpartSkewer(
+			QueryOperation<PpartSkewerQueryParam, PpartSkewer> _param,
+			Map<PpartSkewerQueryParam, QueryValue[]> _existsQvMap) {
+		try {
+			QueryOperation<PpartSkewerQueryParam, PpartSkewerRemote> paramRemote = (QueryOperation<PpartSkewerQueryParam, PpartSkewerRemote>) _param
+					.copy();
+			paramRemote = getEkpKernelRmi().searchPpartSkewer(paramRemote, _existsQvMap);
+			List<PpartSkewer> list = paramRemote.getQueryResult().stream().map(MbomFO::parsePpartSkewer)
+					.collect(Collectors.toList());
+//			list = list.stream().sorted(Comparator.comparing(PartInfo::getPin)).collect(Collectors.toList());
+			_param.setQueryResult(list);
+			_param.setTotal(paramRemote.getTotal());
+			return _param;
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
 		}
 	}
 
