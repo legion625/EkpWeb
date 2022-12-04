@@ -1,37 +1,65 @@
 package ekp.web.control.zk.mbom;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.Part;
+import javax.swing.tree.TreeModel;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 import org.zkoss.bind.impl.BindTreeitemRenderer;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.SelectorComposer;
+import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zul.A;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.DefaultTreeModel;
 import org.zkoss.zul.DefaultTreeNode;
+import org.zkoss.zul.Hlayout;
 import org.zkoss.zul.Include;
+import org.zkoss.zul.ListModelList;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.ListitemRenderer;
+import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.TreeNode;
 import org.zkoss.zul.Treecell;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.TreeitemRenderer;
 import org.zkoss.zul.Treerow;
+import org.zkoss.zul.Window;
 
 import ekp.DebugLogMark;
+import ekp.data.service.mbom.ParsInfo;
 import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.data.service.mbom.PpartInfo;
 import ekp.mbom.MbomService;
+import ekp.mbom.issue.MbomBpuType;
+import ekp.mbom.issue.part.PartBpuDel0;
+import ekp.mbom.issue.part.PartBpuPcAssignPa;
+import ekp.mbom.issue.part.PartBuilder0;
+import ekp.mbom.issue.partAcq.PaBpuDel0;
 import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartUnit;
+import ekp.web.control.zk.mbom.dto.PartCfgTreeDto;
 import legion.BusinessServiceFactory;
+import legion.biz.BpuFacade;
 import legion.util.LogUtil;
 import legion.util.NumberFormatUtil;
+import legion.util.TimeTraveler;
+import legion.web.zk.ZkMsgBox;
+import legion.web.zk.ZkNotification;
 import legion.web.zk.ZkUtil;
 
 public class PartCfgTreePageComposer extends SelectorComposer<Component> {
@@ -41,330 +69,318 @@ public class PartCfgTreePageComposer extends SelectorComposer<Component> {
 	private static Logger log = LoggerFactory.getLogger(DebugLogMark.class);
 
 	public static PartCfgTreePageComposer of(Include _icd) {
-		return ZkUtil.of(_icd, URI, "pnPargCfgTreePage");
+		return ZkUtil.of(_icd, URI, "pnPartCfgTreePage");
 	}
 
 	// -------------------------------------------------------------------------------
 	@Wire
-	private Tree treePartCfg;
+	private Listbox lbxPartCfg;
 
 	@Wire
-	private Tree tree2;
+	private Button btnAssignPartAcq;
 	
 	@Wire
-	private Tree tree3;
+	private Tree treePartCfg;
 
 	// -------------------------------------------------------------------------------
 	private MbomService mbomService = BusinessServiceFactory.getInstance().getService(MbomService.class);
 
+	private PartInfo part;
+	
+	// -------------------------------------------------------------------------------
 	@Override
 	public void doAfterCompose(Component comp) {
 		try {
 			super.doAfterCompose(comp);
-			log.debug("PartCfgTreePageComposer::doAfterCompose");
-			PartCfgInfo partCfg = mbomService.loadPartCfgById("MTW");
-			log.debug("partCfg: {}\t{}\t{}", partCfg.getId(), partCfg.getRootPartPin(),
-					partCfg.getRootPart().getName());
-			init1(partCfg);
-			init2(partCfg);
-			init3(partCfg);
+			init();
+//			PartCfgInfo partCfg1 = mbomService.loadPartCfgById("MTW");
+//			PartCfgInfo partCfg2 = mbomService.loadPartCfgById("MAU");
+//			refreshPartCfgTree(partCfg1);
 		} catch (Throwable e) {
 			LogUtil.log(e, Level.ERROR);
 		}
 	}
 
 	// -------------------------------------------------------------------------------
-	public void init1(PartCfgInfo _partCfg) {
-		TreeitemRenderer<DefaultTreeNode> renderer = (ti, node, i) -> {
-			Treerow tr = ti.getTreerow();
-			if (tr == null) { // tree row not create yet.
-				log.debug("create tree row");
-				tr = new Treerow();
-				ti.appendChild(tr);
-			}
-
-			if (node.getData() instanceof PartInfo) {
-				log.debug("render part");
-				PartInfo p = (PartInfo) node.getData();
-				// pin
-				ti.getTreerow().appendChild(new Treecell(p.getPin()));
-				// name
-				ti.getTreerow().appendChild(new Treecell(p.getName()));
-				// unit
-				ti.getTreerow().appendChild(new Treecell(p.getUnitName()));
-				// qty
-				ti.getTreerow().appendChild(new Treecell());
-			} else if (node.getData() instanceof PpartInfo) {
-				log.debug("render ppart");
-				PpartInfo ppart = (PpartInfo) node.getData();
-				// pin
-				ti.getTreerow().appendChild(new Treecell(ppart.getPartPin()));
-				// name
-				ti.getTreerow().appendChild(new Treecell(ppart.getPartName()));
-				// unit
-				ti.getTreerow().appendChild(new Treecell(ppart.getPart().getUnitName()));
-				// qty
-				ti.getTreerow().appendChild(new Treecell(NumberFormatUtil.getDecimalString(ppart.getPartReqQty(), 3)));
-			}
-
-		};
-		treePartCfg.setItemRenderer(renderer);
-
-//		TreeNode< PartInfo> tn = new TreeNode<PartInfo>() {
-//		};
-
-		PartInfo rootPart = _partCfg.getRootPart();
-		List<PpartInfo> ppartChildern = rootPart.getPpartChildren(_partCfg);
-		log.debug("ppartChildern.size(): {}", ppartChildern.size());
-		List<DefaultTreeNode<PpartInfo>> children = ppartChildern.stream().map(ppart -> {
-
-			List<PpartInfo> grandChildrenPpartList = ppart.getPart().getPpartChildren(_partCfg);
-			List<DefaultTreeNode<PpartInfo>> grandChildrenList = grandChildrenPpartList.stream()
-					.map(pp -> new DefaultTreeNode<>(pp)).collect(Collectors.toList());
-
-			DefaultTreeNode<PpartInfo> thisTn = new DefaultTreeNode<PpartInfo>(ppart, grandChildrenList);
-
-			return thisTn;
-		}).collect(Collectors.toList());
-		log.debug("children.size(): {}", children.size());
-
-		DefaultTreeNode<Object> tn = new DefaultTreeNode(rootPart, children);
-
-		DefaultTreeModel<Object> model = new DefaultTreeModel(tn);
-		treePartCfg.setModel(model);
-		log.debug("model.getRoot().getData(): {}", model.getRoot().getData());
-	}
-
-	// -------------------------------------------------------------------------------
-	// -------------------------------------init2-------------------------------------
-	public void init2(PartCfgInfo _partCfg) {
-		TreeitemRenderer<DefaultTreeNode<PartAcqInfo>> renderer = (ti, tn, i) -> {
-			Treerow tr = ti.getTreerow();
-			if (tr == null) { // tree row not create yet.
-				tr = new Treerow();
-				ti.appendChild(tr);
-			}
-			PartAcqInfo pa = tn.getData();
-			PartInfo p = pa.getPart(false);
-			// part pin
-			ti.getTreerow().appendChild(new Treecell(p.getPin()));
-			// part name
-			ti.getTreerow().appendChild(new Treecell(p.getName()));
-			// part unit
-			ti.getTreerow().appendChild(new Treecell(p.getUnitName()));
-			//
-			ti.getTreerow().appendChild(new Treecell(pa.getId()));
-			ti.getTreerow().appendChild(new Treecell(pa.getName()));
-			ti.getTreerow().appendChild(new Treecell(pa.getTypeName()));
-			// qty
-			ti.getTreerow().appendChild(new Treecell()); // FIXME
-
-		};
-		tree2.setItemRenderer(renderer);
-
-		PartAcqInfo rootPa = _partCfg.getRootPart().getPa(_partCfg);
-		DefaultTreeNode<PartAcqInfo> rootNode = parseTreeNode(_partCfg, rootPa);
-		List<DefaultTreeNode<PartAcqInfo>> list = new ArrayList<>();
-		list.add(rootNode);
-		DefaultTreeNode<PartAcqInfo> rootNode4Model = new DefaultTreeNode<PartAcqInfo>(rootPa, list);
-
-//		DefaultTreeModel<PartAcqInfo> model = new DefaultTreeModel<>(rootNode);
-		DefaultTreeModel<PartAcqInfo> model = new DefaultTreeModel<>(rootNode4Model);
-		tree2.setModel(model);
-
-//		DefaultTreeNode<PartAcqInfo> node = rootNode;
-		logNode(rootNode, model);
-//		while (node.getChildCount() > 0) {
-//
-//		}
-//		do {
-//			
-//
-//			if(node.getChildCount()>0) {
+	private void init() {
+		/* lbx */
+		ListitemRenderer<PartCfgInfo> partRenderer = (li, pc, i) -> {
+			Listcell lc;
+			// delete
+			lc = new Listcell();
+			// TODO
+//			Toolbarbutton btn = new Toolbarbutton();
+//			btn.setIconSclass("fa fa-minus");
+//			btn.addEventListener(Events.ON_CLICK, e -> {
+//				boolean match = MbomBpuType.PART_$DEL0.match(p);
+//				if (!match) {
+//					ZkNotification.warning("This part cannot be deleted.");
+//					return;
+//				}
 //				
-//			}
-//		}
-	}
+//				PartBpuDel0 b = BpuFacade.getInstance().getBuilder(MbomBpuType.PART_$DEL0, p);
+//				if (b == null) {
+//					ZkNotification.error();
+//					return;
+//				}
+//
+//				ZkMsgBox.confirm("Confirm delete?", () -> {
+//					boolean d = b.build(new StringBuilder(), new TimeTraveler());
+//					if (d) {
+//						ZkNotification.info("Delete part [" + p.getPin() + "][" + p.getName() + "] success.");
+//						ListModelList<PartInfo> model = (ListModelList) lbxPart.getModel();
+//						model.remove(p);
+//					} else {
+//						ZkNotification.error();
+//					}
+//
+//				});
+//			});
+//			lc.appendChild(btn);
+			li.appendChild(lc);
+			//
+			li.appendChild(new Listcell(pc.getId()));
+			//
+			li.appendChild(new Listcell(pc.getName()));
+			// root part pin
+			li.appendChild(new Listcell(pc.getRootPartPin()));
+			// 
+			li.appendChild(new Listcell(pc.getStatusName()));
+			
+			//
+			li.appendChild(new Listcell(pc.getDesp()));
+			
 
-	private void logNode(TreeNode<PartAcqInfo> _node, DefaultTreeModel<PartAcqInfo> model) {
-		log.debug("model.isLeaf(node): {}\t{}", _node.getData().getPartPin(), model.isLeaf(_node));
+//			// click event -> show part
+//			li.addEventListener(Events.ON_CLICK, e -> {
+//				fnCntProxy.refreshCntUri(PartInfoComposer.URI);
+//				PartInfoComposer partComposer = fnCntProxy.getComposer(PartInfoComposer.class);
+//				partComposer.refreshPartInfo(p);
+//			});
+		};
+		lbxPartCfg.setItemRenderer(partRenderer);
+		
+		/* wdPcAssignPa */
+		ListitemRenderer<PartAcqInfo>pcAssignPaPaRenderer = (li, pa, i)->{
+			Listcell lc;
+		// delete
+			lc = new Listcell();
+			li.appendChild(lc);
 
-		if (_node.getChildCount() > 0) {
-			_node.getChildren().forEach(cNode -> logNode(cNode, model));
-		}
-	}
-
-	private DefaultTreeNode<PartAcqInfo> parseTreeNode(PartCfgInfo _partCfg, PartAcqInfo _pa) {
-		List<PartAcqInfo> childrenList = _pa.getChildrenList(_partCfg);
-		if (childrenList == null || childrenList.isEmpty()) {
-			log.debug("add leaf {}", _pa.getPartPin());
-			return new DefaultTreeNode<PartAcqInfo>(_pa);
-		} else {
-			List<DefaultTreeNode<PartAcqInfo>> childrenTreeNodeList = new ArrayList<>();
-			for (PartAcqInfo childPa : childrenList) {
-				childrenTreeNodeList.add(parseTreeNode(_partCfg, childPa));
+			// id
+			li.appendChild(new Listcell(pa.getId()));
+			// name
+			li.appendChild(new Listcell(pa.getName()));
+			// type
+			li.appendChild(new Listcell(pa.getTypeName()));
+			//  partCfgList
+			lc = new Listcell();
+			List<PartCfgInfo> partCfgList = pa.getPartCfgList(false);
+			Hlayout hlayout = new Hlayout();
+			for (PartCfgInfo partCfg : partCfgList) {
+				A a = new A(partCfg.getId());
+				hlayout.appendChild(a);
 			}
-			log.debug("add branch {}", _pa.getPartPin());
-			return new DefaultTreeNode<PartAcqInfo>(_pa, childrenTreeNodeList);
-		}
+			lc.appendChild(hlayout);
+			li.appendChild(lc);
 
-		//
-//		DefaultTreeNode<PartAcqInfo> tn = new DefaultTreeNode<PartAcqInfo>(_pa, new ArrayList<>());
-//		List<PartAcqInfo> childrenList = _pa.getChildrenList(_partCfg);
-//		if(childrenList!=null && !childrenList.isEmpty()) {
-//			for (PartAcqInfo childPa : childrenList) {
-////				childrenTreeNodeList.add(parseTreeNode(_partCfg, childPa));
-//				tn.add(parseTreeNode(_partCfg, childPa));
-//			}
-//		}
-//		return tn;
-	}
-
-	// -------------------------------------------------------------------------------
-	// -------------------------------------init3-------------------------------------
-	public void init3(PartCfgInfo _partCfg) {
+			// 
+			li.setDisabled(b==null || !b.isPaAvaible(pa));
+		} ;
+		lbxPcAssignPaPa.setItemRenderer(pcAssignPaPaRenderer);
 		
-		
+		/* tree */
 		TreeitemRenderer<DefaultTreeNode<PartCfgTreeDto>> renderer = (ti, tn, i) -> {
 			Treerow tr = ti.getTreerow();
 			if (tr == null) { // tree row not create yet.
 				tr = new Treerow();
 				ti.appendChild(tr);
 			}
-//			PartAcqInfo pa = tn.getData();
 			PartCfgTreeDto data = tn.getData();
-			PartInfo p = data.getP();
-			PartAcqInfo pa = data.getPa();
-			PpartInfo ppart = data.getPpart();
-			
-//			PartInfo p = pa.getPart(false);
+
 			// part pin
-			ti.getTreerow().appendChild(new Treecell(p==null?"(No data)":p.getPin()));
+			ti.getTreerow().appendChild(new Treecell(data.getPartPin()));
 			// part name
-			ti.getTreerow().appendChild(new Treecell(p==null?"(No data)":p.getName()));
+			ti.getTreerow().appendChild(new Treecell(data.getPartName()));
 			// part unit
-			ti.getTreerow().appendChild(new Treecell(p==null?"(No data)":p.getUnitName()));
+			ti.getTreerow().appendChild(new Treecell(data.getPartUnitName()));
 			//
-			ti.getTreerow().appendChild(new Treecell(pa==null?"(No data)":pa.getId()));
-			ti.getTreerow().appendChild(new Treecell(pa==null?"(No data)":pa.getName()));
-			ti.getTreerow().appendChild(new Treecell(pa==null?"(No data)":pa.getTypeName()));
+			ti.getTreerow().appendChild(new Treecell(data.getPaId()));
+			ti.getTreerow().appendChild(new Treecell(data.getPaName()));
+			ti.getTreerow().appendChild(new Treecell(data.getPaTypeName()));
 			// qty
-			ti.getTreerow().appendChild(new Treecell(ppart==null?"(No data)": NumberFormatUtil.getDecimalString(ppart.getPartReqQty(), 3) ));
+			ti.getTreerow().appendChild(new Treecell(data.getPpartReqQtyDisplay()));
 
 		};
-		tree3.setItemRenderer(renderer);
+		treePartCfg.setItemRenderer(renderer);
 
-//		PartAcqInfo rootPa = _partCfg.getRootPart().getPa(_partCfg);
-		PartCfgTreeDto partCfgTreeDto = PartCfgTreeDto.of(_partCfg);
-//		DefaultTreeNode<PartCfgTreeDto> tn = partCfgTreeDto.packTreeNode();
-		DefaultTreeNode<PartCfgTreeDto> tn =partCfgTreeDto.packRootTreeNode4Model();
-		
-//		DefaultTreeNode<PartCfgTreeDto> tn4Model = new DefaultTreeNode<PartCfgTreePageComposer.PartCfgTreeDto>(partCfgTreeDto, new DefaultTreeNode[] {tn});
-		DefaultTreeModel<PartCfgTreeDto> model = new DefaultTreeModel<>(tn);
-		tree3.setModel(model);
-		
-//		DefaultTreeNode<PartAcqInfo> rootNode = parseTreeNode(_partCfg, rootPa);
-		
-		
-//		List<DefaultTreeNode<PartAcqInfo>> list = new ArrayList<>();
-//		list.add(rootNode);
-//		DefaultTreeNode<PartAcqInfo> rootNode4Model = new DefaultTreeNode<PartAcqInfo>(rootPa, list);
-//
-////		DefaultTreeModel<PartAcqInfo> model = new DefaultTreeModel<>(rootNode);
-//		DefaultTreeModel<PartAcqInfo> model = new DefaultTreeModel<>(rootNode4Model);
-//		tree2.setModel(model);
+	}
 
-//		DefaultTreeNode<PartAcqInfo> node = rootNode;
-//		logNode(rootNode, model);
-//		while (node.getChildCount() > 0) {
-//
-//		}
-//		do {
-//			
-//
-//			if(node.getChildCount()>0) {
-//				
-//			}
-//		}
+	private PartCfgInfo getSelectedPc() {
+		ListModelList<PartCfgInfo> model = (ListModelList) lbxPartCfg.getModel();
+		Iterator<PartCfgInfo> it = model.getSelection().iterator();
+		PartCfgInfo selectedPartCfg = it.hasNext() ? it.next() : null;
+		return selectedPartCfg;
+	}
+	
+	@Listen(Events.ON_SELECT + "=#lbxPartCfg")
+	public void lbxPartCfg_selected() {
+//		ListModelList<PartCfgInfo> model = (ListModelList) lbxPartCfg.getModel();
+//		Iterator<PartCfgInfo> it = model.getSelection().iterator();
+//		PartCfgInfo selectedPartCfg = it.hasNext() ? it.next() : null;
+		PartCfgInfo selectedPartCfg = getSelectedPc();
+		if (selectedPartCfg == null) {
+			ZkNotification.warning("Please select Part configuration.");
+			return;
+		}
+		refreshPartCfgTree(selectedPartCfg);
+	}
+	
+	// -------------------------------------------------------------------------------
+	private TreeNode<PartCfgTreeDto> getSelectedPartCfgTreeNode() {
+		DefaultTreeModel<PartCfgTreeDto> model = (DefaultTreeModel) treePartCfg.getModel();
+		Iterator<TreeNode<PartCfgTreeDto>> it = model.getSelection().iterator();
+		return it.hasNext() ? it.next() : null;
+	}
+	
+	private void toggleTreePartCfgToolbar(PartCfgTreeDto _dto) {
+		btnAssignPartAcq.setDisabled(!MbomBpuType.PART_$PC_ASSIGN_PA.match(_dto.getP(), getSelectedPc()));
+		// TODO
+	}
+	
+	@Listen(Events.ON_SELECT+"=#treePartCfg")
+	public void treePartCfg_selected() {
+		TreeNode<PartCfgTreeDto> tn =  getSelectedPartCfgTreeNode();
+		PartCfgTreeDto dto = tn.getData();
+		toggleTreePartCfgToolbar(dto);
 	}
 	
 	
+	@Listen(Events.ON_CLICK+"=#btnAssignPartAcq")
+	public void btnAssignPartAcq_clicked() {
+		if(getSelectedPartCfgTreeNode()==null) {
+			ZkNotification.info("Please select a part pin in tree.");
+			return;
+		}
+		showWdPcAssignPa();
+	}
+	
+	// -------------------------------------------------------------------------------
+	@Wire
+	private Window wdPcAssignPa;
+	@Wire("#wdPcAssignPa #lbxPa")
+	private Listbox lbxPcAssignPaPa;
+	
+	private PartBpuPcAssignPa b ;
+	
+	private void showWdPcAssignPa() {
+		resetWdPcAssignPa();
+		wdPcAssignPa.setVisible(true);
+	}
+	
+	private void resetWdPcAssignPa() {
+		TreeNode<PartCfgTreeDto> tn = getSelectedPartCfgTreeNode();
+		PartInfo p = tn.getData().getP();
+		PartCfgInfo pc = getSelectedPc();
+		b = BpuFacade.getInstance().getBuilder(MbomBpuType.PART_$PC_ASSIGN_PA, p, pc);
+
+		//
+//		List<PartAcqInfo> paList = b.getAvailablePaList();
+		List<PartAcqInfo> paList = b.getAllPaList();
+		ListModelList<PartAcqInfo> model = new ListModelList<>(paList);
+		lbxPcAssignPaPa.setModel(model);
+	}
+	
+	@Listen(Events.ON_CLICK + "=#wdPcAssignPa #btnSubmit")
+	public void wdPcAssignPa_btnSubmit_clicked() {
+		
+//		PartBuilder0 b = BpuFacade.getInstance().getBuilder(MbomBpuType.PART_0);
+		ListModelList<PartAcqInfo> model =  (ListModelList)lbxPcAssignPaPa.getModel();
+		Iterator<PartAcqInfo> it = 		model.getSelection().iterator();
+		PartAcqInfo selectedPa =  it.hasNext() ? it.next() : null;
+		b.appendPa(selectedPa);
+		
+//		b.appendPin(txbCreatePartPin.getValue()).appendName(txbCreatePartName.getValue());
+//		b.appendUnit(
+//				cbbCreatePartUnit.getSelectedItem() == null ? null : cbbCreatePartUnit.getSelectedItem().getValue());
+		StringBuilder msg = new StringBuilder();
+		if (!b.verify(msg)) {
+			ZkMsgBox.exclamation(msg.toString());
+			return;
+		}
+
+		ZkMsgBox.confirm("Confirm create?", () -> {
+			boolean run = b.build(new StringBuilder(), new TimeTraveler());
+			// 成功
+			if (run) {
+				ZkNotification.info("Assign part configuration [" + b.getPc().getId() + "] to acquisition ["
+						+ b.getPa().getId() + "] sccuess.");
+
+				TreeNode<PartCfgTreeDto> tn = getSelectedPartCfgTreeNode();
+				tn.getData().reloadPa(b.getPc());
+				refreshPartCfgTree(b.getPc());
+				wdPcAssignPa_closed(new Event("evt"));
+			}
+			// 失敗
+			else {
+				ZkNotification.error();
+			}
+		});
+
+	}
 
 	
-	public static class PartCfgTreeDto {
-		private PpartInfo ppart; // root: no ppart
-		private PartInfo p;
-		private PartAcqInfo pa;
-		private List<PartCfgTreeDto> childrenList;
+	@Listen(Events.ON_CLOSE + "=#wdPcAssignPa")
+	public void wdPcAssignPa_closed(Event _evt) {
+		_evt.stopPropagation();
+		wdPcAssignPa.setVisible(false);
+	}
+	
+	// -------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------
+	public void refresh(PartInfo _part) {
+		this.part = _part;
+		List<PartCfgInfo> partCfgList = part.getPartCfgList(false);
+		ListModelList<PartCfgInfo> model = new ListModelList<>(partCfgList);
+		lbxPartCfg.setModel(model);
+	}
+	
+	private void refreshPartCfgTree(PartCfgInfo _partCfg) {
+		btnAssignPartAcq.setDisabled(true);
 		
-		private PartCfgTreeDto( PpartInfo ppart,PartInfo p, PartAcqInfo pa, List<PartCfgTreeDto> childrenList) {
-			this.p = p;
-			this.pa = pa;
-			this.ppart = ppart;
-			this.childrenList = childrenList;
-		}
+		PartCfgTreeDto partCfgTreeDto = PartCfgTreeDto.of(_partCfg);
+		DefaultTreeNode<PartCfgTreeDto> rootTn = partCfgTreeDto.packRootTreeNode4Model();
+		DefaultTreeModel<PartCfgTreeDto> model = new DefaultTreeModel<>(rootTn);
+		treePartCfg.setModel(model);
 
-		private static PartCfgTreeDto of(PartCfgInfo _partCfg) {
-			PartInfo rootPart = _partCfg.getRootPart();
-			PartAcqInfo rootPa = rootPart.getPa(_partCfg);
-			PpartInfo ppart = null;
-			List<PartCfgTreeDto> childrenList = new ArrayList<>();
-
-			for (PpartInfo childPpart : rootPa.getPpartList()) {
-				childrenList.add(of(_partCfg, childPpart));
-			}
-
-			return new PartCfgTreeDto(ppart, rootPart, rootPa, childrenList);
-		}
-
-		private static PartCfgTreeDto of(PartCfgInfo _partCfg, PpartInfo _ppart) {
-			PpartInfo ppart = _ppart;
-			PartInfo p = ppart.getPart();
-			PartAcqInfo pa = p == null ? null : p.getPa(_partCfg);
-			List<PartCfgTreeDto> childrenList = new ArrayList<>();
-			if (pa != null)
-				for (PpartInfo childPpart : pa.getPpartList()) {
-					childrenList.add(of(_partCfg, childPpart));
-				}
-			return new PartCfgTreeDto(ppart, p, pa, childrenList);
-		}
 		
-		public PartInfo getP() {
-			return p;
-		}
-
-		public PartAcqInfo getPa() {
-			return pa;
-		}
-
-		public PpartInfo getPpart() {
-			return ppart;
-		}
-
-		public List<PartCfgTreeDto> getChildrenList() {
-			return childrenList;
-		}
+		// 全展開
+		List<TreeNode<PartCfgTreeDto>> list = new ArrayList<>();
+		appendAllBranchTreeNodes(list, rootTn);
 		
-		// ---------------------------------------------------------------------------
-		public DefaultTreeNode<PartCfgTreeDto> packRootTreeNode4Model(){
-			return  new DefaultTreeNode<PartCfgTreePageComposer.PartCfgTreeDto>(this, new DefaultTreeNode[] {packTreeNode()});
+		// 預設展第1階(root的children才是我們認定的第1階，實際上是model的第2階。)
+//		TreeNode<PartCfgTreeDto> tn  = rootTn;
+//		do {
+//			model.addOpenObject(tn);
+//			tn
+//		}
+////		while(!tn.isLeaf()) {
+//			
+////		}
+//		
+//		model.get
+		for (TreeNode<PartCfgTreeDto> tn : list) {
+//			log.debug("tn.getData().getP().getPin(): {}", tn.getData().getP().getPin());
+			model.addOpenObject(tn);
 		}
-		
-		public DefaultTreeNode<PartCfgTreeDto> packTreeNode() {
-			if (getChildrenList() == null || getChildrenList().isEmpty()) {
-				return new DefaultTreeNode<PartCfgTreePageComposer.PartCfgTreeDto>(this);
-			} else {
-				List<DefaultTreeNode<PartCfgTreeDto>> childrenTreeNodeList = new ArrayList<>();
-				for (PartCfgTreeDto childDto : getChildrenList())
-					childrenTreeNodeList.add(childDto.packTreeNode());
-				return new DefaultTreeNode<PartCfgTreePageComposer.PartCfgTreeDto>(this, childrenTreeNodeList);
-			}
+	}
+	
+	private void appendAllBranchTreeNodes(List<TreeNode<PartCfgTreeDto>> _list, TreeNode<PartCfgTreeDto> _tn) {
+		if (_tn.getChildCount() > 0) {
+			_list.add(_tn);
+			for (TreeNode<PartCfgTreeDto> _childTn : _tn.getChildren())
+				appendAllBranchTreeNodes(_list, _childTn);
 		}
-		
-		
-		
-
-
 	}
 
 }

@@ -20,6 +20,7 @@ import ekp.mbom.issue.parsPart.ParsPartBuilder1;
 import ekp.mbom.issue.parsPart.PpartBpuDel0;
 import ekp.mbom.issue.parsProc.ParsProcBuilder0;
 import ekp.mbom.issue.part.PartBpuDel0;
+import ekp.mbom.issue.part.PartBpuPcAssignPa;
 import ekp.mbom.issue.part.PartBuilder0;
 import ekp.mbom.issue.partAcq.PaBpuDel0;
 import ekp.mbom.issue.partAcq.PartAcqBuilder0;
@@ -38,6 +39,7 @@ public enum MbomBpuType implements BpuType {
 	/* p */
 	PART_0(PartBuilder0.class), //
 	PART_$DEL0(PartBpuDel0.class, PartInfo.class), //
+	PART_$PC_ASSIGN_PA(PartBpuPcAssignPa.class, PartInfo.class, PartCfgInfo.class), //
 	/* pa */
 	PART_ACQ_0(PartAcqBuilder0.class), //
 	PART_ACQ_$DEL0(PaBpuDel0.class, PartAcqInfo.class), //
@@ -88,6 +90,9 @@ public enum MbomBpuType implements BpuType {
 			return true;
 		case PART_$DEL0:
 			return matchBizPartDel0((PartInfo) _args[0]);
+		case PART_$PC_ASSIGN_PA:
+//			return matchBizPartPcAssignPa((PartInfo) _args[0], (PartCfgInfo) _args[1]);
+			return true;
 		/* part acq */
 		case PART_ACQ_0:
 			return true;
@@ -158,6 +163,24 @@ public enum MbomBpuType implements BpuType {
 
 		return true;
 	}
+
+//	private boolean matchBizPartPcAssignPa(PartInfo _p, PartCfgInfo _pc) {
+//		if (_p == null) {
+//			log.warn("_p null.");
+//			return false;
+//		}
+//		if (_pc == null) {
+//			log.warn("_pc null.");
+//			return false;
+//		}
+//		
+//		if(_pc.getRootPart().equals(_p)) {
+//			log.info("The root part of configuration pc null.");
+//			return false;
+//		}
+//		
+//		return true;
+//	}
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------------partAcq------------------------------------

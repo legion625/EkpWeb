@@ -34,7 +34,11 @@ public interface PartInfo extends ObjectModelInfo {
 	List<PartCfgInfo> getPartCfgList(boolean _reload);
 	
 	default PartAcqInfo getPa(PartCfgInfo _partCfg) {
-		return  getPaList(false).stream().filter(pa -> pa.getPartCfgList(false).contains(_partCfg)).findAny()
+		return getPa(_partCfg, false);
+	} 
+	
+	default PartAcqInfo getPa(PartCfgInfo _partCfg, boolean _reload) {
+		return  getPaList(_reload).stream().filter(pa -> pa.getPartCfgList(_reload).contains(_partCfg)).findAny()
 				.orElse(null);
 	}
 	

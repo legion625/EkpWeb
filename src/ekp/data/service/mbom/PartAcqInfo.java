@@ -40,6 +40,11 @@ public interface PartAcqInfo extends ObjectModelInfo {
 	
 	List<PartCfgConjInfo> getPartCfgConjList(boolean _reload);
 
+	default PartCfgConjInfo getPartCfgConj(String _partCfgUid, boolean _reload) {
+		return getPartCfgConjList(_reload).stream().filter(pcc -> pcc.getPartCfgUid().equals(_partCfgUid)).findAny()
+				.orElse(null);
+	}
+	
 	default List<PartCfgInfo> getPartCfgList(boolean _reload) {
 		return getPartCfgConjList(_reload).stream().map(PartCfgConjInfo::getPartCfg).collect(Collectors.toList());
 	}

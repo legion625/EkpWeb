@@ -16,7 +16,12 @@ public interface PartCfgInfo extends ObjectModelInfo {
 	String getName();
 
 	String getDesp();
-	
+
+	// -------------------------------------------------------------------------------
+	default String getStatusName() {
+		return (getStatus() == null ? PartCfgStatus.UNDEFINED : getStatus()).getName();
+	}
+
 	// -------------------------------------------------------------------------------
 	PartCfgInfo reload();
 	

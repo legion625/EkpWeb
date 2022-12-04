@@ -572,6 +572,9 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 		/* part acq */
 		ListModelList<PartAcqInfo> paModel = new ListModelList<>(_part.getPaList(false));
 		lbxPartAcq.setModel(paModel);
+		
+		/* Part cfg */
+		partCfgTreePageComposer.refresh(_part);
 	}
 
 }
