@@ -3,8 +3,12 @@ package ekp.web.control.zk.mbom.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.zkoss.util.logging.Log;
 import org.zkoss.zul.DefaultTreeNode;
 
+import ekp.DebugLogMark;
 import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartInfo;
@@ -13,6 +17,8 @@ import ekp.util.DataUtil;
 import legion.util.NumberFormatUtil;
 
 public class PartCfgTreeDto {
+	private static Logger log = LoggerFactory.getLogger(PartCfgTreeDto.class);
+	
 	private PpartInfo ppart; // root: no ppart
 	private PartInfo p;
 	private PartAcqInfo pa;
@@ -25,18 +31,44 @@ public class PartCfgTreeDto {
 		this.childrenList = childrenList;
 	}
 
-	public static PartCfgTreeDto of(PartCfgInfo _partCfg) {
-		PartInfo rootPart = _partCfg.getRootPart();
-		PartAcqInfo rootPa = rootPart.getPa(_partCfg);
+	public static PartCfgTreeDto of(PartCfgInfo _partCfg, PartInfo _thisPart) {
+		log.debug("PartCfgTreeDto.of");
+//		PartInfo rootPart = _partCfg.getRootPart();
+		PartInfo thisPart = _thisPart;
+		log.debug("thisPart: {}\t{}", thisPart.getPin(), thisPart.getName());
+		if(_thisPart==null) {
+			thisPart = _partCfg.getRootPart();
+			log.debug("thisPart: {}\t{}", thisPart.getPin(), thisPart.getName());
+		}
+			
+//		PartAcqInfo rootPa = rootPart.getPa(_partCfg);
+		
+		PartAcqInfo thisPa = thisPart.getPa(_partCfg, true);
+		log.debug("thisPa: {}", thisPa);
 		PpartInfo ppart = null;
 		List<PartCfgTreeDto> childrenList = new ArrayList<>();
 
-		for (PpartInfo childPpart : rootPa.getPpartList()) {
+//		for (PpartInfo childPpart : rootPa.getPpartList()) {
+		for (PpartInfo childPpart : thisPa.getPpartList()) {
 			childrenList.add(of(_partCfg, childPpart));
 		}
 
-		return new PartCfgTreeDto(ppart, rootPart, rootPa, childrenList);
+//		return new PartCfgTreeDto(ppart, rootPart, rootPa, childrenList);
+		return new PartCfgTreeDto(ppart, thisPart, thisPa, childrenList);
 	}
+	
+//	public static PartCfgTreeDto of(PartCfgInfo _partCfg) {
+//		PartInfo rootPart = _partCfg.getRootPart();
+//		PartAcqInfo rootPa = rootPart.getPa(_partCfg);
+//		PpartInfo ppart = null;
+//		List<PartCfgTreeDto> childrenList = new ArrayList<>();
+//
+//		for (PpartInfo childPpart : rootPa.getPpartList()) {
+//			childrenList.add(of(_partCfg, childPpart));
+//		}
+//
+//		return new PartCfgTreeDto(ppart, rootPart, rootPa, childrenList);
+//	}
 
 	private static PartCfgTreeDto of(PartCfgInfo _partCfg, PpartInfo _ppart) {
 		PpartInfo ppart = _ppart;

@@ -24,8 +24,10 @@ import ekp.data.service.mbom.ProdInfo;
 import ekp.data.service.mbom.ProdModCreateObj;
 import ekp.data.service.mbom.ProdModInfo;
 import ekp.data.service.mbom.ProdModItemInfo;
+import ekp.data.service.mbom.query.PartCfgQueryParam;
 import ekp.data.service.mbom.query.PartQueryParam;
 import ekp.data.service.mbom.query.PpartSkewerQueryParam;
+import ekp.serviceFacade.rmi.mbom.PartCfgRemote;
 import ekp.serviceFacade.rmi.mbom.PpartSkewerRemote;
 import legion.IntegrationService;
 import legion.util.query.QueryOperation;
@@ -111,6 +113,11 @@ public interface MbomDataService extends IntegrationService {
 	public QueryOperation<PpartSkewerQueryParam, PpartSkewer> searchPpartSkewer(
 			QueryOperation<PpartSkewerQueryParam, PpartSkewer> _param,
 			Map<PpartSkewerQueryParam, QueryValue[]> _existsQvMap);
+//	
+//	default public QueryOperation<PpartSkewerQueryParam, PpartSkewer> searchPpartSkewer(
+//			QueryOperation<PpartSkewerQueryParam, PpartSkewer> _param) {
+//		return searchPpartSkewer(_param, null);
+//	}
 	
 	// -------------------------------------------------------------------------------
 	// ------------------------------------PartCfg------------------------------------
@@ -123,6 +130,8 @@ public interface MbomDataService extends IntegrationService {
 	public PartCfgInfo loadPartCfgById(String _id);
 
 	public List<PartCfgInfo> loadPartCfgList(String _rootPartUid);
+	
+	public QueryOperation<PartCfgQueryParam, PartCfgInfo> searchPartCfg(QueryOperation<PartCfgQueryParam, PartCfgInfo> _param);
 
 	public boolean partCfgStartEditing(String _uid);
 

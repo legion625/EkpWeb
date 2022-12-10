@@ -67,7 +67,7 @@ public class MbomBuilderTest extends AbstractEkpInitTest {
 	}
 
 	@Test
-	@Ignore
+//	@Ignore
 	public void testMbomScenario() {
 		log.debug("test 1");
 		/* Part */
@@ -81,13 +81,13 @@ public class MbomBuilderTest extends AbstractEkpInitTest {
 		PartAcqInfo pa3 = mbomDel.buildPartAcqType03(p, tt);
 
 		/* PartCfg */
-		PartCfgInfo partCfg11 = mbomDel.buildPartCfg0(p.getUid(), p.getPin(), tt);
+		PartCfgInfo partCfg11 = mbomDel.buildPartCfg0(p.getUid(), p.getPin(), tt, "TEST_PC_11", "TEST_PC_11_NAME", "TEST_PC_11_DESP");
 		mbomDel.runPartCfgEditing(partCfg11, tt, pa1);
 
-		PartCfgInfo partCfg12 = mbomDel.buildPartCfg0(p.getUid(), p.getPin(), tt);
+		PartCfgInfo partCfg12 = mbomDel.buildPartCfg0(p.getUid(), p.getPin(), tt, "TEST_PC_12", "TEST_PC_12_NAME", "TEST_PC_12_DESP");
 		mbomDel.runPartCfgEditing(partCfg12, tt, pa2);
 
-		PartCfgInfo partCfg13 = mbomDel.buildPartCfg0(p.getUid(), p.getPin(), tt);
+		PartCfgInfo partCfg13 = mbomDel.buildPartCfg0(p.getUid(), p.getPin(), tt, "TEST_PC_13", "TEST_PC_13_NAME", "TEST_PC_13_DESP");
 		mbomDel.runPartCfgEditing(partCfg13, tt, pa3);
 
 		/* Prod */

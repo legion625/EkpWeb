@@ -2,8 +2,18 @@ package ekp.data.service.mbom;
 
 import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
+import legion.util.query.QueryOperation;
+import legion.util.query.QueryOperation.CompareOp;
+import legion.util.query.QueryOperation.QueryValue;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import ekp.data.BizObjLoader;
 import ekp.data.MbomDataService;
+import ekp.data.service.mbom.query.PartCfgQueryParam;
+import ekp.data.service.mbom.query.PpartSkewerQueryParam;
 import ekp.mbom.type.PartCfgStatus;
 
 public class PartCfgInfoDto extends ObjectModelInfoDto implements PartCfgInfo {
@@ -86,5 +96,23 @@ public class PartCfgInfoDto extends ObjectModelInfoDto implements PartCfgInfo {
 	@Override
 	public PartInfo getRootPart() {
 		return partLoader.getObj(getRootPartUid());
+	}
+
+	private BizObjLoader<List<PpartSkewer>> ppartSkewerListLoader = BizObjLoader.of(() -> {
+		QueryOperation<PpartSkewerQueryParam, PpartSkewer> param = new QueryOperation<>();
+		Map<PpartSkewerQueryParam, QueryValue[]> existsQvMap = new HashMap<>();
+
+		param.appendCondition(QueryOperation.value(PpartSkewerQueryParam.B_OF_PC$_PA_EXISTS, CompareOp.equal, true));
+		existsQvMap.put(PpartSkewerQueryParam.B_OF_PC$_PA_EXISTS, new QueryValue[] { //
+				QueryOperation.value(PartCfgQueryParam.ID, CompareOp.equal, getId()), //
+		});
+		param = DataServiceFactory.getInstance().getService(MbomDataService.class).searchPpartSkewer(param,
+				existsQvMap);
+		return param.getQueryResult();
+	});
+
+	@Override
+	public List<PpartSkewer> getPpartSkewerList(boolean _reload) {
+		return ppartSkewerListLoader.getObj(_reload);
 	}
 }

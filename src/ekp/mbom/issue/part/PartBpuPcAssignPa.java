@@ -2,6 +2,10 @@ package ekp.mbom.issue.part;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ekp.DebugLogMark;
 import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.mbom.PartCfgConjInfo;
 import ekp.data.service.mbom.PartCfgInfo;
@@ -9,6 +13,7 @@ import ekp.data.service.mbom.PartInfo;
 import legion.util.TimeTraveler;
 
 public class PartBpuPcAssignPa extends PartBpu {
+	protected Logger log = LoggerFactory.getLogger(PartBpuPcAssignPa.class);
 	/* base */
 	private PartInfo part;
 	private PartCfgInfo pc;
@@ -114,6 +119,8 @@ public class PartBpuPcAssignPa extends PartBpu {
 			}
 			tt.addSite("revert deletePartCfgConj",
 					() -> mbomDataService.createPartCfgConj(inPcc.getPartCfgUid(), inPcc.getPartAcqUid()) != null);
+			log.info("mbomDataService.deletePartCfgConj [{}][{}][{}]", inPcc.getUid(), inPcc.getPartCfgUid(),
+					inPcc.getPartAcqUid());
 		}
 		
 		// 
@@ -124,6 +131,7 @@ public class PartBpuPcAssignPa extends PartBpu {
 			return false;
 		}
 		tt.addSite("revert mbomDataService.createPartCfgConj", () -> mbomDataService.deletePartCfgConj(pcc.getUid()));
+		log.info("mbomDataService.createPartCfgConj [{}][{}]", getPc().getUid(), getPa().getUid());
 
 		//
 		if(_tt!=null)

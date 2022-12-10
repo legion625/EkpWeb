@@ -28,10 +28,14 @@ public interface PartInfo extends ObjectModelInfo {
 
 	// -------------------------------------------------------------------------------
 	List<PartAcqInfo> getPaList(boolean _reload);
+	
+	default List<PartCfgInfo> getReferencedPartCfgList(boolean _reload){
+		return getPaList(_reload).stream().flatMap(pa->pa.getPartCfgList(_reload).stream()).distinct().collect(Collectors.toList());
+	}
 
 	List<PpartInfo> getPpartList(boolean _reload); // 被引用到的地方
 	
-	List<PartCfgInfo> getPartCfgList(boolean _reload);
+	List<PartCfgInfo> getRootPartCfgList(boolean _reload);
 	
 	default PartAcqInfo getPa(PartCfgInfo _partCfg) {
 		return getPa(_partCfg, false);

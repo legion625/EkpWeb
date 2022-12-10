@@ -155,7 +155,7 @@ public enum MbomBpuType implements BpuType {
 			return false;
 		}
 
-		List<PartCfgInfo> partCfgList = _p.getPartCfgList(true);
+		List<PartCfgInfo> partCfgList = _p.getRootPartCfgList(true);
 		if (!partCfgList.isEmpty()) {
 			log.info("partCfgList should be empty.");
 			return false;

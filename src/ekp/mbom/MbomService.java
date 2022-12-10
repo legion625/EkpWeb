@@ -24,4 +24,6 @@ public interface MbomService extends BusinessService{
 	// -------------------------------------------------------------------------------
 	// ------------------------------------PartCfg------------------------------------
 	public PartCfgInfo loadPartCfgById(String _id);
+	
+	public List<PartCfgInfo> loadPartCfgList();
 }

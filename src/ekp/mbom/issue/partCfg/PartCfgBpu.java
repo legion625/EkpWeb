@@ -3,6 +3,7 @@ package ekp.mbom.issue.partCfg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ekp.DebugLogMark;
 import ekp.TestLogMark;
 import ekp.data.MbomDataService;
 import ekp.data.service.mbom.PartCfgInfo;
@@ -11,7 +12,8 @@ import legion.biz.Bpu;
 import legion.util.TimeTraveler;
 
 public abstract class PartCfgBpu extends Bpu<Boolean> {
-	protected Logger log = LoggerFactory.getLogger(PartCfgBpu.class);
+//	protected Logger log = LoggerFactory.getLogger(PartCfgBpu.class);
+	protected Logger log = LoggerFactory.getLogger(DebugLogMark.class);
 	protected static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
 
 	/* base */

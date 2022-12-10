@@ -27,7 +27,9 @@
 								<listheader label="Id" width="100px" />
 								<listheader label="Name" width="180px" />
 								<listheader label="Type" width="50px" />
-								<listheader label="Referenced part configuraions" />
+								<listheader label="Referenced part configuraions" >
+								<toolbarbutton id="btnAssignPc" iconSclass="fa fa-plus"/>
+								</listheader>
 							</listhead>
 						</listbox>
 						<window id="wdCreatePa" title="Create part acquisition" width="400px" height="130px"
@@ -46,6 +48,20 @@
 								<button id="btnSubmit" label="Submit" />
 								<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
 							</div>
+						</window>
+						<window id="wdAssignPc" title="Assign part configuration" width="720px"
+							mode="highlighted" closable="true" visible="false" sizable="true">
+							<listbox id="lbxPc" emptyMessage="(No data)" checkmark="true">
+								<listhead sizable="true">
+									<listheader width="50px" />
+									<listheader label="Id" width="100px" sort="auto(id)" />
+									<listheader label="Name" width="130px" sort="auto(name)" />
+									<listheader label="Root part pin" width="130px" sort="auto(rootPartPin)" />
+									<listheader label="Status" width="130px" sort="auto(status)" />
+									<listheader label="Description" sort="auto(desp)" />
+								</listhead>
+							</listbox>
+							<button id="btnSubmit" label="Submit"/>
 						</window>
 
 						<separator spacing="5px" />
