@@ -74,7 +74,7 @@ public class MbomBuilderTest extends AbstractEkpInitTest {
 		PartInfo p = mbomDel.buildPartType0(tt);
 
 		PartAcqInfo pa1 = mbomDel.buildPartAcqType01(p, tt);
-		ParsInfo pars1 = mbomDel.buildPartAcqRoutingStepType0(pa1.getUid(), tt);
+		ParsInfo pars1 = mbomDel.buildPartAcqRoutingStepType0(pa1, tt);
 		PprocInfo pproc1 = mbomDel.buildParsProc0(pars1.getUid(), tt);
 		PpartInfo ppart1 = mbomDel.buildParsPart0(pars1.getUid(), tt);
 		PartAcqInfo pa2 = mbomDel.buildPartAcqType02(p, tt);
@@ -154,13 +154,13 @@ public class MbomBuilderTest extends AbstractEkpInitTest {
 		
 		/* PartAcqRoutingStep */
 		// A.漢堡
-		ParsInfo pars_A11_SP_ASM = mbomDel.buildParsType0(partAcq_A11_SP.getUid(), tt, "ASM", "組裝", "");
+		ParsInfo pars_A11_SP_ASM = mbomDel.buildParsType1(partAcq_A11_SP, tt, "ASM", "組裝", "");
 		
 		
 		// 漢堡-肉
-		ParsInfo pars_M11_SP1_SAUTE = mbomDel.buildParsType0(partAcq_M11_SP1.getUid(), tt, "SAUTE", "煎", "");
-		ParsInfo pars_M11_SP2_SAUTE = mbomDel.buildParsType0(partAcq_M11_SP2.getUid(), tt, "SAUTE", "煎", "");
-		ParsInfo pars_M11_SP3_SAUTE = mbomDel.buildParsType0(partAcq_M11_SP3.getUid(), tt, "SAUTE", "煎", "");
+		ParsInfo pars_M11_SP1_SAUTE = mbomDel.buildParsType1(partAcq_M11_SP1, tt, "SAUTE", "煎", "");
+		ParsInfo pars_M11_SP2_SAUTE = mbomDel.buildParsType1(partAcq_M11_SP2, tt, "SAUTE", "煎", "");
+		ParsInfo pars_M11_SP3_SAUTE = mbomDel.buildParsType1(partAcq_M11_SP3, tt, "SAUTE", "煎", "");
 
 		/* ParsPart */
 		PpartInfo ppart_A11_SP_ASM_L = mbomDel.buildParsPart1(pars_A11_SP_ASM, tt, part_L22, 1); // 大麥克-麵包

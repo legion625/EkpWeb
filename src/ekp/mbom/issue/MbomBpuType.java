@@ -25,7 +25,7 @@ import ekp.mbom.issue.part.PartBuilder0;
 import ekp.mbom.issue.partAcq.PaBpuDel0;
 import ekp.mbom.issue.partAcq.PartAcqBuilder0;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBpuDel0;
-import ekp.mbom.issue.partAcqRoutingStep.ParsBuilder0;
+import ekp.mbom.issue.partAcqRoutingStep.ParsBuilder1;
 import ekp.mbom.issue.partCfg.PartCfgBpuEditing;
 import ekp.mbom.issue.prod.ProdBuilder0;
 import ekp.mbom.issue.prod.ProdBpuEditCtl;
@@ -45,14 +45,15 @@ public enum MbomBpuType implements BpuType {
 	PART_ACQ_0(PartAcqBuilder0.class), //
 	PART_ACQ_$DEL0(PaBpuDel0.class, PartAcqInfo.class), //
 	/* pars */
-	PARS_0(ParsBuilder0.class), //
+	PARS_1(ParsBuilder1.class, PartAcqInfo.class), //
 	PARS_$DEL0(ParsBpuDel0.class, ParsInfo.class), //
-	/* pproc */
-	PARS_PROC_0(ParsProcBuilder0.class), //
+
 	/* ppart */
 	PARS_PART_0(ParsPartBuilder0.class), //
 	PARS_PART_1(ParsPartBuilder1.class, ParsInfo.class), //
 	PPART_$DEL0(PpartBpuDel0.class, PpartInfo.class), //
+	/* pproc */
+	PARS_PROC_0(ParsProcBuilder0.class), //
 	/**/
 	PART_CFG_0(PartCfgBuilder0.class), //
 	PART_CFG_$EDITING(PartCfgBpuEditing.class, PartCfgInfo.class), //
@@ -100,13 +101,10 @@ public enum MbomBpuType implements BpuType {
 		case PART_ACQ_$DEL0:
 			return matchBizPaDel0((PartAcqInfo) _args[0]);
 		/* pars */
-		case PARS_0:
-			return true;
+		case PARS_1:
+			return matchBizPars1((PartAcqInfo) _args[0]);
 		case PARS_$DEL0:
 			return matchBizParsDel0((ParsInfo) _args[0]);
-		/* pproc */
-		case PARS_PROC_0:
-			return true;
 		/* ppart */
 		case PARS_PART_0:
 			return true;
@@ -114,7 +112,10 @@ public enum MbomBpuType implements BpuType {
 			return matchBizParsPart1((ParsInfo) _args[0]);
 		case PPART_$DEL0:
 			return matchBizPpartDel0((PpartInfo) _args[0]);
-		/* part cfg*/
+		/* pproc */
+		case PARS_PROC_0:
+			return true;
+		/* part cfg */
 		case PART_CFG_0:
 			return true;
 		case PART_CFG_$EDITING:
@@ -188,30 +189,44 @@ public enum MbomBpuType implements BpuType {
 	// TODO
 
 	private boolean matchBizPaDel0(PartAcqInfo _pa) {
-		if(_pa==null) {
+		if (_pa == null) {
 			log.warn("_pa null.");
 			return false;
 		}
-		
+
 		// TODO status
-		
-		List<ParsInfo> parsList =  _pa.getParsList(true);
+
+		List<ParsInfo> parsList = _pa.getParsList(true);
 		if (!parsList.isEmpty()) {
 			log.info("parsList should be empty.");
 			return false;
 		}
-		
-		List<PartCfgConjInfo> partCfgConjList =  _pa.getPartCfgConjList(true);
+
+		List<PartCfgConjInfo> partCfgConjList = _pa.getPartCfgConjList(true);
 		if (!partCfgConjList.isEmpty()) {
 			log.info("partCfgConjList should be empty.");
 			return false;
 		}
-		
+
+		return true;
+	}
+
+	// -------------------------------------------------------------------------------
+	// -------------------------------------pars--------------------------------------
+	private boolean matchBizPars1(PartAcqInfo _pa) {
+		if (_pa == null) {
+			log.warn("_pars null.");
+			return false;
+		}
+
+		if (PartAcqStatus.EDITING != _pa.getStatus()) {
+			log.trace("PartAcqStatus should be EDITING. [{}][{}]", _pa.getUid(), _pa.getStatus());
+			return false;
+		}
+
 		return true;
 	}
 	
-	// -------------------------------------------------------------------------------
-	// -------------------------------------pars--------------------------------------
 	private boolean matchBizParsDel0(ParsInfo _pars) {
 		if (_pars == null) {
 			log.warn("_pars null.");
@@ -233,7 +248,6 @@ public enum MbomBpuType implements BpuType {
 		return true;
 	}
 
-
 	// -------------------------------------------------------------------------------
 	// -------------------------------------ppart-------------------------------------
 	private boolean matchBizParsPart1(ParsInfo _pars) {
@@ -250,7 +264,7 @@ public enum MbomBpuType implements BpuType {
 
 		return true;
 	}
-	
+
 	private boolean matchBizPpartDel0(PpartInfo _ppart) {
 		if (_ppart == null) {
 			log.warn("_ppart null.");
@@ -267,7 +281,6 @@ public enum MbomBpuType implements BpuType {
 
 		return true;
 	}
-	
 
 	// -------------------------------------------------------------------------------
 	// -------------------------------------pproc-------------------------------------

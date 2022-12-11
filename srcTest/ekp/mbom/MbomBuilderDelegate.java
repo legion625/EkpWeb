@@ -25,7 +25,7 @@ import ekp.mbom.issue.parsPart.ParsPartBuilder1;
 import ekp.mbom.issue.parsProc.ParsProcBuilder0;
 import ekp.mbom.issue.part.PartBuilder0;
 import ekp.mbom.issue.partAcq.PartAcqBuilder0;
-import ekp.mbom.issue.partAcqRoutingStep.ParsBuilder0;
+import ekp.mbom.issue.partAcqRoutingStep.ParsBuilder1;
 import ekp.mbom.issue.partCfg.PartCfgBuilder0;
 import ekp.mbom.issue.partCfg.PartCfgBpuEditing;
 import ekp.mbom.issue.prod.ProdBuilder0;
@@ -128,9 +128,8 @@ public class MbomBuilderDelegate {
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------PartAcqRoutingStep-------------------------------
-	public ParsInfo buildParsType0(String _partAcqUid, TimeTraveler _tt, String _id, String _name, String _desp) {
-		ParsBuilder0 parsb = bpuFacade.getBuilder(MbomBpuType.PARS_0);
-		parsb.appendPartAcqUid(_partAcqUid);
+	public ParsInfo buildParsType1(PartAcqInfo _partAcq, TimeTraveler _tt, String _id, String _name, String _desp) {
+		ParsBuilder1 parsb = bpuFacade.getBuilder(MbomBpuType.PARS_1, _partAcq);
 		parsb.appendId(_id).appendName(_name).appendDesp(_desp);
 
 		// validate
@@ -147,7 +146,7 @@ public class MbomBuilderDelegate {
 		assertNotNull(msgBuild.toString(), pars);
 
 		// check
-		assertEquals(_partAcqUid, pars.getPartAcqUid());
+		assertEquals(_partAcq.getUid(), pars.getPartAcqUid());
 		assertEquals(_id, pars.getSeq());
 		assertEquals(_name, pars.getName());
 		assertEquals(_desp, pars.getDesp());
@@ -155,8 +154,8 @@ public class MbomBuilderDelegate {
 		return pars;
 	}
 	
-	public ParsInfo buildPartAcqRoutingStepType0(String _partAcqUid, TimeTraveler _tt) {
-		return buildParsType0(_partAcqUid, _tt, "TEST_PARS_ID", "TEST_PARS_NAME", "TEST_PARS_DESP");
+	public ParsInfo buildPartAcqRoutingStepType0(PartAcqInfo _partAcq, TimeTraveler _tt) {
+		return buildParsType1(_partAcq, _tt, "TEST_PARS_ID", "TEST_PARS_NAME", "TEST_PARS_DESP");
 	}
 
 	// -------------------------------------------------------------------------------

@@ -41,12 +41,10 @@ import ekp.mbom.issue.parsPart.ParsPartBuilder1;
 import ekp.mbom.issue.parsPart.PpartBpuDel0;
 import ekp.mbom.issue.part.PartBpuDel0;
 import ekp.mbom.issue.part.PartBpuPcAssignPa;
-import ekp.mbom.issue.part.PartBuilder0;
 import ekp.mbom.issue.partAcq.PaBpuDel0;
 import ekp.mbom.issue.partAcq.PartAcqBuilder0;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBpuDel0;
-import ekp.mbom.issue.partAcqRoutingStep.ParsBuilder0;
-import ekp.mbom.issue.partCfg.PartCfgBpuEditing;
+import ekp.mbom.issue.partAcqRoutingStep.ParsBuilder1;
 import ekp.mbom.type.PartAcqStatus;
 import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartCfgStatus;
@@ -80,7 +78,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 
 	/* Pars */
 	@Wire
-	private Button btnParsDelete;
+	private Button btnParsNew, btnParsDelete;
 	@Wire
 	private Listbox lbxPars;
 
@@ -261,6 +259,9 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 	private void togglePaToolbarButtons(PartAcqInfo _pa) {
 		btnPaPublish.setDisabled(!(PartAcqStatus.EDITING == _pa.getStatus())); // FIXME
 		btnPaDelete.setDisabled(!MbomBpuType.PART_ACQ_$DEL0.match(_pa));
+		
+		// ->pars
+		btnParsNew.setDisabled(!MbomBpuType.PARS_1.match(_pa));
 	}
 	
 	private PartAcqInfo getSelectedPa() {
@@ -516,8 +517,8 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 	@Wire("#wdCreatePars #txbDesp")
 	private Textbox txbCreateParsDesp;
 
-	@Listen(Events.ON_CLICK + "=#btnAddPars")
-	public void btnAddPars_clicked() {
+	@Listen(Events.ON_CLICK + "=#btnParsNew")
+	public void btnParsNew_clicked() {
 		PartAcqInfo pa = getSelectedPa();
 		if (pa == null) {
 			ZkNotification.warning("Please select part acquisition.");
@@ -545,8 +546,9 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 			return;
 		}
 
-		ParsBuilder0 b = BpuFacade.getInstance().getBuilder(MbomBpuType.PARS_0);
-		b.appendPartAcqUid(pa.getUid());
+//		ParsBuilder0 b = BpuFacade.getInstance().getBuilder(MbomBpuType.PARS_0);
+		ParsBuilder1 b = BpuFacade.getInstance().getBuilder(MbomBpuType.PARS_1, pa);
+//		b.appendPartAcqUid(pa.getUid());
 		b.appendId(txbCreateParsId.getValue()).appendName(txbCreateParsName.getValue())
 				.appendDesp(txbCreateParsDesp.getValue());
 		StringBuilder msg = new StringBuilder();
@@ -632,8 +634,6 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 	}
 
 	private void togglePpartToolbarButtons(PpartInfo _ppart) {
-//			btnPpartNew // TODO
-		
 		btnPpartDelete.setDisabled(!MbomBpuType.PPART_$DEL0.match(_ppart));
 	}
 
@@ -705,7 +705,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 	@Listen(Events.ON_SELECT + "=#wdCreatePpart #lbxPart")
 	public void wdCreatePpart_lbxPart_selected() {
 		PartInfo selPart = getCreatePpartSelectedPart();
-		lbCreatePpartSelPart.setValue(selPart.getPin() + "\t" + selPart.getName());
+		lbCreatePpartSelPart.setValue(selPart.getPin() + "\t" + selPart.getName()+"\t"+selPart.getUnitName());
 	}
 
 	@Listen(Events.ON_CLICK + "=#wdCreatePpart #btnSubmit")

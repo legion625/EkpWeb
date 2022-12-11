@@ -70,13 +70,13 @@
 						<!--  -->
 						<groupbox title="Routing step" closable="false">
 							<hlayout>
-								<button id="btnAddPars" label="New" iconSclass="fa fa-plus" />
+								<button id="btnParsNew" label="New" iconSclass="fa fa-plus" disabled="true" />
 								<button id="btnParsDelete" label="Delete" iconSclass="fas fa-trash-alt" disabled="true" />
 							</hlayout>
 							<listbox id="lbxPars" emptyMessage="(No data)" checkmark="true">
 								<listhead sizable="true">
 									<listheader width="40px" />
-									<listheader label="Seq" width="100px" />
+									<listheader label="Seq" width="100px" sort="auto(seq)"/>
 									<listheader label="Name" width="180px" />
 									<listheader label="Description" />
 								</listhead>
@@ -107,7 +107,7 @@
 								<tabpanels>
 									<tabpanel>
 										<hlayout>
-											<button id="btnPpartNew" label="New" iconSclass="fa fa-plus" />
+											<button id="btnPpartNew" label="New" iconSclass="fa fa-plus" disabled="true"/>
 											<button id="btnPpartDelete" label="Delete" iconSclass="fas fa-trash-alt" disabled="true" />
 										</hlayout>
 										<listbox id="lbxPpart" emptyMessage="(No data)" checkmark="true">
