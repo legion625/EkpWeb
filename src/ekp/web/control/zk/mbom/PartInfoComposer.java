@@ -14,6 +14,7 @@ import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.A;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Hlayout;
@@ -46,6 +47,7 @@ import ekp.mbom.issue.partAcq.PartAcqBuilder0;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBpuDel0;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBuilder0;
 import ekp.mbom.issue.partCfg.PartCfgBpuEditing;
+import ekp.mbom.type.PartAcqStatus;
 import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartCfgStatus;
 import legion.BusinessServiceFactory;
@@ -65,8 +67,13 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 //	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
 
 	// -------------------------------------------------------------------------------
+	/* Part */
 	@Wire
 	private Label lbPin, lbName, lbUnit;
+	
+	/* PartAcq */
+	@Wire
+	private Button btnPaPublish, btnPaDelete;
 
 	@Wire
 	private Listbox lbxPartAcq, lbxPars, lbxPproc, lbxPpart;
@@ -101,45 +108,16 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 		/* PartAcq */
 		ListitemRenderer<PartAcqInfo> paRenderer = (li, pa, i) -> {
 			Listcell lc;
-			// delete
-			lc = new Listcell();
-			Toolbarbutton btn = new Toolbarbutton();
-			btn.setIconSclass("fa fa-minus");
-			btn.addEventListener(Events.ON_CLICK, e -> {
-				boolean match = MbomBpuType.PART_ACQ_$DEL0.match(pa);
-				if (!match) {
-					ZkNotification.warning("This part acquisition cannot be deleted.");
-					return;
-				}
-
-				PaBpuDel0 b = BpuFacade.getInstance().getBuilder(MbomBpuType.PART_ACQ_$DEL0, pa);
-				if (b == null) {
-					ZkNotification.error();
-					return;
-				}
-
-				ZkMsgBox.confirm("Confirm delete?", () -> {
-					boolean d = b.build(new StringBuilder(), new TimeTraveler());
-					if (d) {
-						ZkNotification
-								.info("Delete part acuisition [" + pa.getId() + "][" + pa.getName() + "] success.");
-						ListModelList<PartAcqInfo> model = (ListModelList) lbxPartAcq.getModel();
-						model.remove(pa);
-						part.getPaList(true); // reload
-					} else {
-						ZkNotification.error();
-					}
-				});
-			});
-			lc.appendChild(btn);
-			li.appendChild(lc);
-
+			// checkmark
+			li.appendChild(new Listcell());
 			// id
 			li.appendChild(new Listcell(pa.getId()));
 			// name
 			li.appendChild(new Listcell(pa.getName()));
 			// type
 			li.appendChild(new Listcell(pa.getTypeName()));
+			// status
+			li.appendChild(new Listcell(pa.getStatusName()));
 			//  partCfgList
 			lc = new Listcell();
 			List<PartCfgInfo> partCfgList = pa.getPartCfgList(false);
@@ -150,12 +128,6 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 			}
 			lc.appendChild(hlayout);
 			li.appendChild(lc);
-
-			// click event -> show pars
-			li.addEventListener(Events.ON_CLICK, e -> {
-				ListModelList<ParsInfo> parsModel = new ListModelList<>(pa.getParsList());
-				lbxPars.setModel(parsModel);
-			});
 		};
 		lbxPartAcq.setItemRenderer(paRenderer);
 
@@ -300,6 +272,23 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 	}
 
 	// -------------------------------------------------------------------------------
+	@Listen(Events.ON_SELECT + "=#lbxPartAcq")
+	public void lbxPartAcq_selected() {
+		PartAcqInfo pa = getSelectedPa();
+
+		/* toggle buttons */
+		togglePaToolbarButtons(pa);
+
+		/* refresh pars */
+		ListModelList<ParsInfo> parsModel = new ListModelList<>(pa.getParsList());
+		lbxPars.setModel(parsModel);
+	}
+
+	private void togglePaToolbarButtons(PartAcqInfo _pa) {
+		btnPaPublish.setDisabled(!(PartAcqStatus.EDITING == _pa.getStatus())); // FIXME
+		btnPaDelete.setDisabled(!MbomBpuType.PART_ACQ_$DEL0.match(_pa));
+	}
+	
 	private PartAcqInfo getSelectedPa() {
 		ListModelList<PartAcqInfo> model = (ListModelList) lbxPartAcq.getModel();
 		Iterator<PartAcqInfo> it = model.getSelection().iterator();
@@ -324,6 +313,9 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 		return it.hasNext() ? it.next() : null;
 	}
 
+	// -------------------------------------------------------------------------------
+	// --------------------------------toolbar_for_pa---------------------------------
+	
 	// -------------------------------------------------------------------------------
 	// ----------------------------------wdCreatePa-----------------------------------
 	@Wire
@@ -384,6 +376,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 				ListModelList<PartAcqInfo> model = (ListModelList) lbxPartAcq.getModel();
 				model.add(pa);
 				part.getPaList(true); // reload
+				wdCreatePa_closed(new Event("evt"));
 			}
 			// 失敗
 			else {
@@ -409,12 +402,6 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 	private Window wdAssignPc;
 	@Wire("#wdAssignPc #lbxPc")
 	private Listbox lbxAssignPcPc;
-//	@Wire("#wdCreatePa #txbId")
-//	private Textbox txbCreatePaId;
-//	@Wire("#wdCreatePa #txbName")
-//	private Textbox txbCreatePaName;
-//	@Wire("#wdCreatePa #cbbType")
-//	private Combobox cbbCreatePaType;
 	
 	@Listen(Events.ON_CLICK + "=#btnAssignPc")
 	public void btnAssignPc_clicked() {
@@ -457,10 +444,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 			if (result) {
 				ZkNotification.info(
 						"Assign part acquition [" + pa.getId() + "][" + pa.getName() + "] to part configuration ["+pc.getId()+"]["+pc.getName()+"] success.");
-//				refreshPa(part.getPaList(true)); // reload
-//				log.debug("part: {}", part);
 				log.debug("pa.getPartCfgConjList(false).size(): {}", pa.getPartCfgConjList(false).size());
-//				part = part.reload();
 				log.debug("part: {}", part);
 				log.debug("pa.getPartCfgConjList(false).size(): {}", pa.getPartCfgConjList(false).size());
 				refreshPartInfo(part.reload());
@@ -479,6 +463,50 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 		_evt.stopPropagation();
 		wdAssignPc.setVisible(false);
 	}
+	
+	// -------------------------------------------------------------------------------
+	@Listen(Events.ON_CLICK + "=#btnPaPublish")
+	public void btnPaPublish_clicked() {
+		ZkNotification.warning("Working in progress...");
+		// TODO	
+	}
+	
+
+	// -------------------------------------------------------------------------------
+	@Listen(Events.ON_CLICK + "=#btnPaDelete")
+	public void btnPaDelete_clicked() {
+		PartAcqInfo pa = getSelectedPa();
+		if (pa == null) {
+			ZkNotification.warning("Please select a part acquisition.");
+			return;
+		}
+		
+		boolean match = MbomBpuType.PART_ACQ_$DEL0.match(pa);
+		if (!match) {
+			ZkNotification.warning("This part acquisition cannot be deleted.");
+			return;
+		}
+
+		PaBpuDel0 b = BpuFacade.getInstance().getBuilder(MbomBpuType.PART_ACQ_$DEL0, pa);
+		if (b == null) {
+			ZkNotification.error();
+			return;
+		}
+
+		ZkMsgBox.confirm("Confirm delete?", () -> {
+			boolean d = b.build(new StringBuilder(), new TimeTraveler());
+			if (d) {
+				ZkNotification
+						.info("Delete part acuisition [" + pa.getId() + "][" + pa.getName() + "] success.");
+				ListModelList<PartAcqInfo> model = (ListModelList) lbxPartAcq.getModel();
+				model.remove(pa);
+				part.getPaList(true); // reload
+			} else {
+				ZkNotification.error();
+			}
+		});
+	}
+	
 	
 	// -------------------------------------------------------------------------------
 	// ---------------------------------wdCreatePars----------------------------------

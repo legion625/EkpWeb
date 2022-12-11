@@ -1,3 +1,8 @@
+Min-Hua, 2022.12.11
+[change]
+1. [MBOM] Modify part info page.
+  - toolbar for part acquisition
+
 ------------------------------------------------------------------------------
 v0.1.5 released by Min-Hua, 2022.12.11
 [change]

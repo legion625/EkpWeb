@@ -165,7 +165,7 @@ public abstract class PartAcqBuilder extends Bpu<PartAcqInfo> {
 		if (_tt != null)
 			_tt.copySitesFrom(tt);
 
-		return pa;
+		return pa.reload();
 	}
 
 

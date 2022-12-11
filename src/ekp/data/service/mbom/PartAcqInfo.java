@@ -30,11 +30,17 @@ public interface PartAcqInfo extends ObjectModelInfo {
 	long getPublishTime();
 	
 	// -------------------------------------------------------------------------------
+	default String getStatusName() {
+		return (getStatus() == null ? PartAcqStatus.UNDEFINED : getStatus()).getName();
+	}
+	
 	default String getTypeName() {
 		return (getType() == null ? PartAcquisitionType.UNDEFINED : getType()).getName();
 	}
 	
 	// -------------------------------------------------------------------------------
+	PartAcqInfo reload();
+	
 	PartInfo getPart(boolean _reload);
 	
 	List<ParsInfo> getParsList(boolean _reload);

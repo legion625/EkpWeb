@@ -3,7 +3,7 @@
 	<panel id="pnPartCfgTreePage" vflex="1" apply="ekp.web.control.zk.mbom.PartCfgTreePageComposer">
 		<panelchildren>
 			<hlayout>
-				<button id="btnPcPublish" label="Publish" />
+				<button id="btnPcPublish" label="Publish" disabled="true"/>
 			</hlayout>
 			<listbox id="lbxPartCfg" emptyMessage="(No data)" checkmark="true">
 				<listhead sizable="true">

@@ -3,12 +3,12 @@
 	<panel vflex="1" apply="ekp.web.control.zk.mbom.PartInfoComposer">
 		<panelchildren>
 			<hlayout>
-				<label value="Pin: " />
-				<label id="lbPin" />
-				<label value="Name: " />
-				<label id="lbName" />
-				<label value="Unit: " />
-				<label id="lbUnit" />
+				<label value="Pin: " style="font-size:20px; weight:bold"/>
+				<label id="lbPin" style="font-size:20px; weight:bold"/>
+				<label value="Name: " style="font-size:20px; weight:bold"/>
+				<label id="lbName" style="font-size:20px; weight:bold"/>
+				<label value="Unit: " style="font-size:20px; weight:bold"/>
+				<label id="lbUnit" style="font-size:20px; weight:bold"/>
 			</hlayout>
 
 			<tabbox vflex="1">
@@ -19,16 +19,25 @@
 				<tabpanels>
 					<tabpanel>
 						<!-- <groupbox title="Part acquisition"> -->
-						<listbox id="lbxPartAcq" emptyMessage="(No data)">
+						<hlayout>
+						<button id="btnAddPa" label="New" iconSclass="fa fa-plus"/>
+						<button id="btnAssignPc" label="Assign part configuration" iconSclass="fas fa-sitemap"/>
+						<button id="btnPaPublish" label="Publish" iconSclass="fas fa-lock" disabled="true"/>
+						<button id="btnPaDelete" label="Delete" iconSclass="fas fa-trash-alt" disabled="true"/>
+						</hlayout>
+						<listbox id="lbxPartAcq" emptyMessage="(No data)" checkmark="true">
 							<listhead sizable="true">
-								<listheader width="50px">
-									<toolbarbutton id="btnAddPa" iconSclass="fa fa-plus" />
+								<listheader width="40px">
+								<!-- 	<toolbarbutton id="btnAddPa" iconSclass="fa fa-plus" /> -->
 								</listheader>
 								<listheader label="Id" width="100px" />
 								<listheader label="Name" width="180px" />
 								<listheader label="Type" width="50px" />
+								<listheader label="Status" width="100px">
+								
+								</listheader>
 								<listheader label="Referenced part configuraions" >
-								<toolbarbutton id="btnAssignPc" iconSclass="fa fa-plus"/>
+								<!-- <toolbarbutton id="btnAssignPc" iconSclass="fa fa-plus"/> -->
 								</listheader>
 							</listhead>
 						</listbox>
