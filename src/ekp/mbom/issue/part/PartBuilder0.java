@@ -1,5 +1,7 @@
 package ekp.mbom.issue.part;
 
+import ekp.mbom.type.PartUnit;
+
 public class PartBuilder0 extends PartBuilder {
 	/* base */
 	// none
@@ -23,6 +25,11 @@ public class PartBuilder0 extends PartBuilder {
 	@Override
 	public PartBuilder0 appendName(String name) {
 		return (PartBuilder0) super.appendName(name);
+	}
+	
+	@Override
+	public PartBuilder0 appendUnit(PartUnit unit) {
+		return (PartBuilder0) super.appendUnit(unit);
 	}
 
 }

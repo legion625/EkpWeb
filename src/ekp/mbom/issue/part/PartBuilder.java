@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import ekp.data.MbomDataService;
 import ekp.data.service.mbom.PartCreateObj;
 import ekp.data.service.mbom.PartInfo;
+import ekp.mbom.type.PartUnit;
 import legion.DataServiceFactory;
 import legion.biz.Bpu;
 import legion.util.DataFO;
@@ -18,6 +19,7 @@ public abstract class PartBuilder extends Bpu<PartInfo> {
 	/* base */
 	private String pin;
 	private String name;
+	private PartUnit unit;
 
 	/* data */
 	// none
@@ -34,6 +36,11 @@ public abstract class PartBuilder extends Bpu<PartInfo> {
 		return this;
 	}
 
+	protected PartBuilder appendUnit(PartUnit unit) {
+		this.unit = unit;
+		return this;
+	}
+
 	// -------------------------------------------------------------------------------
 	// ------------------------------------getter-------------------------------------
 	public String getPin() {
@@ -43,12 +50,17 @@ public abstract class PartBuilder extends Bpu<PartInfo> {
 	public String getName() {
 		return name;
 	}
+	
+	public PartUnit getUnit() {
+		return unit;
+	}
 
 	// -------------------------------------------------------------------------------
 	private PartCreateObj packPartCreateObj() {
 		PartCreateObj dto = new PartCreateObj();
 		dto.setPin(getPin());
 		dto.setName(getName());
+		dto.setUnit(getUnit());
 		return dto;
 	}
 
@@ -74,6 +86,11 @@ public abstract class PartBuilder extends Bpu<PartInfo> {
 
 		if (DataFO.isEmptyString(getName())) {
 			_msg.append("Name should not be empty.").append(System.lineSeparator());
+			v = false;
+		}
+
+		if (getUnit() == null || PartUnit.UNDEFINED == getUnit()) {
+			_msg.append("Unit should not be undefined.").append(System.lineSeparator());
 			v = false;
 		}
 

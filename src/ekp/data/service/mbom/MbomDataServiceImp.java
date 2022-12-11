@@ -10,8 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
+import ekp.DebugLogMark;
 import ekp.data.MbomDataService;
+import ekp.data.service.mbom.query.PartCfgQueryParam;
 import ekp.data.service.mbom.query.PartQueryParam;
+import ekp.data.service.mbom.query.PpartSkewerQueryParam;
 import ekp.serviceFacade.rmi.EkpKernelServiceRemote;
 import ekp.serviceFacade.rmi.mbom.ParsPartRemote;
 import ekp.serviceFacade.rmi.mbom.ParsProcRemote;
@@ -21,6 +24,7 @@ import ekp.serviceFacade.rmi.mbom.PartCfgConjRemote;
 import ekp.serviceFacade.rmi.mbom.PartCfgRemote;
 import ekp.serviceFacade.rmi.mbom.PartCreateObjRemote;
 import ekp.serviceFacade.rmi.mbom.PartRemote;
+import ekp.serviceFacade.rmi.mbom.PpartSkewerRemote;
 import ekp.serviceFacade.rmi.mbom.ProdCtlPartCfgConjRemote;
 import ekp.serviceFacade.rmi.mbom.ProdCtlRemote;
 import ekp.serviceFacade.rmi.mbom.ProdModItemRemote;
@@ -29,9 +33,11 @@ import ekp.serviceFacade.rmi.mbom.ProdRemote;
 import legion.datasource.manager.DSManager;
 import legion.util.LogUtil;
 import legion.util.query.QueryOperation;
+import legion.util.query.QueryOperation.QueryValue;
 
 public class MbomDataServiceImp implements MbomDataService {
-	private Logger log = LoggerFactory.getLogger(MbomDataServiceImp.class);
+//	private Logger log = LoggerFactory.getLogger(MbomDataServiceImp.class);
+	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
 
 	private String srcEkpKernelRmi;
 
@@ -183,6 +189,42 @@ public class MbomDataServiceImp implements MbomDataService {
 		} catch (Throwable e) {
 			LogUtil.log(log, e, Level.ERROR);
 			return null;
+		}
+	}
+	@Override
+	public boolean partAcqStartEditing(String _uid) {
+		try {
+			return getEkpKernelRmi().partAcqStartEditing(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+	@Override
+	public boolean partAcqRevertStartEditing(String _uid){
+		try {
+			return getEkpKernelRmi().partAcqRevertStartEditing(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+	@Override
+	public boolean partAcqPublish(String _uid, long _publishTime){
+		try {
+			return getEkpKernelRmi().partAcqPublish(_uid, _publishTime);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+	@Override
+	public boolean partAcqRevertPublish(String _uid){
+		try {
+			return getEkpKernelRmi().partAcqRevertPublish(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
 		}
 	}
 
@@ -410,6 +452,39 @@ public class MbomDataServiceImp implements MbomDataService {
 	}
 
 	// -------------------------------------------------------------------------------
+	// ----------------------------------PpartSkewer----------------------------------
+	@Override
+	public PpartSkewer loadPpartSkewer(String _uid) {
+		try {
+			PpartSkewerRemote remote = getEkpKernelRmi().loadPpartSkewer(_uid);
+			return remote == null ? null : MbomFO.parsePpartSkewer(remote);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
+	public QueryOperation<PpartSkewerQueryParam, PpartSkewer> searchPpartSkewer(
+			QueryOperation<PpartSkewerQueryParam, PpartSkewer> _param,
+			Map<PpartSkewerQueryParam, QueryValue[]> _existsQvMap) {
+		try {
+			QueryOperation<PpartSkewerQueryParam, PpartSkewerRemote> paramRemote = (QueryOperation<PpartSkewerQueryParam, PpartSkewerRemote>) _param
+					.copy();
+			paramRemote = getEkpKernelRmi().searchPpartSkewer(paramRemote, _existsQvMap);
+			List<PpartSkewer> list = paramRemote.getQueryResult().stream().map(MbomFO::parsePpartSkewer)
+					.collect(Collectors.toList());
+//			list = list.stream().sorted(Comparator.comparing(PartInfo::getPin)).collect(Collectors.toList());
+			_param.setQueryResult(list);
+			_param.setTotal(paramRemote.getTotal());
+			return _param;
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	// -------------------------------------------------------------------------------
 	// ------------------------------------PartCfg------------------------------------
 	@Override
 	public PartCfgInfo createPartCfg(PartCfgCreateObj _dto) {
@@ -464,6 +539,24 @@ public class MbomDataServiceImp implements MbomDataService {
 			return null;
 		}
 	}
+	
+	@Override
+	public QueryOperation<PartCfgQueryParam, PartCfgInfo> searchPartCfg(QueryOperation<PartCfgQueryParam, PartCfgInfo> _param){
+		try {
+			QueryOperation<PartCfgQueryParam, PartCfgRemote> paramRemote = (QueryOperation<PartCfgQueryParam, PartCfgRemote>) _param
+					.copy();
+			paramRemote = getEkpKernelRmi().searchPartCfg(paramRemote);
+			List<PartCfgInfo> list = paramRemote.getQueryResult().stream().map(MbomFO::parsePartCfg)
+					.collect(Collectors.toList());
+//			list = list.stream().sorted(Comparator.comparing(PartInfo::getPin)).collect(Collectors.toList());
+			_param.setQueryResult(list);
+			_param.setTotal(paramRemote.getTotal());
+			return _param;
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
 
 	@Override
 	public boolean partCfgStartEditing(String _uid) {
@@ -486,9 +579,9 @@ public class MbomDataServiceImp implements MbomDataService {
 	}
 
 	@Override
-	public boolean partCfgPublish(String _uid) {
+	public boolean partCfgPublish(String _uid, long _publishTime) {
 		try {
-			return getEkpKernelRmi().partCfgPublish(_uid);
+			return getEkpKernelRmi().partCfgPublish(_uid, _publishTime);
 		} catch (Throwable e) {
 			LogUtil.log(log, e, Level.ERROR);
 			return false;

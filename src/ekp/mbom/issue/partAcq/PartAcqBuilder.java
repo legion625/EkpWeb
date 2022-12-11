@@ -136,7 +136,6 @@ public abstract class PartAcqBuilder extends Bpu<PartAcqInfo> {
 		return v;
 	}
 
-
 	@Override
 	protected PartAcqInfo buildProcess(TimeTraveler _tt) {
 		TimeTraveler tt = new TimeTraveler();
@@ -152,13 +151,22 @@ public abstract class PartAcqBuilder extends Bpu<PartAcqInfo> {
 		log.info("mbomDataService.createPartAcquisition [{}][{}][{}][{}]", pa.getUid(), pa.getPartUid(),
 				pa.getPartPin(), pa.getId());
 
+		if (!mbomDataService.partAcqStartEditing(pa.getUid())) {
+			tt.travel();
+			log.error("mbomDataSerivce.partAcqStartEditing return false. [{}][{}][{}][{}]", pa.getUid(),
+					pa.getPartPin(), pa.getId(), pa.getName());
+			return null;
+		}
+		tt.addSite("revert partAcqStartEditing", () -> mbomDataService.partAcqRevertStartEditing(pa.getUid()));
+		log.info("mbomDataSerivce.partAcqStartEditing. [{}][{}][{}][{}]", pa.getUid(), pa.getPartPin(), pa.getId(),
+				pa.getName());
+
 		//
 		if (_tt != null)
 			_tt.copySitesFrom(tt);
 
 		return pa;
 	}
-
 
 
 }

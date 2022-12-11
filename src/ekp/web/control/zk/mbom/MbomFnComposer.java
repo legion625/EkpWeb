@@ -13,6 +13,7 @@ import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
@@ -27,6 +28,7 @@ import ekp.mbom.MbomService;
 import ekp.mbom.issue.MbomBpuType;
 import ekp.mbom.issue.part.PartBpuDel0;
 import ekp.mbom.issue.part.PartBuilder0;
+import ekp.mbom.type.PartUnit;
 import legion.BusinessServiceFactory;
 import legion.biz.BpuFacade;
 import legion.util.LogUtil;
@@ -34,6 +36,7 @@ import legion.util.TimeTraveler;
 import legion.web.control.zk.legionmodule.pageTemplate.FnCntProxy;
 import legion.web.zk.ZkMsgBox;
 import legion.web.zk.ZkNotification;
+import legion.web.zk.ZkUtil;
 
 public class MbomFnComposer extends SelectorComposer<Component> {
 	private Logger log = LoggerFactory.getLogger(MbomFnComposer.class);
@@ -102,12 +105,14 @@ public class MbomFnComposer extends SelectorComposer<Component> {
 			li.appendChild(new Listcell(p.getPin()));
 			//
 			li.appendChild(new Listcell(p.getName()));
+			//
+			li.appendChild(new Listcell(p.getUnitName()));
 
 			// click event -> show part
 			li.addEventListener(Events.ON_CLICK, e -> {
 				fnCntProxy.refreshCntUri(PartInfoComposer.URI);
 				PartInfoComposer partComposer = fnCntProxy.getComposer(PartInfoComposer.class);
-				partComposer.refreshPartInfo(p);
+				partComposer.refreshPartInfo(p.reload());
 			});
 		};
 		lbxPart.setItemRenderer(partRenderer);
@@ -121,6 +126,8 @@ public class MbomFnComposer extends SelectorComposer<Component> {
 	private Textbox txbCreatePartPin;
 	@Wire("#wdCreatePart #txbName")
 	private Textbox txbCreatePartName;
+	@Wire("#wdCreatePart #cbbUnit")
+	private Combobox cbbCreatePartUnit;
 
 	@Listen(Events.ON_CLICK + "=#btnAddPart")
 	public void btnAddPart_clicked() {
@@ -135,12 +142,16 @@ public class MbomFnComposer extends SelectorComposer<Component> {
 	private void resetWdCreatePartBlanks() {
 		txbCreatePartPin.setValue("");
 		txbCreatePartName.setValue("");
+		
+		ZkUtil.initCbb(cbbCreatePartUnit, PartUnit.values(), false);
 	}
 
 	@Listen(Events.ON_CLICK + "=#wdCreatePart #btnSubmit")
 	public void wdCreatePart_btnSubmit_clicked() {
 		PartBuilder0 b = BpuFacade.getInstance().getBuilder(MbomBpuType.PART_0);
 		b.appendPin(txbCreatePartPin.getValue()).appendName(txbCreatePartName.getValue());
+		b.appendUnit(
+				cbbCreatePartUnit.getSelectedItem() == null ? null : cbbCreatePartUnit.getSelectedItem().getValue());
 		StringBuilder msg = new StringBuilder();
 		if (!b.verify(msg)) {
 			ZkMsgBox.exclamation(msg.toString());

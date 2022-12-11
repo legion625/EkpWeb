@@ -1,3 +1,21 @@
+Min-Hua, 2022.12.11
+[lib]
+1. ekp_kernel: 0.1.5 -> 0.1.6
+
+Min-Hua, 2022.12.10
+[change]
+1. [MBOM] Implementing part configuration info subpage and related functions.
+  - assign part configuration, orphan check of part acquisition and remove
+
+Min-Hua, 2022.11.27
+[lib]
+1. legionmodule: 0.12.2 -> 0.12.3
+2. ekp_kernel: 0.1.4 -> 0.1.5
+
+Min-Hua, 2022.11.27
+[lib]
+1. ekp_kernel: 0.1.3 -> 0.1.4
+
 ------------------------------------------------------------------------------
 v0.1.4 released by Min-Hua, 2022.11.27
 [change]

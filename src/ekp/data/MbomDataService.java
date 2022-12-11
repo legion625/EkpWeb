@@ -1,8 +1,11 @@
 package ekp.data;
 
+import java.rmi.RemoteException;
 import java.util.List;
+import java.util.Map;
 
 import ekp.data.service.mbom.PpartInfo;
+import ekp.data.service.mbom.PpartSkewer;
 import ekp.data.service.mbom.PprocCreateObj;
 import ekp.data.service.mbom.PprocInfo;
 import ekp.data.service.mbom.ParsCreateObj;
@@ -22,9 +25,14 @@ import ekp.data.service.mbom.ProdInfo;
 import ekp.data.service.mbom.ProdModCreateObj;
 import ekp.data.service.mbom.ProdModInfo;
 import ekp.data.service.mbom.ProdModItemInfo;
+import ekp.data.service.mbom.query.PartCfgQueryParam;
 import ekp.data.service.mbom.query.PartQueryParam;
+import ekp.data.service.mbom.query.PpartSkewerQueryParam;
+import ekp.serviceFacade.rmi.mbom.PartCfgRemote;
+import ekp.serviceFacade.rmi.mbom.PpartSkewerRemote;
 import legion.IntegrationService;
 import legion.util.query.QueryOperation;
+import legion.util.query.QueryOperation.QueryValue;
 
 public interface MbomDataService extends IntegrationService {
 	public boolean testEkpKernelServiceRemoteCallBack();
@@ -52,6 +60,15 @@ public interface MbomDataService extends IntegrationService {
 	public PartAcqInfo loadPartAcquisition(String _partPin, String _id);
 
 	public List<PartAcqInfo> loadPartAcquisitionList(String _partUid);
+
+	public boolean partAcqStartEditing(String _uid);
+
+	public boolean partAcqRevertStartEditing(String _uid);
+
+	public boolean partAcqPublish(String _uid, long _publishTime);
+
+	public boolean partAcqRevertPublish(String _uid);
+	
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------PartAcqRoutingStep-------------------------------
@@ -100,6 +117,19 @@ public interface MbomDataService extends IntegrationService {
 	public boolean parsPartRevertAssignPart(String _uid);
 
 	// -------------------------------------------------------------------------------
+	// ----------------------------------PpartSkewer----------------------------------
+	public PpartSkewer loadPpartSkewer(String _uid);
+	
+	public QueryOperation<PpartSkewerQueryParam, PpartSkewer> searchPpartSkewer(
+			QueryOperation<PpartSkewerQueryParam, PpartSkewer> _param,
+			Map<PpartSkewerQueryParam, QueryValue[]> _existsQvMap);
+//	
+//	default public QueryOperation<PpartSkewerQueryParam, PpartSkewer> searchPpartSkewer(
+//			QueryOperation<PpartSkewerQueryParam, PpartSkewer> _param) {
+//		return searchPpartSkewer(_param, null);
+//	}
+	
+	// -------------------------------------------------------------------------------
 	// ------------------------------------PartCfg------------------------------------
 	public PartCfgInfo createPartCfg(PartCfgCreateObj _dto);
 
@@ -110,12 +140,14 @@ public interface MbomDataService extends IntegrationService {
 	public PartCfgInfo loadPartCfgById(String _id);
 
 	public List<PartCfgInfo> loadPartCfgList(String _rootPartUid);
+	
+	public QueryOperation<PartCfgQueryParam, PartCfgInfo> searchPartCfg(QueryOperation<PartCfgQueryParam, PartCfgInfo> _param);
 
 	public boolean partCfgStartEditing(String _uid);
 
 	public boolean partCfgRevertStartEditing(String _uid);
 
-	public boolean partCfgPublish(String _uid);
+	public boolean partCfgPublish(String _uid, long _publishTime);
 
 	public boolean partCfgRevertPublish(String _uid);
 

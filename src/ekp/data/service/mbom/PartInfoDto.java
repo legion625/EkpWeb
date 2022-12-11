@@ -4,6 +4,7 @@ import java.util.List;
 
 import ekp.data.BizObjLoader;
 import ekp.data.MbomDataService;
+import ekp.mbom.type.PartUnit;
 import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
@@ -16,6 +17,7 @@ public class PartInfoDto extends ObjectModelInfoDto implements PartInfo {
 	// -----------------------------------attribute-----------------------------------
 	private String pin;
 	private String name;
+	private PartUnit unit;
 
 	// -------------------------------------------------------------------------------
 	// ---------------------------------getter&setter---------------------------------
@@ -35,6 +37,15 @@ public class PartInfoDto extends ObjectModelInfoDto implements PartInfo {
 
 	void setName(String name) {
 		this.name = name;
+	}
+	
+	@Override
+	public PartUnit getUnit() {
+		return unit;
+	}
+
+	void setUnit(PartUnit unit) {
+		this.unit = unit;
 	}
 
 	// -------------------------------------------------------------------------------
@@ -64,7 +75,7 @@ public class PartInfoDto extends ObjectModelInfoDto implements PartInfo {
 			() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadPartCfgList(getUid()));
 	
 	@Override
-	public List<PartCfgInfo> getPartCfgList(boolean _reload){
+	public List<PartCfgInfo> getRootPartCfgList(boolean _reload){
 		return partCfgListLoader.getObj(_reload);
 	}
 }
