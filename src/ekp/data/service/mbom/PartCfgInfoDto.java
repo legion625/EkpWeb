@@ -30,6 +30,8 @@ public class PartCfgInfoDto extends ObjectModelInfoDto implements PartCfgInfo {
 	private String id; // biz key
 	private String name;
 	private String desp;
+	
+	private long publishTime;
 
 	@Override
 	public String getRootPartUid() {
@@ -84,6 +86,16 @@ public class PartCfgInfoDto extends ObjectModelInfoDto implements PartCfgInfo {
 	void setDesp(String desp) {
 		this.desp = desp;
 	}
+	
+	@Override
+	public long getPublishTime() {
+		return publishTime;
+	}
+
+	void setPublishTime(long publishTime) {
+		this.publishTime = publishTime;
+	}
+
 	
 	// -------------------------------------------------------------------------------
 	@Override

@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ekp.DebugLogMark;
+import ekp.mbom.type.PartAcqStatus;
 import ekp.mbom.type.PartAcquisitionType;
 
 public interface PartAcqInfo extends ObjectModelInfo {
@@ -18,11 +19,15 @@ public interface PartAcqInfo extends ObjectModelInfo {
 
 	String getPartPin();
 
+	PartAcqStatus getStatus();
+	
 	String getId();
 
 	String getName();
 
 	PartAcquisitionType getType();
+	
+	long getPublishTime();
 	
 	// -------------------------------------------------------------------------------
 	default String getTypeName() {

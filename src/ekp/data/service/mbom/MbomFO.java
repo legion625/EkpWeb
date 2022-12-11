@@ -49,9 +49,11 @@ public class MbomFO {
 				_remote.getObjectUpdateTime());
 		dto.setPartUid(_remote.getPartUid());
 		dto.setPartPin(_remote.getPartPin());
+		dto.setStatus(_remote.getStatus());
 		dto.setId(_remote.getId());
 		dto.setName(_remote.getName());
 		dto.setType(_remote.getType());
+		dto.setPublishTime(_remote.getPublishTime());
 		return dto;
 	}
 
@@ -171,6 +173,7 @@ public class MbomFO {
 		dto.setId(_remote.getId());
 		dto.setName(_remote.getName());
 		dto.setDesp(_remote.getDesp());
+		dto.setPublishTime(_remote.getPublishTime());
 		return dto;
 	}
 
