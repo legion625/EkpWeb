@@ -191,6 +191,42 @@ public class MbomDataServiceImp implements MbomDataService {
 			return null;
 		}
 	}
+	@Override
+	public boolean partAcqStartEditing(String _uid) {
+		try {
+			return getEkpKernelRmi().partAcqStartEditing(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+	@Override
+	public boolean partAcqRevertStartEditing(String _uid){
+		try {
+			return getEkpKernelRmi().partAcqRevertStartEditing(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+	@Override
+	public boolean partAcqPublish(String _uid, long _publishTime){
+		try {
+			return getEkpKernelRmi().partAcqPublish(_uid, _publishTime);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+	@Override
+	public boolean partAcqRevertPublish(String _uid){
+		try {
+			return getEkpKernelRmi().partAcqRevertPublish(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------PartAcqRoutingStep-------------------------------
@@ -543,9 +579,9 @@ public class MbomDataServiceImp implements MbomDataService {
 	}
 
 	@Override
-	public boolean partCfgPublish(String _uid) {
+	public boolean partCfgPublish(String _uid, long _publishTime) {
 		try {
-			return getEkpKernelRmi().partCfgPublish(_uid);
+			return getEkpKernelRmi().partCfgPublish(_uid, _publishTime);
 		} catch (Throwable e) {
 			LogUtil.log(log, e, Level.ERROR);
 			return false;

@@ -19,6 +19,8 @@ public interface PartCfgInfo extends ObjectModelInfo {
 	String getName();
 
 	String getDesp();
+	
+	long getPublishTime();
 
 	// -------------------------------------------------------------------------------
 	default String getStatusName() {

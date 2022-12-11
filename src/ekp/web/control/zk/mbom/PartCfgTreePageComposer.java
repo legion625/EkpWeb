@@ -281,7 +281,7 @@ public class PartCfgTreePageComposer extends SelectorComposer<Component> {
 		
 		/**/
 		// TODO
-		MbomBpuType.PARS_$DEL0.match(selectedPartCfg); // FIXME
+//		MbomBpuType.PARS_$DEL0.match(selectedPartCfg); // FIXME
 	}
 	
 //	@Listen(Events.ON_SELECT+"=#lbxPpartSkewer")

@@ -1,5 +1,6 @@
 package ekp.data;
 
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 
@@ -59,6 +60,15 @@ public interface MbomDataService extends IntegrationService {
 	public PartAcqInfo loadPartAcquisition(String _partPin, String _id);
 
 	public List<PartAcqInfo> loadPartAcquisitionList(String _partUid);
+
+	public boolean partAcqStartEditing(String _uid);
+
+	public boolean partAcqRevertStartEditing(String _uid);
+
+	public boolean partAcqPublish(String _uid, long _publishTime);
+
+	public boolean partAcqRevertPublish(String _uid);
+	
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------PartAcqRoutingStep-------------------------------
@@ -137,7 +147,7 @@ public interface MbomDataService extends IntegrationService {
 
 	public boolean partCfgRevertStartEditing(String _uid);
 
-	public boolean partCfgPublish(String _uid);
+	public boolean partCfgPublish(String _uid, long _publishTime);
 
 	public boolean partCfgRevertPublish(String _uid);
 
