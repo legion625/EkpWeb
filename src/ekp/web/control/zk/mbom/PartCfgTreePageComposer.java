@@ -294,7 +294,7 @@ public class PartCfgTreePageComposer extends SelectorComposer<Component> {
 	// TODO
 	@Listen(Events.ON_CLICK+"=#btnPcPublish")
 	public void btnPcPublish_clicked() {
-		
+		ZkNotification.warning("working in progress...");
 	}
 	
 	// -------------------------------------------------------------------------------

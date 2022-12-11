@@ -32,6 +32,7 @@ import ekp.mbom.issue.prod.ProdBpuEditCtl;
 import ekp.mbom.issue.prodCtl.ProdCtlBpuPartCfgConj;
 import ekp.mbom.issue.prodCtl.ProdCtlBuilder0;
 import ekp.mbom.issue.partCfg.PartCfgBuilder0;
+import ekp.mbom.type.PartAcqStatus;
 import ekp.mbom.type.PartCfgStatus;
 import legion.biz.BpuType;
 
@@ -192,6 +193,8 @@ public enum MbomBpuType implements BpuType {
 			return false;
 		}
 		
+		// TODO status
+		
 		List<ParsInfo> parsList =  _pa.getParsList(true);
 		if (!parsList.isEmpty()) {
 			log.info("parsList should be empty.");
@@ -230,16 +233,18 @@ public enum MbomBpuType implements BpuType {
 		return true;
 	}
 
-	// -------------------------------------------------------------------------------
-	// -------------------------------------pproc-------------------------------------
-	// TODO
 
 	// -------------------------------------------------------------------------------
 	// -------------------------------------ppart-------------------------------------
-
 	private boolean matchBizParsPart1(ParsInfo _pars) {
 		if (_pars == null) {
 			log.warn("_pars null.");
+			return false;
+		}
+
+		PartAcqInfo pa = _pars.getPa();
+		if (PartAcqStatus.EDITING != pa.getStatus()) {
+			log.trace("The Status of Pa should be EDITING.");
 			return false;
 		}
 
@@ -262,6 +267,11 @@ public enum MbomBpuType implements BpuType {
 
 		return true;
 	}
+	
+
+	// -------------------------------------------------------------------------------
+	// -------------------------------------pproc-------------------------------------
+	// TODO
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------------partCfg------------------------------------

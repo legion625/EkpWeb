@@ -1,7 +1,8 @@
 Min-Hua, 2022.12.11
 [change]
-1. [MBOM] Modify part info page.
-  - toolbar for part acquisition
+1. [MBOM] PartAcquisition: Add "publish" function, and freeze related functions when in "published" status.
+2. [MBOM] Modify the part info page layout.
+  - toolbar for part acquisition, pars, ppart
 
 ------------------------------------------------------------------------------
 v0.1.5 released by Min-Hua, 2022.12.11
