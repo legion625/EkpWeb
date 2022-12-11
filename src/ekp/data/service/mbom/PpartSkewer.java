@@ -1,6 +1,26 @@
 package ekp.data.service.mbom;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ekp.DebugLogMark;
+import ekp.data.BizObjLoader;
+import ekp.data.MbomDataService;
+import ekp.data.service.mbom.query.PartCfgQueryParam;
+import ekp.data.service.mbom.query.PpartSkewerQueryParam;
+import legion.DataServiceFactory;
+import legion.util.query.QueryOperation;
+import legion.util.query.QueryOperation.CompareOp;
+import legion.util.query.QueryOperation.QueryValue;
+
 public class PpartSkewer {
+	private Logger log = LoggerFactory.getLogger(PpartSkewer.class);
+//	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
+	
 	/* p */
 	private String pUid;
 	private String pPin;
@@ -175,5 +195,44 @@ public class PpartSkewer {
 
 	void setPartName(String partName) {
 		this.partName = partName;
+	}
+	
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<PartAcqInfo> paLoader = BizObjLoader.PART_ACQ.get();
+	
+	public PartAcqInfo getPa(boolean _reload) {
+		return paLoader.getObj(getPaUid(),_reload );
+	}
+	
+	public PartCfgConjInfo getPartCfgConj(String _partCfgUid, boolean _reload) {
+		PartAcqInfo pa = getPa(_reload);
+		return pa == null ? null : pa.getPartCfgConj(_partCfgUid, _reload);
+	}
+	
+	// -------------------------------------------------------------------------------
+	public List<PpartSkewer> getParentList(String _partCfgId) {
+		QueryOperation<PpartSkewerQueryParam, PpartSkewer> param = new QueryOperation<>();
+		Map<PpartSkewerQueryParam, QueryValue[]> existsQvMap = new HashMap<>();
+		param.appendCondition(QueryOperation.value(PpartSkewerQueryParam.P_UID, CompareOp.equal, getpUid()));
+		log.debug("getpUid(): {}", getpUid());
+		param.appendCondition(
+				QueryOperation.value(PpartSkewerQueryParam.B_OF_PC$_PARENT_PART_EXISTS, CompareOp.equal, true));
+		existsQvMap.put(PpartSkewerQueryParam.B_OF_PC$_PARENT_PART_EXISTS, new QueryValue[] { //
+				QueryOperation.value(PartCfgQueryParam.ID, CompareOp.equal, _partCfgId), //
+		});
+		log.debug("_partCfgId: {}", _partCfgId);
+		param = DataServiceFactory.getInstance().getService(MbomDataService.class).searchPpartSkewer(param,
+				existsQvMap);
+		log.debug("param.getTotal(): {}", param.getTotal());
+		List<PpartSkewer> parentList = param.getQueryResult();
+		return parentList;
+	}
+
+	public boolean isRoot(PartCfgInfo _partCfg) {
+		return _partCfg.getRootPartUid().equals(getpUid());
+	}
+
+	public boolean isOrphan(PartCfgInfo _partCfg) {
+		return !isRoot(_partCfg) && getParentList(_partCfg.getId()).size() <= 0;
 	}
 }

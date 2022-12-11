@@ -75,7 +75,7 @@ public class PartInfoDto extends ObjectModelInfoDto implements PartInfo {
 			() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadPartCfgList(getUid()));
 	
 	@Override
-	public List<PartCfgInfo> getPartCfgList(boolean _reload){
+	public List<PartCfgInfo> getRootPartCfgList(boolean _reload){
 		return partCfgListLoader.getObj(_reload);
 	}
 }

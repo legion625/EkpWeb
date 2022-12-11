@@ -3,7 +3,7 @@
 	<panel vflex="1" apply="ekp.web.control.zk.mbom.MbomFnComposer">
 		<panelchildren>
 			Part list
-			<listbox id="lbxPart" vflex="1">
+			<listbox id="lbxPart" vflex="1" emptyMessage="(No data)">
 				<listhead sizable="true">
 					<listheader width="50px">
 						<toolbarbutton id="btnAddPart" iconSclass="fa fa-plus" />

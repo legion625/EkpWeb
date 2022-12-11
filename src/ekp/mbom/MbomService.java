@@ -2,6 +2,7 @@ package ekp.mbom;
 
 import java.util.List;
 
+import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.data.service.mbom.query.PartQueryParam;
 import legion.BusinessService;
@@ -19,4 +20,10 @@ public interface MbomService extends BusinessService{
 	}
 
 	public QueryOperation<PartQueryParam, PartInfo> searchPart(QueryOperation<PartQueryParam, PartInfo> _param);
+	
+	// -------------------------------------------------------------------------------
+	// ------------------------------------PartCfg------------------------------------
+	public PartCfgInfo loadPartCfgById(String _id);
+	
+	public List<PartCfgInfo> loadPartCfgList();
 }

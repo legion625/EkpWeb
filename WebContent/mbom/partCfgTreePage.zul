@@ -1,0 +1,96 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<panel id="pnPartCfgTreePage" vflex="1" apply="ekp.web.control.zk.mbom.PartCfgTreePageComposer">
+		<panelchildren>
+			<hlayout>
+				<button id="btnPcPublish" label="Publish" />
+			</hlayout>
+			<listbox id="lbxPartCfg" emptyMessage="(No data)" checkmark="true">
+				<listhead sizable="true">
+					<listheader width="50px">
+						<toolbarbutton id="btnAddPartCfg" iconSclass="fa fa-plus" />
+					</listheader>
+					<listheader label="Id" width="100px" sort="auto(id)" />
+					<listheader label="Name" width="130px" sort="auto(name)" />
+					<listheader label="Root part pin" width="200px" sort="auto(rootPartPin)" />
+					<listheader label="Status" width="130px" sort="auto(status)" />
+					<listheader label="Description" sort="auto(desp)" />
+				</listhead>
+			</listbox>
+			<hlayout>
+				<!-- 			<toolbarbutton id="btnShowPartCfg" label="Show selected part configuration"/> -->
+			</hlayout>
+			<separator spacing="5px" />
+			<hlayout>
+				<label value="Selected part configuration: " style="font-size:20px; weight:bold" />
+				<label id="lbSelectedPc" style="font-size:20px; weight:bold" />
+			</hlayout>
+			<borderlayout vflex="1">
+				<center title="Part configuration tree" vflex="1">
+					<div vflex="1">
+						<hlayout>
+							<button id="btnAssignPartAcq" label="assign acquisition" disabled="true" />
+							<window id="wdPcAssignPa" title="Assign acquisition" width="560px" mode="highlighted"
+								closable="true" visible="false" sizable="true">
+								<listbox id="lbxPa" emptyMessage="(No data)" height="400px" checkmark="true">
+									<listhead sizable="true">
+										<listheader width="50px" />
+										<listheader label="Id" width="100px" />
+										<listheader label="Name" width="180px" />
+										<listheader label="Type" width="50px" />
+										<listheader label="Referenced part configuraions" />
+									</listhead>
+								</listbox>
+								<separator spacing="5px" />
+								<div align="center">
+									<button id="btnSubmit" label="Submit" />
+								</div>
+							</window>
+						</hlayout>
+						<tree id="treePartCfg" vflex="1" checkmark="true">
+							<treecols sizable="true">
+								<treecol label="Part pin" width="200px" />
+								<treecol label="Part name" width="180px" />
+								<treecol label="Part unit" width="100px" />
+								<treecol label="Acq id" width="100px" />
+								<treecol label="Acq name" width="100px" />
+								<treecol label="Acq type" width="100px" />
+								<treecol label="Required quantity" width="150px" />
+							</treecols>
+						</tree>
+					</div>
+					<!-- 	<groupbox title="Part configuration tree" vflex="1">
+						</groupbox> -->
+				</center>
+				<east vflex="1" title="Routing step part list" width="70%" collapsible="true" splittable="true"
+					open="false">
+					<div vflex="1">
+						<hlayout>
+							<button id="btnUnassignPartCfg" label="remove configuration" disabled="true" />
+						</hlayout>
+						<listbox id="lbxPpartSkewer" emptyMessage="(No data)" checkmark="true">
+							<frozen columns="3"></frozen>
+							<listhead sizable="true">
+								<listheader width="50px" />
+								<listheader label="mark" width="50px" />
+								<listheader label="pin" width="100px" />
+								<listheader label="name" width="130px" />
+								<listheader label="acq id" width="100px" />
+								<listheader label="acq name" width="130px" />
+								<listheader label="routing step seq" width="100px" />
+								<listheader label="routing step name" width="130px" />
+								<listheader label="part pin" width="100px" />
+								<listheader label="part name" width="130px" />
+								<listheader label="part required quantity" width="130px" />
+							</listhead>
+						</listbox>
+					</div>
+				</east>
+			</borderlayout>
+
+
+
+		</panelchildren>
+	</panel>
+
+</zk>

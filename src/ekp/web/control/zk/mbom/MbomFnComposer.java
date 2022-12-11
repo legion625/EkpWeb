@@ -112,7 +112,7 @@ public class MbomFnComposer extends SelectorComposer<Component> {
 			li.addEventListener(Events.ON_CLICK, e -> {
 				fnCntProxy.refreshCntUri(PartInfoComposer.URI);
 				PartInfoComposer partComposer = fnCntProxy.getComposer(PartInfoComposer.class);
-				partComposer.refreshPartInfo(p);
+				partComposer.refreshPartInfo(p.reload());
 			});
 		};
 		lbxPart.setItemRenderer(partRenderer);
