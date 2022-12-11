@@ -58,6 +58,7 @@ import ekp.mbom.type.PartUnit;
 import ekp.web.control.zk.mbom.dto.PartCfgTreeDto;
 import legion.BusinessServiceFactory;
 import legion.biz.BpuFacade;
+import legion.biz.BpuType;
 import legion.util.LogUtil;
 import legion.util.NumberFormatUtil;
 import legion.util.TimeTraveler;
@@ -76,9 +77,11 @@ public class PartCfgTreePageComposer extends SelectorComposer<Component> {
 	}
 
 	// -------------------------------------------------------------------------------
+	/* Part configuration list */
 	@Wire
 	private Listbox lbxPartCfg;
 
+	/* Part configuration tree */
 	/* borderlayout-center */
 	@Wire
 	private Label lbSelectedPc;
@@ -275,6 +278,23 @@ public class PartCfgTreePageComposer extends SelectorComposer<Component> {
 			return;
 		}
 		refreshPartCfg(selectedPartCfg);
+		
+		/**/
+		// TODO
+		MbomBpuType.PARS_$DEL0.match(selectedPartCfg); // FIXME
+	}
+	
+//	@Listen(Events.ON_SELECT+"=#lbxPpartSkewer")
+//	public void lbxPpartSkewer_selected() {
+//		PpartSkewer ppartSkewer = getSelectedPpartSkewer();
+//		PartCfgInfo selectedPc =getSelectedPc();
+//		btnUnassignPartCfg.setDisabled(!ppartSkewer.isOrphan(selectedPc));
+//	}
+	
+	// TODO
+	@Listen(Events.ON_CLICK+"=#btnPcPublish")
+	public void btnPcPublish_clicked() {
+		
 	}
 	
 	// -------------------------------------------------------------------------------
