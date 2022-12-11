@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import ekp.TestLogMark;
 import ekp.data.service.mbom.PpartInfo;
 import ekp.data.service.mbom.PprocInfo;
+import ekp.data.MbomDataService;
 import ekp.data.service.mbom.ParsInfo;
 import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.mbom.PartCfgInfo;
@@ -24,6 +25,7 @@ import ekp.mbom.issue.parsPart.ParsPartBuilder0;
 import ekp.mbom.issue.parsPart.ParsPartBuilder1;
 import ekp.mbom.issue.parsProc.ParsProcBuilder0;
 import ekp.mbom.issue.part.PartBuilder0;
+import ekp.mbom.issue.partAcq.PaBpuPublish;
 import ekp.mbom.issue.partAcq.PartAcqBuilder0;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBuilder1;
 import ekp.mbom.issue.partCfg.PartCfgBuilder0;
@@ -32,11 +34,15 @@ import ekp.mbom.issue.prod.ProdBuilder0;
 import ekp.mbom.issue.prod.ProdBpuEditCtl;
 import ekp.mbom.issue.prodCtl.ProdCtlBpuPartCfgConj;
 import ekp.mbom.issue.prodCtl.ProdCtlBuilder0;
+import ekp.mbom.type.PartAcqStatus;
 import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartCfgStatus;
 import ekp.mbom.type.PartUnit;
+import legion.DataServiceFactory;
 import legion.biz.BpuFacade;
+import legion.util.LogUtil;
 import legion.util.TimeTraveler;
+import legion.web.zk.ZkUtil;
 
 public class MbomBuilderDelegate {
 	private Logger log = LoggerFactory.getLogger(TestLogMark.class);
@@ -124,6 +130,43 @@ public class MbomBuilderDelegate {
 
 	public PartAcqInfo buildPartAcqType03(PartInfo _p, TimeTraveler _tt) {
 		return buildPartAcqType0(_p, _tt, "TEST_ACQ_ID_3", "TEST_ACQ_NAME_3", PartAcquisitionType.SELF_PRODUCING);
+	}
+	
+	public boolean paPublish(PartAcqInfo _pa, TimeTraveler _tt) {
+		PaBpuPublish b = bpuFacade.getBuilder(MbomBpuType.PART_ACQ_$PUBLISH, _pa);
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(b.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(b.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		boolean result = b.build(msgBuild, _tt);
+		assertTrue(result);
+
+		// check
+		PartAcqInfo pa = _pa.reload();
+		assertEquals(PartAcqStatus.PUBLISHED, pa.getStatus());
+		assertTrue(pa.getPublishTime() > 0);
+
+		return result;
+	}
+	
+	public void paRevertPublish(PartAcqInfo _pa, boolean _writeDb) {
+		// check
+		assertEquals(PartAcqStatus.PUBLISHED, _pa.getStatus());
+		assertTrue(_pa.getPublishTime() > 0);
+
+		if (_writeDb) {
+			MbomDataService dataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
+			log.info("dataService.partAcqRevertPublish(_pa.getUid()): {}",
+					dataService.partAcqRevertPublish(_pa.getUid()));
+		}
+
+		return;
 	}
 
 	// -------------------------------------------------------------------------------

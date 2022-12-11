@@ -198,5 +198,16 @@ public class MbomBuilderTest extends AbstractEkpInitTest {
 		
 
 	}
+	
+	@Test
+	@Ignore
+	public void testPaRevertPublish() {
+		String paUid = "2022!44!7!21";
+		PartAcqInfo pa =  dataService.loadPartAcquisition(paUid);
+		mbomDel.paRevertPublish(pa, false);
+		
+		
+//		paRevertPublish
+	} 
 
 }

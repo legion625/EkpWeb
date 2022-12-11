@@ -42,6 +42,7 @@ import ekp.mbom.issue.parsPart.PpartBpuDel0;
 import ekp.mbom.issue.part.PartBpuDel0;
 import ekp.mbom.issue.part.PartBpuPcAssignPa;
 import ekp.mbom.issue.partAcq.PaBpuDel0;
+import ekp.mbom.issue.partAcq.PaBpuPublish;
 import ekp.mbom.issue.partAcq.PartAcqBuilder0;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBpuDel0;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBuilder1;
@@ -181,44 +182,11 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 			li.appendChild(new Listcell(pars.getDesp()));
 		};
 		lbxPars.setItemRenderer(parsRenderer);
-
 		
-
 		/* Ppart */
 		ListitemRenderer<PpartInfo> ppartRowRenderer = (li, ppart, i) -> {
-			Listcell lc;
 			// delete
-			// FIXME
-			lc = new Listcell();
-//			Toolbarbutton btn = new Toolbarbutton();
-//			btn.setIconSclass("fa fa-minus");
-//			btn.addEventListener(Events.ON_CLICK, e -> {
-//				boolean match = MbomBpuType.PPART_$DEL0.match(ppart);
-//				if (!match) {
-//					ZkNotification.warning("This routing step part cannot be deleted.");
-//					return;
-//				}
-//				PpartBpuDel0 b = BpuFacade.getInstance().getBuilder(MbomBpuType.PPART_$DEL0, ppart);
-//				if (b == null) {
-//					ZkNotification.error();
-//					return;
-//				}
-//
-//				ZkMsgBox.confirm("Confirm delete?", () -> {
-//					boolean d = b.build(new StringBuilder(), new TimeTraveler());
-//					if (d) {
-//						ZkNotification.info("Delete routing step part [" + ppart.getPartPin() + "]["
-//								+ ppart.getPartName() + "] success.");
-//						ListModelList<PpartInfo> model = (ListModelList) lbxPpart.getModel();
-//						model.remove(ppart);
-//						getSelectedPars().getPpartList(true); // reload
-//					} else {
-//						ZkNotification.error();
-//					}
-//				});
-//			});
-//			lc.appendChild(btn);
-			li.appendChild(lc);
+			li.appendChild(new Listcell());
 			// part pin
 			li.appendChild(new Listcell(ppart.getPartPin()));
 			// part name
@@ -257,9 +225,16 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 	}
 
 	private void togglePaToolbarButtons(PartAcqInfo _pa) {
-		btnPaPublish.setDisabled(!(PartAcqStatus.EDITING == _pa.getStatus())); // FIXME
+		if (_pa == null) {
+			btnPaPublish.setDisabled(true);
+			btnPaDelete.setDisabled(true);
+			btnParsNew.setDisabled(true);
+			return;
+		}
+
+		btnPaPublish.setDisabled(!MbomBpuType.PART_ACQ_$PUBLISH.match(_pa));
 		btnPaDelete.setDisabled(!MbomBpuType.PART_ACQ_$DEL0.match(_pa));
-		
+
 		// ->pars
 		btnParsNew.setDisabled(!MbomBpuType.PARS_1.match(_pa));
 	}
@@ -276,9 +251,6 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 		return it.hasNext() ? it.next() : null;
 	}
 
-	
-
-	
 
 	// -------------------------------------------------------------------------------
 	// ----------------------------------pa_toolbar-----------------------------------
@@ -434,8 +406,36 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 	// -------------------------------------------------------------------------------
 	@Listen(Events.ON_CLICK + "=#btnPaPublish")
 	public void btnPaPublish_clicked() {
-		ZkNotification.warning("Working in progress...");
-		// TODO
+		PartAcqInfo pa = getSelectedPa();
+		if (pa == null) {
+			ZkNotification.warning("Please select a part acquisition.");
+			return;
+		}
+
+		boolean match = MbomBpuType.PART_ACQ_$PUBLISH.match(pa);
+		if (!match) {
+			ZkNotification.warning("This part acquisition cannot be published.");
+			return;
+		}
+
+		PaBpuPublish b = BpuFacade.getInstance().getBuilder(MbomBpuType.PART_ACQ_$PUBLISH, pa);
+		if (b == null) {
+			ZkNotification.error();
+			return;
+		}
+
+		ZkMsgBox.confirm("Confirm publish?", () -> {
+			boolean d = b.build(new StringBuilder(), new TimeTraveler());
+			if (d) {
+				ZkNotification.info("Publish part acuisition [" + pa.getId() + "][" + pa.getName() + "] success.");
+				refreshPartInfo(part.reload()); // reload
+				togglePaToolbarButtons(null);
+				toggleParsToolbarButtons(null);
+				togglePpartToolbarButtons(null);
+			} else {
+				ZkNotification.error();
+			}
+		});
 	}
 
 	// -------------------------------------------------------------------------------
@@ -493,6 +493,12 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 	}
 
 	private void toggleParsToolbarButtons(ParsInfo _pars) {
+		if (_pars == null) {
+			btnParsDelete.setDisabled(true);
+			btnPpartNew.setDisabled(true);
+			return;
+		}
+		
 //		btnParsNew // TODO
 		btnParsDelete.setDisabled(!MbomBpuType.PARS_$DEL0.match(_pars));
 		
@@ -634,6 +640,11 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 	}
 
 	private void togglePpartToolbarButtons(PpartInfo _ppart) {
+		if (_ppart == null) {
+			btnPpartDelete.setDisabled(true);
+			return;
+		}
+		
 		btnPpartDelete.setDisabled(!MbomBpuType.PPART_$DEL0.match(_ppart));
 	}
 
