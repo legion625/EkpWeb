@@ -54,6 +54,7 @@ public class MbomFO {
 		dto.setName(_remote.getName());
 		dto.setType(_remote.getType());
 		dto.setPublishTime(_remote.getPublishTime());
+		dto.setRefUnitCost(_remote.getRefUnitCost());
 		return dto;
 	}
 

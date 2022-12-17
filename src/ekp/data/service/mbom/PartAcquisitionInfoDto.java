@@ -28,6 +28,8 @@ public class PartAcquisitionInfoDto extends ObjectModelInfoDto implements PartAc
 	private PartAcquisitionType type;
 	
 	private long publishTime;
+	
+	private double refUnitCost;
 
 	// -------------------------------------------------------------------------------
 	// ---------------------------------getter&setter---------------------------------
@@ -92,6 +94,15 @@ public class PartAcquisitionInfoDto extends ObjectModelInfoDto implements PartAc
 
 	void setPublishTime(long publishTime) {
 		this.publishTime = publishTime;
+	}
+	
+	@Override
+	public double getRefUnitCost() {
+		return refUnitCost;
+	}
+
+	void setRefUnitCost(double refUnitCost) {
+		this.refUnitCost = refUnitCost;
 	}
 
 	// -------------------------------------------------------------------------------
