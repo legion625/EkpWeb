@@ -1,0 +1,27 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<panel id="panel" apply="ekp.web.control.zk.chatbot.ChatbotComposer" title="Online Consultant Bot" framable="true"
+		vflex="1" border="normal">
+		<panelchildren>
+			<div vflex="1">
+				<hlayout vflex="1">
+					<div id="divView" style="overflow:auto;" vflex="1" hflex="1" />
+					<image width="200px" src="/image/user1.jpg" />
+				</hlayout>
+			</div>
+			<div height="200px">
+				<hlayout vflex="1">
+					<!-- <textbox id="txbInput" submitByEnter="true" vflex="1" hflex="1" value="" rows="10"></textbox> -->
+					<textbox id="txbInput" submitByEnter="true" hflex="1" value="" rows="10"></textbox>
+					<image width="200px" src="/image/user2.jpg" />
+				</hlayout>
+			</div>
+			<toolbar mold="panel" align="center">
+				<button id="btnSend" label="Send" width="65px" />
+				<button id="btnClear" label="Clear" width="65px" />
+				<timer id="timer" delay="500" repeats="true"></timer>
+			</toolbar>
+		</panelchildren>
+	</panel>
+	
+</zk>
