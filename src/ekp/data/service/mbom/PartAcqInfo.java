@@ -29,6 +29,8 @@ public interface PartAcqInfo extends ObjectModelInfo {
 	
 	long getPublishTime();
 	
+	double getRefUnitCost();
+	
 	// -------------------------------------------------------------------------------
 	default String getStatusName() {
 		return (getStatus() == null ? PartAcqStatus.UNDEFINED : getStatus()).getName();
@@ -63,22 +65,10 @@ public interface PartAcqInfo extends ObjectModelInfo {
 	default List<PpartInfo> getPpartList(){
 		return getParsList().stream().flatMap(pars -> pars.getPpartList().stream()).collect(Collectors.toList());
 	}
-	
+
 	@Deprecated
-	default List<PartAcqInfo> getChildrenList(PartCfgInfo _partCfg){
-//		getPartCfgList(false)
-//		Logger log = LoggerFactory.getLogger(DebugLogMark.class);
-//		PartAcqInfo thisPa = getPaList(false).stream().filter(pa -> pa.getPartCfgList(false).contains(_partCfg)).findAny()
-//				.orElse(null);
-//		PartAcqInfo thisPa  = getPa(_partCfg);
-//		if(thisPa==null)
-//			return new ArrayList<>();
-//		
-//		log.debug("thisPa: {}\t{}\t{}", thisPa.getUid(), thisPa.getId(), thisPa.getName());
-//		return getParsList().stream().flatMap(pars -> pars.getPpartList().stream())
-//				.map(ppart->ppart.getPart().getPa(_partCfg)).filter(ppart->ppart!=null).collect(Collectors.toList());
+	default List<PartAcqInfo> getChildrenList(PartCfgInfo _partCfg) {
 		return getPpartList().stream().map(ppart -> ppart.getPart().getPa(_partCfg)).filter(ppart -> ppart != null)
 				.collect(Collectors.toList());
-//		return ppartList;
 	}
 }
