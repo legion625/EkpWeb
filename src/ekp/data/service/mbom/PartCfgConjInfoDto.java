@@ -43,4 +43,11 @@ public class PartCfgConjInfoDto extends ObjectModelInfoDto implements PartCfgCon
 		return partCfgLoader.getObj(getPartCfgUid());
 	}
 
+	private BizObjLoader<PartAcqInfo> partAcqLoader = BizObjLoader.PART_ACQ.get();
+
+	@Override
+	public PartAcqInfo getPartAcq() {
+		return partAcqLoader.getObj(getPartAcqUid());
+	}
+
 }

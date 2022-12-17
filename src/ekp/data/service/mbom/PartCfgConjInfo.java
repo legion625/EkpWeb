@@ -10,5 +10,7 @@ public interface PartCfgConjInfo extends ObjectModelInfo{
 	
 	// -------------------------------------------------------------------------------
 	PartCfgInfo getPartCfg();
+	
+	PartAcqInfo getPartAcq();
 
 }

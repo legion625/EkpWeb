@@ -1,3 +1,7 @@
+Min-Hua, 2022.12.17
+[change]
+1. [MBOM] PartConfiguration: Add "publish" function.
+
 Min-Hua, 2022.12.11
 [change]
 1. [MBOM] PartAcquisition: Add "publish" function, and freeze related functions when in "published" status.

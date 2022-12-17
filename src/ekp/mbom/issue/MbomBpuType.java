@@ -28,6 +28,7 @@ import ekp.mbom.issue.partAcq.PartAcqBuilder0;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBpuDel0;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBuilder1;
 import ekp.mbom.issue.partCfg.PartCfgBpuEditing;
+import ekp.mbom.issue.partCfg.PartCfgBpuPublish;
 import ekp.mbom.issue.prod.ProdBuilder0;
 import ekp.mbom.issue.prod.ProdBpuEditCtl;
 import ekp.mbom.issue.prodCtl.ProdCtlBpuPartCfgConj;
@@ -59,6 +60,7 @@ public enum MbomBpuType implements BpuType {
 	/**/
 	PART_CFG_0(PartCfgBuilder0.class), //
 	PART_CFG_$EDITING(PartCfgBpuEditing.class, PartCfgInfo.class), //
+	PART_CFG_$PUBLISH(PartCfgBpuPublish.class, PartCfgInfo.class), //
 	/**/
 	PROD_0(ProdBuilder0.class), //
 	PROD_$EDIT_CTL(ProdBpuEditCtl.class, ProdInfo.class), //
@@ -124,6 +126,8 @@ public enum MbomBpuType implements BpuType {
 			return true;
 		case PART_CFG_$EDITING:
 			return matchBizPartCfgEditing((PartCfgInfo) _args[0]);
+		case PART_CFG_$PUBLISH:
+			return matchBizPartCfgPublish((PartCfgInfo) _args[0]);
 		/* prod */
 		case PROD_0:
 			return true;
@@ -198,7 +202,10 @@ public enum MbomBpuType implements BpuType {
 			return false;
 		}
 
-		// TODO status
+		if (PartAcqStatus.EDITING != _pa.getStatus()) {
+			log.trace("PartAcqStatus should be EDITING. [{}][{}]", _pa.getUid(), _pa.getStatus());
+			return false;
+		}
 
 		List<ParsInfo> parsList = _pa.getParsList(true);
 		if (!parsList.isEmpty()) {
@@ -307,6 +314,20 @@ public enum MbomBpuType implements BpuType {
 	// -------------------------------------------------------------------------------
 	// ------------------------------------partCfg------------------------------------
 	private boolean matchBizPartCfgEditing(PartCfgInfo _pc) {
+		if (_pc == null) {
+			log.warn("_pc null.");
+			return false;
+		}
+
+		if (PartCfgStatus.EDITING != _pc.getStatus()) {
+			log.info("_pc.getStatus should be EDITING.");
+			return false;
+		}
+
+		return true;
+	}
+	
+	private boolean matchBizPartCfgPublish(PartCfgInfo _pc) {
 		if (_pc == null) {
 			log.warn("_pc null.");
 			return false;

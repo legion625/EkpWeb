@@ -212,6 +212,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 	}
 
 	// -------------------------------------------------------------------------------
+	// ----------------------------------pa_toolbar-----------------------------------
 	@Listen(Events.ON_SELECT + "=#lbxPartAcq")
 	public void lbxPartAcq_selected() {
 		PartAcqInfo pa = getSelectedPa();
@@ -253,7 +254,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 
 
 	// -------------------------------------------------------------------------------
-	// ----------------------------------pa_toolbar-----------------------------------
+	
 	
 	// -------------------------------------------------------------------------------
 	/* new pa */
@@ -456,6 +457,12 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 		PaBpuDel0 b = BpuFacade.getInstance().getBuilder(MbomBpuType.PART_ACQ_$DEL0, pa);
 		if (b == null) {
 			ZkNotification.error();
+			return;
+		}
+		
+		StringBuilder msg = new StringBuilder();
+		if(!b.verify(msg)) {
+			ZkMsgBox.exclamation(msg.toString());
 			return;
 		}
 
