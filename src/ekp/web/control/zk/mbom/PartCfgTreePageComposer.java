@@ -494,27 +494,13 @@ public class PartCfgTreePageComposer extends SelectorComposer<Component> {
 			boolean d = b.build(new StringBuilder(), new TimeTraveler());
 			if (d) {
 				ZkNotification.info("Publish part acuisition [" + pa.getId() + "][" + pa.getName() + "] success.");
-//				ListModelList<TreeNode<PartCfgTreeDto>>  model = (ListModelList<TreeNode<PartCfgTreeDto>>) treePartCfg.getModel();
-				DefaultTreeModel<TreeNode<PartCfgTreeDto>> model = (DefaultTreeModel)treePartCfg.getModel();
 				tn.getData().reloadPa();
-//				model.notifyChange(tn);
-				model.notifyAll();
-//				refreshPartCfgTree(tn.getData().Par)
-//				
-//				refreshPartInfo(part.reload()); // reload
-//				togglePaToolbarButtons(null);
-//				toggleParsToolbarButtons(null);
-//				togglePpartToolbarButtons(null);
+				// DefaultTreeModel<TreeNode<PartCfgTreeDto>> model = (DefaultTreeModel)treePartCfg.getModel();
+				// TODO model的狀態還不會及時更新
 			} else {
 				ZkNotification.error();
 			}
 		});
-		
-		
-		
-//		showWdPcAssignPa();
-		
-		// TODO
 	}
 	
 	// -------------------------------------------------------------------------------
