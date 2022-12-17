@@ -36,8 +36,8 @@ import legion.util.query.QueryOperation;
 import legion.util.query.QueryOperation.QueryValue;
 
 public class MbomDataServiceImp implements MbomDataService {
-//	private Logger log = LoggerFactory.getLogger(MbomDataServiceImp.class);
-	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
+	private Logger log = LoggerFactory.getLogger(MbomDataServiceImp.class);
+//	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
 
 	private String srcEkpKernelRmi;
 
@@ -218,8 +218,9 @@ public class MbomDataServiceImp implements MbomDataService {
 			return false;
 		}
 	}
+
 	@Override
-	public boolean partAcqRevertPublish(String _uid){
+	public boolean partAcqRevertPublish(String _uid) {
 		try {
 			return getEkpKernelRmi().partAcqRevertPublish(_uid);
 		} catch (Throwable e) {
@@ -228,6 +229,16 @@ public class MbomDataServiceImp implements MbomDataService {
 		}
 	}
 
+	@Override
+	public boolean partAcqUpdateRefUnitCost(String _uid, double _refUnitCost) {
+		try {
+			return getEkpKernelRmi().partAcqUpdateRefUnitCost(_uid, _refUnitCost);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+	
 	// -------------------------------------------------------------------------------
 	// ------------------------------PartAcqRoutingStep-------------------------------
 	@Override

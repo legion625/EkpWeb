@@ -24,6 +24,7 @@ import ekp.mbom.issue.part.PartBpuPcAssignPa;
 import ekp.mbom.issue.part.PartBuilder0;
 import ekp.mbom.issue.partAcq.PaBpuDel0;
 import ekp.mbom.issue.partAcq.PaBpuPublish;
+import ekp.mbom.issue.partAcq.PaBpuUpdateRefUnitCost;
 import ekp.mbom.issue.partAcq.PartAcqBuilder0;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBpuDel0;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBuilder1;
@@ -47,6 +48,8 @@ public enum MbomBpuType implements BpuType {
 	PART_ACQ_0(PartAcqBuilder0.class), //
 	PART_ACQ_$DEL0(PaBpuDel0.class, PartAcqInfo.class), //
 	PART_ACQ_$PUBLISH(PaBpuPublish.class, PartAcqInfo.class), //
+	PART_ACQ_$UPDATE_REF_UNIT_COST(PaBpuUpdateRefUnitCost.class, PartAcqInfo.class), //
+	
 	/* pars */
 	PARS_1(ParsBuilder1.class, PartAcqInfo.class), //
 	PARS_$DEL0(ParsBpuDel0.class, ParsInfo.class), //
@@ -106,6 +109,8 @@ public enum MbomBpuType implements BpuType {
 			return matchBizPaDel0((PartAcqInfo) _args[0]);
 		case PART_ACQ_$PUBLISH:
 			return matchBizPaPublish((PartAcqInfo) _args[0]);
+		case PART_ACQ_$UPDATE_REF_UNIT_COST:
+			return true;
 		/* pars */
 		case PARS_1:
 			return matchBizPars1((PartAcqInfo) _args[0]);

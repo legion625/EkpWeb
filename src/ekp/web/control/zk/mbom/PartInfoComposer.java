@@ -43,6 +43,7 @@ import ekp.mbom.issue.part.PartBpuDel0;
 import ekp.mbom.issue.part.PartBpuPcAssignPa;
 import ekp.mbom.issue.partAcq.PaBpuDel0;
 import ekp.mbom.issue.partAcq.PaBpuPublish;
+import ekp.mbom.issue.partAcq.PaBpuUpdateRefUnitCost;
 import ekp.mbom.issue.partAcq.PartAcqBuilder0;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBpuDel0;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBuilder1;
@@ -132,6 +133,35 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 			li.appendChild(new Listcell(pa.getTypeName()));
 			// status
 			li.appendChild(new Listcell(pa.getStatusName()));
+			// ref unit cost
+			lc = new Listcell();
+			Doublebox dbbRefUnitCost = new Doublebox(pa.getRefUnitCost());
+			dbbRefUnitCost.setInplace(true);
+			dbbRefUnitCost.addEventListener(Events.ON_CHANGE, e -> {
+				PaBpuUpdateRefUnitCost b = BpuFacade.getInstance()
+						.getBuilder(MbomBpuType.PART_ACQ_$UPDATE_REF_UNIT_COST, pa);
+				double newRefUnitCost = dbbRefUnitCost.getValue() == null ? 0 : dbbRefUnitCost.getValue();
+				b.appendRefUnitCost(newRefUnitCost);
+				StringBuilder msg = new StringBuilder();
+				if (!b.verify(msg)) {
+					ZkMsgBox.exclamation(msg.toString());
+					return;
+				}
+
+				if (b.build(new StringBuilder(), null)) {
+					ZkNotification.info("Update part acquition referenced unit cost  [" + pa.getId() + "]["
+							+ pa.getName() + "][" + newRefUnitCost + "] success.");
+					ListModelList<PartAcqInfo> model = (ListModelList) lbxPartAcq.getModel();
+
+					model.add(model.indexOf(pa), pa.reload());
+					model.remove(pa);
+					part.getPaList(true); // reload
+				} else {
+					ZkNotification.error();
+				}
+			});
+			lc.appendChild(dbbRefUnitCost);
+			li.appendChild(lc);
 			//  partCfgList
 			lc = new Listcell();
 			List<PartCfgInfo> partCfgList = pa.getPartCfgList(false);
