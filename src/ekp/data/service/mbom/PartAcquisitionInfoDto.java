@@ -95,15 +95,21 @@ public class PartAcquisitionInfoDto extends ObjectModelInfoDto implements PartAc
 	}
 
 	// -------------------------------------------------------------------------------
+	@Override
+	public PartAcqInfo reload() {
+		return DataServiceFactory.getInstance().getService(MbomDataService.class).loadPartAcquisition(getUid());
+	}
+
 	private BizObjLoader<PartInfo> partLoader = BizObjLoader.PART.get();
-	@Override	
-public 	PartInfo getPart(boolean _reload) {
+
+	@Override
+	public PartInfo getPart(boolean _reload) {
 		return partLoader.getObj(getPartUid());
 	}
-	
+
 	private BizObjLoader<List<ParsInfo>> parsListLoader = BizObjLoader.of(() -> DataServiceFactory.getInstance()
 			.getService(MbomDataService.class).loadPartAcqRoutingStepList(getUid()));
-	
+
 	@Override
 	public List<ParsInfo> getParsList(boolean _reload){
 		return parsListLoader.getObj(_reload);

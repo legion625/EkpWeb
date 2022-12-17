@@ -110,6 +110,14 @@ public class PartCfgInfoDto extends ObjectModelInfoDto implements PartCfgInfo {
 		return partLoader.getObj(getRootPartUid());
 	}
 
+	private BizObjLoader<List<PartCfgConjInfo>> pccListLoader = BizObjLoader
+			.of(() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadPartCfgConjList(getUid()));
+
+	@Override
+	public List<PartCfgConjInfo> getPccList(boolean _reload) {
+		return pccListLoader.getObj(_reload);
+	}
+
 	private BizObjLoader<List<PpartSkewer>> ppartSkewerListLoader = BizObjLoader.of(() -> {
 		QueryOperation<PpartSkewerQueryParam, PpartSkewer> param = new QueryOperation<>();
 		Map<PpartSkewerQueryParam, QueryValue[]> existsQvMap = new HashMap<>();

@@ -3,12 +3,12 @@
 	<panel vflex="1" apply="ekp.web.control.zk.mbom.PartInfoComposer">
 		<panelchildren>
 			<hlayout>
-				<label value="Pin: " />
-				<label id="lbPin" />
-				<label value="Name: " />
-				<label id="lbName" />
-				<label value="Unit: " />
-				<label id="lbUnit" />
+				<label value="Pin: " style="font-size:20px; weight:bold" />
+				<label id="lbPin" style="font-size:20px; weight:bold" />
+				<label value="Name: " style="font-size:20px; weight:bold" />
+				<label id="lbName" style="font-size:20px; weight:bold" />
+				<label value="Unit: " style="font-size:20px; weight:bold" />
+				<label id="lbUnit" style="font-size:20px; weight:bold" />
 			</hlayout>
 
 			<tabbox vflex="1">
@@ -18,18 +18,20 @@
 				</tabs>
 				<tabpanels>
 					<tabpanel>
-						<!-- <groupbox title="Part acquisition"> -->
-						<listbox id="lbxPartAcq" emptyMessage="(No data)">
+						<hlayout>
+							<button id="btnAddPa" label="New" iconSclass="fa fa-plus" />
+							<button id="btnAssignPc" label="Assign part configuration" iconSclass="fas fa-sitemap" />
+							<button id="btnPaPublish" label="Publish" iconSclass="fas fa-lock" disabled="true" />
+							<button id="btnPaDelete" label="Delete" iconSclass="fas fa-trash-alt" disabled="true" />
+						</hlayout>
+						<listbox id="lbxPartAcq" emptyMessage="(No data)" checkmark="true">
 							<listhead sizable="true">
-								<listheader width="50px">
-									<toolbarbutton id="btnAddPa" iconSclass="fa fa-plus" />
-								</listheader>
+								<listheader width="40px" />
 								<listheader label="Id" width="100px" />
 								<listheader label="Name" width="180px" />
 								<listheader label="Type" width="50px" />
-								<listheader label="Referenced part configuraions" >
-								<toolbarbutton id="btnAssignPc" iconSclass="fa fa-plus"/>
-								</listheader>
+								<listheader label="Status" width="100px" />
+								<listheader label="Referenced part configuraions" />
 							</listhead>
 						</listbox>
 						<window id="wdCreatePa" title="Create part acquisition" width="400px" height="130px"
@@ -49,8 +51,8 @@
 								<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
 							</div>
 						</window>
-						<window id="wdAssignPc" title="Assign part configuration" width="720px"
-							mode="highlighted" closable="true" visible="false" sizable="true">
+						<window id="wdAssignPc" title="Assign part configuration" width="720px" mode="highlighted"
+							closable="true" visible="false" sizable="true">
 							<listbox id="lbxPc" emptyMessage="(No data)" checkmark="true">
 								<listhead sizable="true">
 									<listheader width="50px" />
@@ -61,105 +63,107 @@
 									<listheader label="Description" sort="auto(desp)" />
 								</listhead>
 							</listbox>
-							<button id="btnSubmit" label="Submit"/>
+							<button id="btnSubmit" label="Submit" />
 						</window>
 
 						<separator spacing="5px" />
-						<label value="Routing step"></label>
-						<listbox id="lbxPars" emptyMessage="(No data)">
-							<listhead sizable="true">
-								<listheader width="50px">
-									<toolbarbutton id="btnAddPars" iconSclass="fa fa-plus" />
-								</listheader>
-								<listheader label="Seq" width="100px" />
-								<listheader label="Name" width="180px" />
-								<listheader label="Description" />
-							</listhead>
-						</listbox>
-						<window id="wdCreatePars" title="Create pars" width="400px" height="130px" mode="highlighted"
-							closable="true" visible="false" sizable="true">
+						<!--  -->
+						<groupbox title="Routing step" closable="false">
 							<hlayout>
-								<label value="Id" />
-								<textbox id="txbId" />
-								<label value="Name" />
-								<textbox id="txbName" />
+								<button id="btnParsNew" label="New" iconSclass="fa fa-plus" disabled="true" />
+								<button id="btnParsDelete" label="Delete" iconSclass="fas fa-trash-alt" disabled="true" />
 							</hlayout>
-							<label value="Desp" />
-							<textbox id="txbDesp" />
-							<hlayout></hlayout>
+							<listbox id="lbxPars" emptyMessage="(No data)" checkmark="true">
+								<listhead sizable="true">
+									<listheader width="40px" />
+									<listheader label="Seq" width="100px" sort="auto(seq)"/>
+									<listheader label="Name" width="180px" />
+									<listheader label="Description" />
+								</listhead>
+							</listbox>
+							<window id="wdCreatePars" title="Create pars" width="400px" height="130px"
+								mode="highlighted" closable="true" visible="false" sizable="true">
+								<hlayout>
+									<label value="Id" />
+									<textbox id="txbId" />
+									<label value="Name" />
+									<textbox id="txbName" />
+								</hlayout>
+								<label value="Desp" />
+								<textbox id="txbDesp" />
+								<hlayout></hlayout>
+								<separator spacing="5px" />
+								<div align="center">
+									<button id="btnSubmit" label="Submit" />
+									<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
+								</div>
+							</window>
 							<separator spacing="5px" />
-							<div align="center">
-								<button id="btnSubmit" label="Submit" />
-								<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
-							</div>
-						</window>
-						<separator spacing="5px" />
-						<tabbox>
-							<tabs>
-								<tab label="Part"></tab>
-								<tab label="Procedure"></tab>
-
-							</tabs>
-							<tabpanels>
-
-								<tabpanel>
-									<listbox id="lbxPpart" emptyMessage="(No data)">
-										<listhead sizable="true">
-											<listheader width="50px">
-												<toolbarbutton id="btnAddPpart" iconSclass="fa fa-plus" />
-											</listheader>
-											<listheader label="Part pin" width="130px" />
-											<listheader label="Part name" width="180px" />
-											<listheader label="Part required quantity" width="150px" />
-										</listhead>
-									</listbox>
-
-
-
-									<window id="wdCreatePpart" title="Part acquisition routing step - create part"
-										width="400px" height="530px" mode="highlighted" closable="true" visible="false" sizable="true">
-
-										<listbox id="lbxPart" height="400px" checkmark="true"
-											emptyMessage="(No data)">
+							<tabbox>
+								<tabs>
+									<tab label="Part"></tab>
+									<tab label="Procedure"></tab>
+								</tabs>
+								<tabpanels>
+									<tabpanel>
+										<hlayout>
+											<button id="btnPpartNew" label="New" iconSclass="fa fa-plus" disabled="true"/>
+											<button id="btnPpartDelete" label="Delete" iconSclass="fas fa-trash-alt" disabled="true" />
+										</hlayout>
+										<listbox id="lbxPpart" emptyMessage="(No data)" checkmark="true">
 											<listhead sizable="true">
-												<listheader label="Pin" sort="auto(pin)" />
-												<listheader label="Name" sort="auto(name)" />
+												<listheader width="40px" />
+												<listheader label="Part pin" width="130px" />
+												<listheader label="Part name" width="180px" />
+												<listheader label="Part required quantity" width="150px" />
 											</listhead>
 										</listbox>
-										<hlayout>
-											<label value="Selected part:" />
-											<label id="lbSelPart" />
-										</hlayout>
-										<hlayout>
-											<label value="required qty" />
-											<doublebox id="dbbReqQty" />
-										</hlayout>
+
+										<window id="wdCreatePpart" title="Part acquisition routing step - create part"
+											width="400px" height="530px" mode="highlighted" closable="true" visible="false" sizable="true">
+
+											<listbox id="lbxPart" height="400px" checkmark="true"
+												emptyMessage="(No data)">
+												<listhead sizable="true">
+													<listheader label="Pin" sort="auto(pin)" />
+													<listheader label="Name" sort="auto(name)" />
+												</listhead>
+											</listbox>
+											<hlayout>
+												<label value="Selected part:" />
+												<label id="lbSelPart" />
+											</hlayout>
+											<hlayout>
+												<label value="required qty" />
+												<doublebox id="dbbReqQty" />
+											</hlayout>
 
 
-										<separator spacing="5px" />
-										<div align="center">
-											<button id="btnSubmit" label="Submit" />
-											<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
-										</div>
-									</window>
-								</tabpanel>
-								<tabpanel>
-									<listbox id="lbxPproc" emptyMessage="(No data)">
-										<listhead sizable="true">
-											<listheader label="Seq" />
-											<listheader label="Name" />
-											<listheader label="Description" />
-										</listhead>
-									</listbox>
-								</tabpanel>
+											<separator spacing="5px" />
+											<div align="center">
+												<button id="btnSubmit" label="Submit" />
+												<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
+											</div>
+										</window>
 
-							</tabpanels>
-						</tabbox>
-						<!-- </groupbox> -->
 
+									</tabpanel>
+									<tabpanel>
+										<listbox id="lbxPproc" emptyMessage="(No data)">
+											<listhead sizable="true">
+												<listheader label="Seq" />
+												<listheader label="Name" />
+												<listheader label="Description" />
+											</listhead>
+										</listbox>
+									</tabpanel>
+
+								</tabpanels>
+							</tabbox>
+						</groupbox>
 					</tabpanel>
 					<tabpanel height="100%">
-						<include id="icdPartAcqPage" height="100%"/>
+						<include id="icdPartAcqPage" height="100%" />
 					</tabpanel>
 				</tabpanels>
 			</tabbox>

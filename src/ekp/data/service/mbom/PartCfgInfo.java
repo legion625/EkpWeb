@@ -32,6 +32,10 @@ public interface PartCfgInfo extends ObjectModelInfo {
 	
 	PartInfo getRootPart();
 	
+	List<PartCfgConjInfo> getPccList(boolean _reload);
+	
 	List<PpartSkewer> getPpartSkewerList(boolean _reload);
+	
+	
 
 }

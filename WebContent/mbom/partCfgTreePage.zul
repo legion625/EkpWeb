@@ -3,13 +3,12 @@
 	<panel id="pnPartCfgTreePage" vflex="1" apply="ekp.web.control.zk.mbom.PartCfgTreePageComposer">
 		<panelchildren>
 			<hlayout>
-				<button id="btnPcPublish" label="Publish" />
+				<button id="btnPcNew" label="New" iconSclass="fa fa-plus" />
+				<button id="btnPcPublish" label="Publish" iconSclass="fas fa-lock" disabled="true" />
 			</hlayout>
 			<listbox id="lbxPartCfg" emptyMessage="(No data)" checkmark="true">
 				<listhead sizable="true">
-					<listheader width="50px">
-						<toolbarbutton id="btnAddPartCfg" iconSclass="fa fa-plus" />
-					</listheader>
+					<listheader width="40px" />
 					<listheader label="Id" width="100px" sort="auto(id)" />
 					<listheader label="Name" width="130px" sort="auto(name)" />
 					<listheader label="Root part pin" width="200px" sort="auto(rootPartPin)" />
@@ -46,6 +45,7 @@
 									<button id="btnSubmit" label="Submit" />
 								</div>
 							</window>
+							<button id="btnPaPublish" label="publish part acquisition" disabled="true"/>
 						</hlayout>
 						<tree id="treePartCfg" vflex="1" checkmark="true">
 							<treecols sizable="true">
@@ -55,6 +55,7 @@
 								<treecol label="Acq id" width="100px" />
 								<treecol label="Acq name" width="100px" />
 								<treecol label="Acq type" width="100px" />
+								<treecol label="Acq status" width="100px" />
 								<treecol label="Required quantity" width="150px" />
 							</treecols>
 						</tree>

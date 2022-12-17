@@ -91,6 +91,8 @@ public class PartCfgTreeDto {
 		return pa;
 	}
 
+	
+
 	public PpartInfo getPpart() {
 		return ppart;
 	}
@@ -99,6 +101,11 @@ public class PartCfgTreeDto {
 		return childrenList;
 	}
 
+	// ---------------------------------------------------------------------------
+	public void reloadPa() {
+		this.pa = pa.reload();
+	}
+	
 	// ---------------------------------------------------------------------------
 	public String getPartPin() {
 		return DataUtil.nodataIfEmpty(getP(), PartInfo::getPin);
@@ -120,6 +127,9 @@ public class PartCfgTreeDto {
 	}
 	public String getPaTypeName() {
 		return DataUtil.nodataIfEmpty(getPa(), PartAcqInfo::getTypeName);
+	}
+	public String getPaStatusName() {
+		return DataUtil.nodataIfEmpty(getPa(), PartAcqInfo::getStatusName);
 	}
 	public String getPpartReqQtyDisplay() {
 		return DataUtil.nodataIfEmpty(getPpart(), pp->NumberFormatUtil.getDecimalString(pp.getPartReqQty(), 3));
