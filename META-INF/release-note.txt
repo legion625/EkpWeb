@@ -1,13 +1,11 @@
-Min-Hua, 2022.12.17
-[change]
-1. [MBOM] PartConfiguration: Add "publish" function.
-
-Min-Hua, 2022.12.11
+------------------------------------------------------------------------------
+v0.1.6 released by Min-Hua, 2022.12.17
 [change]
 1. [MBOM] PartAcquisition: Add "publish" function, and freeze related functions when in "published" status.
-2. [MBOM] Modify the part info page layout.
+2. [MBOM] PartConfiguration: Add "publish" function.
+3. [MBOM] Modify the part info page layout.
   - toolbar for part acquisition, pars, ppart
-3. Minor changes.
+4. Minor changes.
   - [MBOM]Remove ParsBuilder0, which is replaced by ParsBuilder1.
 
 ------------------------------------------------------------------------------
