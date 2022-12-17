@@ -1,4 +1,8 @@
 Min-Hua, 2022.12.17
+[change]
+1. [MBOM] PartAcquisition: Add "update referenced unit cost" function.
+
+Min-Hua, 2022.12.17
 [lib]
 1. ekp_kernel: 0.1.6 -> 0.1.7
 

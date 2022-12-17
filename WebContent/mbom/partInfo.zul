@@ -31,6 +31,7 @@
 								<listheader label="Name" width="180px" />
 								<listheader label="Type" width="50px" />
 								<listheader label="Status" width="100px" />
+								<listheader label="Referenced unit cost" width="130px" />
 								<listheader label="Referenced part configuraions" />
 							</listhead>
 						</listbox>
