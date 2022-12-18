@@ -121,39 +121,8 @@ public class PartCfgTreePageComposer extends SelectorComposer<Component> {
 	private void init() {
 		/* lbx */
 		ListitemRenderer<PartCfgInfo> partRenderer = (li, pc, i) -> {
-			Listcell lc;
-			// delete
-			lc = new Listcell();
-			// TODO
-//			Toolbarbutton btn = new Toolbarbutton();
-//			btn.setIconSclass("fa fa-minus");
-//			btn.addEventListener(Events.ON_CLICK, e -> {
-//				boolean match = MbomBpuType.PART_$DEL0.match(p);
-//				if (!match) {
-//					ZkNotification.warning("This part cannot be deleted.");
-//					return;
-//				}
-//				
-//				PartBpuDel0 b = BpuFacade.getInstance().getBuilder(MbomBpuType.PART_$DEL0, p);
-//				if (b == null) {
-//					ZkNotification.error();
-//					return;
-//				}
-//
-//				ZkMsgBox.confirm("Confirm delete?", () -> {
-//					boolean d = b.build(new StringBuilder(), new TimeTraveler());
-//					if (d) {
-//						ZkNotification.info("Delete part [" + p.getPin() + "][" + p.getName() + "] success.");
-//						ListModelList<PartInfo> model = (ListModelList) lbxPart.getModel();
-//						model.remove(p);
-//					} else {
-//						ZkNotification.error();
-//					}
-//
-//				});
-//			});
-//			lc.appendChild(btn);
-			li.appendChild(lc);
+			// 
+			li.appendChild(new Listcell());
 			//
 			li.appendChild(new Listcell(pc.getId()));
 			//
@@ -162,16 +131,8 @@ public class PartCfgTreePageComposer extends SelectorComposer<Component> {
 			li.appendChild(new Listcell(pc.getRootPartPin()));
 			//
 			li.appendChild(new Listcell(pc.getStatusName()));
-
 			//
 			li.appendChild(new Listcell(pc.getDesp()));
-
-//			// click event -> show part
-//			li.addEventListener(Events.ON_CLICK, e -> {
-//				fnCntProxy.refreshCntUri(PartInfoComposer.URI);
-//				PartInfoComposer partComposer = fnCntProxy.getComposer(PartInfoComposer.class);
-//				partComposer.refreshPartInfo(p);
-//			});
 		};
 		lbxPartCfg.setItemRenderer(partRenderer);
 
@@ -226,6 +187,8 @@ public class PartCfgTreePageComposer extends SelectorComposer<Component> {
 			ti.getTreerow().appendChild(new Treecell(data.getPaStatusName()));
 			// qty
 			ti.getTreerow().appendChild(new Treecell(data.getPpartReqQtyDisplay()));
+			//
+			ti.getTreerow().appendChild(new Treecell(data.getPaRefUnitCostDisplay()));
 
 		};
 		treePartCfg.setItemRenderer(renderer);

@@ -135,13 +135,9 @@ public class PartCfgTreeDto {
 		return DataUtil.nodataIfEmpty(getPpart(), pp->NumberFormatUtil.getDecimalString(pp.getPartReqQty(), 3));
 	}
 	
-//		//
-//		ti.getTreerow().appendChild(new Treecell(pa == null ? "(No data)" : pa.getId()));
-//		ti.getTreerow().appendChild(new Treecell(pa == null ? "(No data)" : pa.getName()));
-//		ti.getTreerow().appendChild(new Treecell(pa == null ? "(No data)" : pa.getTypeName()));
-//		// qty
-//		ti.getTreerow().appendChild(new Treecell(
-//				ppart == null ? "(No data)" : NumberFormatUtil.getDecimalString(ppart.getPartReqQty(), 3)));
+	public String getPaRefUnitCostDisplay() {
+		return DataUtil.nodataIfEmpty(getPa(), pa->NumberFormatUtil.getDecimalString(pa.getRefUnitCost(), 3));
+	}
 
 	// ---------------------------------------------------------------------------
 	public void reloadPa(PartCfgInfo _partCfg) {

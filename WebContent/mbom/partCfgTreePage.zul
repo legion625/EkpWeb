@@ -45,7 +45,7 @@
 									<button id="btnSubmit" label="Submit" />
 								</div>
 							</window>
-							<button id="btnPaPublish" label="publish part acquisition" disabled="true"/>
+							<button id="btnPaPublish" label="publish part acquisition" disabled="true" />
 						</hlayout>
 						<tree id="treePartCfg" vflex="1" checkmark="true">
 							<treecols sizable="true">
@@ -57,11 +57,10 @@
 								<treecol label="Acq type" width="100px" />
 								<treecol label="Acq status" width="100px" />
 								<treecol label="Required quantity" width="150px" />
+								<treecol label="Acq referenced unit cost" width="150px" />
 							</treecols>
 						</tree>
 					</div>
-					<!-- 	<groupbox title="Part configuration tree" vflex="1">
-						</groupbox> -->
 				</center>
 				<east vflex="1" title="Routing step part list" width="70%" collapsible="true" splittable="true"
 					open="false">
@@ -88,9 +87,6 @@
 					</div>
 				</east>
 			</borderlayout>
-
-
-
 		</panelchildren>
 	</panel>
 
