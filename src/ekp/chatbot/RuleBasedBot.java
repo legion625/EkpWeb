@@ -52,12 +52,17 @@ public class RuleBasedBot implements SimpleBot{
 			log.debug("{}", word);
 		}
 		
-		
 		if (_utterance.contains("configuration")) {
 			return facade.pc1();
-		}else if(lemmaList.contains("cost")) {
+		} else if (lemmaList.contains("bom")) {
+			boolean publishOnly = false;
+			if (lemmaList.contains("publish"))
+				publishOnly = true;
+
+			return facade.bom(lemmaList, publishOnly);
+		} else if (lemmaList.contains("cost")) {
 			return facade.cost(lemmaList);
-		} 
+		}
 //		
 //		else if (_utterance.contains("publish")) {
 //			return new String[]{"publish"};

@@ -1,4 +1,9 @@
-chatbot developing...
+Min-Hua, 2022.12.18
+[change]
+1. [Chatbot] Add rule-based chatbot.
+
+[lib]
+1. stanford_corenlp: 4.2.0 (added)
 
 ------------------------------------------------------------------------------
 v0.1.7 released by Min-Hua, 2022.12.17

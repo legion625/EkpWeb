@@ -86,12 +86,12 @@ public class ChatbotComposer extends SelectorComposer<Component> {
 		sendMsg();
 	}
 
-	@Listen(Events.ON_OK + "=#txbInput")
-	public void txbInput_ok() {
-		ZkNotification.info("test on OK");
-		Events.echoEvent(new Event(Events.ON_CHANGING, txbInput));
-		sendMsg();
-	}
+//	@Listen(Events.ON_OK + "=#txbInput")
+//	public void txbInput_ok() {
+//		ZkNotification.info("test on OK");
+//		Events.echoEvent(new Event(Events.ON_CHANGING, txbInput));
+//		sendMsg();
+//	}
 
 	private void sendMsg() {
 		log.debug("sendMsg");
@@ -130,7 +130,6 @@ public class ChatbotComposer extends SelectorComposer<Component> {
 				try {
 					// sleep(100);
 					// TODO
-//					System.out.println("bot.hashCode(): " + bot.hashCode());
 					log.debug("bot.hashCode(): {}", bot.hashCode());
 //					response = bot.getResponse(utterance);
 					response = bot.getResponseNew(utterance);
@@ -142,8 +141,6 @@ public class ChatbotComposer extends SelectorComposer<Component> {
 					// e.printStackTrace();
 				} catch (Throwable e) {
 					LogUtil.log(log, e);
-//					e.printStackTrace();
-//					response = "something error!!";
 					response = new String[] { "something error!!" };
 					complete = true;
 				}

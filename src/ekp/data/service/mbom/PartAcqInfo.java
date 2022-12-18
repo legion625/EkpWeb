@@ -66,7 +66,6 @@ public interface PartAcqInfo extends ObjectModelInfo {
 		return getParsList().stream().flatMap(pars -> pars.getPpartList().stream()).collect(Collectors.toList());
 	}
 
-	@Deprecated
 	default List<PartAcqInfo> getChildrenList(PartCfgInfo _partCfg) {
 		return getPpartList().stream().map(ppart -> ppart.getPart().getPa(_partCfg)).filter(ppart -> ppart != null)
 				.collect(Collectors.toList());
