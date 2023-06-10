@@ -18,12 +18,19 @@ public class EkpWebTest extends AbstractEkpInitTest{
 	@Test
 	public void testOpenaiChatBot() {
 //		String apiKey = "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";
-		String apiKey = "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";
+//		String apiKey = "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";
+		String apiKey = "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";
+		
 		
 		String input = "請幫我解析這段話的intent和entity:”55A3-Z0多少錢？”";
 		log.debug("input: {}", input);
 		String output = ChatBot.sendQuery(input, apiKey);
 		log.debug("output: {}", output);
 
+	}
+	
+	@Test
+	public void parseJson() {
+		
 	}
 }
