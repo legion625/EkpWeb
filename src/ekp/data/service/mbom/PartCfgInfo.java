@@ -1,6 +1,9 @@
 package ekp.data.service.mbom;
 
 import legion.ObjectModelInfo;
+
+import java.util.List;
+
 import ekp.mbom.type.PartCfgStatus;
 
 public interface PartCfgInfo extends ObjectModelInfo {
@@ -17,7 +20,22 @@ public interface PartCfgInfo extends ObjectModelInfo {
 
 	String getDesp();
 	
+	long getPublishTime();
+
+	// -------------------------------------------------------------------------------
+	default String getStatusName() {
+		return (getStatus() == null ? PartCfgStatus.UNDEFINED : getStatus()).getName();
+	}
+
 	// -------------------------------------------------------------------------------
 	PartCfgInfo reload();
+	
+	PartInfo getRootPart();
+	
+	List<PartCfgConjInfo> getPccList(boolean _reload);
+	
+	List<PpartSkewer> getPpartSkewerList(boolean _reload);
+	
+	
 
 }

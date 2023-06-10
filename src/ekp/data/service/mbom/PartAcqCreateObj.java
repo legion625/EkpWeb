@@ -2,7 +2,7 @@ package ekp.data.service.mbom;
 
 import ekp.mbom.type.PartAcquisitionType;
 
-public class PartAcquisitionCreateObj {
+public class PartAcqCreateObj {
 	private String partUid; // ref data key
 	private String partPin; // ref biz key
 

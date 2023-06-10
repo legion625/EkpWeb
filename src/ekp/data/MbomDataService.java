@@ -1,14 +1,17 @@
 package ekp.data;
 
+import java.rmi.RemoteException;
 import java.util.List;
+import java.util.Map;
 
-import ekp.data.service.mbom.ParsPartInfo;
-import ekp.data.service.mbom.ParsProcCreateObj;
-import ekp.data.service.mbom.ParsProcInfo;
-import ekp.data.service.mbom.PartAcqRoutingStepCreateObj;
-import ekp.data.service.mbom.PartAcqRoutingStepInfo;
-import ekp.data.service.mbom.PartAcquisitionCreateObj;
-import ekp.data.service.mbom.PartAcquisitionInfo;
+import ekp.data.service.mbom.PpartInfo;
+import ekp.data.service.mbom.PpartSkewer;
+import ekp.data.service.mbom.PprocCreateObj;
+import ekp.data.service.mbom.PprocInfo;
+import ekp.data.service.mbom.ParsCreateObj;
+import ekp.data.service.mbom.ParsInfo;
+import ekp.data.service.mbom.PartAcqCreateObj;
+import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.mbom.PartCfgConjInfo;
 import ekp.data.service.mbom.PartCfgCreateObj;
 import ekp.data.service.mbom.PartCfgInfo;
@@ -22,7 +25,14 @@ import ekp.data.service.mbom.ProdInfo;
 import ekp.data.service.mbom.ProdModCreateObj;
 import ekp.data.service.mbom.ProdModInfo;
 import ekp.data.service.mbom.ProdModItemInfo;
+import ekp.data.service.mbom.query.PartCfgQueryParam;
+import ekp.data.service.mbom.query.PartQueryParam;
+import ekp.data.service.mbom.query.PpartSkewerQueryParam;
+import ekp.serviceFacade.rmi.mbom.PartCfgRemote;
+import ekp.serviceFacade.rmi.mbom.PpartSkewerRemote;
 import legion.IntegrationService;
+import legion.util.query.QueryOperation;
+import legion.util.query.QueryOperation.QueryValue;
 
 public interface MbomDataService extends IntegrationService {
 	public boolean testEkpKernelServiceRemoteCallBack();
@@ -36,42 +46,54 @@ public interface MbomDataService extends IntegrationService {
 	public PartInfo loadPart(String _uid);
 
 	public PartInfo loadPartByPin(String _pin);
+	
+	public QueryOperation<PartQueryParam, PartInfo> searchPart(QueryOperation<PartQueryParam, PartInfo> _param);
 
 	// -------------------------------------------------------------------------------
 	// --------------------------------PartAcquisition--------------------------------
-	public PartAcquisitionInfo createPartAcquisition(PartAcquisitionCreateObj _dto);
+	public PartAcqInfo createPartAcquisition(PartAcqCreateObj _dto);
 
 	public boolean deletePartAcquisition(String _uid);
 
-	public PartAcquisitionInfo loadPartAcquisition(String _uid);
+	public PartAcqInfo loadPartAcquisition(String _uid);
 
-	public PartAcquisitionInfo loadPartAcquisition(String _partPin, String _id);
+	public PartAcqInfo loadPartAcquisition(String _partPin, String _id);
 
-	public List<PartAcquisitionInfo> loadPartAcquisitionList(String _partUid);
+	public List<PartAcqInfo> loadPartAcquisitionList(String _partUid);
+
+	public boolean partAcqStartEditing(String _uid);
+
+	public boolean partAcqRevertStartEditing(String _uid);
+
+	public boolean partAcqPublish(String _uid, long _publishTime);
+
+	public boolean partAcqRevertPublish(String _uid);
+	
+	public boolean partAcqUpdateRefUnitCost(String _uid, double _refUnitCost);
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------PartAcqRoutingStep-------------------------------
-	public PartAcqRoutingStepInfo createPartAcqRoutingStep(PartAcqRoutingStepCreateObj _dto);
+	public ParsInfo createPartAcqRoutingStep(ParsCreateObj _dto);
 
 	public boolean deletePartAcqRoutingStep(String _uid);
 
-	public PartAcqRoutingStepInfo loadPartAcqRoutingStep(String _uid);
+	public ParsInfo loadPartAcqRoutingStep(String _uid);
 
-	public PartAcqRoutingStepInfo loadPartAcqRoutingStep(String _partAcqUid, String _id);
+	public ParsInfo loadPartAcqRoutingStep(String _partAcqUid, String _id);
 
-	public List<PartAcqRoutingStepInfo> loadPartAcqRoutingStepList(String _partAcqUid);
+	public List<ParsInfo> loadPartAcqRoutingStepList(String _partAcqUid);
 
 	// -------------------------------------------------------------------------------
 	// -----------------------------------ParsProc------------------------------------
-	public ParsProcInfo createParsProc(ParsProcCreateObj _dto);
+	public PprocInfo createParsProc(PprocCreateObj _dto);
 
 	public boolean deleteParsProc(String _uid);
 
-	public ParsProcInfo loadParsProc(String _uid);
+	public PprocInfo loadParsProc(String _uid);
 
-	public List<ParsProcInfo> loadParsProcList(String _parsUid);
+	public List<PprocInfo> loadParsProcList(String _parsUid);
 
-	public List<ParsProcInfo> loadParsProcListByProc(String _procUid);
+	public List<PprocInfo> loadParsProcListByProc(String _procUid);
 
 	public boolean parsProcAssignProc(String _uid, String _procUid, String _procId);
 
@@ -79,22 +101,35 @@ public interface MbomDataService extends IntegrationService {
 
 	// -------------------------------------------------------------------------------
 	// -----------------------------------ParsPart------------------------------------
-	public ParsPartInfo createParsPart(String _parsUid);
+	public PpartInfo createParsPart(String _parsUid);
 
 	public boolean deleteParsPart(String _uid);
 
-	public ParsPartInfo loadParsPart(String _uid);
+	public PpartInfo loadParsPart(String _uid);
 	
-	public ParsPartInfo loadParsPart(String _parsUid, String _partuid);
+	public PpartInfo loadParsPart(String _parsUid, String _partuid);
 
-	public List<ParsPartInfo> loadParsPartList(String _parsUid);
+	public List<PpartInfo> loadParsPartList(String _parsUid);
 
-	public List<ParsPartInfo> loadParsPartListByPart(String _partUid);
+	public List<PpartInfo> loadParsPartListByPart(String _partUid);
 
 	public boolean parsPartAssignPart(String _uid, String _partUid, String _partPin, double _partReqQty);
 
 	public boolean parsPartRevertAssignPart(String _uid);
 
+	// -------------------------------------------------------------------------------
+	// ----------------------------------PpartSkewer----------------------------------
+	public PpartSkewer loadPpartSkewer(String _uid);
+	
+	public QueryOperation<PpartSkewerQueryParam, PpartSkewer> searchPpartSkewer(
+			QueryOperation<PpartSkewerQueryParam, PpartSkewer> _param,
+			Map<PpartSkewerQueryParam, QueryValue[]> _existsQvMap);
+//	
+//	default public QueryOperation<PpartSkewerQueryParam, PpartSkewer> searchPpartSkewer(
+//			QueryOperation<PpartSkewerQueryParam, PpartSkewer> _param) {
+//		return searchPpartSkewer(_param, null);
+//	}
+	
 	// -------------------------------------------------------------------------------
 	// ------------------------------------PartCfg------------------------------------
 	public PartCfgInfo createPartCfg(PartCfgCreateObj _dto);
@@ -106,12 +141,14 @@ public interface MbomDataService extends IntegrationService {
 	public PartCfgInfo loadPartCfgById(String _id);
 
 	public List<PartCfgInfo> loadPartCfgList(String _rootPartUid);
+	
+	public QueryOperation<PartCfgQueryParam, PartCfgInfo> searchPartCfg(QueryOperation<PartCfgQueryParam, PartCfgInfo> _param);
 
 	public boolean partCfgStartEditing(String _uid);
 
 	public boolean partCfgRevertStartEditing(String _uid);
 
-	public boolean partCfgPublish(String _uid);
+	public boolean partCfgPublish(String _uid, long _publishTime);
 
 	public boolean partCfgRevertPublish(String _uid);
 
@@ -126,6 +163,8 @@ public interface MbomDataService extends IntegrationService {
 	public PartCfgConjInfo loadPartCfgConj(String _partCfgUid, String _partAcqUid);
 
 	public List<PartCfgConjInfo> loadPartCfgConjList(String _partCfgUid);
+	
+	public List<PartCfgConjInfo> loadPartCfgConjListByPartAcq(String _partAcqUid);
 
 	// -------------------------------------------------------------------------------
 	// -------------------------------------Prod--------------------------------------

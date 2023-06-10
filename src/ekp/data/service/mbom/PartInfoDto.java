@@ -1,5 +1,11 @@
 package ekp.data.service.mbom;
 
+import java.util.List;
+
+import ekp.data.BizObjLoader;
+import ekp.data.MbomDataService;
+import ekp.mbom.type.PartUnit;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
 public class PartInfoDto extends ObjectModelInfoDto implements PartInfo {
@@ -11,6 +17,7 @@ public class PartInfoDto extends ObjectModelInfoDto implements PartInfo {
 	// -----------------------------------attribute-----------------------------------
 	private String pin;
 	private String name;
+	private PartUnit unit;
 
 	// -------------------------------------------------------------------------------
 	// ---------------------------------getter&setter---------------------------------
@@ -30,5 +37,45 @@ public class PartInfoDto extends ObjectModelInfoDto implements PartInfo {
 
 	void setName(String name) {
 		this.name = name;
+	}
+	
+	@Override
+	public PartUnit getUnit() {
+		return unit;
+	}
+
+	void setUnit(PartUnit unit) {
+		this.unit = unit;
+	}
+
+	// -------------------------------------------------------------------------------
+	@Override
+	public PartInfo reload() {
+		return DataServiceFactory.getInstance().getService(MbomDataService.class).loadPart(getUid());
+	}
+
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<List<PartAcqInfo>> paListLoader = BizObjLoader.of(
+			() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadPartAcquisitionList(getUid()));
+
+	@Override
+	public List<PartAcqInfo> getPaList(boolean _reload) {
+		return paListLoader.getObj(_reload);
+	}
+
+	private BizObjLoader<List<PpartInfo>> ppartListLoader = BizObjLoader.of(
+			() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadParsPartListByPart(getUid()));
+
+	@Override
+	public List<PpartInfo> getPpartList(boolean _reload) {
+		return ppartListLoader.getObj(_reload);
+	}
+	
+	private BizObjLoader<List<PartCfgInfo>> partCfgListLoader = BizObjLoader.of(
+			() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadPartCfgList(getUid()));
+	
+	@Override
+	public List<PartCfgInfo> getRootPartCfgList(boolean _reload){
+		return partCfgListLoader.getObj(_reload);
 	}
 }

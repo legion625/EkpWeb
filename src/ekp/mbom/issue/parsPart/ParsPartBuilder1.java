@@ -1,7 +1,7 @@
 package ekp.mbom.issue.parsPart;
 
-import ekp.data.service.mbom.ParsPartInfo;
-import ekp.data.service.mbom.PartAcqRoutingStepInfo;
+import ekp.data.service.mbom.PpartInfo;
+import ekp.data.service.mbom.ParsInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.mbom.issue.prod.ProdBuilder0;
 import legion.util.DataFO;
@@ -9,7 +9,7 @@ import legion.util.TimeTraveler;
 
 public class ParsPartBuilder1 extends ParsPartBuilder {
 	/* base */
-	private PartAcqRoutingStepInfo pars;
+	private ParsInfo pars;
 
 	/* data */
 	private PartInfo part;
@@ -19,7 +19,7 @@ public class ParsPartBuilder1 extends ParsPartBuilder {
 	@Override
 	protected ParsPartBuilder1 appendBase() {
 		/* base */
-		pars = (PartAcqRoutingStepInfo) args[0];
+		pars = (ParsInfo) args[0];
 		appendParsUid(pars.getUid());
 
 		/* data */
@@ -42,7 +42,7 @@ public class ParsPartBuilder1 extends ParsPartBuilder {
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------------getter-------------------------------------
-	public PartAcqRoutingStepInfo getPars() {
+	public ParsInfo getPars() {
 		return pars;
 	}
 
@@ -67,11 +67,11 @@ public class ParsPartBuilder1 extends ParsPartBuilder {
 		if (getPart() == null) {
 			_msg.append("Part should be assigned.").append(System.lineSeparator());
 			v = false;
-		}else {
-//			if(mbomDataService.loadParsPart(getParsUid(), getPart().getUid())!=null) { // FIXME
-//				_msg.append("Duplicate assign part.").append(System.lineSeparator());
-//				v = false;
-//			}
+		} else {
+			if (mbomDataService.loadParsPart(getParsUid(), getPart().getUid()) != null) {
+				_msg.append("Duplicate assign part.").append(System.lineSeparator());
+				v = false;
+			}
 		}
 
 		if (getPartReqQty() == 0) {
@@ -85,11 +85,11 @@ public class ParsPartBuilder1 extends ParsPartBuilder {
 	// -------------------------------------------------------------------------------
 	// -------------------------------------build-------------------------------------
 	@Override
-	protected ParsPartInfo buildProcess(TimeTraveler _tt) {
+	protected PpartInfo buildProcess(TimeTraveler _tt) {
 		TimeTraveler tt = new TimeTraveler();
 
 		// 1. build ppart
-		ParsPartInfo ppart = buildPpart(tt);
+		PpartInfo ppart = buildPpart(tt);
 		if (ppart == null) {
 			tt.travel();
 			log.error("buildPpart return null.");
@@ -103,7 +103,7 @@ public class ParsPartBuilder1 extends ParsPartBuilder {
 			log.error("mbomDataService.parsPartAssignPart return false.");
 			return null;
 		}
-		tt.addSite("revert parsPartAssignPart", () -> mbomDataService.parsPartRevertAssignPart(getParsUid()));
+		tt.addSite("revert parsPartAssignPart", () -> mbomDataService.parsPartRevertAssignPart(ppart.getUid()));
 		log.info("mbomDataService.parsPartAssignPart [{}][{}]", ppart.getUid(), getPart().getUid(), getPart().getPin(),
 				getPartReqQty());
 
