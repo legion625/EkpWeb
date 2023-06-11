@@ -6,17 +6,32 @@ import org.slf4j.LoggerFactory;
 
 import ekp.DebugLogMark;
 import ekp.util.DataUtil;
+import legion.SystemInfoDefault;
 import legion.openai.ChatBot;
 import legion.util.JsonUtil;
 
 public class OpenAiBot implements SimpleBot{
-	
+//	private Logger log = LoggerFactory.getLogger(OpenAiBot.class);
 	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
 
 	private String apiKey;
 	
 	public OpenAiBot() {
-		apiKey = "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";
+		apiKey = SystemInfoDefault.getInstance().getAttribute("openai.apiKey");
+	}
+	
+	public IntentType getIntent(String _utterance) {
+		String selStr = IntentType.getInputStr(_utterance);
+		log.debug("selStr: {}", selStr);
+		String select= ChatBot.sendQuery(selStr, apiKey);
+		log.debug("select: {}", select);
+		
+		int s = DataUtil.findInt(select);
+		log.debug("s: {}", s); 
+		
+		IntentType intentType = IntentType.get(s);
+		log.debug("intentType: {}", intentType); 
+		return intentType;
 	}
 	
 	@Override
@@ -34,18 +49,7 @@ public class OpenAiBot implements SimpleBot{
 //		log.debug("intentStr: {}", intentStr);
 //		log.debug("entityStr: {}", entityStr);
 		
-		String selStr = "\""+_utterance+"\"";
-		selStr +="\n這段文字的意圖和下列何者最接近? (請簡答「數字編號」即可。)\n";
-		selStr +="1.詢問指定產品的價格\n";
-		selStr +="2.展開指定產品的BOM結構\n";
-		selStr +="3.查詢構型清單\n";
-		selStr +="9.以上皆非\n";
-		log.debug("selStr: {}", selStr);
-		String select= ChatBot.sendQuery(selStr, apiKey);
-		log.debug("select: {}", select);
 		
-		int s = DataUtil.findInt(select);
-		log.debug("s: {}", s); 
 		
 		/* 當要詢問指定產品時，進一步找出產品編號。 */
 ////		String entityStr = "Please tell me the 'entity' of the sentence: ";
@@ -67,6 +71,60 @@ public class OpenAiBot implements SimpleBot{
 		
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	// -------------------------------------------------------------------------------
+	public enum IntentType{
+		I11(11,"查詢[產品]清單、[構型]清單或[產品型錄]"), //
+		I12(12,"展開指定[產品]的BOM(bill of material)或料表結構(structure)"), //
+		I13(13,"詢問指定[產品]的價格"), //
+		I90(90,"詢問這個chatbot的操作說明，或功能指引。"), //
+		I99(99,"其他，和以上意圖相似度均不高"), //
+		;
+		
+		private int idx;
+		private String desp;
+		
+		private IntentType(int idx, String desp) {
+			this.idx = idx;
+			this.desp = desp;
+		}
+		
+		// ---------------------------------------------------------------------------
+		public static String getInputStr(String _utterance) {
+			String str = "\"" + _utterance + "\"";
+			str += "\n這段文字的意圖和下列何者描述的意圖有高相似度? (請簡答「數字編號」即可。若相似度低，請選擇「其他」。)\n";
+			for (IntentType t : values())
+				str += t.idx + "." + t.desp + "\n";
+			return str;
+		}
+
+		public static IntentType get(int _idx) {
+			for (IntentType t : values()) {
+				if (t.idx == _idx)
+					return t;
+			}
+			return IntentType.I99;
+		}
+	}
+	
+	// -------------------------------------------------------------------------------
+	public enum EntityType {
+		E1;
+
+		private Logger log = LoggerFactory.getLogger(EntityType.class);
+
+		public String getInputStr(String _utterance) {
+			String str = "\"" + _utterance + "\"";
+			switch (this) {
+			case E1: {
+				return str + "\n這個句字中可能的「產品編號」是什麼?";
+			}
+			default:
+				log.error("EntityType error.");
+				return ""; //
+			}
+		}
 	}
 
 }
