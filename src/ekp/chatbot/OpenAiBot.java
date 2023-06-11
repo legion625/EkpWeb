@@ -93,7 +93,8 @@ public class OpenAiBot implements SimpleBot{
 		// ---------------------------------------------------------------------------
 		public static String getInputStr(String _utterance) {
 			String str = "\"" + _utterance + "\"";
-			str += "\n這段文字的意圖和下列何者描述的意圖有高相似度? (請簡答「數字編號」即可。若相似度低，請選擇「其他」。)\n";
+//			str += "\n這段文字的意圖和下列何者描述的意圖有高相似度? (請簡答「數字編號」即可。若相似度低，請選擇「其他」。)\n";
+			str += "\n這段文字的意圖和下列何者描述的意圖有高相似度? (請簡答「編號」即可。若相似度低，請選擇「其他」。)\n";
 			for (IntentType t : values())
 				str += t.idx + "." + t.desp + "\n";
 			return str;

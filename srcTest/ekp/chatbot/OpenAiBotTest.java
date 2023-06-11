@@ -74,21 +74,21 @@ public class OpenAiBotTest extends AbstractEkpInitTest {
 		/* 11 */
 		resultLineList.add(new ResultLine("有多少種產品", I11));
 		resultLineList.add(new ResultLine("賣哪些東西?", I11));
-//		resultLineList.add(new ResultLine("Show me the product family", I11));
-//		resultLineList.add(new ResultLine("Show me the product config family", I11));
-//		
-//		/* 12 */
-//		resultLineList.add(new ResultLine("What's the bom structure of 55A3-Z0", I12));
-//		resultLineList.add(new ResultLine("What's the structure of 55A3-Z0", I12));
-//		
-//		/* 13 */
-//		resultLineList.add(new ResultLine("What's the cost of 55A3-Z0", I13));
-//		resultLineList.add(new ResultLine("55A3-Z0多少錢？", I13));
-//		
-//		/* 90 */
-//		resultLineList.add(new ResultLine("這個chatbot有操作說明嗎?", I90));
-//		/* 99 */
-//		resultLineList.add(new ResultLine("你有女朋友嗎", I99));
+		resultLineList.add(new ResultLine("Show me the product family", I11));
+		resultLineList.add(new ResultLine("Show me the product config family", I11));
+		
+		/* 12 */
+		resultLineList.add(new ResultLine("What's the bom structure of 55A3-Z0", I12));
+		resultLineList.add(new ResultLine("What's the structure of 55A3-Z0", I12));
+		
+		/* 13 */
+		resultLineList.add(new ResultLine("What's the cost of 55A3-Z0", I13));
+		resultLineList.add(new ResultLine("55A3-Z0多少錢？", I13));
+		
+		/* 90 */
+		resultLineList.add(new ResultLine("這個chatbot有操作說明嗎?", I90));
+		/* 99 */
+		resultLineList.add(new ResultLine("你有女朋友嗎", I99));
 		
 
 		for (ResultLine rl : resultLineList) {
