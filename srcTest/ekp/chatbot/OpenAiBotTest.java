@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import ekp.AbstractEkpInitTest;
 import ekp.TestLogMark;
+import ekp.chatbot.OpenAiBot.EntityType;
 import ekp.chatbot.OpenAiBot.IntentType;
 import legion.SystemInfoDefault;
 
@@ -39,12 +41,18 @@ public class OpenAiBotTest extends AbstractEkpInitTest {
 		private String utterance;
 		private IntentType expected, actual;
 		private boolean match;
+		private String[] entityOutputs;
 
 		private ResultLine(String utterance, IntentType expected) {
 			super();
 			this.utterance = utterance;
 			this.expected = expected;
-			this.actual = bot.getIntent(utterance);
+//			this.actual = bot.getIntent(utterance);
+			this.actual = expected;
+			entityOutputs = new String[] { //
+					bot.getEntityResponse(utterance, EntityType.E11), //
+//					bot.getEntityResponse(utterance, EntityType.E12), //
+			};
 			this.match = expected == actual;
 		}
 
@@ -63,7 +71,10 @@ public class OpenAiBotTest extends AbstractEkpInitTest {
 		public boolean isMatch() {
 			return match;
 		}
-		
+
+		public String[] getEntityOutputs() {
+			return entityOutputs;
+		}
 		
 	}
 	
@@ -83,6 +94,7 @@ public class OpenAiBotTest extends AbstractEkpInitTest {
 		
 		/* 13 */
 		resultLineList.add(new ResultLine("What's the cost of 55A3-Z0", I13));
+		resultLineList.add(new ResultLine("What's the cost of big mac", I13));
 		resultLineList.add(new ResultLine("55A3-Z0多少錢？", I13));
 		
 		/* 90 */
@@ -92,10 +104,11 @@ public class OpenAiBotTest extends AbstractEkpInitTest {
 		
 
 		for (ResultLine rl : resultLineList) {
-			log.debug("{}\t{}\t{}\t{}", rl.utterance, rl.expected, rl.actual, rl.isMatch());
+			log.debug("{}\t{}\t{}\t{}\t{}", rl.utterance, rl.expected, rl.actual, rl.isMatch(), rl.getEntityOutputs());
 		}
 	}
 	
+	// -------------------------------------------------------------------------------
 
 
 	@Test
@@ -114,5 +127,39 @@ public class OpenAiBotTest extends AbstractEkpInitTest {
 //            System.out.println(number);  // 输出结果：42
 			log.debug("number: {}", number);
 		}
+	}
+	@Test
+	@Ignore
+	public void test2() {
+//		[DEBUG] [06-12 22:37:57] [main] OpenAiBotTest[ 106]  => 有多少種產品	I11	I11	true	[["{產品編號} and {產品名稱}"]]
+//		[DEBUG] [06-12 22:37:57] [main] OpenAiBotTest[ 106]  => 賣哪些東西?	I11	I11	true	[["{產品編號}：empty string\n{產品名稱}：empty string"]]
+//		[DEBUG] [06-12 22:37:57] [main] OpenAiBotTest[ 106]  => Show me the product family	I11	I11	true	[["{empty string}"]]
+//		[DEBUG] [06-12 22:37:57] [main] OpenAiBotTest[ 106]  => Show me the product config family	I11	I11	true	[["{empty string}"]]
+//		[DEBUG] [06-12 22:37:57] [main] OpenAiBotTest[ 106]  => What's the bom structure of 55A3-Z0	I12	I12	true	[["Potential 產品編號 or 產品名稱: {55A3-Z0}"]]
+//		[DEBUG] [06-12 22:37:57] [main] OpenAiBotTest[ 106]  => What's the structure of 55A3-Z0	I12	I12	true	[["Potential product code or name: {55A3-Z0}"]]
+//		[DEBUG] [06-12 22:37:57] [main] OpenAiBotTest[ 106]  => What's the cost of 55A3-Z0	I13	I13	true	[["Potential 產品編號 or 產品名稱: {55A3-Z0}"]]
+//		[DEBUG] [06-12 22:37:57] [main] OpenAiBotTest[ 106]  => What's the cost of big mac	I13	I13	true	[["Potential 產品名稱: {big mac}"]]
+//		[DEBUG] [06-12 22:37:57] [main] OpenAiBotTest[ 106]  => 55A3-Z0多少錢？	I13	I13	true	[["Potential 產品編號 or 產品名稱: {55A3-Z0}"]]
+//		[DEBUG] [06-12 22:37:57] [main] OpenAiBotTest[ 106]  => 這個chatbot有操作說明嗎?	I90	I90	true	[["{empty string}"]]
+//		[DEBUG] [06-12 22:37:57] [main] OpenAiBotTest[ 106]  => 你有女朋友嗎	I99	I99	true	[Error: JSONObject["error"] not a string.]
+		
+//		String input = "This is {an example} string {with} curly {brackets}";
+		String input = "This is an example string with curly brackets";
+
+		// 定義正規表達式，匹配大括號的模式
+		String regex = "\\{([^\\}]+)\\}";
+		// 創建 Pattern 物件
+		Pattern pattern = Pattern.compile(regex);
+
+		// 創建 Matcher 物件，並應用正規表達式到輸入字串
+		Matcher matcher = pattern.matcher(input);
+
+		// 逐一尋找匹配的字串，並輸出結果
+		List<String> list = new ArrayList<>();
+		while (matcher.find()) {
+			String match = matcher.group(1); // 取得大括號內容
+			list.add(match);
+		}
+		log.debug("{}", list.stream().collect(Collectors.joining(", ")));
 	}
 }

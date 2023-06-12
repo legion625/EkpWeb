@@ -8,11 +8,12 @@ import ekp.DebugLogMark;
 import ekp.util.DataUtil;
 import legion.SystemInfoDefault;
 import legion.openai.ChatBot;
+import legion.util.DataFO;
 import legion.util.JsonUtil;
 
 public class OpenAiBot implements SimpleBot{
-//	private Logger log = LoggerFactory.getLogger(OpenAiBot.class);
-	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
+	private Logger log = LoggerFactory.getLogger(OpenAiBot.class);
+//	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
 
 	private String apiKey;
 	
@@ -32,6 +33,10 @@ public class OpenAiBot implements SimpleBot{
 		IntentType intentType = IntentType.get(s);
 		log.debug("intentType: {}", intentType); 
 		return intentType;
+	}
+
+	public String getEntityResponse(String _utterance, EntityType _entity) {
+		return ChatBot.sendQuery(_entity.getInputStr(_utterance), apiKey);
 	}
 	
 	@Override
@@ -111,19 +116,39 @@ public class OpenAiBot implements SimpleBot{
 	
 	// -------------------------------------------------------------------------------
 	public enum EntityType {
-		E1;
+//		E11("產品編號"), E12("產品名稱"), //
+		E11("產品編號","產品名稱"), //
+		;
 
 		private Logger log = LoggerFactory.getLogger(EntityType.class);
 
+		private String[] entityNames;
+		
+		private EntityType(String... entityNames) {
+			this.entityNames = entityNames;
+		}
+		
 		public String getInputStr(String _utterance) {
 			String str = "\"" + _utterance + "\"";
 			switch (this) {
-			case E1: {
-				return str + "\n這個句字中可能的「產品編號」是什麼?";
-			}
+//			case E1: {
+//				return str + "\n這個句字中可能的「產品編號」是什麼?";
+//			}
 			default:
-				log.error("EntityType error.");
-				return ""; //
+//				return str + "\n這個句字中可能的「" + entityName + "」是什麼?";
+				String entityStr = "";
+				for(String en: entityNames) {
+					if(!DataFO.isEmptyString(entityStr))
+						entityStr+=" or ";
+					entityStr+=en;
+				}
+				
+//				return str +"\n這個句字中有沒有「"+ entityStr+"」?"+"\n若有，請用json格式回答「"+entityStr+"的值」；無，請回答「無」";
+//				return str + "\nFrom the sentence above, please find the potential \""+entityStr+"\", format answer in json format, and return the value";
+				return str + "\nFrom the sentence above, please find the potential \""+entityStr+"\", and return the value in curly brackets. If not found, return empty string.";
+				
+//				log.error("EntityType error.");
+//				return ""; //
 			}
 		}
 	}
