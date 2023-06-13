@@ -1,10 +1,14 @@
 package ekp.chatbot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ekp.DebugLogMark;
+import ekp.chatbot.service.ChatbotServiceFacade;
 import ekp.util.DataUtil;
 import legion.SystemInfoDefault;
 import legion.openai.ChatBot;
@@ -35,47 +39,20 @@ public class OpenAiBot implements SimpleBot{
 		return intentType;
 	}
 
-	public String getEntityResponse(String _utterance, EntityType _entity) {
-		return ChatBot.sendQuery(_entity.getInputStr(_utterance), apiKey);
+	public List<String> getEntityValueList(String _utterance, EntityType _entity) {
+		if (_entity == null || EntityType.NONE == _entity)
+			return new ArrayList<>();
+		String rawResponse = ChatBot.sendQuery(_entity.getInputStr(_utterance), apiKey);
+		log.debug("rawResponse: {}", rawResponse);
+		return DataUtil.findInCurlyBrackets(rawResponse);
 	}
 	
 	@Override
 	public String[] getResponseNew(String _utterance) {
-//		String inputStr = "Please tell me the 'intent' and 'entity' of the sentence: ";
-//		inputStr +="\""+_utterance+"\"";
-//		log.debug("inputStr: {}", inputStr);
+		IntentType intentType = getIntent(_utterance);
+		log.debug("intentType: {}", intentType);
 		
-//		String outputStr = ChatBot.sendQuery(inputStr, apiKey);
-//		log.debug("outputStr: {}", outputStr);
-//		
-//		
-//		String intentStr = ChatBot.sendQuery("what's the intent of the sentence: " +outputStr, apiKey);
-//		String entityStr = ChatBot.sendQuery("what's the entity of the sentence: " +outputStr, apiKey);
-//		log.debug("intentStr: {}", intentStr);
-//		log.debug("entityStr: {}", entityStr);
-		
-		
-		
-		/* 當要詢問指定產品時，進一步找出產品編號。 */
-////		String entityStr = "Please tell me the 'entity' of the sentence: ";
-//		String entityStr = "這個句字中可能的「產品編號」是什麼?";
-//		entityStr +="\""+_utterance+"\"";
-//		log.debug("entityStr: {}", entityStr);
-//		String entity= ChatBot.sendQuery(entityStr, apiKey);
-//		log.debug("entity: {}", entity);
-//		
-		
-		
-		
-//		// 測試，先寫死
-////		String outputStr = "[\"intent: 詢問商品價格\\nentity: 商品編號為55A3-Z0\"]";
-//		JSONObject jsonObj = new JSONObject(outputStr);
-//		log.debug("jsonObj: {}", jsonObj);
-////		log.debug("{}\t{}", jsonObj.get("intent"), jsonObj.get("entity"));
-//		
-		
-		// TODO Auto-generated method stub
-		return null;
+		return intentType.getResponse(_utterance, apiKey);
 	}
 	
 	// -------------------------------------------------------------------------------
@@ -87,6 +64,8 @@ public class OpenAiBot implements SimpleBot{
 		I99(99,"其他，和以上意圖相似度均不高"), //
 		;
 		
+		private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
+		
 		private int idx;
 		private String desp;
 		
@@ -94,6 +73,46 @@ public class OpenAiBot implements SimpleBot{
 			this.idx = idx;
 			this.desp = desp;
 		}
+		
+		// ---------------------------------------------------------------------------
+		public EntityType getEntityType() {
+			switch (this) {
+			case I12:
+			case I13:
+				return EntityType.E11;
+			default:
+				return EntityType.NONE;
+			}
+		}
+		
+		public String[] getResponse(String _utterance, String apiKey) {
+			EntityType entityType  = null;
+			switch (this) {
+			case I11:
+				return ChatbotServiceFacade.getInstance().pc1();
+			case I12:{
+				entityType =  EntityType.E11;
+				String rawResponse = ChatBot.sendQuery(entityType.getInputStr(_utterance), apiKey);
+				log.debug("rawResponse: {}", rawResponse);
+				List<String> entityValuesList = DataUtil.findInCurlyBrackets(rawResponse);
+				return ChatbotServiceFacade.getInstance().bom(entityValuesList, false);
+			}
+			case I13:{
+				entityType =  EntityType.E11;
+				String rawResponse = ChatBot.sendQuery(entityType.getInputStr(_utterance), apiKey);
+				log.debug("rawResponse: {}", rawResponse);
+				List<String> entityValuesList = DataUtil.findInCurlyBrackets(rawResponse);
+				return ChatbotServiceFacade.getInstance().cost(entityValuesList);
+			}
+			case I90:
+				return new String[] {I11.desp, I12.desp,I13.desp};
+			case I99:
+				return new String[] {"Intent not supported..."};
+			default:
+				return new String[]{"default..."};
+			}
+		}
+		
 		
 		// ---------------------------------------------------------------------------
 		public static String getInputStr(String _utterance) {
@@ -116,6 +135,7 @@ public class OpenAiBot implements SimpleBot{
 	
 	// -------------------------------------------------------------------------------
 	public enum EntityType {
+		NONE(), //
 //		E11("產品編號"), E12("產品名稱"), //
 		E11("產品編號","產品名稱"), //
 		;

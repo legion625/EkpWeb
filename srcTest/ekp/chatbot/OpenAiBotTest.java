@@ -41,19 +41,26 @@ public class OpenAiBotTest extends AbstractEkpInitTest {
 		private String utterance;
 		private IntentType expected, actual;
 		private boolean match;
-		private String[] entityOutputs;
+//		private String[] entityOutputs;
+		private String[] response;
 
 		private ResultLine(String utterance, IntentType expected) {
 			super();
 			this.utterance = utterance;
-			this.expected = expected;
+//			this.expected = expected;
 //			this.actual = bot.getIntent(utterance);
-			this.actual = expected;
-			entityOutputs = new String[] { //
-					bot.getEntityResponse(utterance, EntityType.E11), //
-//					bot.getEntityResponse(utterance, EntityType.E12), //
-			};
-			this.match = expected == actual;
+//			this.actual = expected;
+//			this.match = expected == actual;
+//			entityOutputs = new String[] { //
+//					bot.getEntityResponse(utterance, EntityType.E11), //
+////					bot.getEntityResponse(utterance, EntityType.E12), //
+//			};
+//			actual.getResponse(utterance, apiKey);
+			log.debug("{} start", utterance);
+			response = bot.getResponseNew(utterance);
+			for(String r: response)
+			log.debug("r: {}", r);
+			
 		}
 
 		public String getUtterance() {
@@ -72,8 +79,12 @@ public class OpenAiBotTest extends AbstractEkpInitTest {
 			return match;
 		}
 
-		public String[] getEntityOutputs() {
-			return entityOutputs;
+//		public String[] getEntityOutputs() {
+//			return entityOutputs;
+//		}
+		
+		public String[] getResponse() {
+			return response;
 		}
 		
 	}
@@ -89,23 +100,23 @@ public class OpenAiBotTest extends AbstractEkpInitTest {
 		resultLineList.add(new ResultLine("Show me the product config family", I11));
 		
 		/* 12 */
-		resultLineList.add(new ResultLine("What's the bom structure of 55A3-Z0", I12));
-		resultLineList.add(new ResultLine("What's the structure of 55A3-Z0", I12));
+		resultLineList.add(new ResultLine("What's the bom structure of MAU", I12));
+		resultLineList.add(new ResultLine("臺灣牛的料表", I12));
 		
 		/* 13 */
-		resultLineList.add(new ResultLine("What's the cost of 55A3-Z0", I13));
-		resultLineList.add(new ResultLine("What's the cost of big mac", I13));
-		resultLineList.add(new ResultLine("55A3-Z0多少錢？", I13));
+		resultLineList.add(new ResultLine("What's the cost of 薯條", I13));
+		resultLineList.add(new ResultLine("大麥克多少錢？", I13));
 		
 		/* 90 */
 		resultLineList.add(new ResultLine("這個chatbot有操作說明嗎?", I90));
 		/* 99 */
 		resultLineList.add(new ResultLine("你有女朋友嗎", I99));
-		
 
-		for (ResultLine rl : resultLineList) {
-			log.debug("{}\t{}\t{}\t{}\t{}", rl.utterance, rl.expected, rl.actual, rl.isMatch(), rl.getEntityOutputs());
-		}
+//		for (ResultLine rl : resultLineList) {
+//			log.debug("{}\t{}\t{}\t{}\t{}", rl.utterance, rl.expected, rl.actual, rl.isMatch(), rl.getEntityOutputs());
+//			log.debug("{}\t{}\t{}\t{}\t{}", rl.utterance, rl.expected, rl.actual, rl.isMatch(), rl.getResponse());
+//			log.debug("{}\t{}", rl.utterance, rl.getResponse());
+//		}
 	}
 	
 	// -------------------------------------------------------------------------------
@@ -129,7 +140,7 @@ public class OpenAiBotTest extends AbstractEkpInitTest {
 		}
 	}
 	@Test
-	@Ignore
+//	@Ignore
 	public void test2() {
 //		[DEBUG] [06-12 22:37:57] [main] OpenAiBotTest[ 106]  => 有多少種產品	I11	I11	true	[["{產品編號} and {產品名稱}"]]
 //		[DEBUG] [06-12 22:37:57] [main] OpenAiBotTest[ 106]  => 賣哪些東西?	I11	I11	true	[["{產品編號}：empty string\n{產品名稱}：empty string"]]
@@ -144,8 +155,10 @@ public class OpenAiBotTest extends AbstractEkpInitTest {
 //		[DEBUG] [06-12 22:37:57] [main] OpenAiBotTest[ 106]  => 你有女朋友嗎	I99	I99	true	[Error: JSONObject["error"] not a string.]
 		
 //		String input = "This is {an example} string {with} curly {brackets}";
-		String input = "This is an example string with curly brackets";
+//		String input = "This is an example string with curly brackets";
 
+		String input = "Error sending request: JSONObject[\"error\"] not a string.";
+		
 		// 定義正規表達式，匹配大括號的模式
 		String regex = "\\{([^\\}]+)\\}";
 		// 創建 Pattern 物件
@@ -160,6 +173,7 @@ public class OpenAiBotTest extends AbstractEkpInitTest {
 			String match = matcher.group(1); // 取得大括號內容
 			list.add(match);
 		}
+		log.debug("list.size(): {}", list.size());
 		log.debug("{}", list.stream().collect(Collectors.joining(", ")));
 	}
 }
