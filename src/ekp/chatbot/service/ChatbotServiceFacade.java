@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ekp.DebugLogMark;
 import ekp.data.MbomDataService;
 import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.mbom.PartCfgInfo;
@@ -23,7 +24,8 @@ import legion.util.query.QueryOperation.ConjunctiveOp;
 import legion.util.query.QueryOperation.QueryValue;
 
 public class ChatbotServiceFacade {
-	private Logger log = LoggerFactory.getLogger(ChatbotServiceFacade.class);
+//	private Logger log = LoggerFactory.getLogger(ChatbotServiceFacade.class);
+	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
 
 	// -------------------------------------------------------------------------------
 	private final static ChatbotServiceFacade INSTANCE = new ChatbotServiceFacade();
@@ -64,6 +66,12 @@ public class ChatbotServiceFacade {
 
 	// -------------------------------------------------------------------------------
 	public String[] bom(List<String> _lemmaList, boolean _publishOnly) {
+		log.debug(" _lemmaList.size(): {}", _lemmaList.size());
+		if(_lemmaList.size()<=0)
+			_lemmaList.add("找不到");
+		for (String _lemma : _lemmaList)
+			log.debug("_lemma: {}", _lemma);
+		
 		QueryOperation<PartCfgQueryParam, PartCfgInfo> param = new QueryOperation<>();
 		List<QueryValue<PartCfgQueryParam, ?>> qvList = new ArrayList<>();
 		for (String _lemma : _lemmaList) {
@@ -77,8 +85,7 @@ public class ChatbotServiceFacade {
 					PartCfgStatus.PUBLISHED.getIdx()));
 
 		param = mbomDataService.searchPartCfg(param);
-		log.debug("param.getTotal(): {}", param.getTotal());
-		List<PartCfgInfo> pcList = param.getQueryResult();
+		List<PartCfgInfo> pcList =param==null?new ArrayList<>(): param.getQueryResult();	
 
 		List<String> responseList = new ArrayList<>();
 		responseList.add("Find " + param.getTotal() + " results.");
@@ -101,6 +108,12 @@ public class ChatbotServiceFacade {
 
 	// -------------------------------------------------------------------------------
 	public String[] cost(List<String> _lemmaList) {
+		log.debug(" _lemmaList.size(): {}", _lemmaList.size());
+		if(_lemmaList.size()<=0)
+			_lemmaList.add("找不到");
+		for (String _lemma : _lemmaList)
+			log.debug("_lemma: {}", _lemma);
+		
 		QueryOperation<PartQueryParam, PartInfo> param = new QueryOperation<>();
 		List<QueryValue<PartQueryParam, ?>> qvList = new ArrayList<>();
 		for (String _lemma : _lemmaList) {

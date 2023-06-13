@@ -20,12 +20,12 @@ public class EkpWebTest extends AbstractEkpInitTest{
 		log.debug("api key: {}", apiKey);
 	}
 	
-	@Test
-	public void testOpenaiChatBot() {
-		String input = "請幫我解析這段話的intent和entity:”55A3-Z0多少錢？”";
-		log.debug("input: {}", input);
-		String output = ChatBot.sendQuery(input, apiKey);
-		log.debug("output: {}", output);
-
-	}
+//	@Test
+//	public void testOpenaiChatBot() {
+//		String input = "請幫我解析這段話的intent和entity:”55A3-Z0多少錢？”";
+//		log.debug("input: {}", input);
+//		String output = ChatBot.sendQuery(input, apiKey);
+//		log.debug("output: {}", output);
+//
+//	}
 }

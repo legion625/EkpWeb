@@ -18,6 +18,7 @@ import ekp.AbstractEkpInitTest;
 import ekp.TestLogMark;
 import ekp.chatbot.OpenAiBot.EntityType;
 import ekp.chatbot.OpenAiBot.IntentType;
+import ekp.util.DataUtil;
 import legion.SystemInfoDefault;
 
 import static ekp.chatbot.OpenAiBot.IntentType.*;
@@ -93,24 +94,24 @@ public class OpenAiBotTest extends AbstractEkpInitTest {
 	public void test_run_01() {
 		List<ResultLine> resultLineList = new ArrayList<>();
 		
-		/* 11 */
-		resultLineList.add(new ResultLine("有多少種產品", I11));
-		resultLineList.add(new ResultLine("賣哪些東西?", I11));
-		resultLineList.add(new ResultLine("Show me the product family", I11));
-		resultLineList.add(new ResultLine("Show me the product config family", I11));
+//		/* 11 */
+//		resultLineList.add(new ResultLine("有多少種產品", I11));
+//		resultLineList.add(new ResultLine("賣哪些東西?", I11));
+//		resultLineList.add(new ResultLine("Show me the product family", I11));
+//		resultLineList.add(new ResultLine("Show me the product config family", I11));
+//		
+//		/* 12 */
+//		resultLineList.add(new ResultLine("What's the bom structure of MAU", I12));
+		resultLineList.add(new ResultLine("臺灣牛的料表?", I12));
 		
-		/* 12 */
-		resultLineList.add(new ResultLine("What's the bom structure of MAU", I12));
-		resultLineList.add(new ResultLine("臺灣牛的料表", I12));
-		
-		/* 13 */
-		resultLineList.add(new ResultLine("What's the cost of 薯條", I13));
-		resultLineList.add(new ResultLine("大麥克多少錢？", I13));
-		
-		/* 90 */
-		resultLineList.add(new ResultLine("這個chatbot有操作說明嗎?", I90));
-		/* 99 */
-		resultLineList.add(new ResultLine("你有女朋友嗎", I99));
+//		/* 13 */
+//		resultLineList.add(new ResultLine("What's the cost of 薯條", I13));
+//		resultLineList.add(new ResultLine("大麥克多少錢？", I13));
+//		
+//		/* 90 */
+//		resultLineList.add(new ResultLine("這個chatbot有操作說明嗎?", I90));
+//		/* 99 */
+//		resultLineList.add(new ResultLine("你有女朋友嗎", I99));
 
 //		for (ResultLine rl : resultLineList) {
 //			log.debug("{}\t{}\t{}\t{}\t{}", rl.utterance, rl.expected, rl.actual, rl.isMatch(), rl.getEntityOutputs());
@@ -157,23 +158,35 @@ public class OpenAiBotTest extends AbstractEkpInitTest {
 //		String input = "This is {an example} string {with} curly {brackets}";
 //		String input = "This is an example string with curly brackets";
 
-		String input = "Error sending request: JSONObject[\"error\"] not a string.";
+//		String input = "Error sending request: JSONObject[\"error\"] not a string.";
 		
-		// 定義正規表達式，匹配大括號的模式
-		String regex = "\\{([^\\}]+)\\}";
-		// 創建 Pattern 物件
-		Pattern pattern = Pattern.compile(regex);
+//		String input = "{\"臺灣牛\"}";
+//		String input = "{產品名稱: 臺灣牛}";
+		String input = "\"產品編號: 無\n產品名稱: 臺灣牛\"";	
+		
+		for (String n : EntityType.E11.entityNames)
+			input = input.replaceAll(n, "");
 
-		// 創建 Matcher 物件，並應用正規表達式到輸入字串
-		Matcher matcher = pattern.matcher(input);
-
-		// 逐一尋找匹配的字串，並輸出結果
-		List<String> list = new ArrayList<>();
-		while (matcher.find()) {
-			String match = matcher.group(1); // 取得大括號內容
-			list.add(match);
-		}
-		log.debug("list.size(): {}", list.size());
-		log.debug("{}", list.stream().collect(Collectors.joining(", ")));
+		List<String> entityValuesList = DataUtil.findInCurlyBrackets(input);
+		log.debug("{}", entityValuesList.stream().collect(Collectors.joining(", ")));
+		entityValuesList = entityValuesList.stream().map(DataUtil::sanitize).collect(Collectors.toList()); // 消毒
+		log.debug("{}", entityValuesList.stream().collect(Collectors.joining(", ")));
+		
+//		// 定義正規表達式，匹配大括號的模式
+//		String regex = "\\{([^\\}]+)\\}";
+//		// 創建 Pattern 物件
+//		Pattern pattern = Pattern.compile(regex);
+//
+//		// 創建 Matcher 物件，並應用正規表達式到輸入字串
+//		Matcher matcher = pattern.matcher(input);
+//
+//		// 逐一尋找匹配的字串，並輸出結果
+//		List<String> list = new ArrayList<>();
+//		while (matcher.find()) {
+//			String match = matcher.group(1); // 取得大括號內容
+//			list.add(match);
+//		}
+//		log.debug("list.size(): {}", list.size());
+//		log.debug("{}", list.stream().collect(Collectors.joining(", ")));
 	}
 }

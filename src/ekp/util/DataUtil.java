@@ -51,4 +51,11 @@ public class DataUtil {
 		} else
 			throw new NumberFormatException("Integer not found");
 	}
+	
+	public static String sanitize(String original) {
+		 // 定义正则表达式，匹配可能导致 SQL 异常的特殊字符
+        String regex = "[';\";:]";
+        // 替换特殊字符为空字符串
+        return  original.replaceAll(regex, "").strip();
+	}
 }

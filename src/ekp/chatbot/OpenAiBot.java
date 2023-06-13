@@ -2,10 +2,12 @@ package ekp.chatbot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 
 import ekp.DebugLogMark;
 import ekp.chatbot.service.ChatbotServiceFacade;
@@ -14,6 +16,7 @@ import legion.SystemInfoDefault;
 import legion.openai.ChatBot;
 import legion.util.DataFO;
 import legion.util.JsonUtil;
+import legion.util.LogUtil;
 
 public class OpenAiBot implements SimpleBot{
 	private Logger log = LoggerFactory.getLogger(OpenAiBot.class);
@@ -30,12 +33,19 @@ public class OpenAiBot implements SimpleBot{
 		log.debug("selStr: {}", selStr);
 		String select= ChatBot.sendQuery(selStr, apiKey);
 		log.debug("select: {}", select);
+		IntentType intentType = IntentType.I99;
+		try {
+			int s = DataUtil.findInt(select);
+			log.debug("s: {}", s);	
+			intentType = IntentType.get(s);
+		}catch (NumberFormatException e) {
+//			log.error("s: {}", e.get);
+			LogUtil.log(e,  Level.ERROR);
+		}
+		 
 		
-		int s = DataUtil.findInt(select);
-		log.debug("s: {}", s); 
-		
-		IntentType intentType = IntentType.get(s);
-		log.debug("intentType: {}", intentType); 
+//		IntentType intentType = IntentType.get(s);
+		log.info("intentType: {}", intentType); 
 		return intentType;
 	}
 
@@ -58,7 +68,7 @@ public class OpenAiBot implements SimpleBot{
 	// -------------------------------------------------------------------------------
 	public enum IntentType{
 		I11(11,"查詢[產品]清單、[構型]清單或[產品型錄]"), //
-		I12(12,"展開指定[產品]的BOM(bill of material)或料表結構(structure)"), //
+		I12(12,"展開指定[產品]的BOM(bill of material)、料表、或結構(structure)"), //
 		I13(13,"詢問指定[產品]的價格"), //
 		I90(90,"詢問這個chatbot的操作說明，或功能指引。"), //
 		I99(99,"其他，和以上意圖相似度均不高"), //
@@ -94,7 +104,12 @@ public class OpenAiBot implements SimpleBot{
 				entityType =  EntityType.E11;
 				String rawResponse = ChatBot.sendQuery(entityType.getInputStr(_utterance), apiKey);
 				log.debug("rawResponse: {}", rawResponse);
+				for (String n : entityType.entityNames)
+					rawResponse = rawResponse.replaceAll(n, "");
 				List<String> entityValuesList = DataUtil.findInCurlyBrackets(rawResponse);
+				entityValuesList = entityValuesList.stream().map(DataUtil::sanitize).collect(Collectors.toList()); // 消毒
+				for(String entityValue:entityValuesList)
+					log.debug("entityValue: {}", entityValue);
 				return ChatbotServiceFacade.getInstance().bom(entityValuesList, false);
 			}
 			case I13:{
@@ -102,14 +117,14 @@ public class OpenAiBot implements SimpleBot{
 				String rawResponse = ChatBot.sendQuery(entityType.getInputStr(_utterance), apiKey);
 				log.debug("rawResponse: {}", rawResponse);
 				List<String> entityValuesList = DataUtil.findInCurlyBrackets(rawResponse);
+				entityValuesList = entityValuesList.stream().map(DataUtil::sanitize).collect(Collectors.toList()); // 消毒
 				return ChatbotServiceFacade.getInstance().cost(entityValuesList);
 			}
 			case I90:
-				return new String[] {I11.desp, I12.desp,I13.desp};
+				return new String[] { I11.desp, I12.desp, I13.desp };
 			case I99:
-				return new String[] {"Intent not supported..."};
 			default:
-				return new String[]{"default..."};
+				return new String[] { ChatBot.sendQuery(_utterance, apiKey) };
 			}
 		}
 		
@@ -142,7 +157,7 @@ public class OpenAiBot implements SimpleBot{
 
 		private Logger log = LoggerFactory.getLogger(EntityType.class);
 
-		private String[] entityNames;
+		public String[] entityNames;
 		
 		private EntityType(String... entityNames) {
 			this.entityNames = entityNames;
@@ -165,7 +180,8 @@ public class OpenAiBot implements SimpleBot{
 				
 //				return str +"\n這個句字中有沒有「"+ entityStr+"」?"+"\n若有，請用json格式回答「"+entityStr+"的值」；無，請回答「無」";
 //				return str + "\nFrom the sentence above, please find the potential \""+entityStr+"\", format answer in json format, and return the value";
-				return str + "\nFrom the sentence above, please find the potential \""+entityStr+"\", and return the value in curly brackets. If not found, return empty string.";
+//				return str + "\nFrom the sentence above, please find the potential \""+entityStr+"\", and return the value inside curly brackets. If not found, return empty string.";
+				return str + "\nFrom the sentence above, please find the potential \""+entityStr+"\", and wrap the value in curly brackets. If not found, return empty string.";
 				
 //				log.error("EntityType error.");
 //				return ""; //
