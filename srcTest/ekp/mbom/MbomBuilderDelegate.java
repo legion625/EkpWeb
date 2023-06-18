@@ -86,7 +86,7 @@ public class MbomBuilderDelegate {
 	}
 
 	public PartInfo buildPartType0(TimeTraveler _tt) {
-		return buildPartType0(_tt, "TEST_PIN", "TEST_NAME", PartUnit.EA);
+		return buildPartType0(_tt, "TEST_PIN", "TEST_NAME", PartUnit.EAC);
 	}
 
 	// -------------------------------------------------------------------------------
