@@ -1,8 +1,31 @@
-Min-Hua, 2022.12.17
+------------------------------------------------------------------------------
+v0.3.1 released by Min-Hua, 2023.06.18
+[deployment]
+1. 在system-conf.properties新增openai.apiKey設定。
+  - openai的安全性設定中，當偵測到apiKey被上傳到GitHub時會自動清除，因此程式碼中不能有apiKey的明碼。
+  - 在/deployment/default/WEB-INF/system-conf.perperties中，以(your api key)顯示，各自環境必須自行設定。
+
+------------------------------------------------------------------------------
+v0.3.0 released by Min-Hua, 2023.06.18
+[lib]
+1. legionmodule: 0.12.3 -> 0.13.0
+  -1. httpcomponents-client-4.5.6
+  -2. json
+  -3. gson_2.8.5
+
+------------------------------------------------------------------------------
+v0.2.0 released by Min-Hua, 2022.12.18
+[change]
+1. [Chatbot] Add rule-based chatbot.
+
+[lib]
+1. stanford_corenlp: 4.2.0 (added)
+
+------------------------------------------------------------------------------
+v0.1.7 released by Min-Hua, 2022.12.17
 [change]
 1. [MBOM] PartAcquisition: Add "update referenced unit cost" function.
 
-Min-Hua, 2022.12.17
 [lib]
 1. ekp_kernel: 0.1.6 -> 0.1.7
 
