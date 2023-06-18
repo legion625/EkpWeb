@@ -109,23 +109,23 @@ public class MbomBuilderTest extends AbstractEkpInitTest {
 		log.debug("testMbomScenarioMcd");
 		/* Part */
 		// A.漢堡
-		PartInfo part_A11 = mbomDel.buildPartType0(tt, "MCD-A1-1", "大麥克", PartUnit.EA);
+		PartInfo part_A11 = mbomDel.buildPartType0(tt, "MCD-A1-1", "大麥克", PartUnit.EAC);
 //		PartInfo part_A12 = mbomDel.buildPartType0(tt, "A1_2", "無敵大麥克");
 //		PartInfo part_L1 = mbomDel.buildPartType0(tt, "B1", "麵包");
 //		PartInfo part_L21 = mbomDel.buildPartType0(tt, "B21", "芝麻麵包（單層）");
 		// F.副餐
-		PartInfo part_F1S = mbomDel.buildPartType0(tt, "MCD-F1S", "薯條（小）", PartUnit.EA);
-		PartInfo part_F1M = mbomDel.buildPartType0(tt, "MCD-F1M", "薯條（中）", PartUnit.EA);
-		PartInfo part_F1L = mbomDel.buildPartType0(tt, "MCD-F1L", "薯條（大）", PartUnit.EA);
-		PartInfo part_F10 = mbomDel.buildPartType0(tt, "MCD-F10", "冷凍薯條", PartUnit.GRAM);
+		PartInfo part_F1S = mbomDel.buildPartType0(tt, "MCD-F1S", "薯條（小）", PartUnit.EAC);
+		PartInfo part_F1M = mbomDel.buildPartType0(tt, "MCD-F1M", "薯條（中）", PartUnit.EAC);
+		PartInfo part_F1L = mbomDel.buildPartType0(tt, "MCD-F1L", "薯條（大）", PartUnit.EAC);
+		PartInfo part_F10 = mbomDel.buildPartType0(tt, "MCD-F10", "冷凍薯條", PartUnit.GRM);
 		
 		// L.漢堡-麵包
-		PartInfo part_L22 = mbomDel.buildPartType0(tt, "MCD-L22", "芝麻麵包（雙層）", PartUnit.EA);
+		PartInfo part_L22 = mbomDel.buildPartType0(tt, "MCD-L22", "芝麻麵包（雙層）", PartUnit.EAC);
 		// M.漢堡-肉
-		PartInfo part_M11 = mbomDel.buildPartType0(tt, "MCD-M11", "牛肉", PartUnit.EA);
-		PartInfo part_M11_1 = mbomDel.buildPartType0(tt, "MCD-M11-1", "冷凍牛肉（臺灣）", PartUnit.EA);
-		PartInfo part_M11_2 = mbomDel.buildPartType0(tt, "MCD-M11-2", "冷凍牛肉（澳洲）", PartUnit.EA);
-		PartInfo part_M11_3 = mbomDel.buildPartType0(tt, "MCD-M11-3", "冷凍牛肉（美國）", PartUnit.EA);
+		PartInfo part_M11 = mbomDel.buildPartType0(tt, "MCD-M11", "牛肉", PartUnit.EAC);
+		PartInfo part_M11_1 = mbomDel.buildPartType0(tt, "MCD-M11-1", "冷凍牛肉（臺灣）", PartUnit.EAC);
+		PartInfo part_M11_2 = mbomDel.buildPartType0(tt, "MCD-M11-2", "冷凍牛肉（澳洲）", PartUnit.EAC);
+		PartInfo part_M11_3 = mbomDel.buildPartType0(tt, "MCD-M11-3", "冷凍牛肉（美國）", PartUnit.EAC);
 		// 
 //		PartInfo part_M21 = mbomDel.buildPartType0(tt, "M21", "雞排");
 //		PartInfo part_M22 = mbomDel.buildPartType0(tt, "M22", "炸雞腿");
