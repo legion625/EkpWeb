@@ -13,15 +13,15 @@
 					<listheader label="Unit" sort="auto(unit)"/>
 				</listhead>
 			</listbox>
-			<window id="wdCreatePart" title="Create part" width="560px" height="100px" mode="highlighted"
+			<window id="wdCreatePart" title="Create part" width="60%" height="100px" mode="highlighted"
 				closable="true" visible="false" sizable="true">
-				<hlayout>
+				<hlayout hflex="1">
 					<label value="Pin" />
-					<textbox id="txbPin" />
+					<textbox id="txbPin" hflex="1" />
 					<label value="Name" />
-					<textbox id="txbName" />
+					<textbox id="txbName" hflex="1"/>
 					<label value="Unit" />
-					<combobox id="cbbUnit" />
+					<combobox id="cbbUnit" hflex="1" />
 				</hlayout>
 				<separator spacing="5px" />
 				<div align="center">
