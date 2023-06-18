@@ -23,6 +23,7 @@ import org.zkoss.zul.Timer;
 import ekp.chatbot.SimpleBot;
 import ekp.DebugLogMark;
 import ekp.chatbot.LuisBot;
+import ekp.chatbot.OpenAiBot;
 import ekp.chatbot.RuleBasedBot;
 import legion.aspect.AspectBus;
 import legion.util.LogUtil;
@@ -69,6 +70,10 @@ public class ChatbotComposer extends SelectorComposer<Component> {
 			}
 			case 2: {
 				bot = new LuisBot();
+				break;
+			}
+			case 3:{
+				bot = new OpenAiBot();
 				break;
 			}
 			default:

@@ -37,6 +37,11 @@
 		<appender-ref ref="StdOut" />
 	</logger>
 	
+	<!-- Debug -->
+	<logger name="ekp.DebugLogMark" additivity="false" level="DEBUG">
+		<appender-ref ref="StdOut" />
+	</logger>
+	
 	<!-- Test -->
 	<logger name="ekp.TestLogMark" additivity="false" level="DEBUG">
 		<appender-ref ref="StdOut" />
