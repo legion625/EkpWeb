@@ -164,7 +164,7 @@
 						</groupbox>
 					</tabpanel>
 					<tabpanel height="100%">
-						<include id="icdPartAcqPage" height="100%" />
+						<include id="icdPartCfgPage" height="100%" />
 					</tabpanel>
 				</tabpanels>
 			</tabbox>

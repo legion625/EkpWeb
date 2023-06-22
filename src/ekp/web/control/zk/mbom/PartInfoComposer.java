@@ -95,8 +95,8 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 	private Listbox lbxPproc;
 	
 	@Wire
-	private Include icdPartAcqPage;
-	private PartCfgTreePageComposer partCfgTreePageComposer;
+	private Include icdPartCfgPage;
+	private PartCfgTreePageComposer partCfgPageComposer;
 	
 	// -------------------------------------------------------------------------------
 	private FnCntProxy fnCntProxy;
@@ -238,7 +238,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 		lbxPproc.setItemRenderer(pprocRenderer);
 		
 		/* partCfgTreePage */
-		partCfgTreePageComposer = PartCfgTreePageComposer.of(icdPartAcqPage);
+		partCfgPageComposer = PartCfgTreePageComposer.of(icdPartCfgPage);
 	}
 
 	// -------------------------------------------------------------------------------
@@ -862,7 +862,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 		refreshPa(_part.getPaList(false));
 
 		/* Part cfg */
-		partCfgTreePageComposer.refreshPart(_part);
+		partCfgPageComposer.refreshPart(_part);
 	}
 
 	private void refreshPa(List<PartAcqInfo> _paList) {

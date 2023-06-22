@@ -23,10 +23,12 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
+import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.mbom.MbomService;
 import ekp.mbom.issue.MbomBpuType;
 import ekp.mbom.issue.part.PartBpuDel0;
+import ekp.mbom.issue.part.PartBpuUpdate;
 import ekp.mbom.issue.part.PartBuilder0;
 import ekp.mbom.type.PartUnit;
 import legion.BusinessServiceFactory;
@@ -104,7 +106,31 @@ public class MbomFnComposer extends SelectorComposer<Component> {
 			//
 			li.appendChild(new Listcell(p.getPin()));
 			//
-			li.appendChild(new Listcell(p.getName()));
+			lc = new Listcell();
+			Textbox txbName = new Textbox(p.getName());
+			txbName.setInplace(true);
+			txbName.addEventListener(Events.ON_CHANGE, e->{
+				PartBpuUpdate b = BpuFacade.getInstance().getBuilder(MbomBpuType.PART_$UPDATE, p);
+				String newName = txbName.getValue()==null?"":txbName.getValue();
+				b.appendName(newName);
+				StringBuilder msg = new StringBuilder();
+				if (!b.verify(msg)) {
+					ZkMsgBox.exclamation(msg.toString());
+					return;
+				}
+				
+				if (b.build(new StringBuilder(), null)) {
+					ZkNotification.info("Update part name   [" + p.getPin() + "][" +newName + "] success.");
+					ListModelList<PartInfo> model = (ListModelList) lbxPart.getModel();
+
+					model.add(model.indexOf(p), p.reload());
+					model.remove(p);
+				} else {
+					ZkNotification.error();
+				}
+			});
+			lc.appendChild(txbName);
+			li.appendChild(lc);
 			//
 			li.appendChild(new Listcell(p.getUnitName()));
 
