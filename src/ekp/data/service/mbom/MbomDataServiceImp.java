@@ -15,6 +15,8 @@ import ekp.data.MbomDataService;
 import ekp.data.service.mbom.query.PartCfgQueryParam;
 import ekp.data.service.mbom.query.PartQueryParam;
 import ekp.data.service.mbom.query.PpartSkewerQueryParam;
+import ekp.mbom.type.PartAcquisitionType;
+import ekp.mbom.type.PartUnit;
 import ekp.serviceFacade.rmi.EkpKernelServiceRemote;
 import ekp.serviceFacade.rmi.mbom.ParsPartRemote;
 import ekp.serviceFacade.rmi.mbom.ParsProcRemote;
@@ -133,6 +135,16 @@ public class MbomDataServiceImp implements MbomDataService {
 			return null;
 		}
 	}
+	
+	@Override
+	public boolean partUpdate(String _uid, String _pin, String _name, PartUnit _unit) {
+		try {
+			return getEkpKernelRmi().partUpdate(_uid, _pin, _name, _unit);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
 
 	// -------------------------------------------------------------------------------
 	// --------------------------------PartAcquisition--------------------------------
@@ -223,6 +235,16 @@ public class MbomDataServiceImp implements MbomDataService {
 	public boolean partAcqRevertPublish(String _uid) {
 		try {
 			return getEkpKernelRmi().partAcqRevertPublish(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+	
+	@Override
+	public boolean partAcqUpdateInfo(String _uid, String _id, String _name, PartAcquisitionType _type) {
+		try {
+			return getEkpKernelRmi().partAcqUpdateInfo(_uid, _id, _name, _type);
 		} catch (Throwable e) {
 			LogUtil.log(log, e, Level.ERROR);
 			return false;

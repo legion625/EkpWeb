@@ -21,6 +21,7 @@ import ekp.mbom.issue.parsPart.PpartBpuDel0;
 import ekp.mbom.issue.parsProc.ParsProcBuilder0;
 import ekp.mbom.issue.part.PartBpuDel0;
 import ekp.mbom.issue.part.PartBpuPcAssignPa;
+import ekp.mbom.issue.part.PartBpuUpdate;
 import ekp.mbom.issue.part.PartBuilder0;
 import ekp.mbom.issue.partAcq.PaBpuDel0;
 import ekp.mbom.issue.partAcq.PaBpuPublish;
@@ -44,6 +45,7 @@ public enum MbomBpuType implements BpuType {
 	PART_0(PartBuilder0.class), //
 	PART_$DEL0(PartBpuDel0.class, PartInfo.class), //
 	PART_$PC_ASSIGN_PA(PartBpuPcAssignPa.class, PartInfo.class, PartCfgInfo.class), //
+	PART_$UPDATE(PartBpuUpdate.class, PartInfo.class), //
 	/* pa */
 	PART_ACQ_0(PartAcqBuilder0.class), //
 	PART_ACQ_$DEL0(PaBpuDel0.class, PartAcqInfo.class), //
@@ -60,6 +62,7 @@ public enum MbomBpuType implements BpuType {
 	PPART_$DEL0(PpartBpuDel0.class, PpartInfo.class), //
 	/* pproc */
 	PARS_PROC_0(ParsProcBuilder0.class), //
+	
 	/**/
 	PART_CFG_0(PartCfgBuilder0.class), //
 	PART_CFG_$EDITING(PartCfgBpuEditing.class, PartCfgInfo.class), //
@@ -101,6 +104,8 @@ public enum MbomBpuType implements BpuType {
 			return matchBizPartDel0((PartInfo) _args[0]);
 		case PART_$PC_ASSIGN_PA:
 //			return matchBizPartPcAssignPa((PartInfo) _args[0], (PartCfgInfo) _args[1]);
+			return true;
+		case PART_$UPDATE:
 			return true;
 		/* part acq */
 		case PART_ACQ_0:
@@ -265,13 +270,13 @@ public enum MbomBpuType implements BpuType {
 
 		List<PprocInfo> pprocList = _pars.getPprocList(true);
 		if (!pprocList.isEmpty()) {
-			log.info("pprocList should be empty.");
+			log.trace("pprocList should be empty.");
 			return false;
 		}
 
 		List<PpartInfo> ppartList = _pars.getPpartList(true);
 		if (!ppartList.isEmpty()) {
-			log.info("ppartList should be empty.");
+			log.trace("ppartList should be empty.");
 			return false;
 		}
 
@@ -305,7 +310,7 @@ public enum MbomBpuType implements BpuType {
 		boolean somePartCfgPublished = _ppart.getPars().getPa().getPartCfgConjList(true).stream()
 				.map(PartCfgConjInfo::getPartCfg).anyMatch(partCfg -> PartCfgStatus.PUBLISHED == partCfg.getStatus());
 		if (somePartCfgPublished) {
-			log.info("Some part configuration published.");
+			log.trace("Some part configuration published.");
 			return false;
 		}
 
@@ -325,7 +330,7 @@ public enum MbomBpuType implements BpuType {
 		}
 
 		if (PartCfgStatus.EDITING != _pc.getStatus()) {
-			log.info("_pc.getStatus should be EDITING.");
+			log.trace("_pc.getStatus should be EDITING.");
 			return false;
 		}
 
@@ -339,7 +344,7 @@ public enum MbomBpuType implements BpuType {
 		}
 
 		if (PartCfgStatus.EDITING != _pc.getStatus()) {
-			log.info("_pc.getStatus should be EDITING.");
+			log.trace("_pc.getStatus should be EDITING.");
 			return false;
 		}
 

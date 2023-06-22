@@ -30,6 +30,7 @@ import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.ListitemRenderer;
+import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.TreeNode;
@@ -55,12 +56,14 @@ import ekp.mbom.issue.partAcq.PaBpuDel0;
 import ekp.mbom.issue.partAcq.PaBpuPublish;
 import ekp.mbom.issue.partCfg.PartCfgBpuEditing;
 import ekp.mbom.issue.partCfg.PartCfgBpuPublish;
+import ekp.mbom.issue.partCfg.PartCfgBuilder0;
 import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartUnit;
 import ekp.web.control.zk.mbom.dto.PartCfgTreeDto;
 import legion.BusinessServiceFactory;
 import legion.biz.BpuFacade;
 import legion.biz.BpuType;
+import legion.util.DataFO;
 import legion.util.LogUtil;
 import legion.util.NumberFormatUtil;
 import legion.util.TimeTraveler;
@@ -274,13 +277,107 @@ public class PartCfgTreePageComposer extends SelectorComposer<Component> {
 		refreshPartCfgTree(_partCfg);
 		refreshPartCfgPpartSkewer(_partCfg);
 	}
-
+	
+	// -------------------------------------------------------------------------------
+	/* pc new */
+	@Wire
+	private Window wdPcNew;
+	@Wire("#wdPcNew #txbId")
+	private Textbox txbPcNewId;
+	@Wire("#wdPcNew #txbName")
+	private Textbox txbPcNewName;
+	//
+	@Wire("#wdPcNew #txbRootPartPin")
+	private Textbox txbPcNewRootPartPin;
+	@Wire("#wdPcNew #lbRootPartOk")
+	private Label lbPcNewRootPartOk;
+	@Wire("#wdPcNew #lbRootPartNo")
+	private Label lbPcNewRootPartNo;
+	//
+	@Wire("#wdPcNew #txbDesp")
+	private Textbox txbPcNewDesp;
+	
+	
 	@Listen(Events.ON_CLICK + "=#btnPcNew")
 	public void btnPcNew_clicked() {
-		ZkNotification.warning("working in progress...");
-		// TODO
+		showWdPcNew();
 	}
 
+	private void showWdPcNew() {
+		resetWdPcNewBlanks();
+		wdPcNew.setVisible(true);
+	}
+	
+	private void resetWdPcNewBlanks() {
+		txbPcNewId.setValue("");
+		txbPcNewName.setValue("");
+		txbPcNewRootPartPin.setValue("");
+		txbPcNewRootPartPin.setAttribute("rootPartUid", "");
+		lbPcNewRootPartOk.setVisible(false);
+		lbPcNewRootPartNo.setVisible(true);
+		txbPcNewDesp.setValue("");
+		
+	}
+	
+	@Listen(Events.ON_CHANGE + "=#wdPcNew #txbRootPartPin")
+	public void wdPcNew_txbRootPartPin_changed() {
+		log.debug("wdPcNew_txbRootPartPin_changed");
+		String pin = txbPcNewRootPartPin.getValue();
+		log.debug("pin: {}", pin);
+		boolean check = false;
+		if (!DataFO.isEmptyString(pin)) {
+			PartInfo p=mbomService.loadPartByPin(pin) ;
+			log.debug("p: {}", p);
+			check = p!= null;
+			
+			txbPcNewRootPartPin.setAttribute("rootPartUid", p.getUid());
+		}
+		log.debug("check: {}", check);
+		lbPcNewRootPartOk.setVisible(check);
+		lbPcNewRootPartNo.setVisible(!check);
+	}
+
+	@Listen(Events.ON_CLICK + "=#wdPcNew #btnSubmit")
+	public void wdPcNew_btnSubmit_clicked() {
+		PartCfgBuilder0 b = BpuFacade.getInstance().getBuilder(MbomBpuType.PART_CFG_0);
+		b.appendId(txbPcNewId.getValue());
+		b.appendName(txbPcNewName.getValue());
+		b.appendRootPartUid((String) txbPcNewRootPartPin.getAttribute("rootPartUid"));
+		b.appendRootPartPin(txbPcNewRootPartPin.getValue());
+		b.appendDesp(txbPcNewDesp.getValue());
+		
+		StringBuilder msg = new StringBuilder();
+		if (!b.verify(msg)) {
+			ZkMsgBox.exclamation(msg.toString());
+			return;
+		}
+		
+		ZkMsgBox.confirm("Confirm create?", () -> {
+//			PartAcqInfo pa = b.build(new StringBuilder(), new TimeTraveler());
+			PartCfgInfo pc = b.build(new StringBuilder(), new TimeTraveler());
+			// 成功
+			if (pc != null) {
+				ZkNotification.info("Create part configuration [" + pc.getId() + "][" + pc.getName() + "]["
+						+ pc.getRootPartPin() + "] success.");
+//				ListModelList<PartAcqInfo> model = (ListModelList) lbxPartAcq.getModel();
+//				model.add(pa);
+//				part.getPaList(true); // reload
+				wdPcNew_closed(new Event("evt"));
+			}
+			// 失敗
+			else {
+				ZkNotification.error();
+			}
+		});
+	}
+	
+	@Listen(Events.ON_CLOSE + "=#wdPcNew")
+	public void wdPcNew_closed(Event _evt) {
+		_evt.stopPropagation();
+		wdPcNew.setVisible(false);
+	}
+	
+	// -------------------------------------------------------------------------------
 	@Listen(Events.ON_CLICK + "=#btnPcPublish")
 	public void btnPcPublish_clicked() {
 		PartCfgInfo pc = getSelectedPc();

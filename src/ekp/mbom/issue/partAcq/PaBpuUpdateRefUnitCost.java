@@ -24,14 +24,14 @@ public class PaBpuUpdateRefUnitCost extends PaBpu{
 	}
 	
 	// -------------------------------------------------------------------------------
-		// -----------------------------------appender------------------------------------
+	// -----------------------------------appender------------------------------------
 	public PaBpuUpdateRefUnitCost appendRefUnitCost(double refUnitCost) {
 		this.refUnitCost = refUnitCost;
 		return this;
 	}
-	
+
 	// -------------------------------------------------------------------------------
-		// ------------------------------------getter-------------------------------------
+	// ------------------------------------getter-------------------------------------
 	public double getRefUnitCost() {
 		return refUnitCost;
 	}

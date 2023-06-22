@@ -1,3 +1,12 @@
+Min-Hua, 2023.06.18
+[change]
+1. [MBOM] Part: Add "update name" function.
+2. [MBOM] Part configuration: Add "create" function.
+
+[lib]
+1. legionmodule: 0.13.0 -> 0.13.1
+2. ekp_kernel: 0.1.7 -> 0.1.8
+
 ------------------------------------------------------------------------------
 v0.3.1 released by Min-Hua, 2023.06.18
 [deployment]

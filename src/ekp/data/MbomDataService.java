@@ -28,6 +28,8 @@ import ekp.data.service.mbom.ProdModItemInfo;
 import ekp.data.service.mbom.query.PartCfgQueryParam;
 import ekp.data.service.mbom.query.PartQueryParam;
 import ekp.data.service.mbom.query.PpartSkewerQueryParam;
+import ekp.mbom.type.PartAcquisitionType;
+import ekp.mbom.type.PartUnit;
 import ekp.serviceFacade.rmi.mbom.PartCfgRemote;
 import ekp.serviceFacade.rmi.mbom.PpartSkewerRemote;
 import legion.IntegrationService;
@@ -48,6 +50,8 @@ public interface MbomDataService extends IntegrationService {
 	public PartInfo loadPartByPin(String _pin);
 	
 	public QueryOperation<PartQueryParam, PartInfo> searchPart(QueryOperation<PartQueryParam, PartInfo> _param);
+	
+	public boolean partUpdate(String _uid, String _pin, String _name, PartUnit _unit);
 
 	// -------------------------------------------------------------------------------
 	// --------------------------------PartAcquisition--------------------------------
@@ -68,6 +72,8 @@ public interface MbomDataService extends IntegrationService {
 	public boolean partAcqPublish(String _uid, long _publishTime);
 
 	public boolean partAcqRevertPublish(String _uid);
+	
+	public boolean partAcqUpdateInfo(String _uid, String _id, String _name, PartAcquisitionType _type);
 	
 	public boolean partAcqUpdateRefUnitCost(String _uid, double _refUnitCost);
 

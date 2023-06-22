@@ -2,7 +2,7 @@
 <zk>
 	<panel vflex="1" apply="ekp.web.control.zk.mbom.PartInfoComposer">
 		<panelchildren>
-			<hlayout>
+			<hlayout valign="middle">
 				<label value="Pin: " style="font-size:20px; weight:bold" />
 				<label id="lbPin" style="font-size:20px; weight:bold" />
 				<label value="Name: " style="font-size:20px; weight:bold" />
@@ -164,7 +164,7 @@
 						</groupbox>
 					</tabpanel>
 					<tabpanel height="100%">
-						<include id="icdPartAcqPage" height="100%" />
+						<include id="icdPartCfgPage" height="100%" />
 					</tabpanel>
 				</tabpanels>
 			</tabbox>

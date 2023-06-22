@@ -19,6 +19,7 @@ import ekp.mbom.type.PartCfgStatus;
 import legion.DataServiceFactory;
 import legion.nlp.Nlp;
 import legion.util.query.QueryOperation;
+import legion.util.query.QueryOperation.CompareBoolean;
 import legion.util.query.QueryOperation.CompareOp;
 import legion.util.query.QueryOperation.ConjunctiveOp;
 import legion.util.query.QueryOperation.QueryValue;
@@ -45,6 +46,8 @@ public class ChatbotServiceFacade {
 		List<String> list = new ArrayList<>();
 
 		QueryOperation<PartCfgQueryParam, PartCfgInfo> param = new QueryOperation<>();
+		// 手動過濾掉MCD開頭的
+		param.appendCondition(QueryOperation.booleanOp(CompareBoolean.not, QueryOperation.value(PartCfgQueryParam.ROOT_PART_PIN, CompareOp.like, "MCD%")));
 		param = mbomDataService.searchPartCfg(param);
 
 		int count = param.getTotal();

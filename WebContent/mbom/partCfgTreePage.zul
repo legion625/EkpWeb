@@ -6,6 +6,30 @@
 				<button id="btnPcNew" label="New" iconSclass="fa fa-plus" />
 				<button id="btnPcPublish" label="Publish" iconSclass="fas fa-lock" disabled="true" />
 			</hlayout>
+			<window id="wdPcNew" title="Create part configuration" width="400px" height="160px"
+				mode="highlighted" closable="true" visible="false" sizable="true">
+				<hlayout hflex="1">
+					<label value="Id" />
+					<textbox id="txbId" hflex="1"/>
+					<label value="Name" />
+					<textbox id="txbName" hflex="1"/>
+				</hlayout>
+				<hlayout hflex="1">
+					<label value="Root part pin" />
+					<textbox id="txbRootPartPin" hflex="1"/>
+					<label id="lbRootPartOk" sclass="fas fa-check-circle"/>
+					<label id="lbRootPartNo" sclass="fas fa-exclamation-circle"/>
+					</hlayout>
+					<hlayout>
+					<label value="Description" />
+					<textbox id="txbDesp" hflex="1"/>
+				</hlayout>
+				<separator spacing="5px" />
+				<div align="center">
+					<button id="btnSubmit" label="Submit" />
+					<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
+				</div>
+			</window>
 			<listbox id="lbxPartCfg" emptyMessage="(No data)" checkmark="true">
 				<listhead sizable="true">
 					<listheader width="40px" />
@@ -56,8 +80,8 @@
 								<treecol label="Acq name" width="100px" />
 								<treecol label="Acq type" width="100px" />
 								<treecol label="Acq status" width="100px" />
-								<treecol label="Required quantity" width="150px" />
-								<treecol label="Acq referenced unit cost" width="150px" />
+								<treecol label="Required quantity" width="120px" style="text-align:left" align="right"/>
+								<treecol label="Acq ref. unit cost" width="140px" style="text-align:left" align="right"/>
 							</treecols>
 						</tree>
 					</div>

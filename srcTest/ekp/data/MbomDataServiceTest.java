@@ -12,8 +12,10 @@ import org.slf4j.LoggerFactory;
 
 import ekp.AbstractEkpInitTest;
 import ekp.TestLogMark;
+import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartCreateObj;
 import ekp.data.service.mbom.PartInfo;
+import ekp.data.service.mbom.query.PartCfgQueryParam;
 import ekp.data.service.mbom.query.PartQueryParam;
 import ekp.mbom.MbomBuilderDelegate;
 import ekp.serviceFacade.rmi.mbom.PartCreateObjRemote;
@@ -21,6 +23,8 @@ import ekp.serviceFacade.rmi.mbom.PartRemote;
 import legion.DataServiceFactory;
 import legion.util.TimeTraveler;
 import legion.util.query.QueryOperation;
+import legion.util.query.QueryOperation.CompareBoolean;
+import legion.util.query.QueryOperation.CompareOp;
 
 public class MbomDataServiceTest extends AbstractEkpInitTest {
 	private static Logger log = LoggerFactory.getLogger(TestLogMark.class);
@@ -72,6 +76,19 @@ public class MbomDataServiceTest extends AbstractEkpInitTest {
 		log.debug("param.getTotal(): {}", param.getTotal());
 		log.debug("limit: {}\t{}", param.getLimit()[0], param.getLimit()[1]);
 		log.debug("param.getQueryResult().size(): {}", param.getQueryResult().size());
+	}
+	
+	@Test
+	public void testSearchPartConfiguration() {
+		QueryOperation<PartCfgQueryParam, PartCfgInfo> param = new QueryOperation<>();
+		// 手動過濾掉MCD開頭的
+		param.appendCondition(QueryOperation.booleanOp(CompareBoolean.not, QueryOperation.value(PartCfgQueryParam.ROOT_PART_PIN, CompareOp.like, "MCD%")));
+//		param.appendCondition( QueryOperation.value(PartCfgQueryParam.ROOT_PART_PIN, CompareOp.like, "MCD%"));
+		param = dataService.searchPartCfg(param);
+		log.debug("param.getTotal(): {}", param.getTotal());
+		log.debug("limit: {}\t{}", param.getLimit()[0], param.getLimit()[1]);
+		log.debug("param.getQueryResult().size(): {}", param.getQueryResult().size());
+		
 	}
 	
 
