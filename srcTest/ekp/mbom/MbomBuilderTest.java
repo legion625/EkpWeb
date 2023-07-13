@@ -17,9 +17,9 @@ import org.slf4j.LoggerFactory;
 
 import ekp.AbstractEkpInitTest;
 import ekp.TestLogMark;
-import ekp.data.MbomDataService;
 import ekp.data.service.mbom.PpartInfo;
 import ekp.data.service.mbom.PprocInfo;
+import ekp.data.MbomDataService;
 import ekp.data.service.mbom.ParsInfo;
 import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.mbom.PartCfgInfo;

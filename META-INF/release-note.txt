@@ -1,3 +1,13 @@
+Min-Hua, 2023.07.13
+[change]
+1. [INVT] Add INVT module.
+
+[lib]
+1. ekp_kernel: 0.1.8 -> 0.2.0
+
+[deployment]
+1. ServiceModule.xml新增InvtService和InvtDataService的設定。
+
 ------------------------------------------------------------------------------
 v0.3.2 released by Min-Hua, 2023.06.22
 [change]
