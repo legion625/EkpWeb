@@ -1,5 +1,10 @@
 package ekp.data.service.invt;
 
+import java.util.List;
+
+import ekp.data.BizObjLoader;
+import ekp.data.InvtDataService;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
 public class WrhsLocInfoDto extends ObjectModelInfoDto implements WrhsLocInfo {
@@ -31,6 +36,15 @@ public class WrhsLocInfoDto extends ObjectModelInfoDto implements WrhsLocInfo {
 
 	void setName(String name) {
 		this.name = name;
+	}
+	
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<List<WrhsBinInfo>> wrhsBinListLoader = BizObjLoader
+			.of(() -> DataServiceFactory.getInstance().getService(InvtDataService.class).loadWrhsBinList(getUid()));
+
+	@Override
+	public List<WrhsBinInfo> getWrhsBinList() {
+		return wrhsBinListLoader.getObj();
 	}
 
 }

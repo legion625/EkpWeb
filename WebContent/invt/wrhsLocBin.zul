@@ -1,0 +1,57 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<borderlayout vflex="1" apply="ekp.web.control.zk.invt.WrhsLocBinComposer">
+		<center title="Warehouse Location">
+			<div vflex="1">
+				<hlayout>
+					<toolbarbutton id="btnAddWrhsLoc" label="新增倉庫" iconSclass="fa fa-plus" />
+					<toolbarbutton id="btnDeleteWrhsLoc" label="移除倉庫" iconSclass="fas fa-trash-alt" />
+				</hlayout>
+				<listbox id="lbxWrhsLoc" vflex="1" emptyMessage="(No data)" checkmark="true">
+					<listhead sizable="true">
+						<listheader width="50px"></listheader>
+						<listheader label="ID" sort="auto(id)" />
+						<listheader label="Name" sort="auto(name)" />
+					</listhead>
+				</listbox>
+				<window id="wdCreateWl" title="Create warehouse location" width="60%" height="100px" mode="highlighted"
+					closable="true" visible="false" sizable="true">
+					<hlayout hflex="1">
+						<label value="ID" />
+						<textbox id="txbId" hflex="1" />
+						<label value="Name" />
+						<textbox id="txbName" hflex="1"/>
+					</hlayout>
+					<separator spacing="5px" />
+					<div align="center">
+						<button id="btnSubmit" label="Submit" />
+						<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
+					</div>
+				</window>
+			</div>
+		</center>
+		<east title="Warehouse Bin" open="true" width="50%" splittable="true">
+			<div vflex="1">
+				<hlayout>
+					<toolbarbutton id="btnAddWrhsBin" label="新增儲位" iconSclass="fa fa-plus" />
+					<toolbarbutton id="btnDeleteWrhsBin" label="移除儲位" iconSclass="fas fa-trash-alt" />
+				</hlayout>
+				<listbox id="lbxWrhsBin" vflex="1" emptyMessage="無資料項" checkmark="true" >
+
+					<listhead sizable="true">
+						<listheader width="50px"></listheader>
+						<listheader label="ID" sort="auto(id)" />
+						<listheader label="Name" sort="auto(name)" />
+					</listhead>
+					<listitem>
+						<listcell></listcell>
+						<listcell>id1</listcell>
+						<listcell>name</listcell>
+					</listitem>
+				</listbox>
+			</div>
+		</east>
+	</borderlayout>
+
+
+</zk>
