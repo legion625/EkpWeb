@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.SelectEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
@@ -25,6 +26,8 @@ import ekp.data.service.invt.WrhsLocInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.invt.InvtService;
 import ekp.invt.bpu.InvtBpuType;
+import ekp.invt.bpu.wrhsLoc.WrhsBinBpuDel0;
+import ekp.invt.bpu.wrhsLoc.WrhsBinBuilder1;
 import ekp.invt.bpu.wrhsLoc.WrhsLocBpuDel0;
 import ekp.invt.bpu.wrhsLoc.WrhsLocBuilder0;
 import ekp.mbom.MbomService;
@@ -120,6 +123,7 @@ public class WrhsLocBinComposer extends SelectorComposer<Component> {
 				ZkNotification.info("Create WrhsLoc [" + wl.getId() + "][" + wl.getName() + "] success.");
 				ListModelList<WrhsLocInfo> model = (ListModelList) lbxWrhsLoc.getModel();
 				model.add(wl);
+				wdCreateWl_closed(new Event("evt"));
 			}
 			// 失敗
 			else {
@@ -128,18 +132,38 @@ public class WrhsLocBinComposer extends SelectorComposer<Component> {
 		});
 	}
 	
+	@Listen(Events.ON_CLOSE + "=#wdCreateWl")
+	public void wdCreateWl_closed(Event _evt) {
+		_evt.stopPropagation();
+		wdCreateWl.setVisible(false);
+	}
+	
 	// -------------------------------------------------------------------------------
-	@Listen(Events.ON_CLICK+"=#btnDeleteWrhsLoc")
-	public void btnDeleteWrhsLoc_clicked() {
+	private WrhsLocInfo getSelectedWrhsLoc() {
 		ListModelList<WrhsLocInfo> model = (ListModelList) lbxWrhsLoc.getListModel();
 		Set<WrhsLocInfo> wlSet = model.getSelection(); // 目前只開放單選
-		if (wlSet.isEmpty()) {
-			ZkMsgBox.exclamation("Please select the warehouse to be deleted.");
-			return;
-		}
-		
+		if (wlSet.isEmpty())
+			return null;
+
 		// 目前只開放單選，先挑一筆。
 		WrhsLocInfo wl = wlSet.iterator().next();
+		return wl;
+	}
+	
+	private WrhsLocInfo getSelectedWrhsLocFromModel(String _wlUid) {
+		ListModelList<WrhsLocInfo> wlModel = (ListModelList) lbxWrhsLoc.getModel();
+		return wlModel.getInnerList().stream().filter(_wl->_wl.getUid().equalsIgnoreCase(_wlUid)).findAny().orElse(null);
+	}
+	
+	@Listen(Events.ON_CLICK+"=#btnDeleteWrhsLoc")
+	public void btnDeleteWrhsLoc_clicked() {
+		// 目前只開放單選，先挑一筆。
+		WrhsLocInfo wl = getSelectedWrhsLoc();
+		if (wl == null) {
+			ZkMsgBox.exclamation("No warehouse location selected.");
+			return;
+		}
+			
 		WrhsLocBpuDel0 b = BpuFacade.getInstance().getBuilder(InvtBpuType.WL_$DEL0, wl);
 		if (b == null) {
 			log.warn("getBuilder return null.");
@@ -158,8 +182,7 @@ public class WrhsLocBinComposer extends SelectorComposer<Component> {
 			if (result != null) {
 				
 				ZkNotification.info("Delete warehouse location [" + b.getWrhsLoc().getId()+ "][" + b.getWrhsLoc().getName() + "] success.");
-//				ListModelList<WrhsLocInfo> model1 = (ListModelList) lbxWrhsLoc.getModel();
-//				model.add(result);
+				ListModelList<WrhsLocInfo> model = (ListModelList) lbxWrhsLoc.getListModel();
 				model.remove(wl);
 			}
 			// 失敗
@@ -169,17 +192,136 @@ public class WrhsLocBinComposer extends SelectorComposer<Component> {
 		});
 	}
 	
-	@Listen(Events.ON_CLICK+"=#btnAddWrhsBin")
+	// -------------------------------------------------------------------------------
+	@Wire
+	private Window wdCreateWb;
+	@Wire("#wdCreateWb #txbId")
+	private Textbox txbCreateWrhBinId;
+	@Wire("#wdCreateWb #txbName")
+	private Textbox txbCreateWrhBinName;
+	
+	@Listen(Events.ON_CLICK + "=#btnAddWrhsBin")
 	public void btnAddWrhsBin_clicked() {
-		// TODO
-		ZkNotification.info("not implemented yet...");
+		WrhsLocInfo wl = getSelectedWrhsLoc();
+		if (wl == null) {
+			ZkMsgBox.exclamation("No warehouse location selected.");
+			return;
+		}
+
+		resetWdCreateWbBlanks();
+		wdCreateWb.setVisible(true);
+	}
+
+	@Listen(Events.ON_CLICK + "=#wdCreateWb #btnResetBlanks")
+	public void resetWdCreateWbBlanks() {
+		txbCreateWrhBinId.setValue("");
+		txbCreateWrhBinName.setValue("");
 	}
 	
-	@Listen(Events.ON_CLICK+"=#btnDeleteWrhsBin")
-	public void btnDeleteWrhsBin_clicked() {
-		// TODO
-		ZkNotification.info("not implemented yet...");
+	@Listen(Events.ON_CLICK + "=#wdCreateWb #btnSubmit")
+	public void wdCreateWb_btnSumbit_clicked() {
+		WrhsLocInfo wl = getSelectedWrhsLoc();
+		if (wl == null) {
+			ZkMsgBox.exclamation("No warehouse location selected.");
+			return;
+		}
+		
+		WrhsBinBuilder1 b = BpuFacade.getInstance().getBuilder(InvtBpuType.WB_1, wl);
+		b.appendId(txbCreateWrhBinId.getValue());
+		b.appendName(txbCreateWrhBinName.getValue());
+		StringBuilder msg = new StringBuilder();
+		if (!b.verify(msg)) {
+			ZkMsgBox.exclamation(msg.toString());
+			return;
+		}
+		
+		ZkMsgBox.confirm("Confirm create?", () -> {
+			WrhsBinInfo wb = b.build(new StringBuilder(), new TimeTraveler());
+			// 成功
+			if (wb != null) {
+				ZkNotification.info("Create WrhsBin [" + wb.getId() + "][" + wb.getName() + "] success.");
+				//
+				ListModelList<WrhsBinInfo> model = (ListModelList) lbxWrhsBin.getModel();
+				model.add(wb);
+				//
+				// TODO
+				WrhsLocInfo wlM = getSelectedWrhsLocFromModel(wb.getWlUid()); // 從model中找到wb的parent，若有的話，reload其wbList。
+				if (wlM != null)
+					wlM.getWrhsBinList(true); // reload
+
+				wdCreateWb_closed(new Event("evt"));
+			}
+			// 失敗
+			else {
+				ZkNotification.error();
+			}
+		});
 	}
+	
+	
+	@Listen(Events.ON_CLOSE + "=#wdCreateWb")
+	public void wdCreateWb_closed(Event _evt) {
+		_evt.stopPropagation();
+		wdCreateWb.setVisible(false);
+	}
+	
+	// -------------------------------------------------------------------------------
+	private WrhsBinInfo getSelectedWrhsBin() {
+		ListModelList<WrhsBinInfo> model = (ListModelList) lbxWrhsBin.getListModel();
+		Set<WrhsBinInfo> wbSet = model.getSelection(); // 目前只開放單選
+		if (wbSet.isEmpty())
+			return null;
+
+		// 目前只開放單選，先挑一筆。
+		WrhsBinInfo wb = wbSet.iterator().next();
+		return wb;
+	}
+	
+	@Listen(Events.ON_CLICK + "=#btnDeleteWrhsBin")
+	public void btnDeleteWrhsBin_clicked() {
+		// 目前只開放單選，先挑一筆。
+		WrhsBinInfo wb = getSelectedWrhsBin();
+		if (wb == null) {
+			ZkMsgBox.exclamation("No warehouse bin selected.");
+			return;
+		}
+
+		WrhsBinBpuDel0 b = BpuFacade.getInstance().getBuilder(InvtBpuType.WB_$DEL0, wb);
+		if (b == null) {
+			log.warn("getBuilder return null.");
+			ZkNotification.error();
+			return;
+		}
+		StringBuilder msg = new StringBuilder();
+		if (!b.verify(msg)) {
+			ZkMsgBox.exclamation(msg.toString());
+			return;
+		}
+
+		ZkMsgBox.confirm("Confirm delete?", () -> {
+			Boolean result = b.build(new StringBuilder(), new TimeTraveler());
+			// 成功
+			if (result != null) {
+				ZkNotification.info("Delete warehouse bin [" + b.getWrhsBin().getId() + "][" + b.getWrhsBin().getName()
+						+ "] success.");
+				//
+				ListModelList<WrhsBinInfo> model = (ListModelList) lbxWrhsBin.getListModel();
+				model.remove(wb);
+				// TODO
+				WrhsLocInfo wlM = getSelectedWrhsLocFromModel(wb.getWlUid()); // 從model中找到wb的parent，若有的話，reload其wbList。
+				log.debug("wlM: {}", wlM);
+				if (wlM != null)
+					wlM.getWrhsBinList(true); // reload
+			}
+			// 失敗
+			else {
+				ZkNotification.error();
+			}
+		});
+	}
+	
+	
+	
 	
 	
 	// -------------------------------------------------------------------------------

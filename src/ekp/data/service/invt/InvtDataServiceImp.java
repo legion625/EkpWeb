@@ -30,6 +30,7 @@ import ekp.serviceFacade.rmi.invt.WrhsBinCreateObjRemote;
 import ekp.serviceFacade.rmi.invt.WrhsBinRemote;
 import ekp.serviceFacade.rmi.invt.WrhsLocCreateObjRemote;
 import ekp.serviceFacade.rmi.invt.WrhsLocRemote;
+import legion.util.DataFO;
 import legion.util.LogUtil;
 import legion.util.query.QueryOperation;
 import legion.util.query.QueryOperation.QueryValue;
@@ -148,7 +149,18 @@ public class InvtDataServiceImp implements InvtDataService {
 			return null;
 		}
 	}
+	
+	@Override
+	public WrhsBinInfo loadWrhsBin(String _wlUid, String _id) {
+		if (DataFO.isEmptyString(_wlUid) || DataFO.isEmptyString(_id))
+			return null;
 
+		List<WrhsBinInfo> list = loadWrhsBinList(_wlUid);
+		if (list == null)
+			return null;
+		return list.stream().filter(wb -> _id.equalsIgnoreCase(wb.getId())).findAny().orElse(null);
+	}
+	
 	@Override
 	public List<WrhsBinInfo> loadWrhsBinList(String _wlUid){
 		try {

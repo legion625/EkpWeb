@@ -49,6 +49,8 @@ public interface InvtDataService extends IntegrationService, EkpKernelRmi {
 	public boolean deleteWrhsBin(String _uid);
 
 	public WrhsBinInfo loadWrhsBin(String _uid);
+	
+	public WrhsBinInfo loadWrhsBin(String _wlUid, String _id);
 
 	public List<WrhsBinInfo> loadWrhsBinList(String _wlUid);
 

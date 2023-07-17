@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 
 import ekp.data.service.invt.WrhsBinInfo;
 import ekp.data.service.invt.WrhsLocInfo;
+import ekp.invt.bpu.wrhsLoc.WrhsBinBpuDel0;
+import ekp.invt.bpu.wrhsLoc.WrhsBinBuilder1;
 import ekp.invt.bpu.wrhsLoc.WrhsLocBpuDel0;
 import ekp.invt.bpu.wrhsLoc.WrhsLocBuilder0;
 import ekp.mbom.issue.MbomBpuType;
@@ -16,6 +18,9 @@ public enum InvtBpuType implements BpuType {
 	/* wrhsLoc */
 	WL_0(WrhsLocBuilder0.class), //
 	WL_$DEL0(WrhsLocBpuDel0.class, WrhsLocInfo.class), //
+	/* wrhsBin */
+	WB_1(WrhsBinBuilder1.class, WrhsLocInfo.class), //
+	WB_$DEL0(WrhsBinBpuDel0.class, WrhsBinInfo.class), //
 
 	;
 
@@ -44,7 +49,11 @@ public enum InvtBpuType implements BpuType {
 		case WL_0:
 			return true;
 		case WL_$DEL0:
-			return matchBizWlDel0((WrhsLocInfo)_args[0]);
+//			return matchBizWlDel0((WrhsLocInfo)_args[0]);
+			return true;
+		case WB_1:
+		case WB_$DEL0:
+			return true;
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + this);
 		}
@@ -54,18 +63,18 @@ public enum InvtBpuType implements BpuType {
 	private Logger log = LoggerFactory.getLogger(InvtBpuType.class);
 
 	// -------------------------------------------------------------------------------
-	private boolean matchBizWlDel0(WrhsLocInfo _wl) {
-		if(_wl==null) {
-			log.warn("_wl null.");
-			return false;
-		}
-		
-//		List<WrhsBinInfo> wbList = _wl.getWrhsBinList();
-//		if(!wbList.isEmpty()) {
-//			log.trace("wbList should be empty.");
+//	private boolean matchBizWlDel0(WrhsLocInfo _wl) {
+//		if(_wl==null) {
+//			log.warn("_wl null.");
 //			return false;
 //		}
-		
-		return true;
-	}
+//		
+////		List<WrhsBinInfo> wbList = _wl.getWrhsBinList();
+////		if(!wbList.isEmpty()) {
+////			log.trace("wbList should be empty.");
+////			return false;
+////		}
+//		
+//		return true;
+//	}
 }

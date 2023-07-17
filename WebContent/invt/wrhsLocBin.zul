@@ -43,12 +43,21 @@
 						<listheader label="ID" sort="auto(id)" />
 						<listheader label="Name" sort="auto(name)" />
 					</listhead>
-					<listitem>
-						<listcell></listcell>
-						<listcell>id1</listcell>
-						<listcell>name</listcell>
-					</listitem>
 				</listbox>
+				<window id="wdCreateWb" title="Create warehouse bin" width="400px" height="100px" mode="highlighted"
+					closable="true" visible="false" sizable="true">
+					<hlayout hflex="1">
+						<label value="ID" />
+						<textbox id="txbId" hflex="1" />
+						<label value="Name" />
+						<textbox id="txbName" hflex="1"/>
+					</hlayout>
+					<separator spacing="5px" />
+					<div align="center">
+						<button id="btnSubmit" label="Submit" />
+						<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
+					</div>
+				</window>
 			</div>
 		</east>
 	</borderlayout>

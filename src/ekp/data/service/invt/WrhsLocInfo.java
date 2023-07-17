@@ -11,6 +11,10 @@ public interface WrhsLocInfo extends ObjectModelInfo {
 	String getName();
 	
 	// -------------------------------------------------------------------------------
-	List<WrhsBinInfo> getWrhsBinList(); 
+	List<WrhsBinInfo> getWrhsBinList(boolean _reload);
+	
+	default List<WrhsBinInfo> getWrhsBinList(){
+		return getWrhsBinList(false);
+	}
 
 }

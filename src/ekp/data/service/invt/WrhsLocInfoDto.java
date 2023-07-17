@@ -43,8 +43,8 @@ public class WrhsLocInfoDto extends ObjectModelInfoDto implements WrhsLocInfo {
 			.of(() -> DataServiceFactory.getInstance().getService(InvtDataService.class).loadWrhsBinList(getUid()));
 
 	@Override
-	public List<WrhsBinInfo> getWrhsBinList() {
-		return wrhsBinListLoader.getObj();
+	public List<WrhsBinInfo> getWrhsBinList(boolean _reload){
+		return wrhsBinListLoader.getObj(_reload);
 	}
 
 }
