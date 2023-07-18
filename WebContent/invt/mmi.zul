@@ -1,0 +1,86 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<borderlayout vflex="1" apply="ekp.web.control.zk.invt.MmiComposer">
+		<center title="Material Master">
+			<div vflex="1">
+				<hlayout>
+					<toolbarbutton id="btnAddMm" label="新增物料基本檔" iconSclass="fa fa-plus" />
+					<toolbarbutton id="btnDeleteMm" label="移除物料基本檔" iconSclass="fas fa-trash-alt" />
+				</hlayout>
+				<listbox id="lbxMaterialMaster" vflex="1" emptyMessage="(No data)" checkmark="true">
+					<listhead sizable="true">
+						<listheader width="50px"></listheader>
+						<listheader label="料號" sort="auto(mano)" />
+						<listheader label="品名" sort="auto(name)" />
+						<listheader label="規格" sort="auto(specification)" />
+						<listheader label="計量單位" sort="auto(stdUnit)" />
+						<listheader label="庫存數量" sort="auto(sumStockQty)" />
+						<listheader label="庫存帳值" sort="auto(sumStockValue)" />
+					</listhead>
+				</listbox>
+				<window id="wdCreateMm" title="Create material master" width="60%" height="140px" mode="highlighted"
+					closable="true" visible="false" sizable="true">
+					<hlayout hflex="1">
+						<label value="料號" />
+						<textbox id="txbMano" hflex="1" />
+						<label value="品名" />
+						<textbox id="txbName" hflex="1" />
+					</hlayout>
+					<hlayout hflex="1">
+						<label value="規號" />
+						<textbox id="txbSpec" hflex="1" />
+						<label value="計量單位" />
+						<combobox id="cbbStdUnit" hflex="1" />
+					</hlayout>
+					<separator spacing="5px" />
+					<div align="center">
+						<button id="btnSubmit" label="Submit" />
+						<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
+					</div>
+				</window>
+			</div>
+		</center>
+		<east title="Material Instance" open="true" width="50%" splittable="true">
+			<div vflex="1">
+				<hlayout>
+					<toolbarbutton id="btnAddMi" label="新增物料實體" iconSclass="fa fa-plus" />
+					<toolbarbutton id="btnDeleteMi" label="移除物料實體" iconSclass="fas fa-trash-alt" />
+				</hlayout>
+				<listbox id="lbxMaterialInst" vflex="1" emptyMessage="無資料項" checkmark="true">
+					<listhead sizable="true">
+						<listheader width="50px"></listheader>
+						<listheader label="序號" sort="auto(misn)" />
+						<listheader label="獲取方式" sort="auto(miac)" />
+						<listheader label="數量" sort="auto(qty)" />
+						<listheader label="帳值" sort="auto(value)" />
+						<listheader label="生效日期" sort="auto(effDate)" />
+						<listheader label="失效日期" sort="auto(expDate)" />
+					</listhead>
+				</listbox>
+				<window id="wdCreateMi" title="Create material instance" width="400px" height="100px" mode="highlighted"
+					closable="true" visible="false" sizable="true">
+					<hlayout hflex="1">
+						<label value="獲取方式" />
+						<combobox id="cbbMiac" hflex="1" />
+						<label value="數量" />
+						<doublebox id="dbbQty" hflex="1" />
+						<label value="帳值" />
+						<doublebox id="dbbValue" hflex="1" />
+					</hlayout>
+					<hlayout>
+						<label value="生效日期" />
+						<datebox id="dtbEffDate" />
+						<label value="失效日期" />
+						<datebox id="dtbExpDate" />
+					</hlayout>
+					<separator spacing="5px" />
+					<div align="center">
+						<button id="btnSubmit" label="Submit" />
+						<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
+					</div>
+				</window>
+			</div>
+		</east> 
+	</borderlayout>
+</zk>

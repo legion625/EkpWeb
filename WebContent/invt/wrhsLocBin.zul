@@ -20,7 +20,7 @@
 						<label value="ID" />
 						<textbox id="txbId" hflex="1" />
 						<label value="Name" />
-						<textbox id="txbName" hflex="1"/>
+						<textbox id="txbName" hflex="1" />
 					</hlayout>
 					<separator spacing="5px" />
 					<div align="center">
@@ -36,7 +36,7 @@
 					<toolbarbutton id="btnAddWrhsBin" label="新增儲位" iconSclass="fa fa-plus" />
 					<toolbarbutton id="btnDeleteWrhsBin" label="移除儲位" iconSclass="fas fa-trash-alt" />
 				</hlayout>
-				<listbox id="lbxWrhsBin" vflex="1" emptyMessage="無資料項" checkmark="true" >
+				<listbox id="lbxWrhsBin" vflex="1" emptyMessage="無資料項" checkmark="true">
 
 					<listhead sizable="true">
 						<listheader width="50px"></listheader>
@@ -50,7 +50,7 @@
 						<label value="ID" />
 						<textbox id="txbId" hflex="1" />
 						<label value="Name" />
-						<textbox id="txbName" hflex="1"/>
+						<textbox id="txbName" hflex="1" />
 					</hlayout>
 					<separator spacing="5px" />
 					<div align="center">
@@ -61,6 +61,4 @@
 			</div>
 		</east>
 	</borderlayout>
-
-
 </zk>

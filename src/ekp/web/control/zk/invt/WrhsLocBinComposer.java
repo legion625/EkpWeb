@@ -39,7 +39,7 @@ import legion.web.zk.ZkMsgBox;
 import legion.web.zk.ZkNotification;
 
 public class WrhsLocBinComposer extends SelectorComposer<Component> {
-	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
+	private Logger log = LoggerFactory.getLogger(WrhsLocBinComposer.class);
 
 	// -------------------------------------------------------------------------------
 	@Wire
@@ -319,9 +319,6 @@ public class WrhsLocBinComposer extends SelectorComposer<Component> {
 			}
 		});
 	}
-	
-	
-	
 	
 	
 	// -------------------------------------------------------------------------------

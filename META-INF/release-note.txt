@@ -1,3 +1,7 @@
+Min-Hua, 2023.07.17
+[change]
+1. [IV] Add MaterialMaster basic functions.
+
 Min-Hua, 2023.07.16
 [change]
 1. [IV] Add WrhsLoc and WrbsBin basic functions.

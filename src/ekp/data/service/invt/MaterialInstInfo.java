@@ -18,5 +18,10 @@ public interface MaterialInstInfo extends ObjectModelInfo{
 	long getEffDate();
 
 	long getExpDate();
+	
+	// -------------------------------------------------------------------------------
+	default public String getMiacName() {
+		return (getMiac()==null?MaterialInstAcqChannel.UNDEFINED:getMiac()).getName();
+	}
 
 }

@@ -91,6 +91,8 @@ public interface InvtDataService extends IntegrationService, EkpKernelRmi {
 	public MaterialMasterInfo loadMaterialMaster(String _uid);
 
 	public MaterialMasterInfo loadMaterialMasterByMano(String _mano);
+	
+	// TODO search MaterialMaster
 
 	// -------------------------------------------------------------------------------
 	// ---------------------------------MaterialInst----------------------------------

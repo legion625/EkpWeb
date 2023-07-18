@@ -1,6 +1,11 @@
 package ekp.data.service.invt;
 
+import java.util.List;
+
+import ekp.data.BizObjLoader;
+import ekp.data.InvtDataService;
 import ekp.mbom.type.PartUnit;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
 public class MaterialMasterInfoDto extends ObjectModelInfoDto implements MaterialMasterInfo {
@@ -71,6 +76,15 @@ public class MaterialMasterInfoDto extends ObjectModelInfoDto implements Materia
 
 	void setSumStockValue(double sumStockValue) {
 		this.sumStockValue = sumStockValue;
+	}
+	
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<List<MaterialInstInfo>> miListLoader = BizObjLoader.of(
+			() -> DataServiceFactory.getInstance().getService(InvtDataService.class).loadMaterialInstList(getUid()));
+	
+	@Override
+	public List<MaterialInstInfo> getMiList(boolean _reload){
+		return miListLoader.getObj(_reload);
 	}
 
 }
