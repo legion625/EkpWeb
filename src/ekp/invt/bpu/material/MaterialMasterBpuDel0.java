@@ -46,6 +46,8 @@ public class MaterialMasterBpuDel0 extends MaterialMasterBpu {
 			v = false;
 			_msg.append("miList should be empty.").append(System.lineSeparator());
 		}
+		
+		// TODO 檢查是否有MaterialBinStock指向它
 
 		return v;
 	}

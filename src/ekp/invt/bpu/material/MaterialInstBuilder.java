@@ -114,6 +114,12 @@ public abstract class MaterialInstBuilder extends Bpu<MaterialInstInfo> {
 			v = false;
 		}
 
+		// 數量和帳值不能同時都是0
+		if (getQty() == 0 && getValue() == 0) {
+			_msg.append("Qty/Value error.").append(System.lineSeparator());
+			v = false;
+		}
+
 		return v;
 	}
 

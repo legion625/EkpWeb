@@ -106,7 +106,7 @@ public class WrhsLocBinComposer extends SelectorComposer<Component> {
 	}
 	
 	@Listen(Events.ON_CLICK + "=#wdCreateWl #btnSubmit")
-	public void wdCreateWl_btnSumbit_clicked() {
+	public void wdCreateWl_btnSubmit_clicked() {
 		WrhsLocBuilder0 b = BpuFacade.getInstance().getBuilder(InvtBpuType.WL_0);
 		b.appendId(txbCreateWrhLocId.getValue());
 		b.appendName(txbCreateWrhLocName.getValue());
@@ -180,7 +180,6 @@ public class WrhsLocBinComposer extends SelectorComposer<Component> {
 			Boolean result = b.build(new StringBuilder(), new TimeTraveler());
 			// 成功
 			if (result != null) {
-				
 				ZkNotification.info("Delete warehouse location [" + b.getWrhsLoc().getId()+ "][" + b.getWrhsLoc().getName() + "] success.");
 				ListModelList<WrhsLocInfo> model = (ListModelList) lbxWrhsLoc.getListModel();
 				model.remove(wl);

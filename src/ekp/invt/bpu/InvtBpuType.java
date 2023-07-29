@@ -5,8 +5,15 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ekp.data.service.invt.MaterialInstInfo;
+import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.invt.WrhsBinInfo;
 import ekp.data.service.invt.WrhsLocInfo;
+import ekp.invt.bpu.material.MaterialInstBpuDel0;
+import ekp.invt.bpu.material.MaterialInstBuilder;
+import ekp.invt.bpu.material.MaterialInstBuilder0;
+import ekp.invt.bpu.material.MaterialMasterBpuDel0;
+import ekp.invt.bpu.material.MaterialMasterBuilder0;
 import ekp.invt.bpu.wrhsLoc.WrhsBinBpuDel0;
 import ekp.invt.bpu.wrhsLoc.WrhsBinBuilder1;
 import ekp.invt.bpu.wrhsLoc.WrhsLocBpuDel0;
@@ -21,6 +28,12 @@ public enum InvtBpuType implements BpuType {
 	/* wrhsBin */
 	WB_1(WrhsBinBuilder1.class, WrhsLocInfo.class), //
 	WB_$DEL0(WrhsBinBpuDel0.class, WrhsBinInfo.class), //
+	/* MaterialMaster */
+	MM_0(MaterialMasterBuilder0.class), //
+	MM_$DEL0(MaterialMasterBpuDel0.class, MaterialMasterInfo.class), //
+	/* MaterialInst */
+	MI_0(MaterialInstBuilder0.class), //
+	MI_$DEL0(MaterialInstBpuDel0.class,MaterialInstInfo.class ), //
 
 	;
 
@@ -53,6 +66,12 @@ public enum InvtBpuType implements BpuType {
 			return true;
 		case WB_1:
 		case WB_$DEL0:
+			return true;
+		case MM_0:
+		case MM_$DEL0:
+			return true;
+		case MI_0:
+		case MI_$DEL0:
 			return true;
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + this);

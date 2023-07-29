@@ -97,6 +97,12 @@ public abstract class MaterialMasterBuilder extends Bpu<MaterialMasterInfo> {
 			v = false;
 		}
 
+		//
+		if (getStdUnit() == null || PartUnit.UNDEFINED == getStdUnit()) {
+			_msg.append("StdUnit error.").append(System.lineSeparator());
+			v = false;
+		}
+
 		return v;
 	}
 

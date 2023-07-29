@@ -31,7 +31,8 @@ public class MaterialInstBpuDel0 extends MaterialInstBpu{
 
 	@Override
 	public boolean verify(StringBuilder _msg) {
-		// TODO
+		
+		// TODO 檢查是否有MaterialBinStockBatch指向它
 		return true;
 	}
 	
