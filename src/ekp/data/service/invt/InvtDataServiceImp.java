@@ -11,6 +11,7 @@ import org.slf4j.event.Level;
 import ekp.data.InvtDataService;
 import ekp.data.service.invt.query.InvtOrderItemQueryParam;
 import ekp.data.service.invt.query.InvtOrderQueryParam;
+import ekp.data.service.invt.query.MaterialMasterQueryParam;
 import ekp.data.service.invt.query.MbsbStmtQueryParam;
 import ekp.serviceFacade.rmi.invt.InvtOrderCreateObjRemote;
 import ekp.serviceFacade.rmi.invt.InvtOrderItemCreateObjRemote;
@@ -270,6 +271,18 @@ public class InvtDataServiceImp implements InvtDataService {
 			return null;
 		}
 	}
+	
+	@Override
+	public List<InvtOrderItemInfo> loadInvtOrderItemListByMaterialBinStock(String _mbsUid){
+		try {
+			List<InvtOrderItemRemote> remoteList = getEkpKernelRmi().loadInvtOrderItemListByMaterialBinStock(_mbsUid);
+			List<InvtOrderItemInfo> list = remoteList.stream().map(InvtFO::parseInvtOrderItem).collect(Collectors.toList());
+			return list;
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
 
 	@Override
 	public QueryOperation<InvtOrderItemQueryParam, InvtOrderItemInfo> searchInvtOrderItem(
@@ -329,6 +342,24 @@ public class InvtDataServiceImp implements InvtDataService {
 		try {
 			MaterialMasterRemote remote = getEkpKernelRmi().loadMaterialMasterByMano(_mano);
 			return remote == null ? null : InvtFO.parseMaterialMaster(remote);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+	
+	@Override
+	public QueryOperation<MaterialMasterQueryParam, MaterialMasterInfo> searchMaterialMaster(
+			QueryOperation<MaterialMasterQueryParam, MaterialMasterInfo> _param) {
+		try {
+			QueryOperation<MaterialMasterQueryParam, MaterialMasterRemote> paramRemote = (QueryOperation<MaterialMasterQueryParam, MaterialMasterRemote>) _param
+					.copy();
+			paramRemote = getEkpKernelRmi().searchMaterialMaster(paramRemote);
+			List<MaterialMasterInfo> list = paramRemote.getQueryResult().stream().map(InvtFO::parseMaterialMaster)
+					.collect(Collectors.toList());
+			_param.setQueryResult(list);
+			_param.setTotal(paramRemote.getTotal());
+			return _param;
 		} catch (Throwable e) {
 			LogUtil.log(log, e, Level.ERROR);
 			return null;
@@ -431,6 +462,19 @@ public class InvtDataServiceImp implements InvtDataService {
 	public List<MaterialBinStockInfo> loadMaterialBinStockList(String _mmUid) {
 		try {
 			List<MaterialBinStockRemote> remoteList = getEkpKernelRmi().loadMaterialBinStockList(_mmUid);
+			List<MaterialBinStockInfo> list = remoteList.stream().map(InvtFO::parseMaterialBinStock)
+					.collect(Collectors.toList());
+			return list;
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+	
+	@Override
+	public List<MaterialBinStockInfo> loadMaterialBinStockListByWrhsBin(String _wbUid){
+		try {
+			List<MaterialBinStockRemote> remoteList = getEkpKernelRmi().loadMaterialBinStockListByWrhsBin(_wbUid);
 			List<MaterialBinStockInfo> list = remoteList.stream().map(InvtFO::parseMaterialBinStock)
 					.collect(Collectors.toList());
 			return list;

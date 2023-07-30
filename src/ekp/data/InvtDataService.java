@@ -1,5 +1,6 @@
 package ekp.data;
 
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +24,9 @@ import ekp.data.service.invt.WrhsLocCreateObj;
 import ekp.data.service.invt.WrhsLocInfo;
 import ekp.data.service.invt.query.InvtOrderItemQueryParam;
 import ekp.data.service.invt.query.InvtOrderQueryParam;
+import ekp.data.service.invt.query.MaterialMasterQueryParam;
 import ekp.data.service.invt.query.MbsbStmtQueryParam;
+import ekp.serviceFacade.rmi.invt.MaterialMasterRemote;
 import legion.IntegrationService;
 import legion.util.query.QueryOperation;
 import legion.util.query.QueryOperation.QueryValue;
@@ -75,6 +78,8 @@ public interface InvtDataService extends IntegrationService, EkpKernelRmi {
 	public InvtOrderItemInfo loadInvtOrderItem(String _uid);
 
 	public List<InvtOrderItemInfo> loadInvtOrderItemList(String _ioUid);
+	
+	public List<InvtOrderItemInfo> loadInvtOrderItemListByMaterialBinStock(String _mbsUid);
 
 	public QueryOperation<InvtOrderItemQueryParam, InvtOrderItemInfo> searchInvtOrderItem(
 			QueryOperation<InvtOrderItemQueryParam, InvtOrderItemInfo> _param,
@@ -89,6 +94,9 @@ public interface InvtDataService extends IntegrationService, EkpKernelRmi {
 	public MaterialMasterInfo loadMaterialMaster(String _uid);
 
 	public MaterialMasterInfo loadMaterialMasterByMano(String _mano);
+	
+	public QueryOperation<MaterialMasterQueryParam, MaterialMasterInfo> searchMaterialMaster(
+			QueryOperation<MaterialMasterQueryParam, MaterialMasterInfo> _param) ;
 
 	// -------------------------------------------------------------------------------
 	// ---------------------------------MaterialInst----------------------------------
@@ -111,6 +119,8 @@ public interface InvtDataService extends IntegrationService, EkpKernelRmi {
 	public MaterialBinStockInfo loadMaterialBinStock(String _uid);
 
 	public List<MaterialBinStockInfo> loadMaterialBinStockList(String _mmUid);
+	
+	public List<MaterialBinStockInfo> loadMaterialBinStockListByWrhsBin(String _wbUid);
 
 	// -------------------------------------------------------------------------------
 	// -----------------------------MaterialBinStockBatch-----------------------------
