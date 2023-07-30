@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import ekp.data.InvtDataService;
+import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.invt.WrhsLocInfo;
+import ekp.data.service.invt.query.MaterialMasterQueryParam;
 import legion.DataServiceFactory;
+import legion.util.query.QueryOperation;
 
 public class InvtServiceImp implements InvtService {
 
@@ -26,6 +29,14 @@ public class InvtServiceImp implements InvtService {
 	@Override
 	public List<WrhsLocInfo> loadWrhsLocList() {
 		return dataService.loadWrhsLocList();
+	}
+	
+	// -------------------------------------------------------------------------------
+	// --------------------------------MaterialMaster---------------------------------
+	@Override
+	public QueryOperation<MaterialMasterQueryParam, MaterialMasterInfo> searchMaterialMaster(
+			QueryOperation<MaterialMasterQueryParam, MaterialMasterInfo> _param){
+		return dataService.searchMaterialMaster(_param);
 	}
 
 }

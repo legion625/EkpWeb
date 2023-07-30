@@ -45,6 +45,7 @@ import legion.util.DateUtil;
 import legion.util.LogUtil;
 import legion.util.NumberFormatUtil;
 import legion.util.TimeTraveler;
+import legion.util.query.QueryOperation;
 import legion.web.zk.ZkMsgBox;
 import legion.web.zk.ZkNotification;
 import legion.web.zk.ZkUtil;
@@ -70,8 +71,7 @@ public class MmiComposer extends SelectorComposer<Component> {
 			//
 			init();
 			//
-			List<MaterialMasterInfo> mmList = new ArrayList<>();
-//				List<MaterialMasterInfo> mmList = invtService.load // TODO
+			List<MaterialMasterInfo> mmList = invtService.searchMaterialMaster(new QueryOperation<>()).getQueryResult();
 			refreshMmList(mmList);
 
 		} catch (Throwable e) {
@@ -80,10 +80,6 @@ public class MmiComposer extends SelectorComposer<Component> {
 	}
 
 	private void init() {
-		
-		
-		
-		
 		ListitemRenderer<MaterialMasterInfo> mmRenderer = (li, mm, i)->{
 			li.appendChild(new Listcell());
 			li.appendChild(new Listcell(mm.getMano()));

@@ -12,6 +12,7 @@ import org.slf4j.event.Level;
 import ekp.data.InvtDataService;
 import ekp.data.service.invt.query.InvtOrderItemQueryParam;
 import ekp.data.service.invt.query.InvtOrderQueryParam;
+import ekp.data.service.invt.query.MaterialMasterQueryParam;
 import ekp.data.service.invt.query.MbsbStmtQueryParam;
 import ekp.serviceFacade.rmi.invt.InvtOrderCreateObjRemote;
 import ekp.serviceFacade.rmi.invt.InvtOrderItemCreateObjRemote;
@@ -153,6 +154,7 @@ public class InvtDataServiceImp implements InvtDataService {
 	
 	@Override
 	public WrhsBinInfo loadWrhsBin(String _wlUid, String _id) {
+		// XXX
 		if (DataFO.isEmptyString(_wlUid) || DataFO.isEmptyString(_id))
 			return null;
 

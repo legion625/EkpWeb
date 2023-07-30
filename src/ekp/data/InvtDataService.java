@@ -23,6 +23,7 @@ import ekp.data.service.invt.WrhsLocCreateObj;
 import ekp.data.service.invt.WrhsLocInfo;
 import ekp.data.service.invt.query.InvtOrderItemQueryParam;
 import ekp.data.service.invt.query.InvtOrderQueryParam;
+import ekp.data.service.invt.query.MaterialMasterQueryParam;
 import ekp.data.service.invt.query.MbsbStmtQueryParam;
 import legion.IntegrationService;
 import legion.util.query.QueryOperation;
