@@ -115,6 +115,8 @@ public interface InvtDataService extends IntegrationService, EkpKernelRmi {
 	public MaterialBinStockInfo loadMaterialBinStock(String _uid);
 
 	public List<MaterialBinStockInfo> loadMaterialBinStockList(String _mmUid);
+	
+	public List<MaterialBinStockInfo> loadMaterialBinStockListByWrhsBin(String _wbUid);
 
 	// -------------------------------------------------------------------------------
 	// -----------------------------MaterialBinStockBatch-----------------------------

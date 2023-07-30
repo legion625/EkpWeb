@@ -1,5 +1,6 @@
 package ekp.data.service.invt;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -443,6 +444,21 @@ public class InvtDataServiceImp implements InvtDataService {
 	public List<MaterialBinStockInfo> loadMaterialBinStockList(String _mmUid) {
 		try {
 			List<MaterialBinStockRemote> remoteList = getEkpKernelRmi().loadMaterialBinStockList(_mmUid);
+			List<MaterialBinStockInfo> list = remoteList.stream().map(InvtFO::parseMaterialBinStock)
+					.collect(Collectors.toList());
+			return list;
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+	
+	@Override
+	public List<MaterialBinStockInfo> loadMaterialBinStockListByWrhsBin(String _wbUid){
+		try {
+//			List<MaterialBinStockRemote> remoteList = getEkpKernelRmi().loadMaterialBinStockListByWrhsBin(_wbUid);
+			List<MaterialBinStockRemote> remoteList = new ArrayList<>();
+			// FIXME
 			List<MaterialBinStockInfo> list = remoteList.stream().map(InvtFO::parseMaterialBinStock)
 					.collect(Collectors.toList());
 			return list;

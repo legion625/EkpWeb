@@ -20,6 +20,11 @@ public interface MaterialMasterInfo extends ObjectModelInfo{
 	double getSumStockValue();
 	
 	// -------------------------------------------------------------------------------
+	default String getStdUnitStr() {
+		PartUnit u = getStdUnit() == null ? PartUnit.UNDEFINED : getStdUnit();
+		return u.getId() + "," + u.getChtName();
+	}
+	
 	default String getStdUnitChtName() {
 		return (getStdUnit()==null?PartUnit.UNDEFINED:getStdUnit()).getChtName();
 	}

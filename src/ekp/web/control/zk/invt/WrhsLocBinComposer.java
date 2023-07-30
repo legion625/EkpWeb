@@ -21,6 +21,7 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import ekp.DebugLogMark;
+import ekp.data.service.invt.MaterialBinStockInfo;
 import ekp.data.service.invt.WrhsBinInfo;
 import ekp.data.service.invt.WrhsLocInfo;
 import ekp.data.service.mbom.PartInfo;
@@ -34,6 +35,7 @@ import ekp.mbom.MbomService;
 import legion.BusinessServiceFactory;
 import legion.biz.BpuFacade;
 import legion.util.LogUtil;
+import legion.util.NumberFormatUtil;
 import legion.util.TimeTraveler;
 import legion.web.zk.ZkMsgBox;
 import legion.web.zk.ZkNotification;
@@ -47,6 +49,9 @@ public class WrhsLocBinComposer extends SelectorComposer<Component> {
 
 	@Wire
 	private Listbox lbxWrhsBin;
+	
+	@Wire
+	private Listbox lbxMbsOfWb;
 	
 	// -------------------------------------------------------------------------------
 	private InvtService invtService = BusinessServiceFactory.getInstance().getService(InvtService.class);
@@ -81,8 +86,20 @@ public class WrhsLocBinComposer extends SelectorComposer<Component> {
 			li.appendChild(new Listcell());
 			li.appendChild(new Listcell(wb.getId()));
 			li.appendChild(new Listcell(wb.getName()));
+			//
+			li.addEventListener(Events.ON_CLICK, evt->refreshMbsOfWbList(wb));
 		};
 		lbxWrhsBin.setItemRenderer(wrhsBinRenderer);
+		
+		ListitemRenderer<MaterialBinStockInfo> mbsOfWbRenderer = (li, mbs, i) -> {
+			li.appendChild(new Listcell());
+			li.appendChild(new Listcell(mbs.getMano()));
+			li.appendChild(new Listcell(mbs.getMm().getName()));
+			li.appendChild(new Listcell(mbs.getMm().getStdUnitStr()));
+			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(mbs.getSumStockQty(), 2)));
+			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(mbs.getSumStockValue(), 2)));
+		};
+		lbxMbsOfWb.setItemRenderer(mbsOfWbRenderer);
 	}
 	
 	// -------------------------------------------------------------------------------
@@ -330,5 +347,11 @@ public class WrhsLocBinComposer extends SelectorComposer<Component> {
 		List<WrhsBinInfo> wbList =_wl.getWrhsBinList(); 
 		ListModelList<WrhsBinInfo> model = wbList==null? new ListModelList<>(): new ListModelList<>(wbList);
 		lbxWrhsBin.setModel(model);
+	}
+	
+	private void refreshMbsOfWbList(WrhsBinInfo _wb) {
+		List<MaterialBinStockInfo> mbsOfWbList = _wb.getMbsList();
+		ListModelList<MaterialBinStockInfo> model = mbsOfWbList==null?new ListModelList<>():new ListModelList<>(mbsOfWbList);
+		lbxMbsOfWb.setModel(model);
 	}
 }

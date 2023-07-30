@@ -1,5 +1,8 @@
 package ekp.data.service.invt;
 
+import ekp.data.BizObjLoader;
+import ekp.data.InvtDataService;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
 public class MaterialBinStockInfoDto extends ObjectModelInfoDto implements MaterialBinStockInfo {
@@ -60,5 +63,22 @@ public class MaterialBinStockInfoDto extends ObjectModelInfoDto implements Mater
 
 	void setSumStockValue(double sumStockValue) {
 		this.sumStockValue = sumStockValue;
+	}
+
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<MaterialMasterInfo> mmLoader = BizObjLoader.of(
+			() -> DataServiceFactory.getInstance().getService(InvtDataService.class).loadMaterialMaster(getMmUid()));
+
+	@Override
+	public MaterialMasterInfo getMm() {
+		return mmLoader.getObj();
+	}
+
+	private BizObjLoader<WrhsBinInfo> wrhsBinLoader = BizObjLoader
+			.of(() -> DataServiceFactory.getInstance().getService(InvtDataService.class).loadWrhsBin(getWrhsBinUid()));
+
+	@Override
+	public WrhsBinInfo getWrhsBin() {
+		return wrhsBinLoader.getObj();
 	}
 }

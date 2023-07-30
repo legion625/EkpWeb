@@ -165,19 +165,19 @@ public enum MbomBpuType implements BpuType {
 
 		List<PartAcqInfo> paList = _p.getPaList(true);
 		if (!paList.isEmpty()) {
-			log.info("paList should be empty.");
+			log.trace("paList should be empty.");
 			return false;
 		}
 
 		List<PpartInfo> ppartList = _p.getPpartList(true);
 		if (!ppartList.isEmpty()) {
-			log.info("ppartList should be empty.");
+			log.trace("ppartList should be empty.");
 			return false;
 		}
 
 		List<PartCfgInfo> partCfgList = _p.getRootPartCfgList(true);
 		if (!partCfgList.isEmpty()) {
-			log.info("partCfgList should be empty.");
+			log.trace("partCfgList should be empty.");
 			return false;
 		}
 
@@ -219,13 +219,13 @@ public enum MbomBpuType implements BpuType {
 
 		List<ParsInfo> parsList = _pa.getParsList(true);
 		if (!parsList.isEmpty()) {
-			log.info("parsList should be empty.");
+			log.trace("parsList should be empty.");
 			return false;
 		}
 
 		List<PartCfgConjInfo> partCfgConjList = _pa.getPartCfgConjList(true);
 		if (!partCfgConjList.isEmpty()) {
-			log.info("partCfgConjList should be empty.");
+			log.trace("partCfgConjList should be empty.");
 			return false;
 		}
 

@@ -13,5 +13,27 @@ public interface MaterialBinStockInfo extends ObjectModelInfo{
 	double getSumStockQty();
 
 	double getSumStockValue();
+	
+	// -------------------------------------------------------------------------------
+	MaterialMasterInfo getMm();
+	
+	WrhsBinInfo getWrhsBin();
+
+	default String getWrhsLocId() {
+		return getWrhsBin().getWrhsLoc().getId();
+	}
+	default String getWrhsLocName() {
+		return getWrhsBin().getWrhsLoc().getName();
+	}
+	
+	default String getWrhsBinId() {
+		return getWrhsBin().getId();
+	}
+	
+	default String getWrhsBinName() {
+		return getWrhsBin().getName();
+	}
+	
+	
 
 }
