@@ -77,6 +77,8 @@ public interface InvtDataService extends IntegrationService, EkpKernelRmi {
 	public InvtOrderItemInfo loadInvtOrderItem(String _uid);
 
 	public List<InvtOrderItemInfo> loadInvtOrderItemList(String _ioUid);
+	
+	public List<InvtOrderItemInfo> loadInvtOrderItemListByMaterialBinStock(String _mbsUid);
 
 	public QueryOperation<InvtOrderItemQueryParam, InvtOrderItemInfo> searchInvtOrderItem(
 			QueryOperation<InvtOrderItemQueryParam, InvtOrderItemInfo> _param,
@@ -92,7 +94,8 @@ public interface InvtDataService extends IntegrationService, EkpKernelRmi {
 
 	public MaterialMasterInfo loadMaterialMasterByMano(String _mano);
 	
-	// TODO search MaterialMaster
+	public QueryOperation<MaterialMasterQueryParam, MaterialMasterInfo> searchMaterialMaster(
+			QueryOperation<MaterialMasterQueryParam, MaterialMasterInfo> _param) ;
 
 	// -------------------------------------------------------------------------------
 	// ---------------------------------MaterialInst----------------------------------
