@@ -9,6 +9,8 @@ import ekp.data.service.invt.MaterialInstInfo;
 import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.invt.WrhsBinInfo;
 import ekp.data.service.invt.WrhsLocInfo;
+import ekp.data.service.pu.PurchItemInfo;
+import ekp.invt.bpu.invtOrder.InvtOrderItemBuilder11;
 import ekp.invt.bpu.material.MaterialInstBpuDel0;
 import ekp.invt.bpu.material.MaterialInstBuilder;
 import ekp.invt.bpu.material.MaterialInstBuilder0;
@@ -28,6 +30,9 @@ public enum InvtBpuType implements BpuType {
 	/* wrhsBin */
 	WB_1(WrhsBinBuilder1.class, WrhsLocInfo.class), //
 	WB_$DEL0(WrhsBinBpuDel0.class, WrhsBinInfo.class), //
+	/* InvtOrder */
+	/* InvtOrderItem */
+	IOI_11(InvtOrderItemBuilder11.class, PurchItemInfo.class), //
 	/* MaterialMaster */
 	MM_0(MaterialMasterBuilder0.class), //
 	MM_$DEL0(MaterialMasterBpuDel0.class, MaterialMasterInfo.class), //

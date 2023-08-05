@@ -24,27 +24,27 @@ public class MaterialInstBuilder0 extends MaterialInstBuilder {
 	}
 
 	@Override
-	public MaterialInstBuilder appendMiac(MaterialInstAcqChannel miac) {
-		return super.appendMiac(miac);
+	public MaterialInstBuilder0 appendMiac(MaterialInstAcqChannel miac) {
+		return (MaterialInstBuilder0) super.appendMiac(miac);
 	}
 
 	@Override
-	public MaterialInstBuilder appendQty(double qty) {
-		return super.appendQty(qty);
+	public MaterialInstBuilder0 appendQty(double qty) {
+		return (MaterialInstBuilder0)  super.appendQty(qty);
 	}
 
 	@Override
-	public MaterialInstBuilder appendValue(double value) {
-		return super.appendValue(value);
+	public MaterialInstBuilder0 appendValue(double value) {
+		return (MaterialInstBuilder0) super.appendValue(value);
 	}
 
 	@Override
-	public MaterialInstBuilder appendEffDate(long effDate) {
-		return super.appendEffDate(effDate);
+	public MaterialInstBuilder0 appendEffDate(long effDate) {
+		return (MaterialInstBuilder0) super.appendEffDate(effDate);
 	}
 
 	@Override
-	public MaterialInstBuilder appendExpDate(long expDate) {
-		return super.appendExpDate(expDate);
+	public MaterialInstBuilder0 appendExpDate(long expDate) {
+		return (MaterialInstBuilder0) super.appendExpDate(expDate);
 	}
 }

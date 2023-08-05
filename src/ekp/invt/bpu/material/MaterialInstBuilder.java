@@ -90,7 +90,6 @@ public abstract class MaterialInstBuilder extends Bpu<MaterialInstInfo> {
 		dto.setValue(getValue());
 		dto.setEffDate(getEffDate());
 		dto.setExpDate(getExpDate());
-		;
 		return dto;
 	}
 
