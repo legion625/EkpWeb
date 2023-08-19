@@ -1,3 +1,10 @@
+Min-Hua, 2023.08.19
+[lib]
+1. ekp_kernel: 0.2.1 -> 0.3.1
+
+[deployment]
+1. ServiceModule.xml新增PuService和PuDataService的設定。
+
 Min-Hua, 2023.07.30
 [lib]
 1. ekp_kernel: 0.2.0 -> 0.2.1
