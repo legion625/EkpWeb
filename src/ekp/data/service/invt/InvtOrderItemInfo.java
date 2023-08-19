@@ -7,7 +7,11 @@ public interface InvtOrderItemInfo extends ObjectModelInfo{
 
 	String getIoUid();
 
-	String getMbsUid();
+	public String getMmUid();
+
+	public String getMiUid();
+
+	public String getWrhsBinUid();
 
 	InvtOrderType getIoType();
 

@@ -10,6 +10,8 @@ public interface MaterialInstInfo extends ObjectModelInfo{
 	String getMisn();
 
 	MaterialInstAcqChannel getMiac();
+	
+	String getMiacSrcNo();
 
 	double getQty();
 

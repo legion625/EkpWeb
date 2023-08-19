@@ -1,5 +1,6 @@
 package ekp.data.service.invt;
 
+import ekp.invt.type.InvtOrderStatus;
 import legion.ObjectModelInfoDto;
 
 public class InvtOrderInfoDto extends ObjectModelInfoDto implements InvtOrderInfo {
@@ -9,10 +10,12 @@ public class InvtOrderInfoDto extends ObjectModelInfoDto implements InvtOrderInf
 	}
 
 	private String iosn; // invt order serial number
+	private InvtOrderStatus status;
 	private String applierId;
 	private String applierName;
-	private long apvTime; // approval time
+	private long applyTime; // apply time;
 	private String remark; //
+	private long apvTime; // approval time
 
 	@Override
 	public String getIosn() {
@@ -22,7 +25,16 @@ public class InvtOrderInfoDto extends ObjectModelInfoDto implements InvtOrderInf
 	void setIosn(String iosn) {
 		this.iosn = iosn;
 	}
+	
+	@Override
+	public InvtOrderStatus getStatus() {
+		return status;
+	}
 
+	void setStatus(InvtOrderStatus status) {
+		this.status = status;
+	}
+	
 	@Override
 	public String getApplierId() {
 		return applierId;
@@ -40,14 +52,14 @@ public class InvtOrderInfoDto extends ObjectModelInfoDto implements InvtOrderInf
 	void setApplierName(String applierName) {
 		this.applierName = applierName;
 	}
-
+	
 	@Override
-	public long getApvTime() {
-		return apvTime;
+	public long getApplyTime() {
+		return applyTime;
 	}
 
-	void setApvTime(long apvTime) {
-		this.apvTime = apvTime;
+	void setApplyTime(long applyTime) {
+		this.applyTime = applyTime;
 	}
 
 	@Override
@@ -57,6 +69,15 @@ public class InvtOrderInfoDto extends ObjectModelInfoDto implements InvtOrderInf
 
 	void setRemark(String remark) {
 		this.remark = remark;
+	}
+	
+	@Override
+	public long getApvTime() {
+		return apvTime;
+	}
+
+	void setApvTime(long apvTime) {
+		this.apvTime = apvTime;
 	}
 
 }

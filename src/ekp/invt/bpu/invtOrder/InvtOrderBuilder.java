@@ -72,7 +72,7 @@ public abstract class InvtOrderBuilder extends Bpu<InvtOrderInfo> {
 		InvtOrderCreateObj dto = new InvtOrderCreateObj();
 		dto.setApplierId(getApplierId());
 		dto.setApplierName(getApplierName());
-		dto.setApvTime(getApplyTime());
+		dto.setApplyTime(getApplyTime());
 		dto.setRemark(getRemark());
 		return dto;
 	}

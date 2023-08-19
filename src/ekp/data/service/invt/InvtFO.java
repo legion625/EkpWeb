@@ -63,10 +63,12 @@ public class InvtFO {
 		InvtOrderInfoDto dto = new InvtOrderInfoDto(_remote.getUid(), _remote.getObjectCreateTime(),
 				_remote.getObjectUpdateTime());
 		dto.setIosn(_remote.getIosn());
+		dto.setStatus(_remote.getStatus());
 		dto.setApplierId(_remote.getApplierId());
 		dto.setApplierName(_remote.getApplierName());
-		dto.setApvTime(_remote.getApvTime());
+		dto.setApplyTime(_remote.getApplyTime());
 		dto.setRemark(_remote.getRemark());
+		dto.setApvTime(_remote.getApvTime());
 		return dto;
 	}
 	
@@ -74,7 +76,7 @@ public class InvtFO {
 		InvtOrderCreateObjRemote remote = new InvtOrderCreateObjRemote();
 		remote.setApplierId(_dto.getApplierId());
 		remote.setApplierName(_dto.getApplierName());
-		remote.setApvTime(_dto.getApvTime());
+		remote.setApplyTime(_dto.getApplyTime());
 		remote.setRemark(_dto.getRemark());
 		return remote;
 	}
@@ -85,7 +87,9 @@ public class InvtFO {
 		InvtOrderItemInfoDto dto = new InvtOrderItemInfoDto(_remote.getUid(), _remote.getObjectCreateTime(),
 				_remote.getObjectUpdateTime());
 		dto.setIoUid(_remote.getIoUid());
-		dto.setMbsUid(_remote.getMbsUid());
+		dto.setMmUid(_remote.getMmUid());
+		dto.setMiUid(_remote.getMiUid());
+		dto.setWrhsBinUid(_remote.getWrhsBinUid());
 		dto.setIoType(_remote.getIoType());
 		dto.setOrderQty(_remote.getOrderQty());
 		dto.setOrderValue(_remote.getOrderValue());
@@ -95,7 +99,9 @@ public class InvtFO {
 	public static InvtOrderItemCreateObjRemote parseInvtOrderItemCreateObjRemote(InvtOrderItemCreateObj _dto) {
 		InvtOrderItemCreateObjRemote remote = new InvtOrderItemCreateObjRemote();
 		remote.setIoUid(_dto.getIoUid());
-		remote.setMbsUid(_dto.getMbsUid());
+		remote.setMmUid(_dto.getMmUid());
+		remote.setMiUid(_dto.getMiUid());
+		remote.setWrhsBinUid(_dto.getWrhsBinUid());
 		remote.setIoType(_dto.getIoType());
 		remote.setOrderQty(_dto.getOrderQty());
 		remote.setOrderValue(_dto.getOrderValue());

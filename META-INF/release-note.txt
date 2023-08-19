@@ -1,24 +1,17 @@
-Min-Hua, 2023.07.30
-[lib]
-1. ekp_kernel: 0.2.0 -> 0.2.1
-
-Min-Hua, 2023.07.17
+------------------------------------------------------------------------------
+v0.5.0 released by Min-Hua, 2023.08.19
 [change]
-1. [IV] Add MaterialMaster basic functions.
-
-Min-Hua, 2023.07.16
-[change]
-1. [IV] Add WrhsLoc and WrbsBin basic functions.
-
-Min-Hua, 2023.07.13
-[change]
-1. [INVT] Add INVT module.
+1. [IV] Add INVT module.
+  -1. Add MaterialMaster basic functions.
+  -2. Add WrhsLoc and WrbsBin basic functions.
+2. [PU] Add PU module.
 
 [lib]
-1. ekp_kernel: 0.1.8 -> 0.2.0
+1. ekp_kernel: 0.1.8 -> 0.3.1
 
 [deployment]
 1. ServiceModule.xml新增InvtService和InvtDataService的設定。
+2. ServiceModule.xml新增PuService和PuDataService的設定。
 
 ------------------------------------------------------------------------------
 v0.3.2 released by Min-Hua, 2023.06.22

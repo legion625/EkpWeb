@@ -13,6 +13,7 @@ public class MaterialInstInfoDto extends ObjectModelInfoDto implements MaterialI
 
 	private String misn; // material instance serial number
 	private MaterialInstAcqChannel miac;
+	private String miacSrcNo;
 	private double qty; // 數量
 	private double value; // 帳值
 	private long effDate; // 生效日期
@@ -37,6 +38,13 @@ public class MaterialInstInfoDto extends ObjectModelInfoDto implements MaterialI
 	}
 	void setMiac(MaterialInstAcqChannel miac) {
 		this.miac = miac;
+	}
+	@Override
+	public String getMiacSrcNo() {
+		return miacSrcNo;
+	}
+	void setMiacSrcNo(String miacSrcNo) {
+		this.miacSrcNo = miacSrcNo;
 	}
 	@Override
 	public double getQty() {

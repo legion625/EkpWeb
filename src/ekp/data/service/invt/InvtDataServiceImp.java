@@ -285,12 +285,13 @@ public class InvtDataServiceImp implements InvtDataService {
 			return null;
 		}
 	}
-	
+
 	@Override
-	public List<InvtOrderItemInfo> loadInvtOrderItemListByMaterialBinStock(String _mbsUid){
+	public List<InvtOrderItemInfo> loadInvtOrderItemListByMm(String _mmUid) {
 		try {
-			List<InvtOrderItemRemote> remoteList = getEkpKernelRmi().loadInvtOrderItemListByMaterialBinStock(_mbsUid);
-			List<InvtOrderItemInfo> list = remoteList.stream().map(InvtFO::parseInvtOrderItem).collect(Collectors.toList());
+			List<InvtOrderItemRemote> remoteList = getEkpKernelRmi().loadInvtOrderItemListByMm(_mmUid);
+			List<InvtOrderItemInfo> list = remoteList.stream().map(InvtFO::parseInvtOrderItem)
+					.collect(Collectors.toList());
 			return list;
 		} catch (Throwable e) {
 			LogUtil.log(log, e, Level.ERROR);
@@ -298,6 +299,32 @@ public class InvtDataServiceImp implements InvtDataService {
 		}
 	}
 
+	@Override
+	public List<InvtOrderItemInfo> loadInvtOrderItemListByMi(String _miUid) {
+		try {
+			List<InvtOrderItemRemote> remoteList = getEkpKernelRmi().loadInvtOrderItemListByMi(_miUid);
+			List<InvtOrderItemInfo> list = remoteList.stream().map(InvtFO::parseInvtOrderItem)
+					.collect(Collectors.toList());
+			return list;
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
+	public List<InvtOrderItemInfo> loadInvtOrderItemListByWb(String _wrhsBinUid) {
+		try {
+			List<InvtOrderItemRemote> remoteList = getEkpKernelRmi().loadInvtOrderItemListByWb(_wrhsBinUid);
+			List<InvtOrderItemInfo> list = remoteList.stream().map(InvtFO::parseInvtOrderItem)
+					.collect(Collectors.toList());
+			return list;
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+	
 	@Override
 	public QueryOperation<InvtOrderItemQueryParam, InvtOrderItemInfo> searchInvtOrderItem(
 			QueryOperation<InvtOrderItemQueryParam, InvtOrderItemInfo> _param,
