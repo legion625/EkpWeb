@@ -58,4 +58,33 @@ public class DataUtil {
         // 替换特殊字符为空字符串
         return  original.replaceAll(regex, "").strip();
 	}
+
+	public static boolean matchesBizAdminNum(String _ban) {
+		Pattern TWBID_PATTERN = Pattern.compile("^[0-9]{8}$");
+		boolean result = false;
+		String weight = "12121241";
+		boolean type2 = false; // 第七個數是否為七
+		if (TWBID_PATTERN.matcher(_ban).matches()) {
+			int tmp = 0, sum = 0;
+			for (int i = 0; i < 8; i++) {
+//		tmp = (Integer.parseInt (String.valueOf(_ban.charAt(i))))* (weight.charAt(i) – '0');
+				tmp = (Integer.parseInt(String.valueOf(_ban.charAt(i))))
+						* (Integer.parseInt(String.valueOf(weight.charAt(i))));
+				sum += (int) (tmp / 10) + (tmp % 10); // 取出十位數和個位數相加
+				if (i == 6 && _ban.charAt(i) == '7') {
+					type2 = true;
+				}
+			}
+			if (type2) {
+				if ((sum % 10) == 0 || ((sum + 1) % 10) == 0) { // 如果第七位數為7
+					result = true;
+				}
+			} else {
+				if ((sum % 10) == 0) {
+					result = true;
+				}
+			}
+		}
+		return result;
+	}
 }
