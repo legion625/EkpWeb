@@ -3,6 +3,7 @@ package ekp.invt.bpu.invtOrder;
 import java.util.List;
 
 import ekp.data.InvtDataService;
+import ekp.data.PuDataService;
 import ekp.data.service.invt.InvtOrderCreateObj;
 import ekp.data.service.invt.InvtOrderInfo;
 import ekp.data.service.invt.InvtOrderItemInfo;
@@ -14,11 +15,12 @@ import legion.util.TimeTraveler;
 
 public abstract class InvtOrderBuilder extends Bpu<InvtOrderInfo> {
 	private static InvtDataService invtDataService = DataServiceFactory.getInstance().getService(InvtDataService.class);
+	protected static PuDataService puDataService =  DataServiceFactory.getInstance().getService(PuDataService.class);
 
 	/* base */
 	private String applierId;
 	private String applierName;
-	private long applyTime; // apply time
+//	private long applyTime; // apply time
 	private String remark; //
 
 	/* data */
@@ -36,10 +38,10 @@ public abstract class InvtOrderBuilder extends Bpu<InvtOrderInfo> {
 		return this;
 	}
 
-	public InvtOrderBuilder appendApplyTime(long applyTime) {
-		this.applyTime = applyTime;
-		return this;
-	}
+//	public InvtOrderBuilder appendApplyTime(long applyTime) {
+//		this.applyTime = applyTime;
+//		return this;
+//	}
 
 	protected InvtOrderBuilder appendRemark(String remark) {
 		this.remark = remark;
@@ -57,7 +59,7 @@ public abstract class InvtOrderBuilder extends Bpu<InvtOrderInfo> {
 	}
 
 	public long getApplyTime() {
-		return applyTime;
+		return System.currentTimeMillis();
 	}
 
 	public String getRemark() {
@@ -101,6 +103,12 @@ public abstract class InvtOrderBuilder extends Bpu<InvtOrderInfo> {
 			v = false;
 		}
 		
+		/* 子階 */
+		for (InvtOrderItemBuilder ioib : getInvtOrderItemBuilderList()) {
+			if (!ioib.verify(_msg))
+				v = false;
+		}
+		
 		return v;
 	}
 
@@ -124,6 +132,7 @@ public abstract class InvtOrderBuilder extends Bpu<InvtOrderInfo> {
 		
 		/* 2.InvtOrderItem */
 		for (InvtOrderItemBuilder ioiBuilder : getInvtOrderItemBuilderList()) {
+			ioiBuilder.appendIoUid(io.getUid());
 			InvtOrderItemInfo ioi = ioiBuilder.build(new StringBuilder(), tt);
 			if (ioi == null) {
 				tt.travel();
@@ -133,6 +142,10 @@ public abstract class InvtOrderBuilder extends Bpu<InvtOrderInfo> {
 		}
 		log.info("create InvtOrderItem finished [{}][{}]", io.getUid(), io.getIosn());
 
+		/* 3.InvtOrderStatus->TO_APV */
+//		if(invtDataService.invoto)
+		// FIXME
+		
 		//
 		if (_tt != null)
 			_tt.copySitesFrom(tt);

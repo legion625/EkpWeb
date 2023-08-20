@@ -17,7 +17,10 @@ import ekp.AbstractEkpInitTest;
 import ekp.TestLogMark;
 import ekp.data.MbomDataService;
 import ekp.data.PuDataService;
+import ekp.data.service.invt.InvtOrderInfo;
 import ekp.data.service.invt.MaterialMasterInfo;
+import ekp.data.service.invt.WrhsBinInfo;
+import ekp.data.service.invt.WrhsLocInfo;
 import ekp.data.service.pu.PurchInfo;
 import ekp.invt.InvtDelegate;
 import ekp.invt.bpu.InvtBpuType;
@@ -65,7 +68,18 @@ public class PuScn1 extends AbstractEkpInitTest {
 	public void testPuScn1() {
 		log.debug("testPuScn1");
 
-		/* 建立MaterialMaster */
+		/* 0a.建立WrhsLoc和WrhsBin */
+		WrhsLocInfo wl = invtDel.buildWrhsLoc0(tt, "WL-A", "庫儲A");
+		assertNotNull("wl should NOT be null.", wl);
+		
+		WrhsBinInfo wb = invtDel.buildWrhsBin(tt, wl, "WB-A101", "儲位A101");
+		assertNotNull("wb should NOT be null.", wb);
+		
+		log.info("0a.完成建立庫房和儲位。");
+		
+		
+		
+		/* 0b.建立MaterialMaster */
 		String[][] materialNames = MockData.materialNames;
 		List<MaterialMasterInfo> mmList = new ArrayList<>();
 		for (String[] i : materialNames) {
@@ -73,9 +87,9 @@ public class PuScn1 extends AbstractEkpInitTest {
 			assertNotNull("mm should NOT be null.", mm);
 			mmList.add(mm);
 		}
-		log.info("1.完成建立料件基本檔。");
+		log.info("0b.完成建立料件基本檔。");
 
-		/* 產生購案 */
+		/* 1a.產生購案 */
 		// 先取第1筆MM
 		String[][] bizPartners = MockData.bizPartner;
 		Random random = new Random();
@@ -86,9 +100,19 @@ public class PuScn1 extends AbstractEkpInitTest {
 		PurchInfo p0 = puDel.buildPurch11(tt, "採購" + mm0.getName(), bizPartners[i][0], bizPartners[i][1]
 				, mm0, 50,500000, "採購"+mm0.getName()+"共50"+mm0.getStdUnitChtName());
 		assertNotNull("p0 should NOT be null.", p0);
-		log.debug("{}\t{}",p0.getPuNo(), p0.getPerfStatus());
+//		log.debug("{}\t{}",p0.getPuNo(), p0.getPerfStatus());
+		log.info("1a.完成建立購案。");
 		
-		/*  */
+		/* 1b.購案履約（依Purch產生InvtOrder） */
+		InvtOrderInfo io = invtDel.buildIo1(tt, p0, "USER1", "Min-Hua", wb);
+		assertNotNull("io should NOT be null.", io);
+		log.debug("{}\t{}",io.getIosn(), io.getStatus());
+		log.info("1b.完成產生InvtOrder。");
+		
+		/* 1c.InvtOrder登帳（產生MaterialBinStock帳值） */
+		
+		// TODO
+		
 		
 		
 		

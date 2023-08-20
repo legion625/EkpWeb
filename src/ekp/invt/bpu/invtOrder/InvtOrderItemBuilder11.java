@@ -22,22 +22,20 @@ public class InvtOrderItemBuilder11 extends InvtOrderItemBuilder {
 	private PurchItemInfo pi;
 	
 	/* data */
-//	private WrhsBinInfo wb;
 	private MaterialInstBuilder0 miBuilder;
 
 	@Override
 	protected InvtOrderItemBuilder11 appendBase() {
 		/* base */
 		pi = (PurchItemInfo) args[0];
-//		wb = (WrhsBinInfo) args[1];
 		
 		appendMmUid(pi.getMmUid()).appendMiUid("");
-//		appendWrhsBinUid(wb.getUid());
 		appendIoType(InvtOrderType.I1);
 		appendOrderQty(pi.getQty()).appendOrderValue(pi.getValue());
 		
 		/* data */
 		miBuilder = BpuFacade.getInstance().getBuilder(InvtBpuType.MI_0);
+//		miBuilder = new MaterialInstBuilder0();
 		miBuilder.appendMmUid(pi.getMmUid());
 		miBuilder.appendMiac(MaterialInstAcqChannel.PURCHASING);
 		miBuilder.appendQty(pi.getQty()).appendValue(pi.getValue());

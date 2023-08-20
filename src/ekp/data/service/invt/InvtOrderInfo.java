@@ -1,5 +1,7 @@
 package ekp.data.service.invt;
 
+import java.util.List;
+
 import ekp.invt.type.InvtOrderStatus;
 import legion.ObjectModelInfo;
 
@@ -18,4 +20,7 @@ public interface InvtOrderInfo extends ObjectModelInfo {
 	String getRemark();
 
 	long getApvTime();
+	
+	// -------------------------------------------------------------------------------
+	List<InvtOrderItemInfo> getIoiList();
 }
