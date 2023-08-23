@@ -20,6 +20,8 @@ public interface PurchInfo extends ObjectModelInfo {
 	long getPerfTime();
 	
 	// -------------------------------------------------------------------------------
+	PurchInfo reload();
+	
 	List<PurchItemInfo> getPurchItemList();
 
 }

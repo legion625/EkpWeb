@@ -107,10 +107,10 @@ public abstract class InvtOrderItemBuilder extends Bpu<InvtOrderItemInfo> {
 	protected final boolean verifyThis(StringBuilder _msg) {
 		boolean v = true;
 
-		if (DataFO.isEmptyString(getIoUid())) {
-			_msg.append("ioUid should NOT be empty.").append(System.lineSeparator());
-			v = false;
-		}
+//		if (DataFO.isEmptyString(getIoUid())) {
+//			_msg.append("ioUid should NOT be empty.").append(System.lineSeparator());
+//			v = false;
+//		}
 
 		if (DataFO.isEmptyString(getMmUid())) {
 			_msg.append("mmUid should NOT be empty.").append(System.lineSeparator());

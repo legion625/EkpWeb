@@ -1,6 +1,11 @@
 package ekp.data.service.invt;
 
+import java.util.List;
+
+import ekp.data.BizObjLoader;
+import ekp.data.InvtDataService;
 import ekp.invt.type.InvtOrderStatus;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
 public class InvtOrderInfoDto extends ObjectModelInfoDto implements InvtOrderInfo {
@@ -78,6 +83,21 @@ public class InvtOrderInfoDto extends ObjectModelInfoDto implements InvtOrderInf
 
 	void setApvTime(long apvTime) {
 		this.apvTime = apvTime;
+	}
+
+	// -------------------------------------------------------------------------------
+	@Override
+	public InvtOrderInfo reload() {
+		return DataServiceFactory.getInstance().getService(InvtDataService.class).loadInvtOrder(getUid());
+	}
+
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<List<InvtOrderItemInfo>> ioiListLoader = BizObjLoader.of(
+			() -> DataServiceFactory.getInstance().getService(InvtDataService.class).loadInvtOrderItemList(getUid()));
+
+	@Override
+	public List<InvtOrderItemInfo> getIoiList() {
+		return ioiListLoader.getObj();
 	}
 
 }

@@ -239,6 +239,42 @@ public class InvtDataServiceImp implements InvtDataService {
 			return null;
 		}
 	}
+	@Override
+	public boolean invtOrderToApv(String _uid) {
+		try {
+			return getEkpKernelRmi().invtOrderToApv(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+	@Override
+	public boolean invtOrderRevertToApv(String _uid) {
+		try {
+			return getEkpKernelRmi().invtOrderRevertToApv(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+	@Override
+	public boolean invtOrderApprove(String _uid, long _apvTime) {
+		try {
+			return getEkpKernelRmi().invtOrderApprove(_uid, _apvTime);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+	@Override
+	public boolean invtOrderRevertApprove(String _uid) {
+		try {
+			return getEkpKernelRmi().invtOrderRevertApprove(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
 
 	// -------------------------------------------------------------------------------
 	// ---------------------------------InvtOrderItem---------------------------------
@@ -498,6 +534,17 @@ public class InvtDataServiceImp implements InvtDataService {
 			return null;
 		}
 	}
+	
+	@Override
+	public MaterialBinStockInfo loadMaterialBinStock(String _mmUid, String _wrhsBinUid) {
+		try {
+			MaterialBinStockRemote remote = getEkpKernelRmi().loadMaterialBinStock(_mmUid, _wrhsBinUid);
+			return remote == null ? null : InvtFO.parseMaterialBinStock(remote);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
 
 	@Override
 	public List<MaterialBinStockInfo> loadMaterialBinStockList(String _mmUid) {
@@ -552,6 +599,17 @@ public class InvtDataServiceImp implements InvtDataService {
 	public MaterialBinStockBatchInfo loadMaterialBinStockBatch(String _uid) {
 		try {
 			MaterialBinStockBatchRemote remote = getEkpKernelRmi().loadMaterialBinStockBatch(_uid);
+			return remote == null ? null : InvtFO.parseMaterialBinStockBatch(remote);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
+	public MaterialBinStockBatchInfo loadMaterialBinStockBatch(String _mbsUid, String _miUid) {
+		try {
+			MaterialBinStockBatchRemote remote = getEkpKernelRmi().loadMaterialBinStockBatch(_mbsUid, _miUid);
 			return remote == null ? null : InvtFO.parseMaterialBinStockBatch(remote);
 		} catch (Throwable e) {
 			LogUtil.log(log, e, Level.ERROR);

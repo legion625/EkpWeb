@@ -79,6 +79,12 @@ public class PurchInfoDto extends ObjectModelInfoDto implements PurchInfo {
 	}
 
 	// -------------------------------------------------------------------------------
+	@Override
+	public PurchInfo reload() {
+		return DataServiceFactory.getInstance().getService(PuDataService.class).loadPurch(getUid());
+	}
+
+	// -------------------------------------------------------------------------------
 	private BizObjLoader<List<PurchItemInfo>> purchItemListLoader = BizObjLoader
 			.of(() -> DataServiceFactory.getInstance().getService(PuDataService.class).loadPurchItemList(getUid()));
 

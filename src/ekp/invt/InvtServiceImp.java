@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import ekp.data.InvtDataService;
+import ekp.data.service.invt.MaterialBinStockCreateObj;
+import ekp.data.service.invt.MaterialBinStockInfo;
 import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.invt.WrhsLocInfo;
 import ekp.data.service.invt.query.MaterialMasterQueryParam;
@@ -38,5 +40,8 @@ public class InvtServiceImp implements InvtService {
 			QueryOperation<MaterialMasterQueryParam, MaterialMasterInfo> _param){
 		return dataService.searchMaterialMaster(_param);
 	}
+	
+	// -------------------------------------------------------------------------------
+	// -------------------------------MaterialBinStock--------------------------------
 
 }
