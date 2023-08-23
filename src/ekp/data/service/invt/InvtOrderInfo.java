@@ -22,5 +22,7 @@ public interface InvtOrderInfo extends ObjectModelInfo {
 	long getApvTime();
 	
 	// -------------------------------------------------------------------------------
+	InvtOrderInfo reload();
+	
 	List<InvtOrderItemInfo> getIoiList();
 }

@@ -86,6 +86,12 @@ public class InvtOrderInfoDto extends ObjectModelInfoDto implements InvtOrderInf
 	}
 
 	// -------------------------------------------------------------------------------
+	@Override
+	public InvtOrderInfo reload() {
+		return DataServiceFactory.getInstance().getService(InvtDataService.class).loadInvtOrder(getUid());
+	}
+
+	// -------------------------------------------------------------------------------
 	private BizObjLoader<List<InvtOrderItemInfo>> ioiListLoader = BizObjLoader.of(
 			() -> DataServiceFactory.getInstance().getService(InvtDataService.class).loadInvtOrderItemList(getUid()));
 

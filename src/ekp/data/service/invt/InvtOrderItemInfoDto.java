@@ -1,6 +1,9 @@
 package ekp.data.service.invt;
 
+import ekp.data.BizObjLoader;
+import ekp.data.InvtDataService;
 import ekp.invt.type.InvtOrderType;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
 public class InvtOrderItemInfoDto extends ObjectModelInfoDto implements InvtOrderItemInfo{
@@ -64,8 +67,18 @@ public class InvtOrderItemInfoDto extends ObjectModelInfoDto implements InvtOrde
 	public double getOrderValue() {
 		return orderValue;
 	}
+
 	void setOrderValue(double orderValue) {
 		this.orderValue = orderValue;
+	}
+
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<MaterialInstInfo> miLoader = BizObjLoader
+			.of(() -> DataServiceFactory.getInstance().getService(InvtDataService.class).loadMaterialInst(getMiUid()));
+
+	@Override
+	public MaterialInstInfo getMi() {
+		return miLoader.getObj();
 	}
 
 }

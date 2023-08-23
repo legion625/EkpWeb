@@ -26,6 +26,7 @@ public class PurchBuilder1 extends PurchBuilder{
 	}
 
 	// -------------------------------------------------------------------------------
+	@Override
 	public PurchBuilder1 appendTitle(String title) {
 		return (PurchBuilder1) super.appendTitle(title);
 	}

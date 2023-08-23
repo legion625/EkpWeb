@@ -5,6 +5,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ekp.data.service.invt.InvtOrderInfo;
+import ekp.data.service.invt.InvtOrderItemInfo;
 import ekp.data.service.invt.MaterialInstInfo;
 import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.invt.WrhsBinInfo;
@@ -13,15 +15,18 @@ import ekp.data.service.pu.PurchInfo;
 import ekp.data.service.pu.PurchItemInfo;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder11;
 import ekp.invt.bpu.invtOrder.InvtOrderItemBuilder11;
+import ekp.invt.bpu.invtOrder.IoBpuApprove;
 import ekp.invt.bpu.material.MaterialInstBpuDel0;
 import ekp.invt.bpu.material.MaterialInstBuilder;
 import ekp.invt.bpu.material.MaterialInstBuilder0;
 import ekp.invt.bpu.material.MaterialMasterBpuDel0;
 import ekp.invt.bpu.material.MaterialMasterBuilder0;
+import ekp.invt.bpu.material.MbsbStmtBuilderByIoi;
 import ekp.invt.bpu.wrhsLoc.WrhsBinBpuDel0;
 import ekp.invt.bpu.wrhsLoc.WrhsBinBuilder1;
 import ekp.invt.bpu.wrhsLoc.WrhsLocBpuDel0;
 import ekp.invt.bpu.wrhsLoc.WrhsLocBuilder0;
+import ekp.invt.type.InvtOrderStatus;
 import ekp.mbom.issue.MbomBpuType;
 import ekp.pu.type.PurchPerfStatus;
 import legion.biz.BpuType;
@@ -35,7 +40,7 @@ public enum InvtBpuType implements BpuType {
 	WB_$DEL0(WrhsBinBpuDel0.class, WrhsBinInfo.class), //
 	/* InvtOrder */
 	IO_11(InvtOrderBuilder11.class,PurchInfo.class), //
-//	IO_$APPROVE(), //
+	IO_$APPROVE(IoBpuApprove.class, InvtOrderInfo.class ), //
 	/* InvtOrderItem */
 //	IOI_11(InvtOrderItemBuilder11.class, PurchItemInfo.class), //
 	/* MaterialMaster */
@@ -44,6 +49,9 @@ public enum InvtBpuType implements BpuType {
 	/* MaterialInst */
 	MI_0(MaterialInstBuilder0.class), //
 	MI_$DEL0(MaterialInstBpuDel0.class,MaterialInstInfo.class ), //
+	
+	/* MbsbStmt */
+	MBSB_STMT_BY_IOI(MbsbStmtBuilderByIoi.class, InvtOrderItemInfo.class), //
 
 	;
 
@@ -79,6 +87,8 @@ public enum InvtBpuType implements BpuType {
 			return true;
 		case IO_11:
 			return matchBizIo11((PurchInfo) _args[0]);
+		case IO_$APPROVE:
+			return matchBizIoApprove((InvtOrderInfo)_args[0]);
 //			return true;
 		case MM_0:
 		case MM_$DEL0:
@@ -106,6 +116,23 @@ public enum InvtBpuType implements BpuType {
 			return false;
 		}
 		
+		return true;
+	}
+
+	private boolean matchBizIoApprove(InvtOrderInfo _io) {
+		if (_io == null) {
+			log.warn("_io null.");
+			return false;
+		}
+
+		//
+		if (InvtOrderStatus.TO_APV != _io.getStatus()) {
+			log.debug("InvtOrderStatus should be [{}], but is [{}]", InvtOrderStatus.TO_APV, _io.getStatus());
+			return false;
+		}
+
+		//
+
 		return true;
 	}
 	

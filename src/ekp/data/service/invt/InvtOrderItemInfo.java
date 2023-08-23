@@ -18,5 +18,8 @@ public interface InvtOrderItemInfo extends ObjectModelInfo{
 	double getOrderQty();
 
 	double getOrderValue();
+	
+	// -------------------------------------------------------------------------------
+	MaterialInstInfo getMi();
 
 }
