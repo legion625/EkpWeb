@@ -1,5 +1,6 @@
 package ekp.data;
 
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ import ekp.data.service.invt.query.InvtOrderItemQueryParam;
 import ekp.data.service.invt.query.InvtOrderQueryParam;
 import ekp.data.service.invt.query.MaterialMasterQueryParam;
 import ekp.data.service.invt.query.MbsbStmtQueryParam;
+import ekp.serviceFacade.rmi.invt.MaterialBinStockRemote;
 import legion.IntegrationService;
 import legion.util.query.QueryOperation;
 import legion.util.query.QueryOperation.QueryValue;
@@ -68,6 +70,14 @@ public interface InvtDataService extends IntegrationService, EkpKernelRmi {
 	public QueryOperation<InvtOrderQueryParam, InvtOrderInfo> searchInvtOrder(
 			QueryOperation<InvtOrderQueryParam, InvtOrderInfo> _param,
 			Map<InvtOrderQueryParam, QueryValue[]> _existsDetailMap);
+	
+	public boolean invtOrderToApv(String _uid);
+
+	public boolean invtOrderRevertToApv(String _uid);
+
+	public boolean invtOrderApprove(String _uid, long _apvTime);
+
+	public boolean invtOrderRevertApprove(String _uid);
 
 	// -------------------------------------------------------------------------------
 	// ---------------------------------InvtOrderItem---------------------------------
@@ -119,6 +129,8 @@ public interface InvtDataService extends IntegrationService, EkpKernelRmi {
 	public boolean deleteMaterialBinStock(String _uid);
 
 	public MaterialBinStockInfo loadMaterialBinStock(String _uid);
+	
+	public MaterialBinStockInfo loadMaterialBinStock(String _mmUid, String _wrhsBinUid);
 
 	public List<MaterialBinStockInfo> loadMaterialBinStockList(String _mmUid);
 	
@@ -131,6 +143,8 @@ public interface InvtDataService extends IntegrationService, EkpKernelRmi {
 	public boolean deleteMaterialBinStockBatch(String _uid);
 
 	public MaterialBinStockBatchInfo loadMaterialBinStockBatch(String _uid);
+	
+	public MaterialBinStockBatchInfo loadMaterialBinStockBatch(String _mbsUid, String _miUid);
 
 	public List<MaterialBinStockBatchInfo> loadMaterialBinStockBatchList(String _mbsUid);
 
