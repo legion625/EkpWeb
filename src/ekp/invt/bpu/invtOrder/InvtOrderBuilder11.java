@@ -27,7 +27,7 @@ public class InvtOrderBuilder11 extends InvtOrderBuilder {
 		purch = (PurchInfo) args[0];
 
 		/* data */
-		// TODO to append applierId, applierName, applyTime
+		// to append applierId, applierName, applyTime
 		appendRemark("購案" + purch.getPuNo() + "入庫");
 
 		ioiBuilderList = new ArrayList<>();

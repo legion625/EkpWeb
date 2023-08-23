@@ -1,5 +1,7 @@
 package ekp.data.service.invt;
 
+import java.util.List;
+
 import ekp.data.BizObjLoader;
 import ekp.data.InvtDataService;
 import legion.DataServiceFactory;
@@ -80,5 +82,13 @@ public class MaterialBinStockInfoDto extends ObjectModelInfoDto implements Mater
 	@Override
 	public WrhsBinInfo getWrhsBin() {
 		return wrhsBinLoader.getObj();
+	}
+
+	private BizObjLoader<List<MaterialBinStockBatchInfo>> mbsbListLoader = BizObjLoader.of(() -> DataServiceFactory
+			.getInstance().getService(InvtDataService.class).loadMaterialBinStockBatchList(getUid()));
+
+	@Override
+	public List<MaterialBinStockBatchInfo> getMbsbList(boolean _reload) {
+		return mbsbListLoader.getObj(_reload);
 	}
 }

@@ -16,6 +16,7 @@ public abstract class MaterialInstBuilder extends Bpu<MaterialInstInfo> {
 	private String mmUid;
 
 	private MaterialInstAcqChannel miac;
+	private String miacSrcNo;
 	private double qty; // 數量
 	private double value; // 帳值
 	private long effDate; // 生效日期
@@ -33,6 +34,11 @@ public abstract class MaterialInstBuilder extends Bpu<MaterialInstInfo> {
 
 	protected MaterialInstBuilder appendMiac(MaterialInstAcqChannel miac) {
 		this.miac = miac;
+		return this;
+	}
+	
+	protected MaterialInstBuilder appendMiacSrcNo(String miacSrcNo) {
+		this.miacSrcNo = miacSrcNo;
 		return this;
 	}
 
@@ -66,6 +72,10 @@ public abstract class MaterialInstBuilder extends Bpu<MaterialInstInfo> {
 		return miac;
 	}
 
+	public String getMiacSrcNo() {
+		return miacSrcNo;
+	}
+
 	public double getQty() {
 		return qty;
 	}
@@ -86,6 +96,7 @@ public abstract class MaterialInstBuilder extends Bpu<MaterialInstInfo> {
 	private MaterialInstCreateObj packMaterialInstCreateObj() {
 		MaterialInstCreateObj dto = new MaterialInstCreateObj();
 		dto.setMiac(getMiac());
+		dto.setMiacSrcNo(getMiacSrcNo());
 		dto.setQty(getQty());
 		dto.setValue(getValue());
 		dto.setEffDate(getEffDate());

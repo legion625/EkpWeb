@@ -129,7 +129,7 @@ public abstract class InvtOrderBuilder extends Bpu<InvtOrderInfo> {
 		tt.addSite("revert createInvtOrder", () -> invtDataService.deleteInvtOrder(io.getUid()));
 		log.info("invtDataService.createInvtOrder [{}][{}][{}][{}][{}][{}]", io.getUid(), io.getIosn(),
 				io.getApplierId(), io.getApplierName(), DateFormatUtil.transToTime(io.getApvTime()), io.getRemark());
-		
+
 		/* 2.InvtOrderItem */
 		for (InvtOrderItemBuilder ioiBuilder : getInvtOrderItemBuilderList()) {
 			ioiBuilder.appendIoUid(io.getUid());
@@ -143,14 +143,19 @@ public abstract class InvtOrderBuilder extends Bpu<InvtOrderInfo> {
 		log.info("create InvtOrderItem finished [{}][{}]", io.getUid(), io.getIosn());
 
 		/* 3.InvtOrderStatus->TO_APV */
-//		if(invtDataService.invoto)
-		// FIXME
-		
+		if (!invtDataService.invtOrderToApv(io.getUid())) {
+			tt.travel();
+			log.error("invtDataService.invtOrderToApv return false.");
+			return null;
+		}
+		tt.addSite("revert invtOrderToApv", () -> invtDataService.invtOrderRevertToApv(io.getUid()));
+		log.info("create InvtOrderItem finished [{}][{}]", io.getUid(), io.getIosn());
+
 		//
 		if (_tt != null)
 			_tt.copySitesFrom(tt);
 
-		return io;
+		return io.reload();
 	}
 	
 }
