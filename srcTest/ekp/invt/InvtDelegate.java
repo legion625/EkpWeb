@@ -15,6 +15,7 @@ import ekp.data.service.invt.WrhsLocInfo;
 import ekp.data.service.pu.PurchInfo;
 import ekp.invt.bpu.InvtBpuType;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder11;
+import ekp.invt.bpu.invtOrder.IoBpuApprove;
 import ekp.invt.bpu.material.MaterialMasterBuilder0;
 import ekp.invt.bpu.wrhsLoc.WrhsBinBuilder1;
 import ekp.invt.bpu.wrhsLoc.WrhsLocBuilder0;
@@ -144,5 +145,26 @@ public class InvtDelegate {
 		return io;
 	}
 	
+	public boolean ioApv(TimeTraveler _tt,InvtOrderInfo _io ) {
+		IoBpuApprove bpu = bpuFacade.getBuilder(InvtBpuType.IO_$APPROVE, _io);
+
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(bpu.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(bpu.verify(msgVerify), msgVerify.toString());
+		
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		Boolean result = bpu.build(msgBuild, _tt);
+		assertTrue(result);
+		
+		// check
+		// TODO
+		
+		return result;
+	}
 
 }

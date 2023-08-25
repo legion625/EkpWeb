@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ekp.DebugLogMark;
 import ekp.data.service.invt.InvtOrderInfo;
 import ekp.data.service.invt.InvtOrderItemInfo;
 import ekp.data.service.invt.MaterialInstInfo;
@@ -102,7 +103,8 @@ public enum InvtBpuType implements BpuType {
 	}
 	
 	// -------------------------------------------------------------------------------
-	private Logger log = LoggerFactory.getLogger(InvtBpuType.class);
+//	private Logger log = LoggerFactory.getLogger(InvtBpuType.class);
+	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
 
 	// -------------------------------------------------------------------------------
 	private boolean matchBizIo11(PurchInfo _p) {

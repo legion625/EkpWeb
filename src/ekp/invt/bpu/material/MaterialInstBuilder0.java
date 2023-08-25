@@ -27,7 +27,12 @@ public class MaterialInstBuilder0 extends MaterialInstBuilder {
 	public MaterialInstBuilder0 appendMiac(MaterialInstAcqChannel miac) {
 		return (MaterialInstBuilder0) super.appendMiac(miac);
 	}
-
+	
+	@Override
+	public MaterialInstBuilder0 appendMiacSrcNo(String miacSrcNo) {
+		return (MaterialInstBuilder0) super.appendMiacSrcNo(miacSrcNo);
+	}
+	
 	@Override
 	public MaterialInstBuilder0 appendQty(double qty) {
 		return (MaterialInstBuilder0)  super.appendQty(qty);

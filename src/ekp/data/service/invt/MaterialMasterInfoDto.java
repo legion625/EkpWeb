@@ -79,12 +79,26 @@ public class MaterialMasterInfoDto extends ObjectModelInfoDto implements Materia
 	}
 	
 	// -------------------------------------------------------------------------------
+	@Override
+	public MaterialMasterInfo reload() {
+		return DataServiceFactory.getInstance().getService(InvtDataService.class).loadMaterialMaster(getUid());
+	}
+
+	// -------------------------------------------------------------------------------
 	private BizObjLoader<List<MaterialInstInfo>> miListLoader = BizObjLoader.of(
 			() -> DataServiceFactory.getInstance().getService(InvtDataService.class).loadMaterialInstList(getUid()));
 	
 	@Override
 	public List<MaterialInstInfo> getMiList(boolean _reload){
 		return miListLoader.getObj(_reload);
+	}
+	
+	private BizObjLoader<List<MaterialBinStockInfo>> mbsListLoader = BizObjLoader.of(()->
+	DataServiceFactory.getInstance().getService(InvtDataService.class).loadMaterialBinStockList(getUid()));
+	
+	@Override
+public 	List<MaterialBinStockInfo> getMbsList(boolean _reload){
+		return mbsListLoader.getObj(_reload);
 	}
 
 }

@@ -37,7 +37,7 @@ public class InvtOrderItemBuilder11 extends InvtOrderItemBuilder {
 		miBuilder = BpuFacade.getInstance().getBuilder(InvtBpuType.MI_0);
 //		miBuilder = new MaterialInstBuilder0();
 		miBuilder.appendMmUid(pi.getMmUid());
-		miBuilder.appendMiac(MaterialInstAcqChannel.PURCHASING);
+		miBuilder.appendMiac(MaterialInstAcqChannel.PURCHASING).appendMiacSrcNo(pi.getPurch().getPuNo());
 		miBuilder.appendQty(pi.getQty()).appendValue(pi.getValue());
 		Date dateEff = DateFormatUtil.getEarliestTimeInDate(new Date(System.currentTimeMillis()));
 		miBuilder.appendEffDate(dateEff.getTime());

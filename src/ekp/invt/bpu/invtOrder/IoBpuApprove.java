@@ -86,6 +86,7 @@ public class IoBpuApprove extends IoBpu {
 				log.error("mbsbStmtBuilder.build return null.");
 				return false;
 			} // tt copy sites
+			mbsbStmtList.add(mbsbStmt);
 		}
 
 		/* 2.Io Apv */

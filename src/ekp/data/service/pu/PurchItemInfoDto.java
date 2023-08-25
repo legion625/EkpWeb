@@ -1,6 +1,9 @@
 package ekp.data.service.pu;
 
+import ekp.data.BizObjLoader;
+import ekp.data.PuDataService;
 import ekp.mbom.type.PartUnit;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
 public class PurchItemInfoDto extends ObjectModelInfoDto implements PurchItemInfo {
@@ -106,6 +109,15 @@ public class PurchItemInfoDto extends ObjectModelInfoDto implements PurchItemInf
 
 	void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<PurchInfo> purchLoader = BizObjLoader
+			.of(() -> DataServiceFactory.getInstance().getService(PuDataService.class).loadPurch(getPurchUid()));
+
+	@Override
+	public PurchInfo getPurch() {
+		return purchLoader.getObj();
 	}
 
 }

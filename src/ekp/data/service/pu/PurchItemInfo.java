@@ -24,5 +24,6 @@ public interface PurchItemInfo extends ObjectModelInfo {
 	String getRemark();
 	
 	// -------------------------------------------------------------------------------
+	PurchInfo getPurch();
 
 }

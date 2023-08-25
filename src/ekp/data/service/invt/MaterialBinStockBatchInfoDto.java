@@ -1,5 +1,10 @@
 package ekp.data.service.invt;
 
+import java.util.List;
+
+import ekp.data.BizObjLoader;
+import ekp.data.InvtDataService;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
 public class MaterialBinStockBatchInfoDto extends ObjectModelInfoDto implements MaterialBinStockBatchInfo {
@@ -50,6 +55,23 @@ public class MaterialBinStockBatchInfoDto extends ObjectModelInfoDto implements 
 
 	void setStockValue(double stockValue) {
 		this.stockValue = stockValue;
+	}
+
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<MaterialInstInfo> miLoader = BizObjLoader
+			.of(() -> DataServiceFactory.getInstance().getService(InvtDataService.class).loadMaterialInst(getMiUid()));
+
+	@Override
+	public MaterialInstInfo getMi(boolean _reload) {
+		return miLoader.getObj(_reload);
+	}
+
+	private BizObjLoader<List<MbsbStmtInfo>> stmtListLoader = BizObjLoader
+			.of(() -> DataServiceFactory.getInstance().getService(InvtDataService.class).loadMbsbStmtList(getUid()));
+
+	@Override
+	public List<MbsbStmtInfo> getStmtList(boolean _reload) {
+		return stmtListLoader.getObj(_reload);
 	}
 
 }

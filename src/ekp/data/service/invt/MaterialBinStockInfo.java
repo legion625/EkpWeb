@@ -1,5 +1,7 @@
 package ekp.data.service.invt;
 
+import java.util.List;
+
 import legion.ObjectModelInfo;
 
 public interface MaterialBinStockInfo extends ObjectModelInfo{
@@ -33,6 +35,12 @@ public interface MaterialBinStockInfo extends ObjectModelInfo{
 	default String getWrhsBinName() {
 		return getWrhsBin().getName();
 	}
+	
+	List<MaterialBinStockBatchInfo> getMbsbList(boolean _reload);
+	default List<MaterialBinStockBatchInfo> getMbsbList(){
+		return getMbsbList(false);
+	}
+	
 	
 	
 
