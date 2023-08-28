@@ -23,7 +23,6 @@ public class PuServiceImp implements PuService{
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		
 	}
 
 }
