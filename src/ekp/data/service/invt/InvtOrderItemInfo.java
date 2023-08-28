@@ -9,15 +9,22 @@ public interface InvtOrderItemInfo extends ObjectModelInfo{
 
 	public String getMmUid();
 
-	public String getMiUid();
-
-	public String getWrhsBinUid();
-
 	InvtOrderType getIoType();
 
 	double getOrderQty();
 
 	double getOrderValue();
+	
+	boolean isMiAssigned();
+	
+	public String getMiUid();
+	
+	boolean isWrhsBinAssigned();
+	
+	public String getWrhsBinUid();
+	
+	// -------------------------------------------------------------------------------
+	InvtOrderItemInfo reload();
 	
 	// -------------------------------------------------------------------------------
 	MaterialInstInfo getMi();

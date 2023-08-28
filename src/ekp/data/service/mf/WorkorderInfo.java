@@ -1,0 +1,24 @@
+package ekp.data.service.mf;
+
+import ekp.mf.type.WorkorderStatus;
+import legion.ObjectModelInfo;
+
+public interface WorkorderInfo extends ObjectModelInfo{
+
+	String getWoNo();
+
+	WorkorderStatus getStatus();
+
+	String getPartUid();
+
+	String getPartPin();
+
+	String getPartMmMano();
+
+	long getStartWorkTime();
+
+	long getFinishWorkTime();
+
+	long getOverTime();
+
+}

@@ -7,6 +7,7 @@
 		<!-- ekp -->
 		<Service name="InvtService" interface="ekp.invt.InvtService" imp="ekp.invt.InvtServiceImp" />
 		<Service name="MbomService" interface="ekp.mbom.MbomService" imp="ekp.mbom.MbomServiceImp" />
+		<Service name="MfService" interface="ekp.mf.MfService" imp="ekp.mf.MfServiceImp" />
 		<Service name="PuService" interface="ekp.pu.PuService" imp="ekp.pu.PuServiceImp" />
 	</BusinessService>
 	<!-- IntegrationService -->
@@ -24,6 +25,9 @@
 			<Parameter name="srcEkpKernelRmi" value="ekp_kernel_rmi" />
 		</Service>
 		<Service name="MbomDataService" interface="ekp.data.MbomDataService" imp="ekp.data.service.mbom.MbomDataServiceImp">
+			<Parameter name="srcEkpKernelRmi" value="ekp_kernel_rmi" />
+		</Service>
+		<Service name="MfDataService" interface="ekp.data.MfDataService" imp="ekp.data.service.mf.MfDataServiceImp">
 			<Parameter name="srcEkpKernelRmi" value="ekp_kernel_rmi" />
 		</Service>
 		<Service name="PuDataService" interface="ekp.data.PuDataService" imp="ekp.data.service.pu.PuDataServiceImp">

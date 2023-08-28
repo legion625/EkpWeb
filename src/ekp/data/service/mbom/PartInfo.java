@@ -19,6 +19,12 @@ public interface PartInfo extends ObjectModelInfo {
 
 	PartUnit getUnit();
 
+	boolean isMmAssigned();
+
+	String getMmUid();
+
+	String getMmMano();
+
 	// -------------------------------------------------------------------------------
 	default String getUnitName() {
 		return (getUnit() == null ? PartUnit.UNDEFINED : getUnit()).getName();

@@ -11,14 +11,12 @@ import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
 public abstract class InvtOrderItemBuilder extends Bpu<InvtOrderItemInfo> {
-	private static InvtDataService invtDataService = DataServiceFactory.getInstance().getService(InvtDataService.class);
+	protected static InvtDataService invtDataService = DataServiceFactory.getInstance().getService(InvtDataService.class);
 
 	/* base */
 	private String ioUid;
 
 	private String mmUid;
-	private String miUid; // optional
-	private String wrhsBinUid;
 	private InvtOrderType ioType;
 	private double orderQty;
 	private double orderValue;
@@ -32,16 +30,6 @@ public abstract class InvtOrderItemBuilder extends Bpu<InvtOrderItemInfo> {
 
 	protected InvtOrderItemBuilder appendMmUid(String mmUid) {
 		this.mmUid = mmUid;
-		return this;
-	}
-
-	protected InvtOrderItemBuilder appendMiUid(String miUid) {
-		this.miUid = miUid;
-		return this;
-	}
-
-	protected InvtOrderItemBuilder appendWrhsBinUid(String wrhsBinUid) {
-		this.wrhsBinUid = wrhsBinUid;
 		return this;
 	}
 
@@ -70,13 +58,8 @@ public abstract class InvtOrderItemBuilder extends Bpu<InvtOrderItemInfo> {
 		return mmUid;
 	}
 
-	public String getMiUid() {
-		return miUid;
-	}
+	
 
-	public String getWrhsBinUid() {
-		return wrhsBinUid;
-	}
 
 	public InvtOrderType getIoType() {
 		return ioType;
@@ -95,8 +78,6 @@ public abstract class InvtOrderItemBuilder extends Bpu<InvtOrderItemInfo> {
 		InvtOrderItemCreateObj dto = new InvtOrderItemCreateObj();
 		dto.setIoUid(getIoUid());
 		dto.setMmUid(getMmUid());
-		dto.setMiUid(getMiUid());
-		dto.setWrhsBinUid(getWrhsBinUid());
 		dto.setIoType(getIoType());
 		dto.setOrderQty(getOrderQty());
 		dto.setOrderValue(getOrderValue());
@@ -114,11 +95,6 @@ public abstract class InvtOrderItemBuilder extends Bpu<InvtOrderItemInfo> {
 
 		if (DataFO.isEmptyString(getMmUid())) {
 			_msg.append("mmUid should NOT be empty.").append(System.lineSeparator());
-			v = false;
-		}
-
-		if (DataFO.isEmptyString(getWrhsBinUid())) {
-			_msg.append("wrhsBinUid should NOT be empty.").append(System.lineSeparator());
 			v = false;
 		}
 
