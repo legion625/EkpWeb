@@ -146,6 +146,26 @@ public class MbomDataServiceImp implements MbomDataService {
 		}
 	}
 
+	@Override
+	public boolean partAssignMm(String _uid, String _mmUid, String _mmMano) {
+		try {
+			return getEkpKernelRmi().partAssignMm(_uid, _mmUid, _mmMano);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+
+	@Override
+	public boolean partRevertAssignMm(String _uid) {
+		try {
+			return getEkpKernelRmi().partRevertAssignMm(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+
 	// -------------------------------------------------------------------------------
 	// --------------------------------PartAcquisition--------------------------------
 	@Override

@@ -14,6 +14,8 @@ import ekp.data.service.invt.MaterialBinStockCreateObj;
 import ekp.data.service.invt.MaterialBinStockInfo;
 import ekp.data.service.invt.MaterialInstCreateObj;
 import ekp.data.service.invt.MaterialInstInfo;
+import ekp.data.service.invt.MaterialInstSrcConjCreateObj;
+import ekp.data.service.invt.MaterialInstSrcConjInfo;
 import ekp.data.service.invt.MaterialMasterCreateObj;
 import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.invt.MbsbStmtCreateObj;
@@ -27,6 +29,8 @@ import ekp.data.service.invt.query.InvtOrderQueryParam;
 import ekp.data.service.invt.query.MaterialMasterQueryParam;
 import ekp.data.service.invt.query.MbsbStmtQueryParam;
 import ekp.serviceFacade.rmi.invt.MaterialBinStockRemote;
+import ekp.serviceFacade.rmi.invt.MaterialInstSrcConjCreateObjRemote;
+import ekp.serviceFacade.rmi.invt.MaterialInstSrcConjRemote;
 import legion.IntegrationService;
 import legion.util.query.QueryOperation;
 import legion.util.query.QueryOperation.QueryValue;
@@ -126,7 +130,26 @@ public interface InvtDataService extends IntegrationService, EkpKernelRmi {
 	public MaterialInstInfo loadMaterialInstByMisn(String _misn);
 
 	public List<MaterialInstInfo> loadMaterialInstList(String _mmUid);
+	
+	public boolean materialInstToAssignSrcMi(String _uid);
+	public boolean materialInstRevertToAssignSrcMi(String _uid);
+	public boolean materialInstFinishAssignedSrcMi(String _uid);
+	public boolean materialInstRevertFinishAssignedSrcMi(String _uid);
+	public boolean materialInstNotAssignSrcMi(String _uid);
+	public boolean materialInstRevertNotAssignSrcMi(String _uid);
 
+	// -------------------------------------------------------------------------------
+	// ------------------------------MaterialInstSrcConj------------------------------
+	public MaterialInstSrcConjInfo createMaterialInstSrcConj(MaterialInstSrcConjCreateObj _dto);
+
+	public boolean deleteMaterialInstSrcConj(String _uid);
+
+	public MaterialInstSrcConjInfo loadMaterialInstSrcConj(String _uid);
+
+	public List<MaterialInstSrcConjInfo> loadMaterialInstSrcConjList(String _miUid);
+
+	public List<MaterialInstSrcConjInfo> loadMaterialInstSrcConjListBySrcMi(String _srcMiUid);
+	
 	// -------------------------------------------------------------------------------
 	// -------------------------------MaterialBinStock--------------------------------
 	public MaterialBinStockInfo createMaterialBinStock(MaterialBinStockCreateObj _dto);

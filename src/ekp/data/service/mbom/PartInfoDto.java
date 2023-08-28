@@ -19,6 +19,11 @@ public class PartInfoDto extends ObjectModelInfoDto implements PartInfo {
 	private String name;
 	private PartUnit unit;
 
+	// mm
+	private boolean mmAssigned;
+	private String mmUid;
+	private String mmMano;
+
 	// -------------------------------------------------------------------------------
 	// ---------------------------------getter&setter---------------------------------
 	@Override
@@ -38,7 +43,7 @@ public class PartInfoDto extends ObjectModelInfoDto implements PartInfo {
 	void setName(String name) {
 		this.name = name;
 	}
-	
+
 	@Override
 	public PartUnit getUnit() {
 		return unit;
@@ -46,6 +51,33 @@ public class PartInfoDto extends ObjectModelInfoDto implements PartInfo {
 
 	void setUnit(PartUnit unit) {
 		this.unit = unit;
+	}
+
+	@Override
+	public boolean isMmAssigned() {
+		return mmAssigned;
+	}
+
+	void setMmAssigned(boolean mmAssigned) {
+		this.mmAssigned = mmAssigned;
+	}
+
+	@Override
+	public String getMmUid() {
+		return mmUid;
+	}
+
+	void setMmUid(String mmUid) {
+		this.mmUid = mmUid;
+	}
+
+	@Override
+	public String getMmMano() {
+		return mmMano;
+	}
+
+	void setMmMano(String mmMano) {
+		this.mmMano = mmMano;
 	}
 
 	// -------------------------------------------------------------------------------
@@ -70,12 +102,12 @@ public class PartInfoDto extends ObjectModelInfoDto implements PartInfo {
 	public List<PpartInfo> getPpartList(boolean _reload) {
 		return ppartListLoader.getObj(_reload);
 	}
-	
-	private BizObjLoader<List<PartCfgInfo>> partCfgListLoader = BizObjLoader.of(
-			() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadPartCfgList(getUid()));
-	
+
+	private BizObjLoader<List<PartCfgInfo>> partCfgListLoader = BizObjLoader
+			.of(() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadPartCfgList(getUid()));
+
 	@Override
-	public List<PartCfgInfo> getRootPartCfgList(boolean _reload){
+	public List<PartCfgInfo> getRootPartCfgList(boolean _reload) {
 		return partCfgListLoader.getObj(_reload);
 	}
 }

@@ -10,6 +10,8 @@ import ekp.serviceFacade.rmi.invt.MaterialBinStockCreateObjRemote;
 import ekp.serviceFacade.rmi.invt.MaterialBinStockRemote;
 import ekp.serviceFacade.rmi.invt.MaterialInstCreateObjRemote;
 import ekp.serviceFacade.rmi.invt.MaterialInstRemote;
+import ekp.serviceFacade.rmi.invt.MaterialInstSrcConjCreateObjRemote;
+import ekp.serviceFacade.rmi.invt.MaterialInstSrcConjRemote;
 import ekp.serviceFacade.rmi.invt.MaterialMasterCreateObjRemote;
 import ekp.serviceFacade.rmi.invt.MaterialMasterRemote;
 import ekp.serviceFacade.rmi.invt.MbsbStmtCreateObjRemote;
@@ -144,6 +146,7 @@ public class InvtFO {
 		dto.setValue(_remote.getValue());
 		dto.setEffDate(_remote.getEffDate());
 		dto.setExpDate(_remote.getExpDate());
+		dto.setSrcStatus(_remote.getSrcStatus());
 		return dto;
 	}
 	public static MaterialInstCreateObjRemote parseMaterialInstCreateObjRemote(MaterialInstCreateObj _dto) {
@@ -157,6 +160,28 @@ public class InvtFO {
 		remote.setExpDate(_dto.getExpDate());
 		return remote;
 	}
+	
+	// -------------------------------------------------------------------------------
+	// ------------------------------MaterialInstSrcConj------------------------------
+	public static MaterialInstSrcConjInfo parseMaterialInstSrcConj(MaterialInstSrcConjRemote _remote) {
+		MaterialInstSrcConjInfoDto dto = new MaterialInstSrcConjInfoDto(_remote.getUid(), _remote.getObjectCreateTime(),
+				_remote.getObjectUpdateTime());
+		dto.setMiUid(_remote.getMiUid());
+		dto.setSrcMiUid(_remote.getSrcMiUid());
+		dto.setSrcMiQty(_remote.getSrcMiQty());
+		dto.setSrcMiValue(_remote.getSrcMiValue());
+		return dto;
+	}
+	
+	public static MaterialInstSrcConjCreateObjRemote parseMaterialInstSrcConjCreateObjRemote(MaterialInstSrcConjCreateObj _dto) {
+		MaterialInstSrcConjCreateObjRemote remote = new MaterialInstSrcConjCreateObjRemote();
+		remote.setMiUid(_dto.getMiUid());
+		remote.setSrcMiUid(_dto.getSrcMiUid());
+		remote.setSrcMiQty(_dto.getSrcMiQty());
+		remote.setSrcMiValue(_dto.getSrcMiValue());
+		return remote;
+	}
+	
 	
 	// -------------------------------------------------------------------------------
 	// -------------------------------MaterialBinStock--------------------------------

@@ -1,6 +1,7 @@
 package ekp.data.service.invt;
 
 import ekp.invt.type.MaterialInstAcqChannel;
+import ekp.invt.type.MaterialInstSrcStatus;
 import legion.ObjectModelInfoDto;
 
 public class MaterialInstInfoDto extends ObjectModelInfoDto implements MaterialInstInfo{
@@ -18,6 +19,10 @@ public class MaterialInstInfoDto extends ObjectModelInfoDto implements MaterialI
 	private double value; // 帳值
 	private long effDate; // 生效日期
 	private long expDate; // 失效日期
+	
+	private MaterialInstSrcStatus srcStatus;
+	
+	
 	@Override
 	public String getMmUid() {
 		return mmUid;
@@ -74,4 +79,13 @@ public class MaterialInstInfoDto extends ObjectModelInfoDto implements MaterialI
 	void setExpDate(long expDate) {
 		this.expDate = expDate;
 	}
+	@Override
+	public MaterialInstSrcStatus getSrcStatus() {
+		return srcStatus;
+	}
+	 void setSrcStatus(MaterialInstSrcStatus srcStatus) {
+		this.srcStatus = srcStatus;
+	}
+	
+	
 }

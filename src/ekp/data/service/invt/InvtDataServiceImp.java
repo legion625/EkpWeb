@@ -23,6 +23,8 @@ import ekp.serviceFacade.rmi.invt.MaterialBinStockCreateObjRemote;
 import ekp.serviceFacade.rmi.invt.MaterialBinStockRemote;
 import ekp.serviceFacade.rmi.invt.MaterialInstCreateObjRemote;
 import ekp.serviceFacade.rmi.invt.MaterialInstRemote;
+import ekp.serviceFacade.rmi.invt.MaterialInstSrcConjCreateObjRemote;
+import ekp.serviceFacade.rmi.invt.MaterialInstSrcConjRemote;
 import ekp.serviceFacade.rmi.invt.MaterialMasterCreateObjRemote;
 import ekp.serviceFacade.rmi.invt.MaterialMasterRemote;
 import ekp.serviceFacade.rmi.invt.MbsbStmtCreateObjRemote;
@@ -537,6 +539,127 @@ public class InvtDataServiceImp implements InvtDataService {
 		try {
 			List<MaterialInstRemote> remoteList = getEkpKernelRmi().loadMaterialInstList(_mmUid);
 			List<MaterialInstInfo> list = remoteList.stream().map(InvtFO::parseMaterialInst)
+					.collect(Collectors.toList());
+			return list;
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
+	public boolean materialInstToAssignSrcMi(String _uid) {
+		try {
+			return getEkpKernelRmi().materialInstToAssignSrcMi(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+
+	@Override
+	public boolean materialInstRevertToAssignSrcMi(String _uid) {
+		try {
+			return getEkpKernelRmi().materialInstRevertToAssignSrcMi(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+
+	@Override
+	public boolean materialInstFinishAssignedSrcMi(String _uid) {
+		try {
+			return getEkpKernelRmi().materialInstFinishAssignedSrcMi(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+
+	@Override
+	public boolean materialInstRevertFinishAssignedSrcMi(String _uid) {
+		try {
+			return getEkpKernelRmi().materialInstRevertFinishAssignedSrcMi(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+
+	@Override
+	public boolean materialInstNotAssignSrcMi(String _uid) {
+		try {
+			return getEkpKernelRmi().materialInstNotAssignSrcMi(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+
+	@Override
+	public boolean materialInstRevertNotAssignSrcMi(String _uid) {
+		try {
+			return getEkpKernelRmi().materialInstRevertNotAssignSrcMi(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+
+	// -------------------------------------------------------------------------------
+	// ------------------------------MaterialInstSrcConj------------------------------
+	@Override
+	public MaterialInstSrcConjInfo createMaterialInstSrcConj(MaterialInstSrcConjCreateObj _dto) {
+		try {
+			MaterialInstSrcConjCreateObjRemote dto = InvtFO.parseMaterialInstSrcConjCreateObjRemote(_dto);
+			return InvtFO.parseMaterialInstSrcConj(getEkpKernelRmi().createMaterialInstSrcConj(dto));
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
+	public boolean deleteMaterialInstSrcConj(String _uid) {
+		try {
+			return getEkpKernelRmi().deleteMaterialInstSrcConj(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+
+	@Override
+	public MaterialInstSrcConjInfo loadMaterialInstSrcConj(String _uid) {
+		try {
+			MaterialInstSrcConjRemote remote = getEkpKernelRmi().loadMaterialInstSrcConj(_uid);
+			return remote == null ? null : InvtFO.parseMaterialInstSrcConj(remote);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
+	public List<MaterialInstSrcConjInfo> loadMaterialInstSrcConjList(String _miUid) {
+		try {
+			List<MaterialInstSrcConjRemote> remoteList = getEkpKernelRmi().loadMaterialInstSrcConjList(_miUid);
+			List<MaterialInstSrcConjInfo> list = remoteList.stream().map(InvtFO::parseMaterialInstSrcConj)
+					.collect(Collectors.toList());
+			return list;
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
+	public List<MaterialInstSrcConjInfo> loadMaterialInstSrcConjListBySrcMi(String _srcMiUid) {
+		try {
+			List<MaterialInstSrcConjRemote> remoteList = getEkpKernelRmi()
+					.loadMaterialInstSrcConjListBySrcMi(_srcMiUid);
+			List<MaterialInstSrcConjInfo> list = remoteList.stream().map(InvtFO::parseMaterialInstSrcConj)
 					.collect(Collectors.toList());
 			return list;
 		} catch (Throwable e) {
