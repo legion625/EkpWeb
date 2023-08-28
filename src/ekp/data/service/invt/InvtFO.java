@@ -88,11 +88,13 @@ public class InvtFO {
 				_remote.getObjectUpdateTime());
 		dto.setIoUid(_remote.getIoUid());
 		dto.setMmUid(_remote.getMmUid());
-		dto.setMiUid(_remote.getMiUid());
-		dto.setWrhsBinUid(_remote.getWrhsBinUid());
 		dto.setIoType(_remote.getIoType());
 		dto.setOrderQty(_remote.getOrderQty());
 		dto.setOrderValue(_remote.getOrderValue());
+		dto.setMiAssigned(_remote.isMiAssigned());
+		dto.setMiUid(_remote.getMiUid());
+		dto.setWrhsBinAssigned(_remote.isWrhsBinAssigned());
+		dto.setWrhsBinUid(_remote.getWrhsBinUid());
 		return dto;
 	}
 	
@@ -100,8 +102,6 @@ public class InvtFO {
 		InvtOrderItemCreateObjRemote remote = new InvtOrderItemCreateObjRemote();
 		remote.setIoUid(_dto.getIoUid());
 		remote.setMmUid(_dto.getMmUid());
-		remote.setMiUid(_dto.getMiUid());
-		remote.setWrhsBinUid(_dto.getWrhsBinUid());
 		remote.setIoType(_dto.getIoType());
 		remote.setOrderQty(_dto.getOrderQty());
 		remote.setOrderValue(_dto.getOrderValue());

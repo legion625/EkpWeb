@@ -96,6 +96,11 @@ public interface InvtDataService extends IntegrationService, EkpKernelRmi {
 	public QueryOperation<InvtOrderItemQueryParam, InvtOrderItemInfo> searchInvtOrderItem(
 			QueryOperation<InvtOrderItemQueryParam, InvtOrderItemInfo> _param,
 			Map<InvtOrderItemQueryParam, QueryValue[]> _existsDetailMap);
+	
+	public boolean invtOrderItemAssignMi(String _uid, String _miUid);
+	public boolean invtOrderItemRevertAssignMi(String _uid);
+	public boolean invtOrderItemAssignWrhsBin(String _uid, String _wrhsBinUid);
+	public boolean invtOrderItemRevertAssignWrhsBin(String _uid);
 
 	// -------------------------------------------------------------------------------
 	// --------------------------------MaterialMaster---------------------------------

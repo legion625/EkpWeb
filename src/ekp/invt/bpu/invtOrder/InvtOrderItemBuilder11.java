@@ -14,6 +14,7 @@ import ekp.invt.type.MaterialInstAcqChannel;
 import ekp.mbom.issue.MbomBpuType;
 import legion.biz.Bpu;
 import legion.biz.BpuFacade;
+import legion.util.DataFO;
 import legion.util.DateFormatUtil;
 import legion.util.TimeTraveler;
 
@@ -22,6 +23,8 @@ public class InvtOrderItemBuilder11 extends InvtOrderItemBuilder {
 	private PurchItemInfo pi;
 	
 	/* data */
+	private String miUid; // optional
+	private String wrhsBinUid;
 	private MaterialInstBuilder0 miBuilder;
 
 	@Override
@@ -29,7 +32,7 @@ public class InvtOrderItemBuilder11 extends InvtOrderItemBuilder {
 		/* base */
 		pi = (PurchItemInfo) args[0];
 		
-		appendMmUid(pi.getMmUid()).appendMiUid("");
+		appendMmUid(pi.getMmUid());
 		appendIoType(InvtOrderType.I1);
 		appendOrderQty(pi.getQty()).appendOrderValue(pi.getValue());
 		
@@ -48,7 +51,25 @@ public class InvtOrderItemBuilder11 extends InvtOrderItemBuilder {
 		return this;
 	}
 	
+	// -------------------------------------------------------------------------------
+	protected InvtOrderItemBuilder appendMiUid(String miUid) {
+		this.miUid = miUid;
+		return this;
+	}
+
+	protected InvtOrderItemBuilder appendWrhsBinUid(String wrhsBinUid) {
+		this.wrhsBinUid = wrhsBinUid;
+		return this;
+	}
 	
+	// -------------------------------------------------------------------------------
+	public String getMiUid() {
+		return miUid;
+	}
+
+	public String getWrhsBinUid() {
+		return wrhsBinUid;
+	}
 	
 	// -------------------------------------------------------------------------------
 	@Override
@@ -62,9 +83,16 @@ public class InvtOrderItemBuilder11 extends InvtOrderItemBuilder {
 		boolean v = true;
 		if (!verifyThis(_msg))
 			v = false;
+
+		//
+		if (DataFO.isEmptyString(getWrhsBinUid())) {
+			_msg.append("wrhsBinUid should NOT be empty.").append(System.lineSeparator());
+			v = false;
+		}
+
 		return v;
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	@Override
 	protected InvtOrderItemInfo buildProcess(TimeTraveler _tt) {
@@ -79,19 +107,38 @@ public class InvtOrderItemBuilder11 extends InvtOrderItemBuilder {
 		} // copy sites inside
 
 		/* 2.InvtOrderItem */
-		appendMiUid(mi.getUid()); //
 		InvtOrderItemInfo ioi = buildInvtOrderItem(tt);
 		if (ioi == null) {
 			tt.travel();
 			log.error("buildInvtOrderItem return null.");
 			return null;
 		} // copy sites inside
+		
+		/* 2a.assignMi */
+		appendMiUid(mi.getUid()); //
+		if (!invtDataService.invtOrderItemAssignMi(ioi.getUid(), getMiUid())) {
+			tt.travel();
+			log.error("invtOrderItemAssignMi return false.");
+			return null;
+		}
+		tt.addSite("revert invtOrderItemAssignMi", () -> invtDataService.invtOrderItemRevertAssignMi(ioi.getUid()));
+		log.info("invtDataService.invtOrderItemAssignMi");
+		
+		
+		/* 2b */
+		if(!invtDataService.invtOrderItemAssignWrhsBin(ioi.getUid(), getWrhsBinUid())) {
+			tt.travel();
+			log.error("invtOrderItemAssignWrhsBin return false.");
+			return null;
+		}
+		tt.addSite("revert invtOrderItemAssignWrhsBin", () -> invtDataService.invtOrderItemRevertAssignWrhsBin(ioi.getUid()));
+		log.info("invtDataService.invtOrderItemAssignWrhsBin");
 
 		//
 		if (_tt != null)
 			_tt.copySitesFrom(tt);
 
-		return ioi;
+		return ioi.reload();
 	}
 
 	
