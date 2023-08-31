@@ -14,6 +14,7 @@ import ekp.TestLogMark;
 import ekp.data.service.mbom.PpartInfo;
 import ekp.data.service.mbom.PprocInfo;
 import ekp.data.MbomDataService;
+import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.mbom.ParsInfo;
 import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.mbom.PartCfgInfo;
@@ -24,12 +25,14 @@ import ekp.mbom.issue.MbomBpuType;
 import ekp.mbom.issue.parsPart.ParsPartBuilder0;
 import ekp.mbom.issue.parsPart.ParsPartBuilder1;
 import ekp.mbom.issue.parsProc.ParsProcBuilder0;
+import ekp.mbom.issue.part.PartBpuAsignMm;
 import ekp.mbom.issue.part.PartBuilder0;
 import ekp.mbom.issue.partAcq.PaBpuPublish;
 import ekp.mbom.issue.partAcq.PartAcqBuilder0;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBuilder1;
 import ekp.mbom.issue.partCfg.PartCfgBuilder0;
 import ekp.mbom.issue.partCfg.PartCfgBpuEditing;
+import ekp.mbom.issue.partCfg.PartCfgBpuPublish;
 import ekp.mbom.issue.prod.ProdBuilder0;
 import ekp.mbom.issue.prod.ProdBpuEditCtl;
 import ekp.mbom.issue.prodCtl.ProdCtlBpuPartCfgConj;
@@ -89,6 +92,29 @@ public class MbomBuilderDelegate {
 		return buildPartType0(_tt, "TEST_PIN", "TEST_NAME", PartUnit.EAC);
 	}
 
+	public boolean partAssignMm(TimeTraveler _tt, PartInfo _part, MaterialMasterInfo _mm) {
+		PartBpuAsignMm bpu = bpuFacade.getBuilder(MbomBpuType.PART_$ASSIGN_MM, _part);
+		bpu.appendMm(_mm);
+
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(bpu.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(bpu.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		Boolean result = bpu.build(msgBuild, _tt);
+		assertTrue(result);
+
+		// check
+		// TODO
+
+		return result;
+	}
+	
 	// -------------------------------------------------------------------------------
 	// ------------------------------------PartAcq------------------------------------
 	public PartAcqInfo buildPartAcqType0(PartInfo _p, TimeTraveler _tt, String _id, String _name,
@@ -171,9 +197,9 @@ public class MbomBuilderDelegate {
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------PartAcqRoutingStep-------------------------------
-	public ParsInfo buildParsType1(PartAcqInfo _partAcq, TimeTraveler _tt, String _id, String _name, String _desp) {
+	public ParsInfo buildParsType1(PartAcqInfo _partAcq, TimeTraveler _tt, String _seq, String _name, String _desp) {
 		ParsBuilder1 parsb = bpuFacade.getBuilder(MbomBpuType.PARS_1, _partAcq);
-		parsb.appendId(_id).appendName(_name).appendDesp(_desp);
+		parsb.appendSeq(_seq).appendName(_name).appendDesp(_desp);
 
 		// validate
 		StringBuilder msgValidate = new StringBuilder();
@@ -190,7 +216,7 @@ public class MbomBuilderDelegate {
 
 		// check
 		assertEquals(_partAcq.getUid(), pars.getPartAcqUid());
-		assertEquals(_id, pars.getSeq());
+		assertEquals(_seq, pars.getSeq());
 		assertEquals(_name, pars.getName());
 		assertEquals(_desp, pars.getDesp());
 
@@ -343,6 +369,31 @@ public class MbomBuilderDelegate {
 		
 		return b;
 	}
+	
+	public boolean runPartCfgPublish(TimeTraveler _tt, PartCfgInfo _pc) {
+		PartCfgBpuPublish bpu = bpuFacade.getBuilder(MbomBpuType.PART_CFG_$PUBLISH, _pc);
+
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(bpu.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(bpu.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		boolean b = bpu.build(msgBuild, _tt);
+		assertTrue(b, msgBuild.toString());
+
+		// check
+		// none
+
+		return b;
+	}
+	
+	
+	
 	
 	// -------------------------------------------------------------------------------
 	// -------------------------------------Prod--------------------------------------

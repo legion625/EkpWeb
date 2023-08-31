@@ -18,7 +18,7 @@ public abstract class ParsBuilder extends Bpu<ParsInfo> {
 	/* base */
 	private String partAcqUid; // ref data key
 
-	private String id; // routing step id
+	private String seq; // routing step seq
 	private String name;
 	private String desp;
 
@@ -32,8 +32,8 @@ public abstract class ParsBuilder extends Bpu<ParsInfo> {
 		return this;
 	}
 
-	protected ParsBuilder appendId(String id) {
-		this.id = id;
+	protected ParsBuilder appendSeq(String seq) {
+		this.seq = seq;
 		return this;
 	}
 
@@ -53,8 +53,8 @@ public abstract class ParsBuilder extends Bpu<ParsInfo> {
 		return partAcqUid;
 	}
 
-	public String getId() {
-		return id;
+	public String getSeq() {
+		return seq;
 	}
 
 	public String getName() {
@@ -69,7 +69,7 @@ public abstract class ParsBuilder extends Bpu<ParsInfo> {
 	private ParsCreateObj packPartAcqRoutingStepCreateObj() {
 		ParsCreateObj dto = new ParsCreateObj();
 		dto.setPartAcqUid(getPartAcqUid());
-		dto.setSeq(getId());
+		dto.setSeq(getSeq());
 		dto.setName(getName());
 		dto.setDesp(getDesp());
 		return dto;
@@ -92,11 +92,11 @@ public abstract class ParsBuilder extends Bpu<ParsInfo> {
 		}
 
 		// id
-		if (DataFO.isEmptyString(getId())) {
+		if (DataFO.isEmptyString(getSeq())) {
 			_msg.append("Id should not be empty.").append(System.lineSeparator());
 			v = false;
 		} else {
-			if (mbomDataService.loadPartAcqRoutingStep(getPartAcqUid(), getId()) != null) {
+			if (mbomDataService.loadPartAcqRoutingStep(getPartAcqUid(), getSeq()) != null) {
 				_msg.append("Duplicated id.").append(System.lineSeparator());
 				v = false;
 			}

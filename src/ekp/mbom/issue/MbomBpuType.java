@@ -19,6 +19,7 @@ import ekp.mbom.issue.parsPart.ParsPartBuilder0;
 import ekp.mbom.issue.parsPart.ParsPartBuilder1;
 import ekp.mbom.issue.parsPart.PpartBpuDel0;
 import ekp.mbom.issue.parsProc.ParsProcBuilder0;
+import ekp.mbom.issue.part.PartBpuAsignMm;
 import ekp.mbom.issue.part.PartBpuDel0;
 import ekp.mbom.issue.part.PartBpuPcAssignPa;
 import ekp.mbom.issue.part.PartBpuUpdate;
@@ -46,6 +47,7 @@ public enum MbomBpuType implements BpuType {
 	PART_$DEL0(PartBpuDel0.class, PartInfo.class), //
 	PART_$PC_ASSIGN_PA(PartBpuPcAssignPa.class, PartInfo.class, PartCfgInfo.class), //
 	PART_$UPDATE(PartBpuUpdate.class, PartInfo.class), //
+	PART_$ASSIGN_MM(PartBpuAsignMm.class, PartInfo.class), //
 	/* pa */
 	PART_ACQ_0(PartAcqBuilder0.class), //
 	PART_ACQ_$DEL0(PaBpuDel0.class, PartAcqInfo.class), //
@@ -107,6 +109,8 @@ public enum MbomBpuType implements BpuType {
 			return true;
 		case PART_$UPDATE:
 			return true;
+		case PART_$ASSIGN_MM:
+			return matchBizPartAssignMm((PartInfo) _args[0]);
 		/* part acq */
 		case PART_ACQ_0:
 			return true;
@@ -201,6 +205,22 @@ public enum MbomBpuType implements BpuType {
 //		
 //		return true;
 //	}
+	
+	private boolean matchBizPartAssignMm(PartInfo _p) {
+		if (_p == null) {
+			log.warn("_p null.");
+			return false;
+		} else {
+			if (_p.isMmAssigned()) {
+				log.warn("_part should NOT have assigned mm. [{}][{}]", _p.getUid(), _p.getPin());
+				return false;
+			}
+		}
+
+		return true;
+	}
+	
+	
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------------partAcq------------------------------------

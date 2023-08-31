@@ -25,8 +25,8 @@ public class ParsBuilder1 extends ParsBuilder{
 	
 	// -------------------------------------------------------------------------------
 	@Override
-	public ParsBuilder1 appendId(String id) {
-		return (ParsBuilder1) super.appendId(id);
+	public ParsBuilder1 appendSeq(String seq) {
+		return (ParsBuilder1) super.appendSeq(seq);
 	}
 
 	@Override

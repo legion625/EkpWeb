@@ -11,6 +11,10 @@ import legion.util.DataFO;
 public class DataUtil {
 	public final static String NO_DATA = "(No data)";
 	
+	public static String getStr(boolean _b) {
+		return _b?"✓":"×";
+	}
+	
 	public static String nodataIfEmpty(String _str) {
 		return DataFO.isEmptyString(_str) ? NO_DATA : _str;
 	}

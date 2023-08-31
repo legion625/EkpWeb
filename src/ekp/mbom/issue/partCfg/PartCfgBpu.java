@@ -12,8 +12,8 @@ import legion.biz.Bpu;
 import legion.util.TimeTraveler;
 
 public abstract class PartCfgBpu extends Bpu<Boolean> {
-//	protected Logger log = LoggerFactory.getLogger(PartCfgBpu.class);
-	protected Logger log = LoggerFactory.getLogger(DebugLogMark.class);
+	protected Logger log = LoggerFactory.getLogger(PartCfgBpu.class);
+//	protected Logger log = LoggerFactory.getLogger(DebugLogMark.class);
 	protected static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
 
 	/* base */

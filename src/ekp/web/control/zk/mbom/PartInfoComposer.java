@@ -592,7 +592,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 //		ParsBuilder0 b = BpuFacade.getInstance().getBuilder(MbomBpuType.PARS_0);
 		ParsBuilder1 b = BpuFacade.getInstance().getBuilder(MbomBpuType.PARS_1, pa);
 //		b.appendPartAcqUid(pa.getUid());
-		b.appendId(txbCreateParsId.getValue()).appendName(txbCreateParsName.getValue())
+		b.appendSeq(txbCreateParsId.getValue()).appendName(txbCreateParsName.getValue())
 				.appendDesp(txbCreateParsDesp.getValue());
 		StringBuilder msg = new StringBuilder();
 		if (!b.verify(msg)) {
