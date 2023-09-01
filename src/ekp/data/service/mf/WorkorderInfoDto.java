@@ -1,6 +1,8 @@
 package ekp.data.service.mf;
 
+import ekp.data.MfDataService;
 import ekp.mf.type.WorkorderStatus;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
 public class WorkorderInfoDto extends ObjectModelInfoDto implements WorkorderInfo {
@@ -89,6 +91,12 @@ public class WorkorderInfoDto extends ObjectModelInfoDto implements WorkorderInf
 
 	void setOverTime(long overTime) {
 		this.overTime = overTime;
+	}
+
+	// -------------------------------------------------------------------------------
+	@Override
+	public WorkorderInfo reload() {
+		return DataServiceFactory.getInstance().getService(MfDataService.class).loadWorkorder(getUid());
 	}
 
 }

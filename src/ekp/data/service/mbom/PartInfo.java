@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ekp.DebugLogMark;
+import ekp.data.service.invt.MaterialMasterInfo;
+import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartUnit;
 import legion.ObjectModelInfo;
 
@@ -34,6 +36,10 @@ public interface PartInfo extends ObjectModelInfo {
 
 	// -------------------------------------------------------------------------------
 	List<PartAcqInfo> getPaList(boolean _reload);
+	
+	default List<PartAcqInfo> getPaList(PartAcquisitionType _paType) {
+		return getPaList(false).stream().filter(pa -> pa.getType() == _paType).collect(Collectors.toList());
+	}
 	
 	default List<PartCfgInfo> getReferencedPartCfgList(boolean _reload){
 		return getPaList(_reload).stream().flatMap(pa->pa.getPartCfgList(_reload).stream()).distinct().collect(Collectors.toList());
@@ -67,4 +73,7 @@ public interface PartInfo extends ObjectModelInfo {
 				.collect(Collectors.toList());
 		return ppartList;
 	}
+	
+	// -------------------------------------------------------------------------------
+	MaterialMasterInfo getMm();
 }

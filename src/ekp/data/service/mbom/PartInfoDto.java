@@ -3,7 +3,9 @@ package ekp.data.service.mbom;
 import java.util.List;
 
 import ekp.data.BizObjLoader;
+import ekp.data.InvtDataService;
 import ekp.data.MbomDataService;
+import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.mbom.type.PartUnit;
 import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
@@ -109,5 +111,15 @@ public class PartInfoDto extends ObjectModelInfoDto implements PartInfo {
 	@Override
 	public List<PartCfgInfo> getRootPartCfgList(boolean _reload) {
 		return partCfgListLoader.getObj(_reload);
+	}
+	
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<MaterialMasterInfo> mmLoader = BizObjLoader.of(() -> isMmAssigned() ?
+
+			DataServiceFactory.getInstance().getService(InvtDataService.class).loadMaterialMaster(getMmUid()) : null);
+
+	@Override
+	public MaterialMasterInfo getMm() {
+		return mmLoader.getObj();
 	}
 }

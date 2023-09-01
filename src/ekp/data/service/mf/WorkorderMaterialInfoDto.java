@@ -1,5 +1,7 @@
 package ekp.data.service.mf;
 
+import ekp.data.MfDataService;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
 public class WorkorderMaterialInfoDto extends ObjectModelInfoDto implements WorkorderMaterialInfo {
@@ -78,5 +80,11 @@ public class WorkorderMaterialInfoDto extends ObjectModelInfoDto implements Work
 
 	void setQty1(double qty1) {
 		this.qty1 = qty1;
+	}
+
+	// -------------------------------------------------------------------------------
+	@Override
+	public WorkorderMaterialInfo reload() {
+		return DataServiceFactory.getInstance().getService(MfDataService.class).loadWorkorderMaterial(getUid());
 	}
 }

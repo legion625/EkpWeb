@@ -32,6 +32,7 @@ import ekp.data.service.mbom.PartCfgConjInfo;
 import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.data.service.mbom.PpartInfo;
+import ekp.data.service.mf.WorkorderInfo;
 import ekp.data.service.pu.PurchInfo;
 import ekp.invt.InvtDelegate;
 import ekp.invt.bpu.InvtBpuType;
@@ -39,6 +40,7 @@ import ekp.invt.bpu.material.MaterialMasterBuilder0;
 import ekp.mbom.MbomBuilderDelegate;
 import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartUnit;
+import ekp.mf.MfBuilderDelegate;
 import ekp.mock.MockData;
 import ekp.pu.PuBuilderDelegate;
 import ekp.util.DataUtil;
@@ -57,6 +59,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 	//
 	private InvtDelegate invtDel = InvtDelegate.getInstance();
 	private MbomBuilderDelegate mbomDel = MbomBuilderDelegate.getInstance();
+	private MfBuilderDelegate mfDel = MfBuilderDelegate.getInstance();
 	private PuBuilderDelegate puDel = PuBuilderDelegate.getInstance();
 
 	//
@@ -121,19 +124,31 @@ public class PuScn1 extends AbstractEkpInitTest {
 		log.info("1a-2.建立paA。 [{}][{}][{}][{}]", paA.getId(), paA.getName(), paA.getTypeName(), paA.getStatusName());
 		ParsInfo parsA = mbomDel. buildParsType1(paA, tt,"010","組裝A", "把原料組裝成完成品。");
 		log.info("1a-3.建立parsA。 [{}][{}][{}]", parsA.getSeq(), parsA.getName(), parsA.getDesp());
-		assertTrue(mbomDel.partAssignMm(tt, partA, mmList.get(0)));
+		assertTrue(mbomDel.partAssignMm(tt, partA, mmA));
 		partA = partA.reload();
 		log.info("1a-4.partA完成指定料件基本檔。 [{}][{}][{}]", partA.getPin(), partA.isMmAssigned(), partA.getMmMano());
+		
 		/* 1b.建立part B */
 		PartInfo partB = mbomDel.buildPartType0(tt, "B", "PART_B", PartUnit.SPL);
 		log.info("1b-1.建立partB。 [{}][{}][{}]", partB.getPin(), partB.getName(), partB.getUnitName());
 		PartAcqInfo paB = mbomDel.buildPartAcqType0(partB, tt, "PART_ACQ_B", "PART_B採購", PartAcquisitionType.PURCHASING);
 		log.info("1b-2.建立paB。 [{}][{}][{}][{}]", paB.getId(), paB.getName(), paB.getTypeName(), paB.getStatusName());
+		//
+		assertTrue(mbomDel.partAssignMm(tt, partB, mmB));
+		partB = partB.reload();
+		log.info("1b-4.partB完成指定料件基本檔。 [{}][{}][{}]", partB.getPin(), partB.isMmAssigned(), partB.getMmMano());
+		
 		/* 1c.建立partC */
 		PartInfo partC = mbomDel.buildPartType0(tt, "C", "PART_C", PartUnit.SHE);
 		log.info("1c-1.建立partC。 [{}][{}][{}]", partC.getPin(), partC.getName(), partC.getUnitName());
 		PartAcqInfo paC = mbomDel.buildPartAcqType0(partC, tt, "PART_ACQ_C", "PART_C採購", PartAcquisitionType.PURCHASING);
 		log.info("1c-2.建立paC。 [{}][{}][{}][{}]", paC.getId(), paC.getName(), paC.getTypeName(), paC.getStatusName());
+		//
+		assertTrue(mbomDel.partAssignMm(tt, partC, mmC));
+		partC = partC.reload();
+		log.info("1c-4.partC完成指定料件基本檔。 [{}][{}][{}]", partC.getPin(), partC.isMmAssigned(), partC.getMmMano());
+		
+		
 		
 		
 		/* 1x.建立關連 */
@@ -191,7 +206,12 @@ public class PuScn1 extends AbstractEkpInitTest {
 		
 		/* 3a. */
 		log.debug("================================================================");
-		// TODO 產生工令
+		WorkorderInfo wo = mfDel.buildWo(tt, partA, paA);
+		assertNotNull("wo should NOT be null.", wo);
+		log.info("3a.產生工令。 [{}][{}][{}][{}]", wo.getWoNo(), wo.getPartPin(), wo.getPartMmMano(), wo.getStatusName());
+		
+		
+		
 		
 		// TODO 工令領料單
 		

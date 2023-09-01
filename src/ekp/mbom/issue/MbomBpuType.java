@@ -212,7 +212,7 @@ public enum MbomBpuType implements BpuType {
 			return false;
 		} else {
 			if (_p.isMmAssigned()) {
-				log.warn("_part should NOT have assigned mm. [{}][{}]", _p.getUid(), _p.getPin());
+				log.debug("_part should NOT have assigned mm. [{}][{}]", _p.getUid(), _p.getPin());
 				return false;
 			}
 		}

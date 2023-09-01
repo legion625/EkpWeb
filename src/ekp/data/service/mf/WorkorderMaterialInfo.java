@@ -17,5 +17,8 @@ public interface WorkorderMaterialInfo extends ObjectModelInfo{
 	double getQty0();
 
 	double getQty1();
+	
+	// -------------------------------------------------------------------------------
+	WorkorderMaterialInfo reload();
 
 }

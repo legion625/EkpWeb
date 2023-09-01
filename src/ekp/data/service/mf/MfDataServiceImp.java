@@ -11,6 +11,8 @@ import org.slf4j.event.Level;
 import ekp.data.MfDataService;
 import ekp.data.service.mf.query.WorkorderQueryParam;
 import ekp.serviceFacade.rmi.mf.WorkorderCreateObjRemote;
+import ekp.serviceFacade.rmi.mf.WorkorderMaterialCreateObjRemote;
+import ekp.serviceFacade.rmi.mf.WorkorderMaterialRemote;
 import ekp.serviceFacade.rmi.mf.WorkorderRemote;
 import legion.util.LogUtil;
 import legion.util.query.QueryOperation;
@@ -165,6 +167,73 @@ public class MfDataServiceImp implements MfDataService {
 	public boolean woRevertOver(String _uid) {
 		try {
 			return getEkpKernelRmi().woRevertOver(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+
+	// -------------------------------------------------------------------------------
+	// -------------------------------WorkorderMaterial-------------------------------
+	@Override
+	public WorkorderMaterialInfo createWorkorderMaterial(WorkorderMaterialCreateObj _dto) {
+		try {
+			WorkorderMaterialCreateObjRemote dto = MfFO.parseWorkorderMaterialCreateObjRemote(_dto);
+			return MfFO.parseWorkorderMaterial(getEkpKernelRmi().createWorkorderMaterial(dto));
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
+	public boolean deleteWorkorderMaterial(String _uid) {
+		try {
+			return getEkpKernelRmi().deleteWorkorderMaterial(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+
+	@Override
+	public WorkorderMaterialInfo loadWorkorderMaterial(String _uid) {
+		try {
+			WorkorderMaterialRemote remote = getEkpKernelRmi().loadWorkorderMaterial(_uid);
+			return remote == null ? null : MfFO.parseWorkorderMaterial(remote);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
+	public List<WorkorderMaterialInfo> loadWorkorderMaterialList(String _woUid) {
+		try {
+			List<WorkorderMaterialRemote> remoteList = getEkpKernelRmi().loadWorkorderMaterialList(_woUid);
+			List<WorkorderMaterialInfo> list = remoteList.stream().map(MfFO::parseWorkorderMaterial)
+					.collect(Collectors.toList());
+			return list;
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
+	public boolean womAddQty0(String _uid, double _addQty) {
+		try {
+			return getEkpKernelRmi().womAddQty0(_uid, _addQty);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+
+	@Override
+	public boolean womQty0to1(String _uid, double _qty) {
+		try {
+			return getEkpKernelRmi().womQty0to1(_uid, _qty);
 		} catch (Throwable e) {
 			LogUtil.log(log, e, Level.ERROR);
 			return false;
