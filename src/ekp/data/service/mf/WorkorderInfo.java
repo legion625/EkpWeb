@@ -1,5 +1,7 @@
 package ekp.data.service.mf;
 
+import java.util.List;
+
 import ekp.mf.type.WorkorderStatus;
 import legion.ObjectModelInfo;
 
@@ -28,5 +30,8 @@ public interface WorkorderInfo extends ObjectModelInfo {
 	default String getStatusName() {
 		return (getStatus() == null ? WorkorderStatus.UNDEFINED : getStatus()).getName();
 	}
+	
+	// -------------------------------------------------------------------------------
+		List<WorkorderMaterialInfo> getWomList();
 
 }

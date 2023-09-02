@@ -1,5 +1,8 @@
 package ekp.data.service.mf;
 
+import java.util.List;
+
+import ekp.data.BizObjLoader;
 import ekp.data.MfDataService;
 import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
@@ -87,4 +90,5 @@ public class WorkorderMaterialInfoDto extends ObjectModelInfoDto implements Work
 	public WorkorderMaterialInfo reload() {
 		return DataServiceFactory.getInstance().getService(MfDataService.class).loadWorkorderMaterial(getUid());
 	}
+
 }

@@ -1,5 +1,8 @@
 package ekp.data.service.mf;
 
+import java.util.List;
+
+import ekp.data.BizObjLoader;
 import ekp.data.MfDataService;
 import ekp.mf.type.WorkorderStatus;
 import legion.DataServiceFactory;
@@ -97,6 +100,15 @@ public class WorkorderInfoDto extends ObjectModelInfoDto implements WorkorderInf
 	@Override
 	public WorkorderInfo reload() {
 		return DataServiceFactory.getInstance().getService(MfDataService.class).loadWorkorder(getUid());
+	}
+
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<List<WorkorderMaterialInfo>> womListLoader = BizObjLoader.of(
+			() -> DataServiceFactory.getInstance().getService(MfDataService.class).loadWorkorderMaterialList(getUid()));
+
+	@Override
+	public List<WorkorderMaterialInfo> getWomList() {
+		return womListLoader.getObj();
 	}
 
 }
