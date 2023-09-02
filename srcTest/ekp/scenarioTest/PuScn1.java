@@ -189,17 +189,15 @@ public class PuScn1 extends AbstractEkpInitTest {
 		assertNotNull("p0 should NOT be null.", p0);
 		log.info("2a.完成建立購案。 [{}][{}]", p0.getPuNo(), p0.getTitle());
 		
-		/* 2b.購案履約（依Purch產生InvtOrder） */
+		/* 2b.購案履約（依Purch產生InvtOrder、InvtOrderItem、MbsbStmt） */
 		InvtOrderInfo io = invtDel.buildIo1(tt, p0, "USER1", "Min-Hua", wb);
 		assertNotNull("io should NOT be null.", io);
-		log.info("2b.完成產生InvtOrder。 [{}][{}][{}]", io.getIosn(), io.getStatus(), io.getIoiList().size());
+		log.info("2b.完成產生InvtOrder。 [{}][{}][{}][{}]", io.getIosn(), io.getStatus(), io.getIoiList().size(),io.getMbsbStmtList().size());
 		
-		
-		// TODO
-		/* 2c.InvtOrder登帳（產生MaterialBinStock帳值） */
+		/* 2c.InvtOrder登帳 */
 		assertTrue(invtDel.ioApv(tt, io));
 		io = io.reload();
-		log.info("2c.完成InvtOrder登帳。 [{}][{}][{}]", io.getIosn(), io.getStatus(), io.getIoiList().size());
+		log.info("2c.完成InvtOrder登帳。 [{}][{}][{}][{}]", io.getIosn(), io.getStatus(), io.getIoiList().size(),io.getMbsbStmtList().size());
 		
 		// showMbsRelatedInfo
 		showMbsRelatedInfo(mmList);
@@ -210,6 +208,8 @@ public class PuScn1 extends AbstractEkpInitTest {
 		assertNotNull("wo should NOT be null.", wo);
 		log.info("3a.產生工令。 [{}][{}][{}][{}]", wo.getWoNo(), wo.getPartPin(), wo.getPartMmMano(), wo.getStatusName());
 		
+		// TODO
+//		
 		
 		
 		
@@ -236,7 +236,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 				log.debug("  {}\t{}\t{}\t{}\t{}", mbs.getMano(), mbs.getWrhsLocName(), mbs.getWrhsBinName(),
 						mbs.getSumStockQty(), mbs.getSumStockValue());
 				for (MaterialBinStockBatchInfo mbsb : mbs.getMbsbList()) {
-					log.debug("    {}\t{}\t{}\t{}\t{}\t{}", mbsb.getMi().getMisn(), mbsb.getMi().getMiac(),
+					log.debug("    {}\t{}\t{}\t{}\t{}", mbsb.getMi().getMisn(), mbsb.getMi().getMiac(),
 							mbsb.getMi().getMiacSrcNo(), mbsb.getStockQty(), mbsb.getStockValue());
 					for (MbsbStmtInfo stmt : mbsb.getStmtList()) {
 						log.debug("      {}\t{}\t{}\t{}", stmt.getMbsbFlowType(), stmt.getStmtQty(),

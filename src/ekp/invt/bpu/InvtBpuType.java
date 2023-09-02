@@ -1,6 +1,7 @@
 package ekp.invt.bpu;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import ekp.data.service.invt.InvtOrderInfo;
 import ekp.data.service.invt.InvtOrderItemInfo;
 import ekp.data.service.invt.MaterialInstInfo;
 import ekp.data.service.invt.MaterialMasterInfo;
+import ekp.data.service.invt.MbsbStmtInfo;
 import ekp.data.service.invt.WrhsBinInfo;
 import ekp.data.service.invt.WrhsLocInfo;
 import ekp.data.service.pu.PurchInfo;
@@ -22,12 +24,13 @@ import ekp.invt.bpu.material.MaterialInstBuilder;
 import ekp.invt.bpu.material.MaterialInstBuilder0;
 import ekp.invt.bpu.material.MaterialMasterBpuDel0;
 import ekp.invt.bpu.material.MaterialMasterBuilder0;
-import ekp.invt.bpu.material.MbsbStmtBuilderByIoi;
+import ekp.invt.bpu.material.MbsbStmtBuilderByPurchItem;
 import ekp.invt.bpu.wrhsLoc.WrhsBinBpuDel0;
 import ekp.invt.bpu.wrhsLoc.WrhsBinBuilder1;
 import ekp.invt.bpu.wrhsLoc.WrhsLocBpuDel0;
 import ekp.invt.bpu.wrhsLoc.WrhsLocBuilder0;
 import ekp.invt.type.InvtOrderStatus;
+import ekp.invt.type.PostingStatus;
 import ekp.mbom.issue.MbomBpuType;
 import ekp.pu.type.PurchPerfStatus;
 import legion.biz.BpuType;
@@ -40,7 +43,7 @@ public enum InvtBpuType implements BpuType {
 	WB_1(WrhsBinBuilder1.class, WrhsLocInfo.class), //
 	WB_$DEL0(WrhsBinBpuDel0.class, WrhsBinInfo.class), //
 	/* InvtOrder */
-	IO_11(InvtOrderBuilder11.class,PurchInfo.class), //
+	IO_11(InvtOrderBuilder11.class,PurchInfo.class), // io, ioi (mi,mbsbStmt ), io->TO_APV, pu->Perfed
 	IO_$APPROVE(IoBpuApprove.class, InvtOrderInfo.class ), //
 	/* InvtOrderItem */
 //	IOI_11(InvtOrderItemBuilder11.class, PurchItemInfo.class), //
@@ -50,10 +53,6 @@ public enum InvtBpuType implements BpuType {
 	/* MaterialInst */
 	MI_0(MaterialInstBuilder0.class), //
 	MI_$DEL0(MaterialInstBpuDel0.class,MaterialInstInfo.class ), //
-	
-	/* MbsbStmt */
-	MBSB_STMT_BY_IOI(MbsbStmtBuilderByIoi.class, InvtOrderItemInfo.class), //
-
 	;
 
 	private Class builderClass;
@@ -127,6 +126,8 @@ public enum InvtBpuType implements BpuType {
 			return false;
 		}
 
+		
+		
 		//
 		if (InvtOrderStatus.TO_APV != _io.getStatus()) {
 			log.debug("InvtOrderStatus should be [{}], but is [{}]", InvtOrderStatus.TO_APV, _io.getStatus());
@@ -134,7 +135,18 @@ public enum InvtBpuType implements BpuType {
 		}
 
 		//
-
+		
+		List<MbsbStmtInfo> mbsbStmtList = _io.getMbsbStmtList();
+		if (mbsbStmtList.size() <= 0) {
+			log.debug("mbsbStmtList.size()<=0 [{}][{}]", _io.getUid(), _io.getIosn());
+			return false;
+		} else {
+			if (!mbsbStmtList.stream().allMatch(s -> PostingStatus.TO_POST == s.getPostingStatus())) {
+				log.debug("MbsbStmt's status should be [{}].", PostingStatus.TO_POST);
+				return false;
+			}
+		}
+		
 		return true;
 	}
 	

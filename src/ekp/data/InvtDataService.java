@@ -94,17 +94,18 @@ public interface InvtDataService extends IntegrationService, EkpKernelRmi {
 	public List<InvtOrderItemInfo> loadInvtOrderItemList(String _ioUid);
 	
 	public List<InvtOrderItemInfo> loadInvtOrderItemListByMm(String _mmUid);
-	public List<InvtOrderItemInfo> loadInvtOrderItemListByMi(String _miUid);
-	public List<InvtOrderItemInfo> loadInvtOrderItemListByWb(String _wrhsBinUid);
 
 	public QueryOperation<InvtOrderItemQueryParam, InvtOrderItemInfo> searchInvtOrderItem(
 			QueryOperation<InvtOrderItemQueryParam, InvtOrderItemInfo> _param,
 			Map<InvtOrderItemQueryParam, QueryValue[]> _existsDetailMap);
 	
+	public boolean invtOrderItemMbsbStmtCreated(String _uid);
+	
+	@Deprecated
 	public boolean invtOrderItemAssignMi(String _uid, String _miUid);
-	public boolean invtOrderItemRevertAssignMi(String _uid);
-	public boolean invtOrderItemAssignWrhsBin(String _uid, String _wrhsBinUid);
-	public boolean invtOrderItemRevertAssignWrhsBin(String _uid);
+//	public boolean invtOrderItemRevertAssignMi(String _uid);
+//	public boolean invtOrderItemAssignWrhsBin(String _uid, String _wrhsBinUid);
+//	public boolean invtOrderItemRevertAssignWrhsBin(String _uid);
 
 	// -------------------------------------------------------------------------------
 	// --------------------------------MaterialMaster---------------------------------

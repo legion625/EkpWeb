@@ -83,7 +83,7 @@ public abstract class ParsProcBuilder extends Bpu<PprocInfo> {
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 
 		// parsUid

@@ -44,18 +44,22 @@ public class InvtOrderBuilder11 extends InvtOrderBuilder {
 	public InvtOrderBuilder11 appendWb(WrhsBinInfo wb) {
 		this.wb = wb;
 		if (ioiBuilderList != null)
-			ioiBuilderList.forEach(ioib -> ioib.appendWrhsBinUid(wb.getUid()));
+			ioiBuilderList.forEach(ioib -> ioib.appendWb(wb));
 		return this;
 	}
 
 	// -------------------------------------------------------------------------------
+	public PurchInfo getPurch() {
+		return purch;
+	}
+	
 	@Override
 	protected List<InvtOrderItemBuilder11> getInvtOrderItemBuilderList() {
 		return ioiBuilderList;
 	}
-
-	public PurchInfo getPurch() {
-		return purch;
+	
+	public WrhsBinInfo getWb() {
+		return wb;
 	}
 	
 	// -------------------------------------------------------------------------------

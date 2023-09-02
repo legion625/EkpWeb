@@ -58,9 +58,12 @@ public class PurchItemBuilder1 extends PurchItemBuilder{
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 
+		if(!verifyThis(_msg,  _full))
+			v = false;
+		
 		if (getMm() == null) {
 			_msg.append("料件基本檔有誤。").append(System.lineSeparator());
 			v = false;

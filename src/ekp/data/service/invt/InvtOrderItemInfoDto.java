@@ -1,5 +1,7 @@
 package ekp.data.service.invt;
 
+import java.util.List;
+
 import ekp.data.BizObjLoader;
 import ekp.data.InvtDataService;
 import ekp.invt.type.InvtOrderType;
@@ -19,10 +21,14 @@ public class InvtOrderItemInfoDto extends ObjectModelInfoDto implements InvtOrde
 	private double orderQty; // 記錄異動的數量
 	private double orderValue; // 記錄異動的金額
 
-	private boolean miAssigned;
-	private String miUid;
-	private boolean wrhsBinAssigned;
-	private String wrhsBinUid;
+	private boolean mbsbStmtCreated; // FIXME
+	
+	private boolean miAssigned; // FIXME
+//	private String miUid;
+//	private boolean wrhsBinAssigned;
+//	private String wrhsBinUid;
+
+	
 
 	@Override
 	public String getIoUid() {
@@ -77,34 +83,43 @@ public class InvtOrderItemInfoDto extends ObjectModelInfoDto implements InvtOrde
 	void setMiAssigned(boolean miAssigned) {
 		this.miAssigned = miAssigned;
 	}
+//
+//	@Override
+//	public String getMiUid() {
+//		return miUid;
+//	}
+//
+//	void setMiUid(String miUid) {
+//		this.miUid = miUid;
+//	}
+//
+//	@Override
+//	public boolean isWrhsBinAssigned() {
+//		return wrhsBinAssigned;
+//	}
+//
+//	void setWrhsBinAssigned(boolean wrhsBinAssigned) {
+//		this.wrhsBinAssigned = wrhsBinAssigned;
+//	}
+//
+//	@Override
+//	public String getWrhsBinUid() {
+//		return wrhsBinUid;
+//	}
+//
+//	void setWrhsBinUid(String wrhsBinUid) {
+//		this.wrhsBinUid = wrhsBinUid;
+//	}
 
 	@Override
-	public String getMiUid() {
-		return miUid;
+	public boolean isMbsbStmtCreated() {
+		return mbsbStmtCreated;
 	}
 
-	void setMiUid(String miUid) {
-		this.miUid = miUid;
+	void setMbsbStmtCreated(boolean mbsbStmtCreated) {
+		this.mbsbStmtCreated = mbsbStmtCreated;
 	}
-
-	@Override
-	public boolean isWrhsBinAssigned() {
-		return wrhsBinAssigned;
-	}
-
-	void setWrhsBinAssigned(boolean wrhsBinAssigned) {
-		this.wrhsBinAssigned = wrhsBinAssigned;
-	}
-
-	@Override
-	public String getWrhsBinUid() {
-		return wrhsBinUid;
-	}
-
-	void setWrhsBinUid(String wrhsBinUid) {
-		this.wrhsBinUid = wrhsBinUid;
-	}
-
+	
 	// -------------------------------------------------------------------------------
 	@Override
 	public InvtOrderItemInfo reload() {
@@ -112,12 +127,21 @@ public class InvtOrderItemInfoDto extends ObjectModelInfoDto implements InvtOrde
 	}
 
 	// -------------------------------------------------------------------------------
-	private BizObjLoader<MaterialInstInfo> miLoader = BizObjLoader
-			.of(() -> DataServiceFactory.getInstance().getService(InvtDataService.class).loadMaterialInst(getMiUid()));
+	private BizObjLoader<List<MbsbStmtInfo>> mbsbStmtListLoader = BizObjLoader.of(
+			() -> DataServiceFactory.getInstance().getService(InvtDataService.class).loadMbsbStmtListByIoi(getUid()));
 
 	@Override
-	public MaterialInstInfo getMi() {
-		return miLoader.getObj();
+	public List<MbsbStmtInfo> getMbsbStmtList() {
+		return mbsbStmtListLoader.getObj();
 	}
+	
+	// -------------------------------------------------------------------------------
+//	private BizObjLoader<MaterialInstInfo> miLoader = BizObjLoader
+//			.of(() -> DataServiceFactory.getInstance().getService(InvtDataService.class).loadMaterialInst(getMiUid()));
+//
+//	@Override
+//	public MaterialInstInfo getMi() {
+//		return miLoader.getObj();
+//	}
 
 }

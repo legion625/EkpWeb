@@ -89,19 +89,23 @@ public abstract class WomBuilder extends Bpu<WorkorderMaterialInfo> {
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 
-//		if (DataFO.isEmptyString(getWoUid())) {
-//			_msg.append("WoUid should NOT be empty.").append(System.lineSeparator());
-//			v = false;
-//		}
-//
-//		if (DataFO.isEmptyString(getWoNo())) {
-//			_msg.append("WoNo should NOT be empty.").append(System.lineSeparator());
-//			v = false;
-//		}
+		/**/
+		if(_full) {
+			if (DataFO.isEmptyString(getWoUid())) {
+				_msg.append("WoUid should NOT be empty.").append(System.lineSeparator());
+				v = false;
+			}
 
+			if (DataFO.isEmptyString(getWoNo())) {
+				_msg.append("WoNo should NOT be empty.").append(System.lineSeparator());
+				v = false;
+			}
+		}
+		
+		/**/
 		if (DataFO.isEmptyString(getMmUid())) {
 			_msg.append("MmUid should NOT be empty.").append(System.lineSeparator());
 			v = false;

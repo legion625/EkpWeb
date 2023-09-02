@@ -1,5 +1,9 @@
 package ekp.invt.bpu.material;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ekp.DebugLogMark;
 import ekp.data.InvtDataService;
 import ekp.data.service.invt.MaterialInstInfo;
 import ekp.data.service.invt.MbsbStmtCreateObj;
@@ -11,6 +15,7 @@ import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
 public abstract class MbsbStmtBuilder extends Bpu<MbsbStmtInfo> {
+	
 	private static InvtDataService invtDataService = DataServiceFactory.getInstance().getService(InvtDataService.class);
 
 	/* base */
@@ -56,6 +61,7 @@ public abstract class MbsbStmtBuilder extends Bpu<MbsbStmtInfo> {
 	// -------------------------------------------------------------------------------
 	// ------------------------------------getter-------------------------------------
 	public String getMbsbUid() {
+		log.warn("super getMbsbUid: this should NOT be called");
 		return mbsbUid;
 	}
 
@@ -83,6 +89,7 @@ public abstract class MbsbStmtBuilder extends Bpu<MbsbStmtInfo> {
 		dto.setMbsbFlowType(getMbsbFlowType());
 		dto.setStmtQty(getStmtQty());
 		dto.setStmtValue(getStmtValue());
+		log.debug("{}\t{}\t{}\t{}\t{}", dto.getMbsbUid(), dto.getIoiUid(), dto.getMbsbFlowType(), dto.getStmtQty(), dto.getStmtValue());
 		return dto;
 	}
 
@@ -93,19 +100,22 @@ public abstract class MbsbStmtBuilder extends Bpu<MbsbStmtInfo> {
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 
-		if (DataFO.isEmptyString(getMbsbUid())) {
-			_msg.append("mbsbUid should NOT be empty.").append(System.lineSeparator());
-			v = false;
+		/* base */
+		if (_full) {
+			if (DataFO.isEmptyString(getMbsbUid())) {
+				_msg.append("mbsbUid should NOT be empty.").append(System.lineSeparator());
+				v = false;
+			}
+			if (DataFO.isEmptyString(getIoiUid())) {
+				_msg.append("ioiUid should NOT be empty.").append(System.lineSeparator());
+				v = false;
+			}
 		}
 
-		if (DataFO.isEmptyString(getIoiUid())) {
-			_msg.append("ioiUid should NOT be empty.").append(System.lineSeparator());
-			v = false;
-		}
-
+		/**/
 		if (getMbsbFlowType() == null || MbsbFlowType.UNDEFINED == getMbsbFlowType()) {
 			_msg.append("mbsbFlowType error.").append(System.lineSeparator());
 			v = false;
@@ -118,7 +128,8 @@ public abstract class MbsbStmtBuilder extends Bpu<MbsbStmtInfo> {
 
 		return v;
 	}
-	
+
+	// -------------------------------------------------------------------------------
 	@Override
 	protected MbsbStmtInfo buildProcess(TimeTraveler _tt) {
 		TimeTraveler tt = new TimeTraveler();

@@ -32,12 +32,17 @@ public abstract class Bpu<U> {
 	 * 「驗證」：正確性檢查（資料結構層級）
 	 * 
 	 * @param _msg
+	 * @param _full:有些應該檢查的屬性在build時才產生出來，這些屬性在_full為true時再檢查。若只是在Bpu的編輯階段，可透過設定_full為false作為輸入端的檢查條件。
 	 * @return
 	 */
-	public abstract boolean verify(StringBuilder _msg);
+	public abstract boolean verify(StringBuilder _msg, boolean _full);
+	
+	public final boolean verify(StringBuilder _msg) {
+		return verify(_msg, false);
+	}
 
 	public final U build(StringBuilder _msg, TimeTraveler _tt) {
-		if (!verify(_msg))
+		if (!verify(_msg, true))
 			return null;
 		TimeTraveler tt = new TimeTraveler();
 		try {

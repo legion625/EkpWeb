@@ -93,10 +93,11 @@ public class InvtFO {
 		dto.setIoType(_remote.getIoType());
 		dto.setOrderQty(_remote.getOrderQty());
 		dto.setOrderValue(_remote.getOrderValue());
-		dto.setMiAssigned(_remote.isMiAssigned());
-		dto.setMiUid(_remote.getMiUid());
-		dto.setWrhsBinAssigned(_remote.isWrhsBinAssigned());
-		dto.setWrhsBinUid(_remote.getWrhsBinUid());
+		dto.setMiAssigned(_remote.isMiAssigned()); // FIXME
+//		dto.setMiUid(_remote.getMiUid());
+//		dto.setWrhsBinAssigned(_remote.isWrhsBinAssigned());
+//		dto.setWrhsBinUid(_remote.getWrhsBinUid());
+//		dto.setMbsbStmtCreated(_remote.isMbsbStmtCreated()); // FIXME
 		return dto;
 	}
 	

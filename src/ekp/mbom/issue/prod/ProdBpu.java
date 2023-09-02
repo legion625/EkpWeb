@@ -38,7 +38,7 @@ public abstract class ProdBpu extends Bpu<Boolean> {
 	public abstract boolean validate(StringBuilder _msg);
 
 	@Override
-	public abstract boolean verify(StringBuilder _msg);
+	public abstract boolean verify(StringBuilder _msg, boolean _full);
 
 	@Override
 	protected abstract Boolean buildProcess(TimeTraveler _tt);

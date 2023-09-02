@@ -67,7 +67,7 @@ public abstract class WrhsBinBuilder extends Bpu<WrhsBinInfo>{
 	}
 	
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 
 		if(DataFO.isEmptyString(getId())) {

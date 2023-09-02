@@ -93,7 +93,7 @@ public abstract class PartCfgBuilder extends Bpu<PartCfgInfo> {
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 		
 		// rootPartUid

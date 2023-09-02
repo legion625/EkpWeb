@@ -61,9 +61,9 @@ public class WoBuilder1 extends WoBuilder {
 	
 	// -------------------------------------------------------------------------------
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
-		if (!super.verify(_msg))
+		if (!super.verify(_msg, _full))
 			v = false;
 
 		for (WomBuilder1 womBuilder : getWomBuilderList()) {

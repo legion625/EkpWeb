@@ -341,31 +341,31 @@ public class InvtDataServiceImp implements InvtDataService {
 		}
 	}
 
-	@Override
-	public List<InvtOrderItemInfo> loadInvtOrderItemListByMi(String _miUid) {
-		try {
-			List<InvtOrderItemRemote> remoteList = getEkpKernelRmi().loadInvtOrderItemListByMi(_miUid);
-			List<InvtOrderItemInfo> list = remoteList.stream().map(InvtFO::parseInvtOrderItem)
-					.collect(Collectors.toList());
-			return list;
-		} catch (Throwable e) {
-			LogUtil.log(log, e, Level.ERROR);
-			return null;
-		}
-	}
-
-	@Override
-	public List<InvtOrderItemInfo> loadInvtOrderItemListByWb(String _wrhsBinUid) {
-		try {
-			List<InvtOrderItemRemote> remoteList = getEkpKernelRmi().loadInvtOrderItemListByWb(_wrhsBinUid);
-			List<InvtOrderItemInfo> list = remoteList.stream().map(InvtFO::parseInvtOrderItem)
-					.collect(Collectors.toList());
-			return list;
-		} catch (Throwable e) {
-			LogUtil.log(log, e, Level.ERROR);
-			return null;
-		}
-	}
+//	@Override
+//	public List<InvtOrderItemInfo> loadInvtOrderItemListByMi(String _miUid) {
+//		try {
+//			List<InvtOrderItemRemote> remoteList = getEkpKernelRmi().loadInvtOrderItemListByMi(_miUid);
+//			List<InvtOrderItemInfo> list = remoteList.stream().map(InvtFO::parseInvtOrderItem)
+//					.collect(Collectors.toList());
+//			return list;
+//		} catch (Throwable e) {
+//			LogUtil.log(log, e, Level.ERROR);
+//			return null;
+//		}
+//	}
+//
+//	@Override
+//	public List<InvtOrderItemInfo> loadInvtOrderItemListByWb(String _wrhsBinUid) {
+//		try {
+//			List<InvtOrderItemRemote> remoteList = getEkpKernelRmi().loadInvtOrderItemListByWb(_wrhsBinUid);
+//			List<InvtOrderItemInfo> list = remoteList.stream().map(InvtFO::parseInvtOrderItem)
+//					.collect(Collectors.toList());
+//			return list;
+//		} catch (Throwable e) {
+//			LogUtil.log(log, e, Level.ERROR);
+//			return null;
+//		}
+//	}
 
 	@Override
 	public QueryOperation<InvtOrderItemQueryParam, InvtOrderItemInfo> searchInvtOrderItem(
@@ -387,6 +387,18 @@ public class InvtDataServiceImp implements InvtDataService {
 	}
 
 	@Override
+	public boolean invtOrderItemMbsbStmtCreated(String _uid) {
+		try {
+//			return getEkpKernelRmi().invtOrderItemMbsbStmtCreated(_uid);
+			// FIXME kernel待更新
+			return false;
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+	
+	@Override
 	public boolean invtOrderItemAssignMi(String _uid, String _miUid) {
 		try {
 			return getEkpKernelRmi().invtOrderItemAssignMi(_uid, _miUid);
@@ -395,36 +407,36 @@ public class InvtDataServiceImp implements InvtDataService {
 			return false;
 		}
 	}
-
-	@Override
-	public boolean invtOrderItemRevertAssignMi(String _uid) {
-		try {
-			return getEkpKernelRmi().invtOrderItemRevertAssignMi(_uid);
-		} catch (Throwable e) {
-			LogUtil.log(log, e, Level.ERROR);
-			return false;
-		}
-	}
-
-	@Override
-	public boolean invtOrderItemAssignWrhsBin(String _uid, String _wrhsBinUid) {
-		try {
-			return getEkpKernelRmi().invtOrderItemAssignWrhsBin(_uid, _wrhsBinUid);
-		} catch (Throwable e) {
-			LogUtil.log(log, e, Level.ERROR);
-			return false;
-		}
-	}
-
-	@Override
-	public boolean invtOrderItemRevertAssignWrhsBin(String _uid) {
-		try {
-			return getEkpKernelRmi().invtOrderItemRevertAssignWrhsBin(_uid);
-		} catch (Throwable e) {
-			LogUtil.log(log, e, Level.ERROR);
-			return false;
-		}
-	}
+//
+//	@Override
+//	public boolean invtOrderItemRevertAssignMi(String _uid) {
+//		try {
+//			return getEkpKernelRmi().invtOrderItemRevertAssignMi(_uid);
+//		} catch (Throwable e) {
+//			LogUtil.log(log, e, Level.ERROR);
+//			return false;
+//		}
+//	}
+//
+//	@Override
+//	public boolean invtOrderItemAssignWrhsBin(String _uid, String _wrhsBinUid) {
+//		try {
+//			return getEkpKernelRmi().invtOrderItemAssignWrhsBin(_uid, _wrhsBinUid);
+//		} catch (Throwable e) {
+//			LogUtil.log(log, e, Level.ERROR);
+//			return false;
+//		}
+//	}
+//
+//	@Override
+//	public boolean invtOrderItemRevertAssignWrhsBin(String _uid) {
+//		try {
+//			return getEkpKernelRmi().invtOrderItemRevertAssignWrhsBin(_uid);
+//		} catch (Throwable e) {
+//			LogUtil.log(log, e, Level.ERROR);
+//			return false;
+//		}
+//	}
 
 	// -------------------------------------------------------------------------------
 	// --------------------------------MaterialMaster---------------------------------

@@ -85,7 +85,7 @@ public abstract class InvtOrderBuilder extends Bpu<InvtOrderInfo> {
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 		
 		if(DataFO.isEmptyString(getApplierId())) {

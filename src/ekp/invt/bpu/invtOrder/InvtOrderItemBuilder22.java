@@ -35,9 +35,9 @@ public class InvtOrderItemBuilder22 extends InvtOrderItemBuilder {
 		}
 
 		@Override
-		public boolean verify(StringBuilder _msg) {
+		public boolean verify(StringBuilder _msg, boolean _full) {
 			boolean v = true;
-			if (!verifyThis(_msg))
+			if (!verifyThis(_msg, _full))
 				v = false;
 
 //			//

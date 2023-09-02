@@ -2,43 +2,43 @@ package ekp.invt.bpu.invtOrder;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 import ekp.data.service.invt.InvtOrderItemInfo;
 import ekp.data.service.invt.MaterialInstInfo;
+import ekp.data.service.invt.MbsbStmtInfo;
 import ekp.data.service.invt.WrhsBinInfo;
 import ekp.data.service.pu.PurchItemInfo;
 import ekp.invt.bpu.InvtBpuType;
 import ekp.invt.bpu.material.MaterialInstBuilder0;
+import ekp.invt.bpu.material.MbsbStmtBuilderByPurchItem;
 import ekp.invt.type.InvtOrderType;
 import ekp.invt.type.MaterialInstAcqChannel;
-import ekp.mbom.issue.MbomBpuType;
-import legion.biz.Bpu;
 import legion.biz.BpuFacade;
-import legion.util.DataFO;
 import legion.util.DateFormatUtil;
 import legion.util.TimeTraveler;
 
 public class InvtOrderItemBuilder11 extends InvtOrderItemBuilder {
 	/* base */
 	private PurchItemInfo pi;
-	
+
 	/* data */
-	private String miUid; // optional
-	private String wrhsBinUid;
 	private MaterialInstBuilder0 miBuilder;
+	private MbsbStmtBuilderByPurchItem mbsbStmtBuilder;
+	private WrhsBinInfo wb;
 
 	@Override
 	protected InvtOrderItemBuilder11 appendBase() {
 		/* base */
 		pi = (PurchItemInfo) args[0];
-		
+
 		appendMmUid(pi.getMmUid());
 		appendIoType(InvtOrderType.I1);
 		appendOrderQty(pi.getQty()).appendOrderValue(pi.getValue());
-		
+
 		/* data */
+		// miBuilder
 		miBuilder = BpuFacade.getInstance().getBuilder(InvtBpuType.MI_0);
-//		miBuilder = new MaterialInstBuilder0();
 		miBuilder.appendMmUid(pi.getMmUid());
 		miBuilder.appendMiac(MaterialInstAcqChannel.PURCHASING).appendMiacSrcNo(pi.getPurch().getPuNo());
 		miBuilder.appendQty(pi.getQty()).appendValue(pi.getValue());
@@ -47,30 +47,28 @@ public class InvtOrderItemBuilder11 extends InvtOrderItemBuilder {
 		LocalDate ldEff = DateFormatUtil.parseLocalDate(dateEff);
 		LocalDate ldExp = ldEff.plusYears(2); // 預設帶2年
 		miBuilder.appendExpDate(DateFormatUtil.parseLong(ldExp));
-		
-		return this;
-	}
-	
-	// -------------------------------------------------------------------------------
-	protected InvtOrderItemBuilder appendMiUid(String miUid) {
-		this.miUid = miUid;
+
+		// mbsbStmtBuilderList
+		mbsbStmtBuilder = new MbsbStmtBuilderByPurchItem();
+		mbsbStmtBuilder.init(pi);
+
 		return this;
 	}
 
-	protected InvtOrderItemBuilder appendWrhsBinUid(String wrhsBinUid) {
-		this.wrhsBinUid = wrhsBinUid;
+	// -------------------------------------------------------------------------------
+	// -----------------------------------appender------------------------------------
+	InvtOrderItemBuilder11 appendWb(WrhsBinInfo wb) {
+		this.wb = wb;
+		mbsbStmtBuilder.appendWb(wb);
 		return this;
 	}
-	
+
 	// -------------------------------------------------------------------------------
-	public String getMiUid() {
-		return miUid;
+	// ------------------------------------getter-------------------------------------
+	public WrhsBinInfo getWb() {
+		return wb;
 	}
 
-	public String getWrhsBinUid() {
-		return wrhsBinUid;
-	}
-	
 	// -------------------------------------------------------------------------------
 	@Override
 	public boolean validate(StringBuilder _msg) {
@@ -79,14 +77,14 @@ public class InvtOrderItemBuilder11 extends InvtOrderItemBuilder {
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
-		if (!verifyThis(_msg))
+		if (!verifyThis(_msg, _full))
 			v = false;
 
 		//
-		if (DataFO.isEmptyString(getWrhsBinUid())) {
-			_msg.append("wrhsBinUid should NOT be empty.").append(System.lineSeparator());
+		if (getWb() == null) {
+			_msg.append("WrhsBin should NOT be null.").append(System.lineSeparator());
 			v = false;
 		}
 
@@ -113,26 +111,16 @@ public class InvtOrderItemBuilder11 extends InvtOrderItemBuilder {
 			log.error("buildInvtOrderItem return null.");
 			return null;
 		} // copy sites inside
-		
-		/* 2a.assignMi */
-		appendMiUid(mi.getUid()); //
-		if (!invtDataService.invtOrderItemAssignMi(ioi.getUid(), getMiUid())) {
+
+		/* 3.MbsbStmt */
+		mbsbStmtBuilder.appendMi(mi).appendIoiUid(ioi.getUid());
+		StringBuilder msg = new StringBuilder();
+		MbsbStmtInfo mbsbStmt = mbsbStmtBuilder.build(msg, tt);
+		if (mbsbStmt == null) {
 			tt.travel();
-			log.error("invtOrderItemAssignMi return false.");
+			log.error("mbsbStmtBuilder.build return null. {}", msg.toString());
 			return null;
-		}
-		tt.addSite("revert invtOrderItemAssignMi", () -> invtDataService.invtOrderItemRevertAssignMi(ioi.getUid()));
-		log.info("invtDataService.invtOrderItemAssignMi");
-		
-		
-		/* 2b */
-		if(!invtDataService.invtOrderItemAssignWrhsBin(ioi.getUid(), getWrhsBinUid())) {
-			tt.travel();
-			log.error("invtOrderItemAssignWrhsBin return false.");
-			return null;
-		}
-		tt.addSite("revert invtOrderItemAssignWrhsBin", () -> invtDataService.invtOrderItemRevertAssignWrhsBin(ioi.getUid()));
-		log.info("invtDataService.invtOrderItemAssignWrhsBin");
+		} // copy sites inside
 
 		//
 		if (_tt != null)
@@ -140,9 +128,5 @@ public class InvtOrderItemBuilder11 extends InvtOrderItemBuilder {
 
 		return ioi.reload();
 	}
-
-	
-
-	
 
 }

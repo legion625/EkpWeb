@@ -1,5 +1,7 @@
 package ekp.data.service.invt;
 
+import java.util.List;
+
 import ekp.invt.type.InvtOrderType;
 import legion.ObjectModelInfo;
 
@@ -15,18 +17,20 @@ public interface InvtOrderItemInfo extends ObjectModelInfo{
 
 	double getOrderValue();
 	
-	boolean isMiAssigned();
+	boolean isMiAssigned(); // FIXME
+//	
+//	boolean isWrhsBinAssigned();
+//	
+//	public String getWrhsBinUid();
 	
-	public String getMiUid();
-	
-	boolean isWrhsBinAssigned();
-	
-	public String getWrhsBinUid();
+	boolean isMbsbStmtCreated();
 	
 	// -------------------------------------------------------------------------------
 	InvtOrderItemInfo reload();
 	
 	// -------------------------------------------------------------------------------
-	MaterialInstInfo getMi();
+	List<MbsbStmtInfo> getMbsbStmtList();
+	
+	
 
 }

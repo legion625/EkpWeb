@@ -6,6 +6,7 @@ import ekp.data.service.pu.PurchItemInfo;
 import ekp.mbom.type.PartUnit;
 import legion.DataServiceFactory;
 import legion.biz.Bpu;
+import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
 public abstract class PurchItemBuilder extends Bpu<PurchItemInfo> {
@@ -128,8 +129,15 @@ public abstract class PurchItemBuilder extends Bpu<PurchItemInfo> {
 	}
 	
 	// -------------------------------------------------------------------------------
-	protected final boolean verifyThis(StringBuilder _msg) {
+	protected final boolean verifyThis(StringBuilder _msg, boolean _full) {
 		boolean v = true;
+		
+		if(_full) {
+			if(DataFO.isEmptyString(getPurchUid())) {
+				_msg.append("PurchUid should NOT be empty.").append(System.lineSeparator());
+				v = false;
+			}
+		}
 		
 		// TODO
 		

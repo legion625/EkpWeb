@@ -2,12 +2,13 @@ package ekp.invt.bpu.invtOrder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ekp.data.service.invt.InvtOrderInfo;
 import ekp.data.service.invt.InvtOrderItemInfo;
 import ekp.data.service.invt.MaterialInstInfo;
 import ekp.data.service.invt.MbsbStmtInfo;
-import ekp.invt.bpu.material.MbsbStmtBuilderByIoi;
+//import ekp.invt.bpu.material.MbsbStmtBuilderByIoi;
 import ekp.invt.type.InvtOrderStatus;
 import ekp.invt.type.InvtOrderType;
 import legion.util.TimeTraveler;
@@ -17,7 +18,8 @@ public class IoBpuApprove extends IoBpu {
 	private InvtOrderInfo io;
 
 	/* data */
-	private List<MbsbStmtBuilderByIoi> mbsbStmtBuilderList;
+//	private List<MbsbStmtBuilderByIoi> mbsbStmtBuilderList;
+	private List<MbsbStmtInfo> mbsbStmtList;
 	// none
 
 	// -------------------------------------------------------------------------------
@@ -28,15 +30,16 @@ public class IoBpuApprove extends IoBpu {
 		appendIo(io);
 
 		/* data */
-		mbsbStmtBuilderList = new ArrayList<>();
-		for (InvtOrderItemInfo ioi : io.getIoiList()) {
-			// miUid necessary
-			if (InvtOrderType.I1 == ioi.getIoType()) {
-				MbsbStmtBuilderByIoi mbsbStmtBuilder = new MbsbStmtBuilderByIoi();
-				mbsbStmtBuilder.init(ioi);
-				mbsbStmtBuilderList.add(mbsbStmtBuilder);
-			}
-		}
+		mbsbStmtList = io.getMbsbStmtList();
+//		mbsbStmtBuilderList = new ArrayList<>();
+//		for (InvtOrderItemInfo ioi : io.getIoiList()) {
+//			// miUid necessary
+//			if (InvtOrderType.I1 == ioi.getIoType()) {
+//				MbsbStmtBuilderByIoi mbsbStmtBuilder = new MbsbStmtBuilderByIoi();
+//				mbsbStmtBuilder.init(ioi);
+//				mbsbStmtBuilderList.add(mbsbStmtBuilder);
+//			}
+//		}
 
 		return this;
 	}
@@ -48,7 +51,7 @@ public class IoBpuApprove extends IoBpu {
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 
 		/*  */
@@ -57,17 +60,17 @@ public class IoBpuApprove extends IoBpu {
 			v = false;
 		}
 
-		/* mbsbStmtBuilderList */
-		if (mbsbStmtBuilderList == null || mbsbStmtBuilderList.isEmpty()) {
-			_msg.append("mbsbStmtBuilderList should NOT be empty.").append(System.lineSeparator());
-			v = false;
-		} else {
-			for (MbsbStmtBuilderByIoi mbsbStmtBuilder : mbsbStmtBuilderList) {
-				if (!mbsbStmtBuilder.verify(_msg)) {
-					v = false;
-				}
-			}
-		}
+//		/* mbsbStmtBuilderList */
+//		if (mbsbStmtBuilderList == null || mbsbStmtBuilderList.isEmpty()) {
+//			_msg.append("mbsbStmtBuilderList should NOT be empty.").append(System.lineSeparator());
+//			v = false;
+//		} else {
+//			for (MbsbStmtBuilderByIoi mbsbStmtBuilder : mbsbStmtBuilderList) {
+//				if (!mbsbStmtBuilder.verify(_msg)) {
+//					v = false;
+//				}
+//			}
+//		}
 
 		return v;
 	}
@@ -77,17 +80,17 @@ public class IoBpuApprove extends IoBpu {
 		TimeTraveler tt = new TimeTraveler();
 		StringBuilder msg = new StringBuilder();
 
-		/* 1.建出MbsbStmt */
-		List<MbsbStmtInfo> mbsbStmtList = new ArrayList<>();
-		for (MbsbStmtBuilderByIoi mbsbStmtBuilder : mbsbStmtBuilderList) {
-			MbsbStmtInfo mbsbStmt = mbsbStmtBuilder.build(msg, tt);
-			if (mbsbStmt == null) {
-				tt.travel();
-				log.error("mbsbStmtBuilder.build return null.");
-				return false;
-			} // tt copy sites
-			mbsbStmtList.add(mbsbStmt);
-		}
+//		/* 1.建出MbsbStmt */
+//		List<MbsbStmtInfo> mbsbStmtList = new ArrayList<>();
+//		for (MbsbStmtBuilderByIoi mbsbStmtBuilder : mbsbStmtBuilderList) {
+//			MbsbStmtInfo mbsbStmt = mbsbStmtBuilder.build(msg, tt);
+//			if (mbsbStmt == null) {
+//				tt.travel();
+//				log.error("mbsbStmtBuilder.build return null.");
+//				return false;
+//			} // tt copy sites
+//			mbsbStmtList.add(mbsbStmt);
+//		}
 
 		/* 2.Io Apv */
 		if (!invtDataService.invtOrderApprove(io.getUid(), System.currentTimeMillis())) {
@@ -113,5 +116,7 @@ public class IoBpuApprove extends IoBpu {
 
 		return true;
 	}
+
+	
 	
 }

@@ -66,7 +66,7 @@ public class PartCfgBpuPublish extends PartCfgBpu{
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 		if(getPartCfg()==null) {
 			v = false;

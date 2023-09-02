@@ -94,7 +94,7 @@ public abstract class PartAcqBuilder extends Bpu<PartAcqInfo> {
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 
 		// partUid
