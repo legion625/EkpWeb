@@ -100,13 +100,7 @@ public interface InvtDataService extends IntegrationService, EkpKernelRmi {
 			Map<InvtOrderItemQueryParam, QueryValue[]> _existsDetailMap);
 	
 	public boolean invtOrderItemMbsbStmtCreated(String _uid);
-	
-	@Deprecated
-	public boolean invtOrderItemAssignMi(String _uid, String _miUid);
-	@Deprecated
-	public boolean invtOrderItemRevertAssignMi(String _uid);
-//	public boolean invtOrderItemAssignWrhsBin(String _uid, String _wrhsBinUid);
-//	public boolean invtOrderItemRevertAssignWrhsBin(String _uid);
+	public boolean invtOrderItemRevertMbsbStmtCreated(String _uid);
 
 	// -------------------------------------------------------------------------------
 	// --------------------------------MaterialMaster---------------------------------

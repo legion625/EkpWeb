@@ -17,6 +17,9 @@ public class MfFO {
 		dto.setPartUid(_remote.getPartUid());
 		dto.setPartPin(_remote.getPartPin());
 		dto.setPartMmMano(_remote.getPartMmMano());
+		dto.setPartAcqUid(_remote.getPartAcqUid());
+		dto.setPartAcqId(_remote.getPartAcqId());
+		dto.setRqQty(_remote.getRqQty());
 		dto.setStartWorkTime(_remote.getStartWorkTime());
 		dto.setFinishWorkTime(_remote.getFinishWorkTime());
 		dto.setOverTime(_remote.getOverTime());
@@ -28,6 +31,9 @@ public class MfFO {
 		remote.setPartUid(_dto.getPartUid());
 		remote.setPartPin(_dto.getPartPin());
 		remote.setPartMmMano(_dto.getPartMmMano());
+		remote.setPartAcqUid(_dto.getPartAcqUid());
+		remote.setPartAcqId(_dto.getPartAcqId());
+		remote.setRqQty(_dto.getRqQty());
 		return remote;
 	}
 

@@ -21,14 +21,7 @@ public class InvtOrderItemInfoDto extends ObjectModelInfoDto implements InvtOrde
 	private double orderQty; // 記錄異動的數量
 	private double orderValue; // 記錄異動的金額
 
-	private boolean mbsbStmtCreated; // FIXME
-	
-	private boolean miAssigned; // FIXME
-//	private String miUid;
-//	private boolean wrhsBinAssigned;
-//	private String wrhsBinUid;
-
-	
+	private boolean mbsbStmtCreated;
 
 	@Override
 	public String getIoUid() {
@@ -74,42 +67,6 @@ public class InvtOrderItemInfoDto extends ObjectModelInfoDto implements InvtOrde
 	void setOrderValue(double orderValue) {
 		this.orderValue = orderValue;
 	}
-
-	@Override
-	public boolean isMiAssigned() {
-		return miAssigned;
-	}
-
-	void setMiAssigned(boolean miAssigned) {
-		this.miAssigned = miAssigned;
-	}
-//
-//	@Override
-//	public String getMiUid() {
-//		return miUid;
-//	}
-//
-//	void setMiUid(String miUid) {
-//		this.miUid = miUid;
-//	}
-//
-//	@Override
-//	public boolean isWrhsBinAssigned() {
-//		return wrhsBinAssigned;
-//	}
-//
-//	void setWrhsBinAssigned(boolean wrhsBinAssigned) {
-//		this.wrhsBinAssigned = wrhsBinAssigned;
-//	}
-//
-//	@Override
-//	public String getWrhsBinUid() {
-//		return wrhsBinUid;
-//	}
-//
-//	void setWrhsBinUid(String wrhsBinUid) {
-//		this.wrhsBinUid = wrhsBinUid;
-//	}
 
 	@Override
 	public boolean isMbsbStmtCreated() {

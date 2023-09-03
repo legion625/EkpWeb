@@ -70,7 +70,7 @@ public class MbsbStmtBuilderByWom extends MbsbStmtBuilder{
 				_msg.append("InvtOrderItem null.").append(System.lineSeparator());
 				v = false;
 			} else {
-				if (getIoi().isMiAssigned()) { // FIXME 屬性名稱待改
+				if (getIoi().isMbsbStmtCreated()) {
 					_msg.append("InvtOrderItem mbsbStmtCreated should be FALSE.").append(System.lineSeparator());
 					v = false;
 				}
@@ -110,14 +110,14 @@ public class MbsbStmtBuilderByWom extends MbsbStmtBuilder{
 		}// copy inside
 		
 		/* 2. */
-		if(!invtDataService.invtOrderItemAssignMi(getIoiUid(), "xxx")) { // FIXME
+		if(!invtDataService.invtOrderItemMbsbStmtCreated(getIoiUid())) { 
 			tt.travel();
-			log.error("invtOrderItemAssignMi return false");
+			log.error("invtOrderItemMbsbStmtCreated return false");
 			return null;
 		}
 		tt.addSite("revert invtOrderItemMbsbStmtCreated",
-				() -> invtDataService.invtOrderItemRevertAssignMi(getIoiUid()));
-		log.info("invtDataService.invtOrderItemRevertAssignMi");
+				() -> invtDataService.invtOrderItemRevertMbsbStmtCreated(getIoiUid()));
+		log.info("invtDataService.invtOrderItemMbsbStmtCreated");
 		
 		//
 		if (_tt != null)

@@ -20,6 +20,10 @@ public class WorkorderInfoDto extends ObjectModelInfoDto implements WorkorderInf
 	private String partPin;
 	private String partMmMano;
 
+	private String partAcqUid;
+	private String partAcqId;
+	private double rqQty; // 需求數量
+	
 	private long startWorkTime;
 	private long finishWorkTime;
 	private long overTime;
@@ -67,6 +71,32 @@ public class WorkorderInfoDto extends ObjectModelInfoDto implements WorkorderInf
 
 	void setPartMmMano(String partMmMano) {
 		this.partMmMano = partMmMano;
+	}
+
+	
+	@Override
+	public String getPartAcqUid() {
+		return partAcqUid;
+	}
+
+	void setPartAcqUid(String partAcqUid) {
+		this.partAcqUid = partAcqUid;
+	}
+	@Override
+	public String getPartAcqId() {
+		return partAcqId;
+	}
+
+	void setPartAcqId(String partAcqId) {
+		this.partAcqId = partAcqId;
+	}
+	@Override
+	public double getRqQty() {
+		return rqQty;
+	}
+
+	void setRqQty(double rqQty) {
+		this.rqQty = rqQty;
 	}
 
 	@Override

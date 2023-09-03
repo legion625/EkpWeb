@@ -207,9 +207,9 @@ public class PuScn1 extends AbstractEkpInitTest {
 		
 		/* 3a. */
 		log.debug("================================================================");
-		WorkorderInfo wo = mfDel.buildWo(tt, partA, paA);
+		WorkorderInfo wo = mfDel.buildWo(tt, partA, paA, 1);
 		assertNotNull("wo should NOT be null.", wo);
-		log.info("3a.產生工令。 [{}][{}][{}][{}]", wo.getWoNo(), wo.getPartPin(), wo.getPartMmMano(), wo.getStatusName());
+		log.info("3a.產生工令。 [{}][{}][{}][{}][{}][{}]", wo.getWoNo(), wo.getPartPin(), wo.getPartMmMano(), wo.getPartAcqId(), wo.getRqQty(),  wo.getStatusName());
 		
 		log.debug("wo.getWomList().size(): {}", wo.getWomList().size());
 		
@@ -264,7 +264,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 		log.debug("{}\t{}\t{}\t{}\t{}", io.getIosn(), io.getApplierName(),
 				DateFormatUtil.transToTime(io.getApplyTime()), DateFormatUtil.transToTime(io.getApvTime()));
 		for(InvtOrderItemInfo ioi: io.getIoiList()) {
-			log.debug("  {}\t{}\t{}\t{}", ioi.getIoTypeName(), ioi.getOrderQty(), ioi.getOrderValue(), DataUtil.getStr(ioi.isMiAssigned()));
+			log.debug("  {}\t{}\t{}\t{}", ioi.getIoTypeName(), ioi.getOrderQty(), ioi.getOrderValue(), DataUtil.getStr(ioi.isMbsbStmtCreated()));
 			for(MbsbStmtInfo stmt: ioi.getMbsbStmtList()) {
 				log.debug("      {}\t{}\t{}\t{}", stmt.getMbsbFlowType(), stmt.getStmtQty(),
 						stmt.getStmtValue(), stmt.getPostingStatus());

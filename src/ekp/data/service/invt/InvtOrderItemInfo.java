@@ -17,12 +17,6 @@ public interface InvtOrderItemInfo extends ObjectModelInfo{
 
 	double getOrderValue();
 	
-	boolean isMiAssigned(); // FIXME
-//	
-//	boolean isWrhsBinAssigned();
-//	
-//	public String getWrhsBinUid();
-	
 	boolean isMbsbStmtCreated();
 	
 	// -------------------------------------------------------------------------------
