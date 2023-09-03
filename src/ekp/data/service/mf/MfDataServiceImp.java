@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
+import ekp.DebugLogMark;
 import ekp.data.MfDataService;
 import ekp.data.service.mf.query.WorkorderQueryParam;
 import ekp.serviceFacade.rmi.mf.WorkorderCreateObjRemote;
@@ -19,7 +20,8 @@ import legion.util.query.QueryOperation;
 import legion.util.query.QueryOperation.QueryValue;
 
 public class MfDataServiceImp implements MfDataService {
-	private Logger log = LoggerFactory.getLogger(MfDataServiceImp.class);
+//	private Logger log = LoggerFactory.getLogger(MfDataServiceImp.class);
+	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
 
 	private String srcEkpKernelRmi;
 
@@ -211,8 +213,10 @@ public class MfDataServiceImp implements MfDataService {
 	public List<WorkorderMaterialInfo> loadWorkorderMaterialList(String _woUid) {
 		try {
 			List<WorkorderMaterialRemote> remoteList = getEkpKernelRmi().loadWorkorderMaterialList(_woUid);
+			log.debug("remoteList: {}", remoteList);
 			List<WorkorderMaterialInfo> list = remoteList.stream().map(MfFO::parseWorkorderMaterial)
 					.collect(Collectors.toList());
+			log.debug("list: {}", list);
 			return list;
 		} catch (Throwable e) {
 			LogUtil.log(log, e, Level.ERROR);

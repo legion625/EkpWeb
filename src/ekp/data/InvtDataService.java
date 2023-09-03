@@ -103,7 +103,8 @@ public interface InvtDataService extends IntegrationService, EkpKernelRmi {
 	
 	@Deprecated
 	public boolean invtOrderItemAssignMi(String _uid, String _miUid);
-//	public boolean invtOrderItemRevertAssignMi(String _uid);
+	@Deprecated
+	public boolean invtOrderItemRevertAssignMi(String _uid);
 //	public boolean invtOrderItemAssignWrhsBin(String _uid, String _wrhsBinUid);
 //	public boolean invtOrderItemRevertAssignWrhsBin(String _uid);
 

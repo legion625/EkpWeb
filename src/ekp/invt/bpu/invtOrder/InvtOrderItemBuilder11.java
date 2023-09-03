@@ -113,7 +113,7 @@ public class InvtOrderItemBuilder11 extends InvtOrderItemBuilder {
 		} // copy sites inside
 
 		/* 3.MbsbStmt */
-		mbsbStmtBuilder.appendMi(mi).appendIoiUid(ioi.getUid());
+		mbsbStmtBuilder.appendMi(mi).appendIoi(ioi);
 		StringBuilder msg = new StringBuilder();
 		MbsbStmtInfo mbsbStmt = mbsbStmtBuilder.build(msg, tt);
 		if (mbsbStmt == null) {

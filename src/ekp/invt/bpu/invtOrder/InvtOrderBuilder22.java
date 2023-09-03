@@ -29,23 +29,43 @@ public class InvtOrderBuilder22 extends InvtOrderBuilder{
 		
 		ioiBuilderList = new ArrayList<>();
 		for(WorkorderMaterialInfo wom: wo.getWomList()) {
-			
+			InvtOrderItemBuilder22 ioiBuilder = new InvtOrderItemBuilder22();
+			ioiBuilder.init(wom);
+			ioiBuilderList.add(ioiBuilder);
 		}
 		
-		
-		// TODO Auto-generated method stub
-		return null;
+		return this;
 	}
 	
+	// -------------------------------------------------------------------------------
+	public WorkorderInfo getWo() {
+		return wo;
+	}
 	
 	@Override
-	protected List<? extends InvtOrderItemBuilder> getInvtOrderItemBuilderList() {
-		// TODO Auto-generated method stub
-		return null;
+	protected List<InvtOrderItemBuilder22> getInvtOrderItemBuilderList() {
+		return ioiBuilderList;
 	}
 
+	
+
+	// -------------------------------------------------------------------------------
 	@Override
 	protected InvtOrderInfo buildProcess(TimeTraveler _tt) {
+		TimeTraveler tt = new TimeTraveler();
+		
+		/* 1. buildInvtOrderBasic */
+		InvtOrderInfo io = buildInvtOrderBasic(tt);
+		if (io == null) {
+			tt.travel();
+			log.error("buildInvtOrderBasic return null.");
+			return null;
+		}
+		
+		/**/
+		// 工令沒有狀態控制
+		
+		
 		// TODO Auto-generated method stub
 		return null;
 	}

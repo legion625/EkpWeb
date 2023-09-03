@@ -1,76 +1,140 @@
 package ekp.invt.bpu.invtOrder;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ekp.data.MfDataService;
 import ekp.data.service.invt.InvtOrderItemInfo;
+import ekp.data.service.invt.MaterialBinStockBatchInfo;
+import ekp.data.service.invt.MbsbStmtInfo;
 import ekp.data.service.mf.WorkorderInfo;
+import ekp.data.service.mf.WorkorderMaterialInfo;
+import ekp.invt.bpu.material.MbsbStmtBuilderByWom;
+import ekp.invt.type.InvtOrderType;
+import legion.DataServiceFactory;
 import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
 public class InvtOrderItemBuilder22 extends InvtOrderItemBuilder {
+	private static MfDataService mfDataService = DataServiceFactory.getInstance().getService(MfDataService.class);
 	/* base */
-	private WorkorderInfo wo;
+	private WorkorderMaterialInfo wom;
 
 	/* data */
-	private String miUid; // optional
-	
-// TODO
+	private List<MbsbStmtBuilderByWom> mbsbStmtBuilderList;
 
 	@Override
 	protected InvtOrderItemBuilder22 appendBase() {
 		/* base */
-		wo = (WorkorderInfo) args[0];
-		
-		// TODO
-		
+		wom = (WorkorderMaterialInfo) args[0];
+
 		/* data */
-		// TODO
-		
+		appendMmUid(wom.getMmUid());
+		appendIoType(InvtOrderType.O2);
+		appendOrderQty(wom.getQty0()); // orderValue必須依賴從Mbsb挑完才能決定
+		mbsbStmtBuilderList = new ArrayList<>();
+
 		return this;
 	}
-	
+
 	// -------------------------------------------------------------------------------
-		@Override
-		public boolean validate(StringBuilder _msg) {
-			// none
-			return true;
+	// -----------------------------------appender------------------------------------
+	public MbsbStmtBuilderByWom addMbsbStmtBuilder(String _mbsbUid, double _stmtQty, double _stmtValue) {
+		MbsbStmtBuilderByWom b = new MbsbStmtBuilderByWom();
+		b.init();
+		b.appendMbsbUid(_mbsbUid);
+		b.appendStmtQty(_stmtQty).appendStmtValue(_stmtValue);
+		mbsbStmtBuilderList.add(b);
+		return b;
+	}
+
+	// -------------------------------------------------------------------------------
+	// ------------------------------------getter-------------------------------------
+	@Override
+	public double getOrderValue() {
+		return getSumMbsbStmtBuilderValue();
+	}
+
+	public WorkorderMaterialInfo getWom() {
+		return wom;
+	}
+
+	public List<MbsbStmtBuilderByWom> getMbsbStmtBuilderList() {
+		return mbsbStmtBuilderList;
+	}
+
+	public double getSumMbsbStmtBuilderQty() {
+		return getMbsbStmtBuilderList().stream().mapToDouble(b -> b.getStmtQty()).sum();
+	}
+
+	public double getSumMbsbStmtBuilderValue() {
+		return getMbsbStmtBuilderList().stream().mapToDouble(b -> b.getStmtValue()).sum();
+	}
+
+	// -------------------------------------------------------------------------------
+	@Override
+	public boolean validate(StringBuilder _msg) {
+		// none
+		return true;
+	}
+
+	@Override
+	public boolean verify(StringBuilder _msg, boolean _full) {
+		boolean v = true;
+		if (!verifyThis(_msg, _full))
+			v = false;
+
+		/* wom的數量必須被mbsbStmt滿足 */
+		if (getWom().getQty0() != getSumMbsbStmtBuilderQty()) {
+			_msg.append("工令料表的應領數量和欲領數量不同。").append(System.lineSeparator());
+			v = false;
 		}
 
-		@Override
-		public boolean verify(StringBuilder _msg, boolean _full) {
-			boolean v = true;
-			if (!verifyThis(_msg, _full))
-				v = false;
+		return v;
+	}
 
-//			//
-//			if (DataFO.isEmptyString(getWrhsBinUid())) {
-//				_msg.append("wrhsBinUid should NOT be empty.").append(System.lineSeparator());
-//				v = false;
-//			}
-			// TODO
-			
-			return v;
-		}
-		
-		// -------------------------------------------------------------------------------
-		@Override
-		protected InvtOrderItemInfo buildProcess(TimeTraveler _tt) {
-			TimeTraveler tt = new TimeTraveler();
-			
-			// TODO mi?
-			
-			/* 2 */
-			/* 2.InvtOrderItem */
-			InvtOrderItemInfo ioi = buildInvtOrderItem(tt);
-			if (ioi == null) {
+	// -------------------------------------------------------------------------------
+	@Override
+	protected InvtOrderItemInfo buildProcess(TimeTraveler _tt) {
+		TimeTraveler tt = new TimeTraveler();
+
+		/* 1.InvtOrderItem */
+		InvtOrderItemInfo ioi = buildInvtOrderItem(tt);
+		if (ioi == null) {
+			tt.travel();
+			log.error("buildInvtOrderItem return null.");
+			return null;
+		} // copy sites inside
+
+		/* 2.MbsbStmt */
+		for (MbsbStmtBuilderByWom mbsbStmtBuilder : getMbsbStmtBuilderList()) {
+			mbsbStmtBuilder.appendIoi(ioi);
+			StringBuilder msg = new StringBuilder();
+			MbsbStmtInfo mbsbStmt = mbsbStmtBuilder.build(msg, tt);
+			if (mbsbStmt == null) {
 				tt.travel();
-				log.error("buildInvtOrderItem return null.");
+				log.error("mbsbStmtBuilder.build return null. {}", msg.toString());
 				return null;
 			} // copy sites inside
-			
+		}
 
-			
-			// FIXME
-			
+		/* womQty0to1 */
+		double qty = getWom().getQty0();
+		if (!mfDataService.womQty0to1(getWom().getUid(), qty)) {
+			tt.travel();
+			log.error("mfDataService.womQty0to1 return false.");
 			return null;
 		}
+		tt.addSite("revert womQty0to1", () -> mfDataService.womQty0to1(getWom().getUid(), -qty));
+		wom = wom.reload();
+		log.info("mfDataService.womQty0to1 {}\t{}\t{}\t{}", getWom().getWoNo(), getWom().getMmMano(),
+				getWom().getQty0(), getWom().getQty1());
+
+		//
+		if (_tt != null)
+			_tt.copySitesFrom(tt);
+
+		return ioi.reload();
+	}
 
 }

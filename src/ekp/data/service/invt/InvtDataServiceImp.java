@@ -407,16 +407,16 @@ public class InvtDataServiceImp implements InvtDataService {
 			return false;
 		}
 	}
-//
-//	@Override
-//	public boolean invtOrderItemRevertAssignMi(String _uid) {
-//		try {
-//			return getEkpKernelRmi().invtOrderItemRevertAssignMi(_uid);
-//		} catch (Throwable e) {
-//			LogUtil.log(log, e, Level.ERROR);
-//			return false;
-//		}
-//	}
+
+	@Override
+	public boolean invtOrderItemRevertAssignMi(String _uid) {
+		try {
+			return getEkpKernelRmi().invtOrderItemRevertAssignMi(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
 //
 //	@Override
 //	public boolean invtOrderItemAssignWrhsBin(String _uid, String _wrhsBinUid) {

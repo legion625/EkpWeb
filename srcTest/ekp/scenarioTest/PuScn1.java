@@ -20,6 +20,7 @@ import ekp.data.InvtDataService;
 import ekp.data.MbomDataService;
 import ekp.data.PuDataService;
 import ekp.data.service.invt.InvtOrderInfo;
+import ekp.data.service.invt.InvtOrderItemInfo;
 import ekp.data.service.invt.MaterialBinStockBatchInfo;
 import ekp.data.service.invt.MaterialBinStockInfo;
 import ekp.data.service.invt.MaterialMasterInfo;
@@ -46,6 +47,7 @@ import ekp.pu.PuBuilderDelegate;
 import ekp.util.DataUtil;
 import legion.DataServiceFactory;
 import legion.util.DataFO;
+import legion.util.DateFormatUtil;
 import legion.util.TimeTraveler;
 
 public class PuScn1 extends AbstractEkpInitTest {
@@ -116,7 +118,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 		
 		
 		/* 1.建立MBOM */
-		log.debug("================================================================");
+		log.info("================================================================");
 		/* 1a.建立PART */
 		PartInfo partA = mbomDel.buildPartType0(tt, "A", "PART_A", PartUnit.EAC);
 		log.info("1a-1.建立partA。 [{}][{}][{}]", partA.getPin(), partA.getName(), partA.getUnitName());
@@ -179,7 +181,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 		log.info("1y-3. 發布構型A1 [{}][{}][{}][{}][{}][{}]",DataUtil.getStr(b1y3), pcA1.getRootPartPin(),  pcA1.getId(), pcA1.getName(), pcA1.getStatusName(), pcA1.getDesp());
 
 		/* 2a.產生購案 */
-		log.debug("================================================================");
+		log.info("================================================================");
 		// 先取第1筆MM
 		String[][] bizPartners = MockData.bizPartner;
 		Random random = new Random();
@@ -190,14 +192,15 @@ public class PuScn1 extends AbstractEkpInitTest {
 		log.info("2a.完成建立購案。 [{}][{}]", p0.getPuNo(), p0.getTitle());
 		
 		/* 2b.購案履約（依Purch產生InvtOrder、InvtOrderItem、MbsbStmt） */
-		InvtOrderInfo io = invtDel.buildIo1(tt, p0, "USER1", "Min-Hua", wb);
-		assertNotNull("io should NOT be null.", io);
-		log.info("2b.完成產生InvtOrder。 [{}][{}][{}][{}]", io.getIosn(), io.getStatus(), io.getIoiList().size(),io.getMbsbStmtList().size());
+		InvtOrderInfo io2b = invtDel.buildIo1(tt, p0, "USER1", "Min-Hua", wb);
+		assertNotNull("io2b should NOT be null.", io2b);
+		log.info("2b.完成產生InvtOrder。 [{}][{}][{}][{}]", io2b.getIosn(), io2b.getStatus(), io2b.getIoiList().size(),io2b.getMbsbStmtList().size());
 		
 		/* 2c.InvtOrder登帳 */
-		assertTrue(invtDel.ioApv(tt, io));
-		io = io.reload();
-		log.info("2c.完成InvtOrder登帳。 [{}][{}][{}][{}]", io.getIosn(), io.getStatus(), io.getIoiList().size(),io.getMbsbStmtList().size());
+		assertTrue(invtDel.ioApv(tt, io2b));
+		io2b = io2b.reload();
+		log.info("2c.完成InvtOrder登帳。 [{}][{}][{}][{}]", io2b.getIosn(), io2b.getStatus(), io2b.getIoiList().size(),io2b.getMbsbStmtList().size());
+		showIoRelatedInfo(io2b);
 		
 		// showMbsRelatedInfo
 		showMbsRelatedInfo(mmList);
@@ -207,6 +210,15 @@ public class PuScn1 extends AbstractEkpInitTest {
 		WorkorderInfo wo = mfDel.buildWo(tt, partA, paA);
 		assertNotNull("wo should NOT be null.", wo);
 		log.info("3a.產生工令。 [{}][{}][{}][{}]", wo.getWoNo(), wo.getPartPin(), wo.getPartMmMano(), wo.getStatusName());
+		
+		log.debug("wo.getWomList().size(): {}", wo.getWomList().size());
+		
+//		/* 3b.工令領料（依Wo產生InvtOrder、InvtOrderItem、MbsbStmt） */
+//		InvtOrderInfo io3b = invtDel.buildIo2(tt, wo, "USER1", "Min-Hua");
+//		assertNotNull("io3b should NOT be null.", io3b);
+//		log.info("3b.完成產生InvtOrder。 [{}][{}][{}][{}]", io3b.getIosn(), io3b.getStatus(), io3b.getIoiList().size(),io3b.getMbsbStmtList().size());
+		
+		
 		
 		// TODO
 //		
@@ -246,6 +258,21 @@ public class PuScn1 extends AbstractEkpInitTest {
 			}
 		}
 	}
+	
+	private void showIoRelatedInfo(InvtOrderInfo io) {
+		io = io.reload();
+		log.debug("{}\t{}\t{}\t{}\t{}", io.getIosn(), io.getApplierName(),
+				DateFormatUtil.transToTime(io.getApplyTime()), DateFormatUtil.transToTime(io.getApvTime()));
+		for(InvtOrderItemInfo ioi: io.getIoiList()) {
+			log.debug("  {}\t{}\t{}\t{}", ioi.getIoTypeName(), ioi.getOrderQty(), ioi.getOrderValue(), DataUtil.getStr(ioi.isMiAssigned()));
+			for(MbsbStmtInfo stmt: ioi.getMbsbStmtList()) {
+				log.debug("      {}\t{}\t{}\t{}", stmt.getMbsbFlowType(), stmt.getStmtQty(),
+						stmt.getStmtValue(), stmt.getPostingStatus());
+			}
+		}
+		
+	}
+
 	
 
 }

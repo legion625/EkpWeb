@@ -82,7 +82,7 @@ public class InvtOrderBuilder11 extends InvtOrderBuilder {
 			return null;
 		}
 		tt.addSite("revert puDataService.purchPerf", () -> puDataService.purchRevertPerf(getPurch().getUid()));
-
+		log.info("puDataService.purchPerf {}\t{}", getPurch().getUid(), getPurch().getPuNo());
 		//
 		if (_tt != null)
 			_tt.copySitesFrom(tt);

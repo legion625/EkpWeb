@@ -16,7 +16,7 @@ import legion.util.TimeTraveler;
 
 public abstract class MbsbStmtBuilder extends Bpu<MbsbStmtInfo> {
 	
-	private static InvtDataService invtDataService = DataServiceFactory.getInstance().getService(InvtDataService.class);
+	protected static InvtDataService invtDataService = DataServiceFactory.getInstance().getService(InvtDataService.class);
 
 	/* base */
 	/* Conj的兩個對象：MaterialBinStockBatch和InvtOrderItem */
@@ -99,41 +99,45 @@ public abstract class MbsbStmtBuilder extends Bpu<MbsbStmtInfo> {
 		return true;
 	}
 
-	@Override
-	public boolean verify(StringBuilder _msg, boolean _full) {
-		boolean v = true;
-
-		/* base */
-		if (_full) {
-			if (DataFO.isEmptyString(getMbsbUid())) {
-				_msg.append("mbsbUid should NOT be empty.").append(System.lineSeparator());
-				v = false;
-			}
-			if (DataFO.isEmptyString(getIoiUid())) {
-				_msg.append("ioiUid should NOT be empty.").append(System.lineSeparator());
-				v = false;
-			}
-		}
-
-		/**/
-		if (getMbsbFlowType() == null || MbsbFlowType.UNDEFINED == getMbsbFlowType()) {
-			_msg.append("mbsbFlowType error.").append(System.lineSeparator());
-			v = false;
-		}
-
-		if (getStmtQty() == 0 && getStmtValue() == 0) {
-			_msg.append("Qty/Value error.").append(System.lineSeparator());
-			v = false;
-		}
-
-		return v;
-	}
+//	@Override
+//	public boolean verify(StringBuilder _msg, boolean _full) {
+//		boolean v = true;
+//
+//		/* base */
+//		if (_full) {
+//			if (DataFO.isEmptyString(getMbsbUid())) {
+//				_msg.append("mbsbUid should NOT be empty.").append(System.lineSeparator());
+//				v = false;
+//			}
+//			if (DataFO.isEmptyString(getIoiUid())) {
+//				_msg.append("ioiUid should NOT be empty.").append(System.lineSeparator());
+//				v = false;
+//			}
+//		}
+//
+//		/**/
+//		if (getMbsbFlowType() == null || MbsbFlowType.UNDEFINED == getMbsbFlowType()) {
+//			_msg.append("mbsbFlowType error.").append(System.lineSeparator());
+//			v = false;
+//		}
+//
+//		if (getStmtQty() == 0 && getStmtValue() == 0) {
+//			_msg.append("Qty/Value error.").append(System.lineSeparator());
+//			v = false;
+//		}
+//
+//		return v;
+//	}
 
 	// -------------------------------------------------------------------------------
 	@Override
-	protected MbsbStmtInfo buildProcess(TimeTraveler _tt) {
+	protected abstract MbsbStmtInfo buildProcess(TimeTraveler _tt) ;
+	
+//	@Override
+	protected MbsbStmtInfo buildMbsbStmt(TimeTraveler _tt) {
 		TimeTraveler tt = new TimeTraveler();
 
+		/**/
 		MbsbStmtInfo stmt = invtDataService.createMbsbStmt(packMbsbStmtCreateObj());
 		if (stmt == null) {
 			tt.travel();

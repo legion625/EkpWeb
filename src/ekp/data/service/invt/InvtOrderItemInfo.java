@@ -26,6 +26,11 @@ public interface InvtOrderItemInfo extends ObjectModelInfo{
 	boolean isMbsbStmtCreated();
 	
 	// -------------------------------------------------------------------------------
+	default String getIoTypeName() {
+		return (getIoType() == null ? InvtOrderType.UNDEFINED : getIoType()).getName();
+	}
+	
+	// -------------------------------------------------------------------------------
 	InvtOrderItemInfo reload();
 	
 	// -------------------------------------------------------------------------------

@@ -14,9 +14,11 @@ import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.invt.MbsbStmtInfo;
 import ekp.data.service.invt.WrhsBinInfo;
 import ekp.data.service.invt.WrhsLocInfo;
+import ekp.data.service.mf.WorkorderInfo;
 import ekp.data.service.pu.PurchInfo;
 import ekp.data.service.pu.PurchItemInfo;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder11;
+import ekp.invt.bpu.invtOrder.InvtOrderBuilder22;
 import ekp.invt.bpu.invtOrder.InvtOrderItemBuilder11;
 import ekp.invt.bpu.invtOrder.IoBpuApprove;
 import ekp.invt.bpu.material.MaterialInstBpuDel0;
@@ -44,6 +46,7 @@ public enum InvtBpuType implements BpuType {
 	WB_$DEL0(WrhsBinBpuDel0.class, WrhsBinInfo.class), //
 	/* InvtOrder */
 	IO_11(InvtOrderBuilder11.class,PurchInfo.class), // io, ioi (mi,mbsbStmt ), io->TO_APV, pu->Perfed
+	IO_22(InvtOrderBuilder22.class,WorkorderInfo.class), // io, ioi (mi,mbsbStmt ), io->TO_APV
 	IO_$APPROVE(IoBpuApprove.class, InvtOrderInfo.class ), //
 	/* InvtOrderItem */
 //	IOI_11(InvtOrderItemBuilder11.class, PurchItemInfo.class), //
@@ -87,6 +90,8 @@ public enum InvtBpuType implements BpuType {
 			return true;
 		case IO_11:
 			return matchBizIo11((PurchInfo) _args[0]);
+		case IO_22:
+			return matchBizIo22((WorkorderInfo)_args[0]);
 		case IO_$APPROVE:
 			return matchBizIoApprove((InvtOrderInfo)_args[0]);
 //			return true;
@@ -117,6 +122,22 @@ public enum InvtBpuType implements BpuType {
 			return false;
 		}
 		
+		return true;
+	}
+	
+	
+	private boolean matchBizIo22(WorkorderInfo _wo) {
+		if (_wo == null) {
+			log.warn("_wo null.");
+			return false;
+		}
+
+		// 目前是一次把wo的所有wom領完，所以檢查所有qty0都要>0，且所有qty1<=0
+		if (!_wo.getWomList().stream().allMatch(wom -> wom.getQty0() > 0 && wom.getQty1() <= 0)) {
+			log.warn("_wom null.");
+			return false;
+		}
+
 		return true;
 	}
 

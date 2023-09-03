@@ -8,6 +8,7 @@ import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.data.service.mbom.PpartInfo;
 import ekp.data.service.mf.WorkorderInfo;
+import ekp.data.service.mf.WorkorderMaterialInfo;
 import legion.util.TimeTraveler;
 
 public class WoBuilder1 extends WoBuilder {
@@ -80,7 +81,7 @@ public class WoBuilder1 extends WoBuilder {
 	@Override
 	protected WorkorderInfo buildProcess(TimeTraveler _tt) {
 		TimeTraveler tt = new TimeTraveler();
-		
+
 		//
 		WorkorderInfo wo = buildWoBasic(tt);
 		if (wo == null) {
@@ -88,16 +89,18 @@ public class WoBuilder1 extends WoBuilder {
 			log.error("buildWoBasic return null.");
 			return null;
 		} // tt copied inside
-		
-		
+
 		// 料表
 		for (WomBuilder1 womBuilder : getWomBuilderList()) {
 			womBuilder.appendWo(wo);
+			WorkorderMaterialInfo wom = womBuilder.build(new StringBuilder(), tt);
+			if (wom == null) {
+				tt.travel();
+				log.error("womBuilder.build return null.");
+				return null;
+			} // tt copied inside
 		}
-		
-		// TODO
-		
-		
+
 		//
 		if (_tt != null)
 			_tt.copySitesFrom(tt);
