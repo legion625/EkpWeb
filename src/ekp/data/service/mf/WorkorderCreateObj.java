@@ -4,6 +4,9 @@ public class WorkorderCreateObj {
 	private String partUid;
 	private String partPin;
 	private String partMmMano;
+	private String partAcqUid;
+	private String partAcqId;
+	private double rqQty; // 需求數量
 
 	public String getPartUid() {
 		return partUid;
@@ -28,4 +31,29 @@ public class WorkorderCreateObj {
 	public void setPartMmMano(String partMmMano) {
 		this.partMmMano = partMmMano;
 	}
+
+	public String getPartAcqUid() {
+		return partAcqUid;
+	}
+
+	public void setPartAcqUid(String partAcqUid) {
+		this.partAcqUid = partAcqUid;
+	}
+
+	public String getPartAcqId() {
+		return partAcqId;
+	}
+
+	public void setPartAcqId(String partAcqId) {
+		this.partAcqId = partAcqId;
+	}
+
+	public double getRqQty() {
+		return rqQty;
+	}
+
+	public void setRqQty(double rqQty) {
+		this.rqQty = rqQty;
+	}
+
 }

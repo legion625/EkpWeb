@@ -35,18 +35,21 @@ public class WoBuilder1 extends WoBuilder {
 
 	// -------------------------------------------------------------------------------
 	// XXX
-	public WoBuilder1 appendPa(PartAcqInfo pa) {
+	public WoBuilder1 appendPa(PartAcqInfo pa, double rqQty) {
 		this.pa = pa;
+		appendPartAcqUid(pa.getUid()).appendPartAcqId(pa.getId()).appendRqQty(rqQty);
+
 		womBuilderList = new ArrayList<>();
 		for (PpartInfo ppart : pa.getPpartList()) {
 			WomBuilder1 womBuilder = new WomBuilder1();
 			MaterialMasterInfo mm = ppart.getPart().getMm();
-			womBuilder.appendMm(mm).appendQty(ppart.getPartReqQty());
+			womBuilder.appendMm(mm).appendQty(rqQty * ppart.getPartReqQty());
 			womBuilderList.add(womBuilder);
 		}
 		return this;
 	}
 	
+
 	// -------------------------------------------------------------------------------
 	public PartInfo getP() {
 		return p;

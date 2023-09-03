@@ -17,6 +17,12 @@ public interface WorkorderInfo extends ObjectModelInfo {
 
 	String getPartMmMano();
 
+	String getPartAcqUid();
+
+	String getPartAcqId();
+
+	double getRqQty();
+
 	long getStartWorkTime();
 
 	long getFinishWorkTime();
@@ -30,8 +36,8 @@ public interface WorkorderInfo extends ObjectModelInfo {
 	default String getStatusName() {
 		return (getStatus() == null ? WorkorderStatus.UNDEFINED : getStatus()).getName();
 	}
-	
+
 	// -------------------------------------------------------------------------------
-		List<WorkorderMaterialInfo> getWomList();
+	List<WorkorderMaterialInfo> getWomList();
 
 }

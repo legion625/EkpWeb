@@ -15,6 +15,9 @@ public abstract class WoBuilder extends Bpu<WorkorderInfo> {
 	private String partUid;
 	private String partPin;
 	private String partMmMano;
+	private String partAcqUid;
+	private String partAcqId;
+	private double rqQty; // 需求數量
 
 	/* data */
 	// none
@@ -36,6 +39,21 @@ public abstract class WoBuilder extends Bpu<WorkorderInfo> {
 		return this;
 	}
 
+	protected WoBuilder appendPartAcqUid(String partAcqUid) {
+		this.partAcqUid = partAcqUid;
+		return this;
+	}
+
+	protected WoBuilder appendPartAcqId(String partAcqId) {
+		this.partAcqId = partAcqId;
+		return this;
+	}
+
+	protected WoBuilder appendRqQty(double rqQty) {
+		this.rqQty = rqQty;
+		return this;
+	}
+
 	// -------------------------------------------------------------------------------
 	// ------------------------------------getter-------------------------------------
 	public String getPartUid() {
@@ -50,12 +68,27 @@ public abstract class WoBuilder extends Bpu<WorkorderInfo> {
 		return partMmMano;
 	}
 
+	public String getPartAcqUid() {
+		return partAcqUid;
+	}
+
+	public String getPartAcqId() {
+		return partAcqId;
+	}
+
+	public double getRqQty() {
+		return rqQty;
+	}
+
 	// -------------------------------------------------------------------------------
 	private WorkorderCreateObj packWorkorderCreateObj() {
 		WorkorderCreateObj dto = new WorkorderCreateObj();
 		dto.setPartUid(getPartUid());
 		dto.setPartPin(getPartPin());
 		dto.setPartMmMano(getPartMmMano());
+		dto.setPartAcqUid(getPartAcqUid());
+		dto.setPartAcqId(getPartAcqId());
+		dto.setRqQty(getRqQty());
 		return dto;
 	}
 
@@ -81,6 +114,19 @@ public abstract class WoBuilder extends Bpu<WorkorderInfo> {
 
 		if (DataFO.isEmptyString(getPartMmMano())) {
 			_msg.append("PartMmName should NOT be empty.").append(System.lineSeparator());
+			v = false;
+		}
+		
+		if (DataFO.isEmptyString(getPartAcqUid())) {
+			_msg.append("PartAcqUid should NOT be empty.").append(System.lineSeparator());
+			v = false;
+		}
+		if (DataFO.isEmptyString(getPartAcqId())) {
+			_msg.append("PartAcqId should NOT be empty.").append(System.lineSeparator());
+			v = false;
+		}
+		if(getRqQty()<=0) {
+			_msg.append("RqQty should be GREATER than 0.").append(System.lineSeparator());
 			v = false;
 		}
 
