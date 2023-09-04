@@ -4,11 +4,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ekp.TestLogMark;
+import ekp.data.InvtDataService;
 import ekp.data.service.invt.InvtOrderInfo;
+import ekp.data.service.invt.MaterialBinStockBatchInfo;
 import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.invt.WrhsBinInfo;
 import ekp.data.service.invt.WrhsLocInfo;
@@ -18,17 +22,20 @@ import ekp.data.service.pu.PurchInfo;
 import ekp.invt.bpu.InvtBpuType;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder11;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder22;
+import ekp.invt.bpu.invtOrder.InvtOrderItemBuilder22;
 import ekp.invt.bpu.invtOrder.IoBpuApprove;
 import ekp.invt.bpu.material.MaterialMasterBuilder0;
 import ekp.invt.bpu.wrhsLoc.WrhsBinBuilder1;
 import ekp.invt.bpu.wrhsLoc.WrhsLocBuilder0;
 import ekp.mbom.type.PartUnit;
 import ekp.pu.type.PurchPerfStatus;
+import legion.DataServiceFactory;
 import legion.biz.BpuFacade;
 import legion.util.TimeTraveler;
 
 public class InvtDelegate {
-	private Logger log = LoggerFactory.getLogger(TestLogMark.class);
+	private Logger log = LoggerFactory.getLogger(InvtDelegate.class);
+	//	private Logger log = LoggerFactory.getLogger(TestLogMark.class);
 	private static InvtDelegate delegate = new InvtDelegate();
 
 	private InvtDelegate() {
@@ -40,6 +47,7 @@ public class InvtDelegate {
 
 	// -------------------------------------------------------------------------------
 	private final BpuFacade bpuFacade = BpuFacade.getInstance();
+	private InvtDataService invtDataService = DataServiceFactory.getInstance().getService(InvtDataService.class);
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------------WrhsLoc------------------------------------
@@ -174,6 +182,27 @@ public class InvtDelegate {
 		) {
 		InvtOrderBuilder22 iob = bpuFacade.getBuilder(InvtBpuType.IO_22, _wo);
 		iob.appendApplierId(_applierId).appendApplierName(_applierName);
+		
+		List<InvtOrderItemBuilder22> ioibList = iob.getInvtOrderItemBuilderList();
+		for(InvtOrderItemBuilder22 ioib: ioibList) {
+			WorkorderMaterialInfo wom =ioib.getWom(); 
+			MaterialMasterInfo mm = wom.getMm();
+			List<MaterialBinStockBatchInfo> mbsbList =  mm.getMbsbList();
+			log.debug("{}\t{}", mm.getMano(), mbsbList.size() );
+			double a = wom.getQty0();
+			double alcQty = 0;
+			for (MaterialBinStockBatchInfo mbsb : mbsbList) {
+				alcQty = Math.min(a, mbsb.getStockQty()); // 先找出「待分配數量」和「庫存數量」的較小值，作為「分配量」
+				double stmtValue = alcQty * mbsb.getStockValue() / mbsb.getStockQty();
+				ioib.addMbsbStmtBuilder(mbsb.getUid(), alcQty, stmtValue);
+				a -= alcQty; // 更新「待分配數量」。（mbsb的數量只是參考，要在kernel到時該帳被post時才會生效。）
+				if (a <= 0) // 若A已分配滿足，結束for迴圈。
+					break;
+			}
+			assertTrue(a == 0); // a必須要分配完。
+			log.debug("{}\t{}", ioib.getWom().getMmMano(), ioib.getMbsbStmtBuilderList().size());
+		}
+		
 		
 		// validate
 		StringBuilder msgValidate = new StringBuilder();

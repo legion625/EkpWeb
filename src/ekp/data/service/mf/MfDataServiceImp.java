@@ -20,8 +20,8 @@ import legion.util.query.QueryOperation;
 import legion.util.query.QueryOperation.QueryValue;
 
 public class MfDataServiceImp implements MfDataService {
-//	private Logger log = LoggerFactory.getLogger(MfDataServiceImp.class);
-	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
+	private Logger log = LoggerFactory.getLogger(MfDataServiceImp.class);
+//	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
 
 	private String srcEkpKernelRmi;
 

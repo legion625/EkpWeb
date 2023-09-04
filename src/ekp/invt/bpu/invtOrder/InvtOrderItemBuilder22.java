@@ -3,6 +3,10 @@ package ekp.invt.bpu.invtOrder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ekp.DebugLogMark;
 import ekp.data.MfDataService;
 import ekp.data.service.invt.InvtOrderItemInfo;
 import ekp.data.service.invt.MaterialBinStockBatchInfo;
@@ -12,10 +16,13 @@ import ekp.data.service.mf.WorkorderMaterialInfo;
 import ekp.invt.bpu.material.MbsbStmtBuilderByWom;
 import ekp.invt.type.InvtOrderType;
 import legion.DataServiceFactory;
+import legion.biz.Bpu;
 import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
 public class InvtOrderItemBuilder22 extends InvtOrderItemBuilder {
+	protected Logger log = LoggerFactory.getLogger(InvtOrderItemBuilder22.class);
+	
 	private static MfDataService mfDataService = DataServiceFactory.getInstance().getService(MfDataService.class);
 	/* base */
 	private WorkorderMaterialInfo wom;
@@ -31,7 +38,7 @@ public class InvtOrderItemBuilder22 extends InvtOrderItemBuilder {
 		/* data */
 		appendMmUid(wom.getMmUid());
 		appendIoType(InvtOrderType.O2);
-		appendOrderQty(wom.getQty0()); // orderValue必須依賴從Mbsb挑完才能決定
+		// orderQty和orderValue必須依賴從Mbsb挑完才能決定
 		mbsbStmtBuilderList = new ArrayList<>();
 
 		return this;
@@ -50,6 +57,11 @@ public class InvtOrderItemBuilder22 extends InvtOrderItemBuilder {
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------------getter-------------------------------------
+	@Override
+	public double getOrderQty() {
+		return getSumMbsbStmtBuilderQty();
+	}
+	
 	@Override
 	public double getOrderValue() {
 		return getSumMbsbStmtBuilderValue();
@@ -85,6 +97,8 @@ public class InvtOrderItemBuilder22 extends InvtOrderItemBuilder {
 			v = false;
 
 		/* wom的數量必須被mbsbStmt滿足 */
+//		log.debug("getWom().getQty0(): {}", getWom().getQty0());
+//		log.debug("getSumMbsbStmtBuilderQty(): {}", getSumMbsbStmtBuilderQty());
 		if (getWom().getQty0() != getSumMbsbStmtBuilderQty()) {
 			_msg.append("工令料表的應領數量和欲領數量不同。").append(System.lineSeparator());
 			v = false;

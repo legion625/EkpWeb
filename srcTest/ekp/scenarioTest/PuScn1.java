@@ -151,8 +151,6 @@ public class PuScn1 extends AbstractEkpInitTest {
 		log.info("1c-4.partC完成指定料件基本檔。 [{}][{}][{}]", partC.getPin(), partC.isMmAssigned(), partC.getMmMano());
 		
 		
-		
-		
 		/* 1x.建立關連 */
 		PpartInfo ppartAb =  mbomDel.buildParsPart1(parsA, tt, partB, 2);
 		log.info("1x-1.關連AB [{}][{}][{}]", ppartAb.getPars().getPa().getPartPin(), ppartAb.getPartPin(), ppartAb.getPartReqQty());
@@ -207,18 +205,26 @@ public class PuScn1 extends AbstractEkpInitTest {
 		
 		/* 3a. */
 		log.debug("================================================================");
-		WorkorderInfo wo = mfDel.buildWo(tt, partA, paA, 1);
+		WorkorderInfo wo = mfDel.buildWo(tt, partA, paA, 10);
 		assertNotNull("wo should NOT be null.", wo);
 		log.info("3a.產生工令。 [{}][{}][{}][{}][{}][{}]", wo.getWoNo(), wo.getPartPin(), wo.getPartMmMano(), wo.getPartAcqId(), wo.getRqQty(),  wo.getStatusName());
 		
 		log.debug("wo.getWomList().size(): {}", wo.getWomList().size());
 		
-//		/* 3b.工令領料（依Wo產生InvtOrder、InvtOrderItem、MbsbStmt） */
-//		InvtOrderInfo io3b = invtDel.buildIo2(tt, wo, "USER1", "Min-Hua");
-//		assertNotNull("io3b should NOT be null.", io3b);
-//		log.info("3b.完成產生InvtOrder。 [{}][{}][{}][{}]", io3b.getIosn(), io3b.getStatus(), io3b.getIoiList().size(),io3b.getMbsbStmtList().size());
+		/* 3b.工令領料（依Wo產生InvtOrder、InvtOrderItem、MbsbStmt） */
+		InvtOrderInfo io3b = invtDel.buildIo2(tt, wo, "USER1", "Min-Hua");
+		assertNotNull("io3b should NOT be null.", io3b);
+		log.info("3b.完成產生InvtOrder。 [{}][{}][{}][{}]", io3b.getIosn(), io3b.getStatus(), io3b.getIoiList().size(),io3b.getMbsbStmtList().size());
+		
+		/* 3c.InvtOrder登帳 */
+		assertTrue(invtDel.ioApv(tt, io3b));
+		io3b = io3b.reload();
+		log.info("3c.完成InvtOrder登帳。 [{}][{}][{}][{}]", io3b.getIosn(), io3b.getStatus(), io3b.getIoiList().size(),io3b.getMbsbStmtList().size());
+		showIoRelatedInfo(io3b);
 		
 		
+		// showMbsRelatedInfo
+		showMbsRelatedInfo(mmList);
 		
 		// TODO
 //		

@@ -3,7 +3,9 @@ package ekp.data.service.mf;
 import java.util.List;
 
 import ekp.data.BizObjLoader;
+import ekp.data.InvtDataService;
 import ekp.data.MfDataService;
+import ekp.data.service.invt.MaterialMasterInfo;
 import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
@@ -89,6 +91,15 @@ public class WorkorderMaterialInfoDto extends ObjectModelInfoDto implements Work
 	@Override
 	public WorkorderMaterialInfo reload() {
 		return DataServiceFactory.getInstance().getService(MfDataService.class).loadWorkorderMaterial(getUid());
+	}
+	
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<MaterialMasterInfo> mmLoader = BizObjLoader.of(
+			() -> DataServiceFactory.getInstance().getService(InvtDataService.class).loadMaterialMaster(getMmUid()));
+
+	@Override
+	public MaterialMasterInfo getMm() {
+		return mmLoader.getObj();
 	}
 
 }

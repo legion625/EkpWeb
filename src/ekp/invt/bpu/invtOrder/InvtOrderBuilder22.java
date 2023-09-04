@@ -43,7 +43,7 @@ public class InvtOrderBuilder22 extends InvtOrderBuilder{
 	}
 	
 	@Override
-	protected List<InvtOrderItemBuilder22> getInvtOrderItemBuilderList() {
+	public List<InvtOrderItemBuilder22> getInvtOrderItemBuilderList() {
 		return ioiBuilderList;
 	}
 
@@ -53,7 +53,7 @@ public class InvtOrderBuilder22 extends InvtOrderBuilder{
 	@Override
 	protected InvtOrderInfo buildProcess(TimeTraveler _tt) {
 		TimeTraveler tt = new TimeTraveler();
-		
+
 		/* 1. buildInvtOrderBasic */
 		InvtOrderInfo io = buildInvtOrderBasic(tt);
 		if (io == null) {
@@ -61,13 +61,15 @@ public class InvtOrderBuilder22 extends InvtOrderBuilder{
 			log.error("buildInvtOrderBasic return null.");
 			return null;
 		}
-		
+
 		/**/
 		// 工令沒有狀態控制
-		
-		
-		// TODO Auto-generated method stub
-		return null;
+
+		//
+		if (_tt != null)
+			_tt.copySitesFrom(tt);
+
+		return io;
 	}
 
 	

@@ -2,6 +2,7 @@ package ekp.data.service.mf;
 
 import java.util.List;
 
+import ekp.data.service.invt.MaterialMasterInfo;
 import legion.ObjectModelInfo;
 
 public interface WorkorderMaterialInfo extends ObjectModelInfo{
@@ -22,6 +23,9 @@ public interface WorkorderMaterialInfo extends ObjectModelInfo{
 	
 	// -------------------------------------------------------------------------------
 	WorkorderMaterialInfo reload();
+	
+	// -------------------------------------------------------------------------------
+	MaterialMasterInfo getMm();
 	
 	
 

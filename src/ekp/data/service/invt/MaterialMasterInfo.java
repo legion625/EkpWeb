@@ -1,6 +1,7 @@
 package ekp.data.service.invt;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ekp.mbom.type.PartUnit;
 import legion.ObjectModelInfo;
@@ -42,6 +43,10 @@ public interface MaterialMasterInfo extends ObjectModelInfo{
 
 	default List<MaterialBinStockInfo> getMbsList() {
 		return getMbsList(false);
+	}
+	
+	default List<MaterialBinStockBatchInfo> getMbsbList() {
+		return getMbsList().stream().flatMap(mbs -> mbs.getMbsbList().stream()).collect(Collectors.toList());
 	}
 
 }
