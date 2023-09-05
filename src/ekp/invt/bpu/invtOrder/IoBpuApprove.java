@@ -31,15 +31,6 @@ public class IoBpuApprove extends IoBpu {
 
 		/* data */
 		mbsbStmtList = io.getMbsbStmtList();
-//		mbsbStmtBuilderList = new ArrayList<>();
-//		for (InvtOrderItemInfo ioi : io.getIoiList()) {
-//			// miUid necessary
-//			if (InvtOrderType.I1 == ioi.getIoType()) {
-//				MbsbStmtBuilderByIoi mbsbStmtBuilder = new MbsbStmtBuilderByIoi();
-//				mbsbStmtBuilder.init(ioi);
-//				mbsbStmtBuilderList.add(mbsbStmtBuilder);
-//			}
-//		}
 
 		return this;
 	}
@@ -60,39 +51,14 @@ public class IoBpuApprove extends IoBpu {
 			v = false;
 		}
 
-//		/* mbsbStmtBuilderList */
-//		if (mbsbStmtBuilderList == null || mbsbStmtBuilderList.isEmpty()) {
-//			_msg.append("mbsbStmtBuilderList should NOT be empty.").append(System.lineSeparator());
-//			v = false;
-//		} else {
-//			for (MbsbStmtBuilderByIoi mbsbStmtBuilder : mbsbStmtBuilderList) {
-//				if (!mbsbStmtBuilder.verify(_msg)) {
-//					v = false;
-//				}
-//			}
-//		}
-
 		return v;
 	}
 
 	@Override
 	protected Boolean buildProcess(TimeTraveler _tt) {
 		TimeTraveler tt = new TimeTraveler();
-		StringBuilder msg = new StringBuilder();
 
-//		/* 1.建出MbsbStmt */
-//		List<MbsbStmtInfo> mbsbStmtList = new ArrayList<>();
-//		for (MbsbStmtBuilderByIoi mbsbStmtBuilder : mbsbStmtBuilderList) {
-//			MbsbStmtInfo mbsbStmt = mbsbStmtBuilder.build(msg, tt);
-//			if (mbsbStmt == null) {
-//				tt.travel();
-//				log.error("mbsbStmtBuilder.build return null.");
-//				return false;
-//			} // tt copy sites
-//			mbsbStmtList.add(mbsbStmt);
-//		}
-
-		/* 2.Io Apv */
+		/* 1.Io Apv */
 		if (!invtDataService.invtOrderApprove(io.getUid(), System.currentTimeMillis())) {
 			tt.travel();
 			log.error("invtDataService.invtOrderApprove return false.");
@@ -100,7 +66,7 @@ public class IoBpuApprove extends IoBpu {
 		}
 		tt.addSite("revert invtOrderApprove", () -> invtDataService.invtOrderRevertApprove(io.getUid()));
 
-		/* 3.MbsbStmtPost */
+		/* 2.MbsbStmtPost */
 		for (MbsbStmtInfo mbsbStmt : mbsbStmtList) {
 			if (!invtDataService.mbsbStmtPost(mbsbStmt.getUid())) {
 				tt.travel();

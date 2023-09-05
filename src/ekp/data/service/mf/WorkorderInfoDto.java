@@ -1,9 +1,16 @@
 package ekp.data.service.mf;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.zkoss.util.logging.Log;
 
 import ekp.data.BizObjLoader;
+import ekp.data.InvtDataService;
+import ekp.data.MbomDataService;
 import ekp.data.MfDataService;
+import ekp.data.service.invt.MaterialInstInfo;
+import ekp.data.service.mbom.PartInfo;
 import ekp.mf.type.WorkorderStatus;
 import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
@@ -133,12 +140,34 @@ public class WorkorderInfoDto extends ObjectModelInfoDto implements WorkorderInf
 	}
 
 	// -------------------------------------------------------------------------------
+	private BizObjLoader<PartInfo> partLoader = BizObjLoader
+			.of(() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadPart(getPartUid()));
+
+	@Override
+	public PartInfo getPart() {
+		return partLoader.getObj();
+	}
+	
 	private BizObjLoader<List<WorkorderMaterialInfo>> womListLoader = BizObjLoader.of(
 			() -> DataServiceFactory.getInstance().getService(MfDataService.class).loadWorkorderMaterialList(getUid()));
 
 	@Override
 	public List<WorkorderMaterialInfo> getWomList() {
 		return womListLoader.getObj();
+	}
+	
+	private BizObjLoader<MaterialInstInfo> partMiLoader = BizObjLoader.of(() ->{
+		List<MaterialInstInfo> miList = DataServiceFactory.getInstance().getService(InvtDataService.class)
+				.loadMaterialInstList(getPart().getMmUid());
+		List<MaterialInstInfo> filteredList = miList.stream().filter(mi -> mi.getMiacSrcNo().equals(getWoNo()))
+				.collect(Collectors.toList());
+		return filteredList == null || filteredList.size() != 1 ? null : filteredList.get(0);
+		// FIXME
+	});
+
+	@Override
+	public MaterialInstInfo getPartMi() {
+		return partMiLoader.getObj();
 	}
 
 }

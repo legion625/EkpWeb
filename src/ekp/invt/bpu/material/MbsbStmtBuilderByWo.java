@@ -1,95 +1,81 @@
 package ekp.invt.bpu.material;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import ekp.DebugLogMark;
 import ekp.data.service.invt.InvtOrderItemInfo;
 import ekp.data.service.invt.MaterialBinStockBatchInfo;
 import ekp.data.service.invt.MaterialBinStockInfo;
 import ekp.data.service.invt.MaterialInstInfo;
 import ekp.data.service.invt.MbsbStmtInfo;
 import ekp.data.service.invt.WrhsBinInfo;
-import ekp.data.service.pu.PurchItemInfo;
+import ekp.data.service.mf.WorkorderInfo;
 import ekp.invt.MaterialBinStockFacade;
 import ekp.invt.type.MbsbFlowType;
-import legion.biz.Bpu;
 import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
-public class MbsbStmtBuilderByPurchItem extends MbsbStmtBuilder{
-	
+public class MbsbStmtBuilderByWo extends MbsbStmtBuilder {
 	/* base */
-	private PurchItemInfo pi;
-	
+	private WorkorderInfo wo;
+
 	/**/
 	private InvtOrderItemInfo ioi;
 	private MaterialInstInfo mi;
 	private WrhsBinInfo wb;
-	// mi+wb->mbsb，在InvtOrderItemBuilder11.buildProcess才能給定。
+	// mi+wb->mbsb，在InvtOrderItemBuilder12.buildProcess才能給定。
 	// mbsbStmtBuilder的verify把mbsbUid和ioiUid放在_full裡才檢查。
-	
+
 	// -------------------------------------------------------------------------------
 	@Override
-	protected MbsbStmtBuilderByPurchItem appendBase() {
+	protected MbsbStmtBuilderByWo appendBase() {
 		/* base */
-		pi =(PurchItemInfo) args[0];
-		
-		
+		wo = (WorkorderInfo) args[0];
+
 		// mbsbUid和ioiUid在執行面才能產生
-//		if (mbsb == null) {
-//			log.error("getMbsb return null.");
-//			return null;
-//		}
-		
-//		appendMbsbUid(mbsb.getUid());
-//		appendIoiUid(ioi.getUid());
-		
+
 		/* data */
 		appendMbsbFlowType(MbsbFlowType.IN);
-		// 假設訂購數量和金額全數入帳
-		appendStmtQty(pi.getQty()).appendStmtValue(pi.getValue());
-		
+		// 工令依需求量入帳
+		appendStmtQty(wo.getRqQty());
+		// 金額待訂
+
 		return this;
 	}
 
-	
 	// -------------------------------------------------------------------------------
 	// -----------------------------------appender------------------------------------
-//	public MbsbStmtBuilderByPurchItem appendMbsb() {
-//
-//	}
-	public MbsbStmtBuilderByPurchItem appendIoi(InvtOrderItemInfo ioi) {
+	public MbsbStmtBuilderByWo appendIoi(InvtOrderItemInfo ioi) {
 		this.ioi = ioi;
 		super.appendIoiUid(ioi.getUid());
 		return this;
 	}
-	
-	public MbsbStmtBuilderByPurchItem appendMi(MaterialInstInfo mi) {
+
+	public MbsbStmtBuilderByWo appendMi(MaterialInstInfo mi) {
 		this.mi = mi;
 		return this;
 	}
 
-	public MbsbStmtBuilderByPurchItem appendWb(WrhsBinInfo wb) {
+	public MbsbStmtBuilderByWo appendWb(WrhsBinInfo wb) {
 		this.wb = wb;
 		return this;
 	}
-	
+
+	@Override
+	public MbsbStmtBuilderByWo appendStmtValue(double stmtValue) {
+		return (MbsbStmtBuilderByWo) super.appendStmtValue(stmtValue);
+	}
+
 	// -------------------------------------------------------------------------------
 	// ------------------------------------getter-------------------------------------
 	@Override
 	public String getMbsbUid() {
-		String mbsbUid =getMbsb() == null ? null : getMbsb().getUid();
-		log.debug("getMbsbUid: {}", mbsbUid);
-		return mbsbUid;
+		return getMbsb() == null ? null : getMbsb().getUid();
 	}
-	
+
 	public InvtOrderItemInfo getIoi() {
 		return ioi;
 	}
-	
-	public PurchItemInfo getPi() {
-		return pi;
+
+	public WorkorderInfo getWo() {
+		return wo;
 	}
 
 	public MaterialInstInfo getMi() {
@@ -99,13 +85,13 @@ public class MbsbStmtBuilderByPurchItem extends MbsbStmtBuilder{
 	public WrhsBinInfo getWb() {
 		return wb;
 	}
-	
+
 	private MaterialBinStockBatchInfo getMbsb() {
 		if (getMi() == null || getWb() == null)
 			return null;
 
 		MaterialBinStockFacade mbsFacade = MaterialBinStockFacade.get();
-		MaterialBinStockInfo mbs = mbsFacade.getMbs(getPi().getMmUid(), getWb().getUid());
+		MaterialBinStockInfo mbs = mbsFacade.getMbs(getWo().getPart().getMmUid(), getWb().getUid());
 		if (mbs == null) {
 			log.error("getMbs return null.");
 			return null;
@@ -113,7 +99,6 @@ public class MbsbStmtBuilderByPurchItem extends MbsbStmtBuilder{
 		return mbsFacade.getMbsb(mbs, getMi().getUid());
 	}
 
-	
 	// -------------------------------------------------------------------------------
 	@Override
 	public boolean verify(StringBuilder _msg, boolean _full) {
@@ -146,7 +131,7 @@ public class MbsbStmtBuilderByPurchItem extends MbsbStmtBuilder{
 			_msg.append("StmtQty error.").append(System.lineSeparator());
 			v = false;
 		}
-		
+
 		if (getStmtValue() <= 0) {
 			_msg.append("StmtValue error.").append(System.lineSeparator());
 			v = false;
@@ -159,15 +144,15 @@ public class MbsbStmtBuilderByPurchItem extends MbsbStmtBuilder{
 	@Override
 	protected MbsbStmtInfo buildProcess(TimeTraveler _tt) {
 		TimeTraveler tt = new TimeTraveler();
-		
+
 		/* 1. */
 		MbsbStmtInfo stmt = buildMbsbStmt(tt);
-		if(stmt==null) {
+		if (stmt == null) {
 			tt.travel();
 			log.error("buildMbsbStmt return null");
 			return null;
-		}// copy inside
-		
+		} // copy inside
+
 		/* 2. */
 		if (!invtDataService.invtOrderItemMbsbStmtCreated(getIoiUid())) {
 			tt.travel();
@@ -177,13 +162,12 @@ public class MbsbStmtBuilderByPurchItem extends MbsbStmtBuilder{
 		tt.addSite("revert invtOrderItemMbsbStmtCreated",
 				() -> invtDataService.invtOrderItemRevertMbsbStmtCreated(getIoiUid()));
 		log.info("invtDataService.invtOrderItemMbsbStmtCreated");
-		
+
 		//
 		if (_tt != null)
 			_tt.copySitesFrom(tt);
 
 		return stmt;
 	}
-	
-}
 
+}

@@ -18,7 +18,6 @@ public class InvtOrderBuilder11 extends InvtOrderBuilder {
 	/* data */
 	private List<InvtOrderItemBuilder11> ioiBuilderList;
 	private WrhsBinInfo wb;
-	// TODO
 
 	// -------------------------------------------------------------------------------
 	@Override

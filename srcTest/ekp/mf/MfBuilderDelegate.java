@@ -18,22 +18,27 @@ import ekp.data.service.mf.WorkorderInfo;
 import ekp.data.service.mf.WorkorderMaterialInfo;
 import ekp.data.service.pu.PurchInfo;
 import ekp.mf.bpu.MfBpuType;
+import ekp.mf.bpu.WoBpuFinishWork;
+import ekp.mf.bpu.WoBpuStart;
 import ekp.mf.bpu.WoBuilder1;
 import legion.biz.BpuFacade;
 import legion.util.TimeTraveler;
 
 public class MfBuilderDelegate {
 	private Logger log = LoggerFactory.getLogger(TestLogMark.class);
-	
+
 	private static MfBuilderDelegate delegate = new MfBuilderDelegate();
-	private MfBuilderDelegate() {}
+
+	private MfBuilderDelegate() {
+	}
+
 	public static MfBuilderDelegate getInstance() {
 		return delegate;
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	private final BpuFacade bpuFacade = BpuFacade.getInstance();
-	
+
 	// -------------------------------------------------------------------------------
 	// -----------------------------------Workorder-----------------------------------
 	public WorkorderInfo buildWo(TimeTraveler _tt, PartInfo _p, PartAcqInfo _pa, double _rqQty) {
@@ -64,5 +69,51 @@ public class MfBuilderDelegate {
 
 		return wo;
 	}
-	
+
+	public boolean runWoStart(TimeTraveler _tt, WorkorderInfo _wo) {
+		WoBpuStart bpu = bpuFacade.getBuilder(MfBpuType.WO_$START, _wo);
+		bpu.appendStartWorkTime(System.currentTimeMillis());
+
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(bpu.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(bpu.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		boolean b = bpu.build(msgBuild, _tt);
+		assertTrue(b, msgBuild.toString());
+
+		// check
+		// none
+
+		return b;
+	}
+
+	public boolean runWoFinishWork(TimeTraveler _tt, WorkorderInfo _wo) {
+		WoBpuFinishWork bpu = bpuFacade.getBuilder(MfBpuType.WO_$FINISH_WORK, _wo);
+		bpu.appendFinishWorkTime(System.currentTimeMillis());
+
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(bpu.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(bpu.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		boolean b = bpu.build(msgBuild, _tt);
+		assertTrue(b, msgBuild.toString());
+
+		// check
+		// none
+
+		return b;
+	}
+
 }

@@ -18,6 +18,7 @@ import ekp.data.service.mf.WorkorderInfo;
 import ekp.data.service.pu.PurchInfo;
 import ekp.data.service.pu.PurchItemInfo;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder11;
+import ekp.invt.bpu.invtOrder.InvtOrderBuilder12;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder22;
 import ekp.invt.bpu.invtOrder.InvtOrderItemBuilder11;
 import ekp.invt.bpu.invtOrder.IoBpuApprove;
@@ -34,6 +35,7 @@ import ekp.invt.bpu.wrhsLoc.WrhsLocBuilder0;
 import ekp.invt.type.InvtOrderStatus;
 import ekp.invt.type.PostingStatus;
 import ekp.mbom.issue.MbomBpuType;
+import ekp.mf.type.WorkorderStatus;
 import ekp.pu.type.PurchPerfStatus;
 import legion.biz.BpuType;
 
@@ -46,6 +48,7 @@ public enum InvtBpuType implements BpuType {
 	WB_$DEL0(WrhsBinBpuDel0.class, WrhsBinInfo.class), //
 	/* InvtOrder */
 	IO_11(InvtOrderBuilder11.class,PurchInfo.class), // io, ioi (mi,mbsbStmt ), io->TO_APV, pu->Perfed
+	IO_12(InvtOrderBuilder12.class, WorkorderInfo.class), //
 	IO_22(InvtOrderBuilder22.class,WorkorderInfo.class), // io, ioi (mi,mbsbStmt ), io->TO_APV
 	IO_$APPROVE(IoBpuApprove.class, InvtOrderInfo.class ), //
 	/* InvtOrderItem */
@@ -90,11 +93,12 @@ public enum InvtBpuType implements BpuType {
 			return true;
 		case IO_11:
 			return matchBizIo11((PurchInfo) _args[0]);
+		case IO_12:
+			return matchBizIo12((WorkorderInfo)_args[0]);
 		case IO_22:
 			return matchBizIo22((WorkorderInfo)_args[0]);
 		case IO_$APPROVE:
 			return matchBizIoApprove((InvtOrderInfo)_args[0]);
-//			return true;
 		case MM_0:
 		case MM_$DEL0:
 			return true;
@@ -125,6 +129,20 @@ public enum InvtBpuType implements BpuType {
 		return true;
 	}
 	
+	
+	private boolean matchBizIo12(WorkorderInfo _wo) {
+		if (_wo == null) {
+			log.warn("_wo null.");
+			return false;
+		}
+
+		if (WorkorderStatus.FINISH_WORK != _wo.getStatus()) {
+			log.debug("WorkorderStatus should be [{}], but is [{}]", WorkorderStatus.FINISH_WORK, _wo.getStatus());
+			return false;
+		}
+
+		return true;
+	}
 	
 	private boolean matchBizIo22(WorkorderInfo _wo) {
 		if (_wo == null) {

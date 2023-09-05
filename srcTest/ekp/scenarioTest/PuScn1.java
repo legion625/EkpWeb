@@ -190,7 +190,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 		log.info("2a.完成建立購案。 [{}][{}]", p0.getPuNo(), p0.getTitle());
 		
 		/* 2b.購案履約（依Purch產生InvtOrder、InvtOrderItem、MbsbStmt） */
-		InvtOrderInfo io2b = invtDel.buildIo1(tt, p0, "USER1", "Min-Hua", wb);
+		InvtOrderInfo io2b = invtDel.buildIo11(tt, p0, "USER1", "Min-Hua", wb);
 		assertNotNull("io2b should NOT be null.", io2b);
 		log.info("2b.完成產生InvtOrder。 [{}][{}][{}][{}]", io2b.getIosn(), io2b.getStatus(), io2b.getIoiList().size(),io2b.getMbsbStmtList().size());
 		
@@ -212,7 +212,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 		log.debug("wo.getWomList().size(): {}", wo.getWomList().size());
 		
 		/* 3b.工令領料（依Wo產生InvtOrder、InvtOrderItem、MbsbStmt） */
-		InvtOrderInfo io3b = invtDel.buildIo2(tt, wo, "USER1", "Min-Hua");
+		InvtOrderInfo io3b = invtDel.buildIo22(tt, wo, "USER1", "Min-Hua");
 		assertNotNull("io3b should NOT be null.", io3b);
 		log.info("3b.完成產生InvtOrder。 [{}][{}][{}][{}]", io3b.getIosn(), io3b.getStatus(), io3b.getIoiList().size(),io3b.getMbsbStmtList().size());
 		
@@ -222,9 +222,20 @@ public class PuScn1 extends AbstractEkpInitTest {
 		log.info("3c.完成InvtOrder登帳。 [{}][{}][{}][{}]", io3b.getIosn(), io3b.getStatus(), io3b.getIoiList().size(),io3b.getMbsbStmtList().size());
 		showIoRelatedInfo(io3b);
 		
-		
 		// showMbsRelatedInfo
 		showMbsRelatedInfo(mmList);
+		
+		/* 3d.工令開工 */
+		assertTrue(mfDel.runWoStart(tt, wo));
+		wo = wo.reload();
+		log.info("3d.工令開工。 [{}][{}][{}]", wo.getWoNo(), wo.getStatusName(), DateFormatUtil.transToTime(wo.getStartWorkTime()));
+		
+		/* 3e.工令完工 */
+		assertTrue(mfDel.runWoFinishWork(tt, wo));
+		wo = wo.reload();
+		log.info("3e.工令完工。 [{}][{}][{}]", wo.getWoNo(), wo.getStatusName(), DateFormatUtil.transToTime(wo.getFinishWorkTime()));
+		
+		/* 3f.工令入庫 */
 		
 		// TODO
 //		
@@ -267,7 +278,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 	
 	private void showIoRelatedInfo(InvtOrderInfo io) {
 		io = io.reload();
-		log.debug("{}\t{}\t{}\t{}\t{}", io.getIosn(), io.getApplierName(),
+		log.debug("{}\t{}\t{}\t{}", io.getIosn(), io.getApplierName(),
 				DateFormatUtil.transToTime(io.getApplyTime()), DateFormatUtil.transToTime(io.getApvTime()));
 		for(InvtOrderItemInfo ioi: io.getIoiList()) {
 			log.debug("  {}\t{}\t{}\t{}", ioi.getIoTypeName(), ioi.getOrderQty(), ioi.getOrderValue(), DataUtil.getStr(ioi.isMbsbStmtCreated()));

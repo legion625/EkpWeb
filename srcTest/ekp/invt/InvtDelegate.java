@@ -13,6 +13,7 @@ import ekp.TestLogMark;
 import ekp.data.InvtDataService;
 import ekp.data.service.invt.InvtOrderInfo;
 import ekp.data.service.invt.MaterialBinStockBatchInfo;
+import ekp.data.service.invt.MaterialInstInfo;
 import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.invt.WrhsBinInfo;
 import ekp.data.service.invt.WrhsLocInfo;
@@ -21,6 +22,7 @@ import ekp.data.service.mf.WorkorderMaterialInfo;
 import ekp.data.service.pu.PurchInfo;
 import ekp.invt.bpu.InvtBpuType;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder11;
+import ekp.invt.bpu.invtOrder.InvtOrderBuilder12;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder22;
 import ekp.invt.bpu.invtOrder.InvtOrderItemBuilder22;
 import ekp.invt.bpu.invtOrder.IoBpuApprove;
@@ -127,7 +129,7 @@ public class InvtDelegate {
 	
 	// -------------------------------------------------------------------------------
 	// -----------------------------------InvtOrder-----------------------------------
-	public InvtOrderInfo buildIo1(TimeTraveler _tt, PurchInfo _p, String _applierId, String _applierName,
+	public InvtOrderInfo buildIo11(TimeTraveler _tt, PurchInfo _p, String _applierId, String _applierName,
 			WrhsBinInfo _wb) {
 		InvtOrderBuilder11 iob = bpuFacade.getBuilder(InvtBpuType.IO_11, _p);
 		iob.appendApplierId(_applierId).appendApplierName(_applierName);
@@ -156,6 +158,39 @@ public class InvtDelegate {
 		return io;
 	}
 	
+	public InvtOrderInfo buildIo12(TimeTraveler _tt, WorkorderInfo _wo, String _applierId, String _applierName,
+			WrhsBinInfo _wb) {
+		InvtOrderBuilder12 iob = bpuFacade.getBuilder(InvtBpuType.IO_12, _wo);
+		iob.appendApplierId(_applierId).appendApplierName(_applierName);
+		iob.appendWb(_wb);
+		
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(iob.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(iob.verify(msgVerify), msgVerify.toString());
+		
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		InvtOrderInfo io = iob.build(msgBuild, _tt);
+		assertNotNull(msgBuild.toString(), io);
+		
+		// check
+		assertEquals(_applierId,io.getApplierId());
+		assertEquals(_applierName,io.getApplierName());
+		WorkorderInfo wo = _wo.reload();
+		assertEquals(1, io.getIoiList().size());
+		MaterialInstInfo woPartMi = wo.getPartMi();
+		assertNotNull(woPartMi);
+		
+//		wo.get
+
+		return io;
+	}
+	
+	
 	public boolean ioApv(TimeTraveler _tt,InvtOrderInfo _io ) {
 		IoBpuApprove bpu = bpuFacade.getBuilder(InvtBpuType.IO_$APPROVE, _io);
 
@@ -178,7 +213,7 @@ public class InvtDelegate {
 		return result;
 	}
 	
-	public InvtOrderInfo buildIo2(TimeTraveler _tt,WorkorderInfo _wo, String _applierId, String _applierName
+	public InvtOrderInfo buildIo22(TimeTraveler _tt,WorkorderInfo _wo, String _applierId, String _applierName
 		) {
 		InvtOrderBuilder22 iob = bpuFacade.getBuilder(InvtBpuType.IO_22, _wo);
 		iob.appendApplierId(_applierId).appendApplierName(_applierName);

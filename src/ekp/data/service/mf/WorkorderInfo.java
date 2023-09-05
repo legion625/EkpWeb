@@ -2,6 +2,9 @@ package ekp.data.service.mf;
 
 import java.util.List;
 
+import ekp.data.service.invt.InvtOrderItemInfo;
+import ekp.data.service.invt.MaterialInstInfo;
+import ekp.data.service.mbom.PartInfo;
 import ekp.mf.type.WorkorderStatus;
 import legion.ObjectModelInfo;
 
@@ -38,6 +41,10 @@ public interface WorkorderInfo extends ObjectModelInfo {
 	}
 
 	// -------------------------------------------------------------------------------
+	PartInfo getPart();
+	
 	List<WorkorderMaterialInfo> getWomList();
+
+	MaterialInstInfo getPartMi();
 
 }
