@@ -124,6 +124,8 @@ public interface InvtDataService extends IntegrationService, EkpKernelRmi {
 	public MaterialInstInfo loadMaterialInst(String _uid);
 
 	public MaterialInstInfo loadMaterialInstByMisn(String _misn);
+	
+	public MaterialInstInfo loadMaterialInstByMiacSrcNo(String _miacSrcNo);
 
 	public List<MaterialInstInfo> loadMaterialInstList(String _mmUid);
 	
