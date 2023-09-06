@@ -5,6 +5,7 @@ import java.util.List;
 import ekp.data.BizObjLoader;
 import ekp.data.InvtDataService;
 import ekp.invt.type.InvtOrderType;
+import ekp.invt.type.IoiTargetType;
 import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
@@ -18,6 +19,9 @@ public class InvtOrderItemInfoDto extends ObjectModelInfoDto implements InvtOrde
 	private String mmUid;
 
 	private InvtOrderType ioType;
+	private IoiTargetType targetType;
+	private String targetUid;
+	private String targetBizKey;
 	private double orderQty; // 記錄異動的數量
 	private double orderValue; // 記錄異動的金額
 
@@ -51,6 +55,33 @@ public class InvtOrderItemInfoDto extends ObjectModelInfoDto implements InvtOrde
 	}
 
 	@Override
+	public IoiTargetType getTargetType() {
+		return targetType;
+	}
+
+	void setTargetType(IoiTargetType targetType) {
+		this.targetType = targetType;
+	}
+
+	@Override
+	public String getTargetUid() {
+		return targetUid;
+	}
+
+	void setTargetUid(String targetUid) {
+		this.targetUid = targetUid;
+	}
+
+	@Override
+	public String getTargetBizKey() {
+		return targetBizKey;
+	}
+
+	void setTargetBizKey(String targetBizKey) {
+		this.targetBizKey = targetBizKey;
+	}
+
+	@Override
 	public double getOrderQty() {
 		return orderQty;
 	}
@@ -76,7 +107,7 @@ public class InvtOrderItemInfoDto extends ObjectModelInfoDto implements InvtOrde
 	void setMbsbStmtCreated(boolean mbsbStmtCreated) {
 		this.mbsbStmtCreated = mbsbStmtCreated;
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	@Override
 	public InvtOrderItemInfo reload() {
@@ -91,7 +122,7 @@ public class InvtOrderItemInfoDto extends ObjectModelInfoDto implements InvtOrde
 	public List<MbsbStmtInfo> getMbsbStmtList() {
 		return mbsbStmtListLoader.getObj();
 	}
-	
+
 	// -------------------------------------------------------------------------------
 //	private BizObjLoader<MaterialInstInfo> miLoader = BizObjLoader
 //			.of(() -> DataServiceFactory.getInstance().getService(InvtDataService.class).loadMaterialInst(getMiUid()));

@@ -490,6 +490,17 @@ public class InvtDataServiceImp implements InvtDataService {
 	}
 
 	@Override
+	public MaterialInstInfo loadMaterialInstByMiacSrcNo(String _miacSrcNo) {
+		try {
+			MaterialInstRemote remote = getEkpKernelRmi().loadMaterialInstByMiacSrcNo(_miacSrcNo);
+			return remote == null ? null : InvtFO.parseMaterialInst(remote);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
 	public List<MaterialInstInfo> loadMaterialInstList(String _mmUid) {
 		try {
 			List<MaterialInstRemote> remoteList = getEkpKernelRmi().loadMaterialInstList(_mmUid);
