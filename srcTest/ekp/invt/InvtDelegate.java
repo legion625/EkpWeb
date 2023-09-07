@@ -24,6 +24,7 @@ import ekp.invt.bpu.InvtBpuType;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder11;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder12;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder22;
+import ekp.invt.bpu.invtOrder.InvtOrderItemBuilder12;
 import ekp.invt.bpu.invtOrder.InvtOrderItemBuilder22;
 import ekp.invt.bpu.invtOrder.IoBpuApprove;
 import ekp.invt.bpu.material.MaterialMasterBuilder0;
@@ -163,6 +164,10 @@ public class InvtDelegate {
 		InvtOrderBuilder12 iob = bpuFacade.getBuilder(InvtBpuType.IO_12, _wo);
 		iob.appendApplierId(_applierId).appendApplierName(_applierName);
 		iob.appendWb(_wb);
+		InvtOrderItemBuilder12 ioib =iob.getIoiBuilder();
+		double orderValue =ioib.getSumSrcMiValue()*3;
+		ioib.appendOrderValue(orderValue);
+		
 		
 		// validate
 		StringBuilder msgValidate = new StringBuilder();
@@ -184,8 +189,6 @@ public class InvtDelegate {
 		assertEquals(1, io.getIoiList().size());
 		MaterialInstInfo woPartMi = wo.getPartMi();
 		assertNotNull(woPartMi);
-		
-//		wo.get
 
 		return io;
 	}

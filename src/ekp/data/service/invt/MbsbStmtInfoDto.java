@@ -1,7 +1,10 @@
 package ekp.data.service.invt;
 
+import ekp.data.BizObjLoader;
+import ekp.data.InvtDataService;
 import ekp.invt.type.MbsbFlowType;
 import ekp.invt.type.PostingStatus;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
 public class MbsbStmtInfoDto extends ObjectModelInfoDto implements MbsbStmtInfo{
@@ -82,5 +85,14 @@ public class MbsbStmtInfoDto extends ObjectModelInfoDto implements MbsbStmtInfo{
 
 	void setPostingTime(long postingTime) {
 		this.postingTime = postingTime;
+	}
+
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<MaterialBinStockBatchInfo> mbsbLoader = BizObjLoader.of(() -> DataServiceFactory.getInstance()
+			.getService(InvtDataService.class).loadMaterialBinStockBatch(getMbsbUid()));
+
+	@Override
+	public MaterialBinStockBatchInfo getMbsb() {
+		return mbsbLoader.getObj();
 	}
 }

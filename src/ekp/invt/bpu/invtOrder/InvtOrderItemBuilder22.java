@@ -15,6 +15,7 @@ import ekp.data.service.mf.WorkorderInfo;
 import ekp.data.service.mf.WorkorderMaterialInfo;
 import ekp.invt.bpu.material.MbsbStmtBuilderByWom;
 import ekp.invt.type.InvtOrderType;
+import ekp.invt.type.IoiTargetType;
 import legion.DataServiceFactory;
 import legion.biz.Bpu;
 import legion.util.DataFO;
@@ -38,6 +39,7 @@ public class InvtOrderItemBuilder22 extends InvtOrderItemBuilder {
 		/* data */
 		appendMmUid(wom.getMmUid());
 		appendIoType(InvtOrderType.O2);
+		appendTargetType(IoiTargetType.WOM).appendTargetUid(wom.getUid()).appendTargetBizKey(wom.getWoNo());
 		// orderQty和orderValue必須依賴從Mbsb挑完才能決定
 		mbsbStmtBuilderList = new ArrayList<>();
 

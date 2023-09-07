@@ -13,6 +13,7 @@ import ekp.invt.bpu.InvtBpuType;
 import ekp.invt.bpu.material.MaterialInstBuilder0;
 import ekp.invt.bpu.material.MbsbStmtBuilderByPurchItem;
 import ekp.invt.type.InvtOrderType;
+import ekp.invt.type.IoiTargetType;
 import ekp.invt.type.MaterialInstAcqChannel;
 import legion.biz.BpuFacade;
 import legion.util.DateFormatUtil;
@@ -34,6 +35,7 @@ public class InvtOrderItemBuilder11 extends InvtOrderItemBuilder {
 
 		appendMmUid(pi.getMmUid());
 		appendIoType(InvtOrderType.I1);
+		appendTargetType(IoiTargetType.PURCH_ITEM).appendTargetUid(pi.getUid()).appendTargetBizKey(pi.getPurch().getPuNo());
 		appendOrderQty(pi.getQty()).appendOrderValue(pi.getValue());
 
 		/* data */

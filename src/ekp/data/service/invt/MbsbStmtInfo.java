@@ -19,5 +19,8 @@ public interface MbsbStmtInfo extends ObjectModelInfo{
 	PostingStatus getPostingStatus();
 
 	long getPostingTime();
+	
+	// -------------------------------------------------------------------------------
+	MaterialBinStockBatchInfo getMbsb();
 
 }

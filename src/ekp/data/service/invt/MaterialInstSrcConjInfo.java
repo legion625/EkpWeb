@@ -11,5 +11,10 @@ public interface MaterialInstSrcConjInfo extends ObjectModelInfo {
 	double getSrcMiQty();
 
 	double getSrcMiValue();
+	
+	// -------------------------------------------------------------------------------
+	MaterialInstInfo getMi();
+	MaterialInstInfo getSrcMi();
+	
 
 }

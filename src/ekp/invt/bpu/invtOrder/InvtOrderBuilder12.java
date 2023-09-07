@@ -50,6 +50,11 @@ public class InvtOrderBuilder12 extends InvtOrderBuilder {
 	protected List<InvtOrderItemBuilder12> getInvtOrderItemBuilderList() {
 		return Arrays.asList(ioiBuilder);
 	}
+	
+
+	public InvtOrderItemBuilder12 getIoiBuilder() {
+		return ioiBuilder;
+	}
 
 	public WrhsBinInfo getWb() {
 		return wb;

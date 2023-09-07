@@ -23,6 +23,8 @@ import ekp.data.service.invt.InvtOrderInfo;
 import ekp.data.service.invt.InvtOrderItemInfo;
 import ekp.data.service.invt.MaterialBinStockBatchInfo;
 import ekp.data.service.invt.MaterialBinStockInfo;
+import ekp.data.service.invt.MaterialInstInfo;
+import ekp.data.service.invt.MaterialInstSrcConjInfo;
 import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.invt.MbsbStmtInfo;
 import ekp.data.service.invt.WrhsBinInfo;
@@ -35,6 +37,7 @@ import ekp.data.service.mbom.PartInfo;
 import ekp.data.service.mbom.PpartInfo;
 import ekp.data.service.mf.WorkorderInfo;
 import ekp.data.service.pu.PurchInfo;
+import ekp.data.service.pu.PurchItemInfo;
 import ekp.invt.InvtDelegate;
 import ekp.invt.bpu.InvtBpuType;
 import ekp.invt.bpu.material.MaterialMasterBuilder0;
@@ -95,10 +98,11 @@ public class PuScn1 extends AbstractEkpInitTest {
 		WrhsLocInfo wl = invtDel.buildWrhsLoc0(tt, "WL-A", "庫儲A");
 		assertNotNull("wl should NOT be null.", wl);
 		
-		WrhsBinInfo wb = invtDel.buildWrhsBin(tt, wl, "WB-A101", "儲位A101");
-		assertNotNull("wb should NOT be null.", wb);
-		
-		log.info("0a.完成建立庫房和儲位。 [{}][{}][{}][{}]", wl.getId(), wl.getName(), wb.getId(), wb.getName());
+		WrhsBinInfo wbA101 = invtDel.buildWrhsBin(tt, wl, "WB-A101", "儲位A101");
+		assertNotNull("wbA101 should NOT be null.", wbA101);
+		WrhsBinInfo wbA102 = invtDel.buildWrhsBin(tt, wl, "WB-A102", "儲位A102");
+		assertNotNull("wbA102 should NOT be null.", wbA102);
+		log.info("0a.完成建立庫房和儲位。 [{}][{}][{}][{}]", wl.getId(), wl.getName(), wbA101.getId(), wbA101.getName(), wbA102.getId(), wbA102.getName());
 		
 		
 		/* 0b.建立MaterialMaster */
@@ -188,9 +192,12 @@ public class PuScn1 extends AbstractEkpInitTest {
 				mmC, 100, 3000, "採購MM000C共100個");
 		assertNotNull("p0 should NOT be null.", p0);
 		log.info("2a.完成建立購案。 [{}][{}]", p0.getPuNo(), p0.getTitle());
+		for(PurchItemInfo pi: p0.getPurchItemList()) {
+			log.info("  [{}][{}][{}][{}][{}]", pi.getMmUid(), pi.getMmMano(), pi.getMmStdUnit(), pi.getQty(), pi.getValue());
+		}
 		
 		/* 2b.購案履約（依Purch產生InvtOrder、InvtOrderItem、MbsbStmt） */
-		InvtOrderInfo io2b = invtDel.buildIo11(tt, p0, "USER1", "Min-Hua", wb);
+		InvtOrderInfo io2b = invtDel.buildIo11(tt, p0, "USER1", "Min-Hua", wbA101);
 		assertNotNull("io2b should NOT be null.", io2b);
 		log.info("2b.完成產生InvtOrder。 [{}][{}][{}][{}]", io2b.getIosn(), io2b.getStatus(), io2b.getIoiList().size(),io2b.getMbsbStmtList().size());
 		
@@ -214,12 +221,12 @@ public class PuScn1 extends AbstractEkpInitTest {
 		/* 3b.工令領料（依Wo產生InvtOrder、InvtOrderItem、MbsbStmt） */
 		InvtOrderInfo io3b = invtDel.buildIo22(tt, wo, "USER1", "Min-Hua");
 		assertNotNull("io3b should NOT be null.", io3b);
-		log.info("3b.完成產生InvtOrder。 [{}][{}][{}][{}]", io3b.getIosn(), io3b.getStatus(), io3b.getIoiList().size(),io3b.getMbsbStmtList().size());
+		log.info("3b.完成產生io3b。 [{}][{}][{}][{}]", io3b.getIosn(), io3b.getStatus(), io3b.getIoiList().size(),io3b.getMbsbStmtList().size());
 		
 		/* 3c.InvtOrder登帳 */
 		assertTrue(invtDel.ioApv(tt, io3b));
 		io3b = io3b.reload();
-		log.info("3c.完成InvtOrder登帳。 [{}][{}][{}][{}]", io3b.getIosn(), io3b.getStatus(), io3b.getIoiList().size(),io3b.getMbsbStmtList().size());
+		log.info("3c.完成io3b登帳。 [{}][{}][{}][{}]", io3b.getIosn(), io3b.getStatus(), io3b.getIoiList().size(),io3b.getMbsbStmtList().size());
 		showIoRelatedInfo(io3b);
 		
 		// showMbsRelatedInfo
@@ -235,8 +242,28 @@ public class PuScn1 extends AbstractEkpInitTest {
 		wo = wo.reload();
 		log.info("3e.工令完工。 [{}][{}][{}]", wo.getWoNo(), wo.getStatusName(), DateFormatUtil.transToTime(wo.getFinishWorkTime()));
 		
-		/* 3f.工令入庫 */
+		/* 3f.工令入庫（依Wo產生InvtOrder、InvtOrderItem、MbsbStmt、MaterialInstConj） */
+		InvtOrderInfo io3f =  invtDel.buildIo12(tt, wo, "USER1", "Min-Hua", wbA102);
+		assertNotNull("io3f should NOT be null.", io3f);
+		wo = wo.reload();
+		MaterialInstInfo woPartMi = wo.getPartMi();
+		log.info("3f.工令入庫 [{}][{}][{}][{}][{}]", wo.getWoNo(), wo.getStatusName(), woPartMi.getMisn(),
+				woPartMi.getMiacName(), woPartMi.getMiacSrcNo());
+		for (MaterialInstSrcConjInfo srcMisc : woPartMi.getSrcMaterialInstSrcConjList()) {
+			log.info("  [{}][{}][{}][{}]", srcMisc.getMi().getMm().getMano(), srcMisc.getSrcMi().getMm().getMano(),
+					srcMisc.getSrcMiQty(), srcMisc.getSrcMiValue());
+		}
 		
+		/* 3g.io3f登帳 */
+		assertTrue(invtDel.ioApv(tt, io3f));
+		io3f = io3f.reload();
+		log.info("3g.完成io3f登帳。 [{}][{}][{}][{}]", io3f.getIosn(), io3f.getStatus(), io3f.getIoiList().size(),
+				io3f.getMbsbStmtList().size());
+		showIoRelatedInfo(io3f);
+		
+		// showMbsRelatedInfo
+		showMbsRelatedInfo(mmList);
+
 		// TODO
 //		
 		
@@ -281,10 +308,11 @@ public class PuScn1 extends AbstractEkpInitTest {
 		log.debug("{}\t{}\t{}\t{}", io.getIosn(), io.getApplierName(),
 				DateFormatUtil.transToTime(io.getApplyTime()), DateFormatUtil.transToTime(io.getApvTime()));
 		for(InvtOrderItemInfo ioi: io.getIoiList()) {
-			log.debug("  {}\t{}\t{}\t{}", ioi.getIoTypeName(), ioi.getOrderQty(), ioi.getOrderValue(), DataUtil.getStr(ioi.isMbsbStmtCreated()));
+			log.debug("  {}\t{}\t{}\t{}\t{}",ioi.getMmUid(), ioi.getIoTypeName(), ioi.getOrderQty(), ioi.getOrderValue(), DataUtil.getStr(ioi.isMbsbStmtCreated()));
 			for(MbsbStmtInfo stmt: ioi.getMbsbStmtList()) {
-				log.debug("      {}\t{}\t{}\t{}", stmt.getMbsbFlowType(), stmt.getStmtQty(),
-						stmt.getStmtValue(), stmt.getPostingStatus());
+				MaterialInstInfo mi = stmt.getMbsb().getMi();
+				log.debug("      {}\t{}\t{}\t{}\t{}\t{}", stmt.getMbsbFlowType(), stmt.getStmtQty(),
+						stmt.getStmtValue(), stmt.getPostingStatus(), mi.getMmUid(), mi.getUid());
 			}
 		}
 		

@@ -2,9 +2,19 @@ package ekp.invt.bpu.invtOrder;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ekp.DebugLogMark;
 import ekp.data.service.invt.InvtOrderItemInfo;
 import ekp.data.service.invt.MaterialInstInfo;
+import ekp.data.service.invt.MaterialInstSrcConjCreateObj;
+import ekp.data.service.invt.MaterialInstSrcConjInfo;
+import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.invt.MbsbStmtInfo;
 import ekp.data.service.invt.WrhsBinInfo;
 import ekp.data.service.mf.WorkorderInfo;
@@ -12,17 +22,22 @@ import ekp.invt.bpu.InvtBpuType;
 import ekp.invt.bpu.material.MaterialInstBuilder0;
 import ekp.invt.bpu.material.MbsbStmtBuilderByWo;
 import ekp.invt.type.InvtOrderType;
+import ekp.invt.type.IoiTargetType;
 import ekp.invt.type.MaterialInstAcqChannel;
+import legion.biz.Bpu;
 import legion.biz.BpuFacade;
 import legion.util.DateFormatUtil;
 import legion.util.TimeTraveler;
 
 public class InvtOrderItemBuilder12 extends InvtOrderItemBuilder {
+	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
+	
 	/* base */
 	private WorkorderInfo wo;
 
 	/* data */
 	private MaterialInstBuilder0 miBuilder;
+	private Map<String, List<MbsbStmtInfo>> srcMiUidMbsbStmtListMap;
 	private MbsbStmtBuilderByWo mbsbStmtBuilder;
 	private WrhsBinInfo wb;
 
@@ -35,6 +50,7 @@ public class InvtOrderItemBuilder12 extends InvtOrderItemBuilder {
 		double qty = wo.getRqQty();
 		appendMmUid(mmUid);
 		appendIoType(InvtOrderType.I2);
+		appendTargetType(IoiTargetType.WO).appendTargetUid(wo.getUid()).appendTargetBizKey(wo.getWoNo());
 		appendOrderQty(qty);
 		// orderValue to be assigned
 
@@ -49,6 +65,27 @@ public class InvtOrderItemBuilder12 extends InvtOrderItemBuilder {
 		LocalDate ldExp = ldEff.plusYears(2); // 預設帶2年
 		miBuilder.appendExpDate(DateFormatUtil.parseLong(ldExp));
 
+		//
+		srcMiUidMbsbStmtListMap = wo.getWomList().stream().flatMap(wom -> wom.getQty1MbsbStmtList().stream())
+				.collect(Collectors.groupingBy(s -> s.getMbsb().getMiUid()));
+		log.debug("srcMiUidMbsbStmtListMap: {}", srcMiUidMbsbStmtListMap);
+		log.debug("srcMiUidMbsbStmtListMap.size(): {}", srcMiUidMbsbStmtListMap.size());
+		for (String srcMiUid : srcMiUidMbsbStmtListMap.keySet()) {
+			List<MbsbStmtInfo> miSrcMbsbStmtList = srcMiUidMbsbStmtListMap.get(srcMiUid);
+			log.debug("srcMiUid: {}", srcMiUid);
+			for (MbsbStmtInfo miSrcMbsbStmt : miSrcMbsbStmtList) {
+				MaterialInstInfo miSrcMi = miSrcMbsbStmt.getMbsb().getMi();
+				log.debug("miSrcMi: {}", miSrcMi);
+				log.debug("miSrcMi.getMmUid(): {}", miSrcMi.getMmUid());
+				
+				log.debug("{}\t{}\t{}\t{}\t{}", miSrcMi.getUid(), miSrcMi.getMisn(), miSrcMi.getMiacName(),
+					miSrcMbsbStmt.getStmtQty(), miSrcMbsbStmt.getStmtValue());
+				MaterialMasterInfo mm = miSrcMi.getMm();
+				log.debug("mm: {}", mm);
+			}
+			log.debug("srcMiUid: {}\t miSrcMbsbStmt.size(): {}", srcMiUid, miSrcMbsbStmtList.size());
+		}
+		
 		// mbsbStmtBuilder
 		mbsbStmtBuilder = new MbsbStmtBuilderByWo();
 		mbsbStmtBuilder.init(wo);
@@ -72,11 +109,20 @@ public class InvtOrderItemBuilder12 extends InvtOrderItemBuilder {
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------------getter-------------------------------------
+	public Map<String, List<MbsbStmtInfo>> getSrcMiUidMbsbStmtListMap() {
+		return srcMiUidMbsbStmtListMap;
+	}
+	
+	public double getSumSrcMiValue() {
+		return getSrcMiUidMbsbStmtListMap().values().stream().flatMap(l->l.stream()).mapToDouble(MbsbStmtInfo::getStmtValue).sum();
+	}
+	
+	
 	public WrhsBinInfo getWb() {
 		return wb;
 	}
 
-// -------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------
 	@Override
 	public boolean validate(StringBuilder _msg) {
 		// none
@@ -89,6 +135,12 @@ public class InvtOrderItemBuilder12 extends InvtOrderItemBuilder {
 		if (!verifyThis(_msg, _full))
 			v = false;
 
+		//
+		if (getSrcMiUidMbsbStmtListMap() == null || getSrcMiUidMbsbStmtListMap().size() <= 0) {
+			_msg.append("getMiUidMbsbStmtListMap error.").append(System.lineSeparator());
+			v = false;
+		}
+		
 		//
 		if (getWb() == null) {
 			_msg.append("WrhsBin should NOT be null.").append(System.lineSeparator());
@@ -115,6 +167,28 @@ public class InvtOrderItemBuilder12 extends InvtOrderItemBuilder {
 			log.error("miBuilder.build return null.");
 			return null;
 		} // copy sites inside
+		
+		/**/
+		for (String srcMiUid : getSrcMiUidMbsbStmtListMap().keySet()) {
+			MaterialInstSrcConjCreateObj miscCreateObj = new MaterialInstSrcConjCreateObj();
+			miscCreateObj.setMiUid(mi.getUid());
+			miscCreateObj.setSrcMiUid(srcMiUid);
+
+			List<MbsbStmtInfo> mbsbStmtList = getSrcMiUidMbsbStmtListMap().get(srcMiUid);
+			miscCreateObj.setSrcMiQty(mbsbStmtList.stream().mapToDouble(s -> s.getStmtQty()).sum());
+			miscCreateObj.setSrcMiValue(mbsbStmtList.stream().mapToDouble(s -> s.getStmtValue()).sum());
+
+			MaterialInstSrcConjInfo misc = invtDataService.createMaterialInstSrcConj(miscCreateObj);
+			if (misc == null) {
+				tt.travel();
+				log.error("invtDataService.createMaterialInstSrcConj return null.");
+				return null;
+			}
+			tt.addSite("revert createMaterialInstSrcConj",
+					() -> invtDataService.deleteMaterialInstSrcConj(misc.getUid()));
+		}
+		
+		
 
 		/* 2.InvtOrderItem */
 		InvtOrderItemInfo ioi = buildInvtOrderItem(tt);
