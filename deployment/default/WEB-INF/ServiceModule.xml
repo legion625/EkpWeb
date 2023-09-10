@@ -9,6 +9,7 @@
 		<Service name="MbomService" interface="ekp.mbom.MbomService" imp="ekp.mbom.MbomServiceImp" />
 		<Service name="MfService" interface="ekp.mf.MfService" imp="ekp.mf.MfServiceImp" />
 		<Service name="PuService" interface="ekp.pu.PuService" imp="ekp.pu.PuServiceImp" />
+		<Service name="SdService" interface="ekp.sd.PuService" imp="ekp.sd.SdServiceImp" />
 	</BusinessService>
 	<!-- IntegrationService -->
 	<IntegrationService>
@@ -31,6 +32,9 @@
 			<Parameter name="srcEkpKernelRmi" value="ekp_kernel_rmi" />
 		</Service>
 		<Service name="PuDataService" interface="ekp.data.PuDataService" imp="ekp.data.service.pu.PuDataServiceImp">
+			<Parameter name="srcEkpKernelRmi" value="ekp_kernel_rmi" />
+		</Service>
+		<Service name="SdDataService" interface="ekp.data.SdDataService" imp="ekp.data.service.sd.SdDataServiceImp">
 			<Parameter name="srcEkpKernelRmi" value="ekp_kernel_rmi" />
 		</Service>
 	</IntegrationService>
