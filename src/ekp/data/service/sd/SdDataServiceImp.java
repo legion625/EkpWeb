@@ -117,6 +117,8 @@ public class SdDataServiceImp implements SdDataService {
 	public SalesOrderItemInfo createSalesOrderItem(String _soUid, SalesOrderItemCreateObj _dto) {
 		try {
 			SalesOrderItemCreateObjRemote dto = SdFO.parseSalesOrderItemCreateObjRemote(_dto);
+			
+			
 			return SdFO.parseSalesOrderItem(getEkpKernelRmi().createSalesOrderItem(_soUid, dto));
 		} catch (Throwable e) {
 			LogUtil.log(log, e, Level.ERROR);

@@ -48,5 +48,9 @@ public interface MaterialMasterInfo extends ObjectModelInfo{
 	default List<MaterialBinStockBatchInfo> getMbsbList() {
 		return getMbsList().stream().flatMap(mbs -> mbs.getMbsbList().stream()).collect(Collectors.toList());
 	}
+	
+	default double getAvgValue() {
+		return getSumStockValue() / getSumStockQty();
+	}
 
 }

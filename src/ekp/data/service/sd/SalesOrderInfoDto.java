@@ -1,5 +1,10 @@
 package ekp.data.service.sd;
 
+import java.util.List;
+
+import ekp.data.BizObjLoader;
+import ekp.data.SdDataService;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
 public class SalesOrderInfoDto extends ObjectModelInfoDto implements SalesOrderInfo {
@@ -77,5 +82,19 @@ public class SalesOrderInfoDto extends ObjectModelInfoDto implements SalesOrderI
 
 	void setSaleDate(long saleDate) {
 		this.saleDate = saleDate;
+	}
+	
+	// -------------------------------------------------------------------------------
+	@Override
+	public SalesOrderInfo reload() {
+		return DataServiceFactory.getInstance().getService(SdDataService.class).loadSalesOrder(getUid());
+	}
+
+	private BizObjLoader<List<SalesOrderItemInfo>> salesOrderItemListLoader = BizObjLoader.of(
+			() -> DataServiceFactory.getInstance().getService(SdDataService.class).loadSalesOrderItemList(getUid()));
+
+	@Override
+	public List<SalesOrderItemInfo> getSalesOrderItemList() {
+		return salesOrderItemListLoader.getObj();
 	}
 }

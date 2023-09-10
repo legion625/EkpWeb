@@ -38,6 +38,8 @@ import ekp.data.service.mbom.PpartInfo;
 import ekp.data.service.mf.WorkorderInfo;
 import ekp.data.service.pu.PurchInfo;
 import ekp.data.service.pu.PurchItemInfo;
+import ekp.data.service.sd.SalesOrderInfo;
+import ekp.data.service.sd.SalesOrderItemInfo;
 import ekp.invt.InvtDelegate;
 import ekp.invt.bpu.InvtBpuType;
 import ekp.invt.bpu.material.MaterialMasterBuilder0;
@@ -47,6 +49,7 @@ import ekp.mbom.type.PartUnit;
 import ekp.mf.MfBuilderDelegate;
 import ekp.mock.MockData;
 import ekp.pu.PuBuilderDelegate;
+import ekp.sd.SdDelegate;
 import ekp.util.DataUtil;
 import legion.DataServiceFactory;
 import legion.util.DataFO;
@@ -66,6 +69,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 	private MbomBuilderDelegate mbomDel = MbomBuilderDelegate.getInstance();
 	private MfBuilderDelegate mfDel = MfBuilderDelegate.getInstance();
 	private PuBuilderDelegate puDel = PuBuilderDelegate.getInstance();
+	private SdDelegate sdDel = SdDelegate.getInstance();
 
 	//
 	private TimeTraveler tt;
@@ -263,7 +267,20 @@ public class PuScn1 extends AbstractEkpInitTest {
 		
 		// showMbsRelatedInfo
 		showMbsRelatedInfo(mmList);
-
+		
+		/* 4a. */
+		mmA = mmA.reload();
+		log.debug("mmA.getAvgValue(): {}", mmA.getAvgValue());
+		i = random.nextInt(bizPartners.length);
+		SalesOrderInfo so = sdDel.buildSalesOrder11(tt, "銷售訂單1", bizPartners[i][0], bizPartners[i][1], mmA, 1,
+				mmA.getAvgValue() * 1.5);
+		assertNotNull("so should NOT be null.", so);
+		log.info("4a.完成建立銷售訂單。 [{}][{}]", so.getSosn(), so.getTitle() );
+		for(SalesOrderItemInfo soi: so.getSalesOrderItemList()) {
+			log.info("  [{}][{}][{}][{}][{}][{}]", soi.getMmUid(), soi.getMmMano(),soi.getMmName(), soi.getMmSpec(), soi.getQty(), soi.getValue());
+		}
+		
+		
 		// TODO
 //		
 		

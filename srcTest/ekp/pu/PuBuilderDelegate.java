@@ -1,8 +1,8 @@
 package ekp.pu;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertTrue;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,11 +45,11 @@ public class PuBuilderDelegate {
 
 		// validate
 		StringBuilder msgValidate = new StringBuilder();
-		assertTrue(pb.validate(msgValidate), msgValidate.toString());
+		assertTrue(msgValidate.toString(), pb.validate(msgValidate));
 
 		// verify
 		StringBuilder msgVerify = new StringBuilder();
-		assertTrue(pb.verify(msgVerify), msgVerify.toString());
+		assertTrue(msgVerify.toString(), pb.verify(msgVerify));
 
 		// build
 		StringBuilder msgBuild = new StringBuilder();
@@ -82,11 +82,11 @@ public class PuBuilderDelegate {
 
 		// validate
 		StringBuilder msgValidate = new StringBuilder();
-		assertTrue(pb.validate(msgValidate), msgValidate.toString());
+		assertTrue(msgValidate.toString(), pb.validate(msgValidate));
 
 		// verify
 		StringBuilder msgVerify = new StringBuilder();
-		assertTrue(pb.verify(msgVerify), msgVerify.toString());
+		assertTrue(msgVerify.toString(), pb.verify(msgVerify));
 
 		// build
 		StringBuilder msgBuild = new StringBuilder();

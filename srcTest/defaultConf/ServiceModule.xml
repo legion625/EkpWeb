@@ -9,7 +9,7 @@
 		<Service name="MbomService" interface="ekp.mbom.MbomService" imp="ekp.mbom.MbomServiceImp" />
 		<Service name="MfService" interface="ekp.mf.MfService" imp="ekp.mf.MfServiceImp" />
 		<Service name="PuService" interface="ekp.pu.PuService" imp="ekp.pu.PuServiceImp" />
-		<Service name="SdService" interface="ekp.sd.PuService" imp="ekp.sd.SdServiceImp" />
+		<Service name="SdService" interface="ekp.sd.SdService" imp="ekp.sd.SdServiceImp" />
 	</BusinessService>
 	<!-- IntegrationService -->
 	<IntegrationService>

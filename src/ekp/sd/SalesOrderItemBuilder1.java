@@ -1,11 +1,11 @@
-package ekp.pu.bpu;
+package ekp.sd;
 
 import ekp.data.service.invt.MaterialMasterInfo;
-import ekp.data.service.pu.PurchItemInfo;
-import ekp.mbom.type.PartUnit;
+import ekp.data.service.sd.SalesOrderItemInfo;
+import legion.biz.Bpu;
 import legion.util.TimeTraveler;
 
-public class PurchItemBuilder1 extends PurchItemBuilder{
+public class SalesOrderItemBuilder1 extends SalesOrderItemBuilder{
 	/* base */
 	// none
 	
@@ -14,7 +14,7 @@ public class PurchItemBuilder1 extends PurchItemBuilder{
 	
 	// -------------------------------------------------------------------------------
 	@Override
-	protected PurchItemBuilder1 appendBase() {
+	protected SalesOrderItemBuilder1 appendBase() {
 		/* base */
 		// none
 		
@@ -23,32 +23,26 @@ public class PurchItemBuilder1 extends PurchItemBuilder{
 		
 		return this;
 	}
-
+	
 	// -------------------------------------------------------------------------------
-	public PurchItemBuilder1 appendMm(MaterialMasterInfo mm) {
+	public SalesOrderItemBuilder1 appendMm(MaterialMasterInfo mm) {
 		this.mm = mm;
 		appendMmUid(mm.getUid()).appendMmMano(mm.getMano()).appendMmName(mm.getName())
-				.appendMmSpecification(mm.getSpecification()).appendMmStdUnit(mm.getStdUnit());
+				.appendMmSpec(mm.getSpecification());
 		return this;
 	}
-
-	public PurchItemBuilder1 appendQty(double qty) {
-		return (PurchItemBuilder1) super.appendQty(qty);
+	public SalesOrderItemBuilder1 appendQty(double qty) {
+		return (SalesOrderItemBuilder1) super.appendQty(qty);
 	}
-
-	public PurchItemBuilder1 appendValue(double value) {
-		return (PurchItemBuilder1) super.appendValue(value);
+	public SalesOrderItemBuilder1 appendValue(double value) {
+		return (SalesOrderItemBuilder1)super.appendValue(value);
 	}
-
-	public PurchItemBuilder1 appendRemark(String remark) {
-		return (PurchItemBuilder1) super.appendRemark(remark);
-	}
-
+	
 	// -------------------------------------------------------------------------------
 	public MaterialMasterInfo getMm() {
 		return mm;
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	@Override
 	public boolean validate(StringBuilder _msg) {
@@ -59,9 +53,6 @@ public class PurchItemBuilder1 extends PurchItemBuilder{
 	@Override
 	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
-
-		if(!verifyThis(_msg,  _full))
-			v = false;
 		
 		if (getMm() == null) {
 			_msg.append("料件基本檔有誤。").append(System.lineSeparator());
@@ -71,23 +62,22 @@ public class PurchItemBuilder1 extends PurchItemBuilder{
 		return v;
 	}
 
-	// -------------------------------------------------------------------------------
 	@Override
-	protected PurchItemInfo buildProcess(TimeTraveler _tt) {
+	protected SalesOrderItemInfo buildProcess(TimeTraveler _tt) {
 		TimeTraveler tt = new TimeTraveler();
-
-		PurchItemInfo pi = buildPurchItem(tt);
-		if (pi == null) {
+		log.debug("getSoUid(): {}", getSoUid());
+		SalesOrderItemInfo soi = buildSalesOrderItem(tt, getSoUid());
+		if(soi == null) {
 			tt.travel();
-			log.error("buildPurchItem return null.");
+			log.error("buildSalesOrderItem return null.");
 			return null;
 		} // copy sites inside
-
+		
 		//
 		if (_tt != null)
 			_tt.copySitesFrom(tt);
 
-		return pi;
+		return soi;
 	}
-	
+
 }
