@@ -17,9 +17,11 @@ import ekp.data.service.invt.WrhsLocInfo;
 import ekp.data.service.mf.WorkorderInfo;
 import ekp.data.service.pu.PurchInfo;
 import ekp.data.service.pu.PurchItemInfo;
+import ekp.data.service.sd.SalesOrderInfo;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder11;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder12;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder22;
+import ekp.invt.bpu.invtOrder.InvtOrderBuilder29;
 import ekp.invt.bpu.invtOrder.InvtOrderItemBuilder11;
 import ekp.invt.bpu.invtOrder.IoBpuApprove;
 import ekp.invt.bpu.material.MaterialInstBpuDel0;
@@ -47,12 +49,11 @@ public enum InvtBpuType implements BpuType {
 	WB_1(WrhsBinBuilder1.class, WrhsLocInfo.class), //
 	WB_$DEL0(WrhsBinBpuDel0.class, WrhsBinInfo.class), //
 	/* InvtOrder */
-	IO_11(InvtOrderBuilder11.class,PurchInfo.class), // io, ioi (mi,mbsbStmt ), io->TO_APV, pu->Perfed
-	IO_12(InvtOrderBuilder12.class, WorkorderInfo.class), //
-	IO_22(InvtOrderBuilder22.class,WorkorderInfo.class), // io, ioi (mi,mbsbStmt ), io->TO_APV
+	IO_11(InvtOrderBuilder11.class,PurchInfo.class), // [採購入庫] io, ioi (mi,mbsbStmt ), io->TO_APV, pu->Perfed
+	IO_12(InvtOrderBuilder12.class, WorkorderInfo.class), // [工件入庫] io, ioi (mi,mbsbStmt), io -> TO_APV
+	IO_22(InvtOrderBuilder22.class,WorkorderInfo.class), // [工令領料] io, ioi (mbsbStmt ), io->TO_APV
+	IO_29(InvtOrderBuilder29.class, SalesOrderInfo.class), // [成品出庫](整個訂單一起出庫) O9(29, "成品出庫", ""),io, ioi (mbsbStmt ), io->TO_APV, soi->finishDelivered //
 	IO_$APPROVE(IoBpuApprove.class, InvtOrderInfo.class ), //
-	/* InvtOrderItem */
-//	IOI_11(InvtOrderItemBuilder11.class, PurchItemInfo.class), //
 	/* MaterialMaster */
 	MM_0(MaterialMasterBuilder0.class), //
 	MM_$DEL0(MaterialMasterBpuDel0.class, MaterialMasterInfo.class), //
@@ -86,7 +87,6 @@ public enum InvtBpuType implements BpuType {
 		case WL_0:
 			return true;
 		case WL_$DEL0:
-//			return matchBizWlDel0((WrhsLocInfo)_args[0]);
 			return true;
 		case WB_1:
 		case WB_$DEL0:
@@ -97,6 +97,8 @@ public enum InvtBpuType implements BpuType {
 			return matchBizIo12((WorkorderInfo)_args[0]);
 		case IO_22:
 			return matchBizIo22((WorkorderInfo)_args[0]);
+		case IO_29:
+			return matchBizIo29((SalesOrderInfo)_args[0]);
 		case IO_$APPROVE:
 			return matchBizIoApprove((InvtOrderInfo)_args[0]);
 		case MM_0:
@@ -111,8 +113,7 @@ public enum InvtBpuType implements BpuType {
 	}
 	
 	// -------------------------------------------------------------------------------
-//	private Logger log = LoggerFactory.getLogger(InvtBpuType.class);
-	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
+	private Logger log = LoggerFactory.getLogger(InvtBpuType.class);
 
 	// -------------------------------------------------------------------------------
 	private boolean matchBizIo11(PurchInfo _p) {
@@ -152,7 +153,23 @@ public enum InvtBpuType implements BpuType {
 
 		// 目前是一次把wo的所有wom領完，所以檢查所有qty0都要>0，且所有qty1<=0
 		if (!_wo.getWomList().stream().allMatch(wom -> wom.getQty0() > 0 && wom.getQty1() <= 0)) {
-			log.warn("_wom null.");
+			log.warn("_wom error.");
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean matchBizIo29(SalesOrderInfo _so) {
+		if (_so == null) {
+			log.warn("_so null.");
+			return false;
+		}
+
+		// 目前是一次把SalesOrder所有的項目都出庫，所以全部都不能有領出的紀錄。
+		if (!_so.getSalesOrderItemList().stream()
+				.allMatch(soi -> !soi.isAllDelivered() && soi.getIoiList().size() <= 0)) {
+			log.warn("soi error.");
 			return false;
 		}
 

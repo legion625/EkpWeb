@@ -280,6 +280,14 @@ public class PuScn1 extends AbstractEkpInitTest {
 			log.info("  [{}][{}][{}][{}][{}][{}]", soi.getMmUid(), soi.getMmMano(),soi.getMmName(), soi.getMmSpec(), soi.getQty(), soi.getValue());
 		}
 		
+		/* 4b.銷售單成品出庫（依Wo產生InvtOrder、InvtOrderItem、MbsbStmt） */
+		InvtOrderInfo io4b = invtDel.buildIo29(tt, so, "USER1", "Min-Hua");
+		assertNotNull("io4b should NOT be null.", io4b);
+		log.info("4b.完成產生io4b。 [{}][{}][{}][{}]", io4b.getIosn(), io4b.getStatus(), io4b.getIoiList().size(),io4b.getMbsbStmtList().size());
+		so = so.reload();
+		for(SalesOrderItemInfo soi: so.getSalesOrderItemList()) {
+			log.info("  [{}][{}][{}][{}][{}][{}]",  soi.getMmMano(),soi.getMmName(), soi.getQty(), soi.getValue(), soi.getSumIoiOrderQty(), soi.getSumIoiOrderValue());
+		}
 		
 		// TODO
 //		

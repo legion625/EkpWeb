@@ -8,7 +8,7 @@ import ekp.invt.type.MbsbFlowType;
 import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
-public class MbsbStmtBuilderByWom extends MbsbStmtBuilder{
+public class MbsbStmtBuilder2 extends MbsbStmtBuilder{
 	/* base */
 	// none
 	
@@ -18,7 +18,7 @@ public class MbsbStmtBuilderByWom extends MbsbStmtBuilder{
 
 	// -------------------------------------------------------------------------------
 	@Override
-	protected MbsbStmtBuilderByWom appendBase() {
+	protected MbsbStmtBuilder2 appendBase() {
 		/* base */
 		// none
 		
@@ -31,11 +31,11 @@ public class MbsbStmtBuilderByWom extends MbsbStmtBuilder{
 	// -------------------------------------------------------------------------------
 	// -----------------------------------appender------------------------------------
 	@Override
-	public MbsbStmtBuilderByWom appendMbsbUid(String mbsbUid) {
-		return (MbsbStmtBuilderByWom) super.appendMbsbUid(mbsbUid);
+	public MbsbStmtBuilder2 appendMbsbUid(String mbsbUid) {
+		return (MbsbStmtBuilder2) super.appendMbsbUid(mbsbUid);
 	}
 
-	public MbsbStmtBuilderByWom appendIoi(InvtOrderItemInfo ioi) {
+	public MbsbStmtBuilder2 appendIoi(InvtOrderItemInfo ioi) {
 		this.ioi = ioi;
 		super.appendIoiUid(ioi.getUid());
 		return this;
@@ -43,13 +43,13 @@ public class MbsbStmtBuilderByWom extends MbsbStmtBuilder{
 	
 
 	@Override
-	public MbsbStmtBuilderByWom appendStmtQty(double stmtQty) {
-		return (MbsbStmtBuilderByWom)super.appendStmtQty(stmtQty);
+	public MbsbStmtBuilder2 appendStmtQty(double stmtQty) {
+		return (MbsbStmtBuilder2)super.appendStmtQty(stmtQty);
 	}
 	
 	@Override
-	public MbsbStmtBuilderByWom appendStmtValue(double stmtValue) {
-		return (MbsbStmtBuilderByWom)super.appendStmtValue(stmtValue);
+	public MbsbStmtBuilder2 appendStmtValue(double stmtValue) {
+		return (MbsbStmtBuilder2)super.appendStmtValue(stmtValue);
 	}
 	
 	// -------------------------------------------------------------------------------

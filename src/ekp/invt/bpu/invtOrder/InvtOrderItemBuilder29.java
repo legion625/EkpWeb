@@ -1,45 +1,46 @@
 package ekp.invt.bpu.invtOrder;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ekp.DebugLogMark;
 import ekp.data.MfDataService;
+import ekp.data.SdDataService;
 import ekp.data.service.invt.InvtOrderItemInfo;
-import ekp.data.service.invt.MaterialBinStockBatchInfo;
 import ekp.data.service.invt.MbsbStmtInfo;
-import ekp.data.service.mf.WorkorderInfo;
 import ekp.data.service.mf.WorkorderMaterialInfo;
+import ekp.data.service.sd.SalesOrderItemInfo;
 import ekp.invt.bpu.material.MbsbStmtBuilder2;
 import ekp.invt.type.InvtOrderType;
 import ekp.invt.type.IoiTargetType;
 import legion.DataServiceFactory;
-import legion.biz.Bpu;
-import legion.util.DataFO;
+import legion.util.DateFormatUtil;
 import legion.util.TimeTraveler;
 
-public class InvtOrderItemBuilder22 extends InvtOrderItemBuilder {
-	protected Logger log = LoggerFactory.getLogger(InvtOrderItemBuilder22.class);
-	
-	private static MfDataService mfDataService = DataServiceFactory.getInstance().getService(MfDataService.class);
+public class InvtOrderItemBuilder29 extends InvtOrderItemBuilder {
+	protected Logger log = LoggerFactory.getLogger(InvtOrderItemBuilder29.class);
+
+	private static SdDataService sdDataSerivce = DataServiceFactory.getInstance().getService(SdDataService.class);
+
 	/* base */
-	private WorkorderMaterialInfo wom;
+	private SalesOrderItemInfo soi;
 
 	/* data */
 	private List<MbsbStmtBuilder2> mbsbStmtBuilderList;
+	private long finishDeliveredDate;
 
 	@Override
-	protected InvtOrderItemBuilder22 appendBase() {
+	protected InvtOrderItemBuilder29 appendBase() {
 		/* base */
-		wom = (WorkorderMaterialInfo) args[0];
+		soi = (SalesOrderItemInfo) args[0];
 
 		/* data */
-		appendMmUid(wom.getMmUid());
-		appendIoType(InvtOrderType.O2);
-		appendTargetType(IoiTargetType.WOM).appendTargetUid(wom.getUid()).appendTargetBizKey(wom.getWoNo());
+		appendMmUid(soi.getMmUid());
+		appendIoType(InvtOrderType.O9);
+		appendTargetType(IoiTargetType.SOI).appendTargetUid(soi.getUid()).appendTargetBizKey(soi.getSo().getSosn());
 		// orderQty和orderValue必須依賴從Mbsb挑完才能決定
 		mbsbStmtBuilderList = new ArrayList<>();
 
@@ -57,20 +58,25 @@ public class InvtOrderItemBuilder22 extends InvtOrderItemBuilder {
 		return b;
 	}
 
+	public InvtOrderItemBuilder29 appendFinishDeliveredDate(long finishDeliveredDate) {
+		this.finishDeliveredDate = finishDeliveredDate;
+		return this;
+	}
+
 	// -------------------------------------------------------------------------------
 	// ------------------------------------getter-------------------------------------
 	@Override
 	public double getOrderQty() {
 		return getSumMbsbStmtBuilderQty();
 	}
-	
+
 	@Override
 	public double getOrderValue() {
 		return getSumMbsbStmtBuilderValue();
 	}
 
-	public WorkorderMaterialInfo getWom() {
-		return wom;
+	public SalesOrderItemInfo getSoi() {
+		return soi;
 	}
 
 	public List<MbsbStmtBuilder2> getMbsbStmtBuilderList() {
@@ -83,6 +89,10 @@ public class InvtOrderItemBuilder22 extends InvtOrderItemBuilder {
 
 	public double getSumMbsbStmtBuilderValue() {
 		return getMbsbStmtBuilderList().stream().mapToDouble(b -> b.getStmtValue()).sum();
+	}
+
+	public long getFinishDeliveredDate() {
+		return finishDeliveredDate;
 	}
 
 	// -------------------------------------------------------------------------------
@@ -98,11 +108,13 @@ public class InvtOrderItemBuilder22 extends InvtOrderItemBuilder {
 		if (!verifyThis(_msg, _full))
 			v = false;
 
-		/* wom的數量必須被mbsbStmt滿足 */
-//		log.debug("getWom().getQty0(): {}", getWom().getQty0());
-//		log.debug("getSumMbsbStmtBuilderQty(): {}", getSumMbsbStmtBuilderQty());
-		if (getWom().getQty0() != getSumMbsbStmtBuilderQty()) {
-			_msg.append("工令料表的應領數量和欲領數量不同。").append(System.lineSeparator());
+		if (getSoi().getQty() != getSumMbsbStmtBuilderQty()) {
+			_msg.append("訂單項目的應領數量和欲領數量不同。").append(System.lineSeparator());
+			v = false;
+		}
+
+		if (getFinishDeliveredDate() <= 0) {
+			_msg.append("FinishDeliveredDate error").append(System.lineSeparator());
 			v = false;
 		}
 
@@ -134,17 +146,16 @@ public class InvtOrderItemBuilder22 extends InvtOrderItemBuilder {
 			} // copy sites inside
 		}
 
-		/* womQty0to1 */
-		double qty = getWom().getQty0();
-		if (!mfDataService.womQty0to1(getWom().getUid(), qty)) {
+		/**/
+		if (!sdDataSerivce.soiFinishDeliver(getSoi().getUid(), getFinishDeliveredDate())) {
 			tt.travel();
-			log.error("mfDataService.womQty0to1 return false.");
+			log.error("sdDataSerivce.soiFinishDeliver return false.");
 			return null;
 		}
-		tt.addSite("revert womQty0to1", () -> mfDataService.womQty0to1(getWom().getUid(), -qty));
-		wom = wom.reload();
-		log.info("mfDataService.womQty0to1 {}\t{}\t{}\t{}", getWom().getWoNo(), getWom().getMmMano(),
-				getWom().getQty0(), getWom().getQty1());
+		tt.addSite("revert soiFinishDeliver", () -> sdDataSerivce.soiRevertFinishDeliver(getSoi().getUid()));
+		soi = soi.reload();
+		log.info("sdDataSerivce.soiFinishDeliver {}\t{}\t{}\t{}", getSoi().getSo().getSosn(), getSoi().getMmMano(),
+				getSoi().isAllDelivered(), DateFormatUtil.transToDate(new Date(getSoi().getFinishDeliveredDate())));
 
 		//
 		if (_tt != null)

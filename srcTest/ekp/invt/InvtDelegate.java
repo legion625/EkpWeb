@@ -20,12 +20,16 @@ import ekp.data.service.invt.WrhsLocInfo;
 import ekp.data.service.mf.WorkorderInfo;
 import ekp.data.service.mf.WorkorderMaterialInfo;
 import ekp.data.service.pu.PurchInfo;
+import ekp.data.service.sd.SalesOrderInfo;
+import ekp.data.service.sd.SalesOrderItemInfo;
 import ekp.invt.bpu.InvtBpuType;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder11;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder12;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder22;
+import ekp.invt.bpu.invtOrder.InvtOrderBuilder29;
 import ekp.invt.bpu.invtOrder.InvtOrderItemBuilder12;
 import ekp.invt.bpu.invtOrder.InvtOrderItemBuilder22;
+import ekp.invt.bpu.invtOrder.InvtOrderItemBuilder29;
 import ekp.invt.bpu.invtOrder.IoBpuApprove;
 import ekp.invt.bpu.material.MaterialMasterBuilder0;
 import ekp.invt.bpu.wrhsLoc.WrhsBinBuilder1;
@@ -38,7 +42,7 @@ import legion.util.TimeTraveler;
 
 public class InvtDelegate {
 	private Logger log = LoggerFactory.getLogger(InvtDelegate.class);
-	//	private Logger log = LoggerFactory.getLogger(TestLogMark.class);
+	// private Logger log = LoggerFactory.getLogger(TestLogMark.class);
 	private static InvtDelegate delegate = new InvtDelegate();
 
 	private InvtDelegate() {
@@ -75,7 +79,7 @@ public class InvtDelegate {
 		// TODO
 		return wl;
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	// ------------------------------------WrhsBin------------------------------------
 	public WrhsBinInfo buildWrhsBin(TimeTraveler _tt, WrhsLocInfo _wl, String _id, String _name) {
@@ -101,7 +105,6 @@ public class InvtDelegate {
 
 		return wb;
 	}
-	
 
 	// -------------------------------------------------------------------------------
 	// --------------------------------MaterialMaster---------------------------------
@@ -127,7 +130,7 @@ public class InvtDelegate {
 
 		return mm;
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	// -----------------------------------InvtOrder-----------------------------------
 	public InvtOrderInfo buildIo11(TimeTraveler _tt, PurchInfo _p, String _applierId, String _applierName,
@@ -135,7 +138,7 @@ public class InvtDelegate {
 		InvtOrderBuilder11 iob = bpuFacade.getBuilder(InvtBpuType.IO_11, _p);
 		iob.appendApplierId(_applierId).appendApplierName(_applierName);
 		iob.appendWb(_wb);
-		
+
 		// validate
 		StringBuilder msgValidate = new StringBuilder();
 		assertTrue(iob.validate(msgValidate), msgValidate.toString());
@@ -143,32 +146,31 @@ public class InvtDelegate {
 		// verify
 		StringBuilder msgVerify = new StringBuilder();
 		assertTrue(iob.verify(msgVerify), msgVerify.toString());
-		
+
 		// build
 		StringBuilder msgBuild = new StringBuilder();
 		InvtOrderInfo io = iob.build(msgBuild, _tt);
 		assertNotNull(msgBuild.toString(), io);
-		
+
 		// check
-		assertEquals(_applierId,io.getApplierId());
-		assertEquals(_applierName,io.getApplierName());
+		assertEquals(_applierId, io.getApplierId());
+		assertEquals(_applierName, io.getApplierName());
 		PurchInfo p = _p.reload();
 		assertEquals(p.getPurchItemList().size(), io.getIoiList().size());
 		assertEquals(PurchPerfStatus.PERFED, p.getPerfStatus());
 
 		return io;
 	}
-	
+
 	public InvtOrderInfo buildIo12(TimeTraveler _tt, WorkorderInfo _wo, String _applierId, String _applierName,
 			WrhsBinInfo _wb) {
 		InvtOrderBuilder12 iob = bpuFacade.getBuilder(InvtBpuType.IO_12, _wo);
 		iob.appendApplierId(_applierId).appendApplierName(_applierName);
 		iob.appendWb(_wb);
-		InvtOrderItemBuilder12 ioib =iob.getIoiBuilder();
-		double orderValue =ioib.getSumSrcMiValue()*3;
+		InvtOrderItemBuilder12 ioib = iob.getIoiBuilder();
+		double orderValue = ioib.getSumSrcMiValue() * 3;
 		ioib.appendOrderValue(orderValue);
-		
-		
+
 		// validate
 		StringBuilder msgValidate = new StringBuilder();
 		assertTrue(iob.validate(msgValidate), msgValidate.toString());
@@ -176,15 +178,15 @@ public class InvtDelegate {
 		// verify
 		StringBuilder msgVerify = new StringBuilder();
 		assertTrue(iob.verify(msgVerify), msgVerify.toString());
-		
+
 		// build
 		StringBuilder msgBuild = new StringBuilder();
 		InvtOrderInfo io = iob.build(msgBuild, _tt);
 		assertNotNull(msgBuild.toString(), io);
-		
+
 		// check
-		assertEquals(_applierId,io.getApplierId());
-		assertEquals(_applierName,io.getApplierName());
+		assertEquals(_applierId, io.getApplierId());
+		assertEquals(_applierName, io.getApplierName());
 		WorkorderInfo wo = _wo.reload();
 		assertEquals(1, io.getIoiList().size());
 		MaterialInstInfo woPartMi = wo.getPartMi();
@@ -192,9 +194,8 @@ public class InvtDelegate {
 
 		return io;
 	}
-	
-	
-	public boolean ioApv(TimeTraveler _tt,InvtOrderInfo _io ) {
+
+	public boolean ioApv(TimeTraveler _tt, InvtOrderInfo _io) {
 		IoBpuApprove bpu = bpuFacade.getBuilder(InvtBpuType.IO_$APPROVE, _io);
 
 		// validate
@@ -204,29 +205,28 @@ public class InvtDelegate {
 		// verify
 		StringBuilder msgVerify = new StringBuilder();
 		assertTrue(bpu.verify(msgVerify), msgVerify.toString());
-		
+
 		// build
 		StringBuilder msgBuild = new StringBuilder();
 		Boolean result = bpu.build(msgBuild, _tt);
 		assertTrue(result);
-		
+
 		// check
 		// TODO
-		
+
 		return result;
 	}
-	
-	public InvtOrderInfo buildIo22(TimeTraveler _tt,WorkorderInfo _wo, String _applierId, String _applierName
-		) {
+
+	public InvtOrderInfo buildIo22(TimeTraveler _tt, WorkorderInfo _wo, String _applierId, String _applierName) {
 		InvtOrderBuilder22 iob = bpuFacade.getBuilder(InvtBpuType.IO_22, _wo);
 		iob.appendApplierId(_applierId).appendApplierName(_applierName);
-		
+
 		List<InvtOrderItemBuilder22> ioibList = iob.getInvtOrderItemBuilderList();
-		for(InvtOrderItemBuilder22 ioib: ioibList) {
-			WorkorderMaterialInfo wom =ioib.getWom(); 
+		for (InvtOrderItemBuilder22 ioib : ioibList) {
+			WorkorderMaterialInfo wom = ioib.getWom();
 			MaterialMasterInfo mm = wom.getMm();
-			List<MaterialBinStockBatchInfo> mbsbList =  mm.getMbsbList();
-			log.debug("{}\t{}", mm.getMano(), mbsbList.size() );
+			List<MaterialBinStockBatchInfo> mbsbList = mm.getMbsbList();
+			log.debug("{}\t{}", mm.getMano(), mbsbList.size());
 			double a = wom.getQty0();
 			double alcQty = 0;
 			for (MaterialBinStockBatchInfo mbsb : mbsbList) {
@@ -240,7 +240,58 @@ public class InvtDelegate {
 			assertTrue(a == 0); // a必須要分配完。
 			log.debug("{}\t{}", ioib.getWom().getMmMano(), ioib.getMbsbStmtBuilderList().size());
 		}
-		
+
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(iob.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(iob.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		InvtOrderInfo io = iob.build(msgBuild, _tt);
+		assertNotNull(msgBuild.toString(), io);
+
+		// check
+		assertEquals(_applierId, io.getApplierId());
+		assertEquals(_applierName, io.getApplierName());
+		WorkorderInfo wo = _wo.reload();
+		assertEquals(wo.getWomList().size(), io.getIoiList().size());
+		for (WorkorderMaterialInfo wom : wo.getWomList()) {
+			assertEquals(0d, wom.getQty0());
+			assertTrue(wom.getQty1() > 0);
+		}
+
+		return io;
+	}
+
+	public InvtOrderInfo buildIo29(TimeTraveler _tt,SalesOrderInfo _so, String _applierId, String _applierName
+			) {
+		InvtOrderBuilder29 iob = bpuFacade.getBuilder(InvtBpuType.IO_29, _so);
+		iob.appendApplierId(_applierId).appendApplierName(_applierName);
+
+		List<InvtOrderItemBuilder29> ioibList = iob.getInvtOrderItemBuilderList();
+		for (InvtOrderItemBuilder29 ioib : ioibList) {
+			SalesOrderItemInfo soi = ioib.getSoi();
+			MaterialMasterInfo mm = soi.getMm();
+			List<MaterialBinStockBatchInfo> mbsbList = mm.getMbsbList();
+//			log.debug("{}\t{}", mm.getMano(), mbsbList.size());
+			double a = soi.getQty();
+			double alcQty = 0;
+			for (MaterialBinStockBatchInfo mbsb : mbsbList) {
+				alcQty = Math.min(a, mbsb.getStockQty()); // 先找出「待分配數量」和「庫存數量」的較小值，作為「分配量」
+				double stmtValue = alcQty * mbsb.getStockValue() / mbsb.getStockQty();
+				ioib.addMbsbStmtBuilder(mbsb.getUid(), alcQty, stmtValue);
+				a -= alcQty; // 更新「待分配數量」。（mbsb的數量只是參考，要在kernel到時該帳被post時才會生效。）
+				if (a <= 0) // 若A已分配滿足，結束for迴圈。
+					break;
+			}
+//			assertTrue(a == 0); // a必須要分配完。
+			log.debug("{}\t{}", ioib.getSoi().getMmMano(), ioib.getMbsbStmtBuilderList().size());
+			ioib.appendFinishDeliveredDate(System.currentTimeMillis());
+		}
 		
 		// validate
 		StringBuilder msgValidate = new StringBuilder();
@@ -249,20 +300,20 @@ public class InvtDelegate {
 		// verify
 		StringBuilder msgVerify = new StringBuilder();
 		assertTrue(iob.verify(msgVerify), msgVerify.toString());
-		
+
 		// build
 		StringBuilder msgBuild = new StringBuilder();
 		InvtOrderInfo io = iob.build(msgBuild, _tt);
 		assertNotNull(msgBuild.toString(), io);
-		
+
 		// check
-		assertEquals(_applierId,io.getApplierId());
-		assertEquals(_applierName,io.getApplierName());
-		WorkorderInfo wo = _wo.reload();
-		assertEquals(wo.getWomList().size(), io.getIoiList().size());
-		for (WorkorderMaterialInfo wom : wo.getWomList()) {
-			assertEquals(0d, wom.getQty0());
-			assertTrue(wom.getQty1() > 0);
+		assertEquals(_applierId, io.getApplierId());
+		assertEquals(_applierName, io.getApplierName());
+		SalesOrderInfo so = _so.reload();
+		assertEquals(so.getSalesOrderItemList().size(), io.getIoiList().size());
+		for (SalesOrderItemInfo soi : so.getSalesOrderItemList()) {
+			assertTrue(soi.isAllDelivered());
+			assertEquals(soi.getQty(),soi.getSumIoiOrderQty());
 		}
 
 		return io;
