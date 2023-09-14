@@ -95,4 +95,11 @@ public class MbsbStmtInfoDto extends ObjectModelInfoDto implements MbsbStmtInfo{
 	public MaterialBinStockBatchInfo getMbsb() {
 		return mbsbLoader.getObj();
 	}
+	
+	private BizObjLoader<InvtOrderItemInfo> ioiLoader = BizObjLoader.of(()->DataServiceFactory.getInstance().getService(InvtDataService.class).loadInvtOrderItem(getIoiUid()));
+	
+	@Override
+	public InvtOrderItemInfo getIoi() {
+		return ioiLoader.getObj();
+	}
 }

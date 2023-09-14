@@ -17,7 +17,6 @@ import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
 public abstract class SalesOrderBuilder extends Bpu<SalesOrderInfo> {
-	protected Logger log = LoggerFactory.getLogger(DebugLogMark.class);
 	
 	private static SdDataService sdDataService = DataServiceFactory.getInstance().getService(SdDataService.class);
 

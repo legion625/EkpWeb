@@ -30,7 +30,6 @@ import legion.util.DateFormatUtil;
 import legion.util.TimeTraveler;
 
 public class InvtOrderItemBuilder12 extends InvtOrderItemBuilder {
-	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
 	
 	/* base */
 	private WorkorderInfo wo;

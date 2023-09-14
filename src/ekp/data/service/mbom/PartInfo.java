@@ -60,10 +60,7 @@ public interface PartInfo extends ObjectModelInfo {
 	
 	// 指定構型的下階ppart
 	default List<PpartInfo> getPpartChildren(PartCfgInfo _partCfg){
-//		getPartCfgList(false)
 		Logger log = LoggerFactory.getLogger(DebugLogMark.class);
-//		PartAcqInfo thisPa = getPaList(false).stream().filter(pa -> pa.getPartCfgList(false).contains(_partCfg)).findAny()
-//				.orElse(null);
 		PartAcqInfo thisPa  = getPa(_partCfg);
 		if(thisPa==null)
 			return new ArrayList<>();

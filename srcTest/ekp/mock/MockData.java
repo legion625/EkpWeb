@@ -4,9 +4,9 @@ public class MockData {
 
 	
 	public static String[][] materialNames = {
-			{"M000A",	"料件000A		",	"EAC" },
-			{"M000B",	"料件000B		",	"SPL" },
-			{"M000C",	"料件000C		",	"SHE" },
+			{"M00A1",	"料件00A1		",	"EAC" },
+			{"M00B1",	"料件00B1		",	"SPL" },
+			{"M00C1",	"料件00C1		",	"SHE" },
 //			{"M1101",	"互感線圈		",	"SPL" },
 //			{"M1102",	"矽鋼片			",	"SHE" },
 //			{"M1103",	"矽鋼片卷		",	"SPL" },
