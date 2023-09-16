@@ -29,6 +29,7 @@ public class WoBuilder1 extends WoBuilder {
 		PartInfo p = pa.getPart(false);
 		appendPartUid(p.getUid()).appendPartPin(p.getPin());
 		appendPartAcqUid(pa.getUid()).appendPartAcqId(pa.getId()).appendPartAcqMmMano(pa.getMmMano());
+		appendPartCfgUid(pc.getUid()).appendPartCfgId(pc.getId());
 		
 
 		/* data */

@@ -28,15 +28,17 @@ public interface PartAcqInfo extends ObjectModelInfo {
 
 	PartAcquisitionType getType();
 	
-	long getPublishTime();
-	
-	double getRefUnitCost();
-	
 	boolean isMmAssigned();
 
 	String getMmUid();
 
 	String getMmMano();
+	
+	long getPublishTime();
+	
+	double getRefUnitCost();
+	
+	
 	
 	// -------------------------------------------------------------------------------
 	default String getStatusName() {

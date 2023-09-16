@@ -17,6 +17,8 @@ public abstract class WoBuilder extends Bpu<WorkorderInfo> {
 	private String partAcqUid;
 	private String partAcqId;
 	private String partAcqMmMano;
+	private String partCfgUid;
+	private String partCfgId;
 	private double rqQty; // 需求數量
 
 	/* data */
@@ -34,8 +36,6 @@ public abstract class WoBuilder extends Bpu<WorkorderInfo> {
 		return this;
 	}
 
-	
-
 	protected WoBuilder appendPartAcqUid(String partAcqUid) {
 		this.partAcqUid = partAcqUid;
 		return this;
@@ -51,6 +51,16 @@ public abstract class WoBuilder extends Bpu<WorkorderInfo> {
 		return this;
 	}
 	
+	protected WoBuilder appendPartCfgUid(String partCfgUid) {
+		this.partCfgUid = partCfgUid;
+		return this;
+	}
+
+	protected WoBuilder appendPartCfgId(String partCfgId) {
+		this.partCfgId = partCfgId;
+		return this;
+	}
+
 	protected WoBuilder appendRqQty(double rqQty) {
 		this.rqQty = rqQty;
 		return this;
@@ -66,16 +76,24 @@ public abstract class WoBuilder extends Bpu<WorkorderInfo> {
 		return partPin;
 	}
 
-	public String getPartMmMano() {
-		return partAcqMmMano;
-	}
-
 	public String getPartAcqUid() {
 		return partAcqUid;
 	}
 
 	public String getPartAcqId() {
 		return partAcqId;
+	}
+	
+	public String getPartAcqMmMano() {
+		return partAcqMmMano;
+	}
+	
+	public String getPartCfgUid() {
+		return partCfgUid;
+	}
+
+	public String getPartCfgId() {
+		return partCfgId;
 	}
 
 	public double getRqQty() {
@@ -87,9 +105,11 @@ public abstract class WoBuilder extends Bpu<WorkorderInfo> {
 		WorkorderCreateObj dto = new WorkorderCreateObj();
 		dto.setPartUid(getPartUid());
 		dto.setPartPin(getPartPin());
-		dto.setPartMmMano(getPartMmMano());
 		dto.setPartAcqUid(getPartAcqUid());
 		dto.setPartAcqId(getPartAcqId());
+		dto.setPartAcqMmMano(getPartAcqMmMano());
+		dto.setPartCfgUid(getPartCfgUid());
+		dto.setPartCfgId(getPartCfgId());
 		dto.setRqQty(getRqQty());
 		return dto;
 	}
@@ -113,12 +133,6 @@ public abstract class WoBuilder extends Bpu<WorkorderInfo> {
 			_msg.append("PartPin should NOT be empty.").append(System.lineSeparator());
 			v = false;
 		}
-
-		if (DataFO.isEmptyString(getPartMmMano())) {
-			_msg.append("PartMmName should NOT be empty.").append(System.lineSeparator());
-			v = false;
-		}
-		
 		if (DataFO.isEmptyString(getPartAcqUid())) {
 			_msg.append("PartAcqUid should NOT be empty.").append(System.lineSeparator());
 			v = false;
@@ -127,6 +141,19 @@ public abstract class WoBuilder extends Bpu<WorkorderInfo> {
 			_msg.append("PartAcqId should NOT be empty.").append(System.lineSeparator());
 			v = false;
 		}
+		if (DataFO.isEmptyString(getPartAcqMmMano())) {
+			_msg.append("PartAcqMmName should NOT be empty.").append(System.lineSeparator());
+			v = false;
+		}
+		if (DataFO.isEmptyString(getPartCfgUid())) {
+			_msg.append("PartCfgUid should NOT be empty.").append(System.lineSeparator());
+			v = false;
+		}
+		if (DataFO.isEmptyString(getPartCfgId())) {
+			_msg.append("PartCfgId should NOT be empty.").append(System.lineSeparator());
+			v = false;
+		}
+		
 		if(getRqQty()<=0) {
 			_msg.append("RqQty should be GREATER than 0.").append(System.lineSeparator());
 			v = false;

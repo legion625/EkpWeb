@@ -16,9 +16,12 @@ public class MfFO {
 		dto.setStatus(_remote.getStatus());
 		dto.setPartUid(_remote.getPartUid());
 		dto.setPartPin(_remote.getPartPin());
-		dto.setPartMmMano(_remote.getPartMmMano());
+		
 		dto.setPartAcqUid(_remote.getPartAcqUid());
 		dto.setPartAcqId(_remote.getPartAcqId());
+		dto.setPartAcqMmMano(_remote.getPartAcqMmMano());
+		dto.setPartCfgUid(_remote.getPartCfgUid());
+		dto.setPartCfgId(_remote.getPartCfgId());
 		dto.setRqQty(_remote.getRqQty());
 		dto.setStartWorkTime(_remote.getStartWorkTime());
 		dto.setFinishWorkTime(_remote.getFinishWorkTime());
@@ -30,9 +33,11 @@ public class MfFO {
 		WorkorderCreateObjRemote remote = new WorkorderCreateObjRemote();
 		remote.setPartUid(_dto.getPartUid());
 		remote.setPartPin(_dto.getPartPin());
-		remote.setPartMmMano(_dto.getPartMmMano());
 		remote.setPartAcqUid(_dto.getPartAcqUid());
 		remote.setPartAcqId(_dto.getPartAcqId());
+		remote.setPartAcqMmMano(_dto.getPartAcqMmMano());
+		remote.setPartCfgUid(_dto.getPartCfgUid());
+		remote.setPartCfgId(_dto.getPartCfgId());
 		remote.setRqQty(_dto.getRqQty());
 		return remote;
 	}

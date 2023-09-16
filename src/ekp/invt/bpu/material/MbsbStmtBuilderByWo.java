@@ -91,7 +91,7 @@ public class MbsbStmtBuilderByWo extends MbsbStmtBuilder {
 			return null;
 
 		MaterialBinStockFacade mbsFacade = MaterialBinStockFacade.get();
-		MaterialBinStockInfo mbs = mbsFacade.getMbs(getWo().getPart().getMmUid(), getWb().getUid());
+		MaterialBinStockInfo mbs = mbsFacade.getMbs(getWo().getPartAcq().getMmUid(), getWb().getUid());
 		if (mbs == null) {
 			log.error("getMbs return null.");
 			return null;
