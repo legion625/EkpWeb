@@ -31,9 +31,6 @@ public class MbomFO {
 		dto.setPin(_remote.getPin());
 		dto.setName(_remote.getName());
 		dto.setUnit(_remote.getUnit());
-		dto.setMmAssigned(_remote.isMmAssigned());
-		dto.setMmUid(_remote.getMmUid());
-		dto.setMmMano(_remote.getMmMano());
 		return dto;
 	}
 
@@ -56,6 +53,9 @@ public class MbomFO {
 		dto.setId(_remote.getId());
 		dto.setName(_remote.getName());
 		dto.setType(_remote.getType());
+		dto.setMmAssigned(_remote.isMmAssigned());
+		dto.setMmUid(_remote.getMmUid());
+		dto.setMmMano(_remote.getMmMano());
 		dto.setPublishTime(_remote.getPublishTime());
 		dto.setRefUnitCost(_remote.getRefUnitCost());
 		return dto;

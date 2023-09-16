@@ -45,7 +45,7 @@ public class InvtOrderItemBuilder12 extends InvtOrderItemBuilder {
 		/* base */
 		wo = (WorkorderInfo) args[0];
 
-		String mmUid = wo.getPart().getMmUid();
+		String mmUid = wo.getPartAcq().getMmUid();
 		double qty = wo.getRqQty();
 		appendMmUid(mmUid);
 		appendIoType(InvtOrderType.I2);

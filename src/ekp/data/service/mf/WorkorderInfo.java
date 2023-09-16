@@ -4,6 +4,7 @@ import java.util.List;
 
 import ekp.data.service.invt.InvtOrderItemInfo;
 import ekp.data.service.invt.MaterialInstInfo;
+import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.mf.type.WorkorderStatus;
 import legion.ObjectModelInfo;
@@ -18,11 +19,13 @@ public interface WorkorderInfo extends ObjectModelInfo {
 
 	String getPartPin();
 
-	String getPartMmMano();
-
 	String getPartAcqUid();
 
 	String getPartAcqId();
+	
+	String getPartAcqMmMano();
+	String getPartCfgUid() ;
+	String getPartCfgId();
 
 	double getRqQty();
 
@@ -42,6 +45,8 @@ public interface WorkorderInfo extends ObjectModelInfo {
 
 	// -------------------------------------------------------------------------------
 	PartInfo getPart();
+	
+	PartAcqInfo getPartAcq();
 	
 	List<WorkorderMaterialInfo> getWomList();
 

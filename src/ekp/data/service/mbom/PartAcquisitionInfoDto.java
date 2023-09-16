@@ -29,15 +29,15 @@ public class PartAcquisitionInfoDto extends ObjectModelInfoDto implements PartAc
 	private String name;
 	private PartAcquisitionType type;
 	
-	private long publishTime;
-	
-	private double refUnitCost;
-	
 	// mm
 	private boolean mmAssigned;
 	private String mmUid;
 	private String mmMano;
-
+	
+	private long publishTime;
+	
+	private double refUnitCost;
+	
 	// -------------------------------------------------------------------------------
 	// ---------------------------------getter&setter---------------------------------
 	@Override
@@ -95,24 +95,6 @@ public class PartAcquisitionInfoDto extends ObjectModelInfoDto implements PartAc
 	}
 	
 	@Override
-	public long getPublishTime() {
-		return publishTime;
-	}
-
-	void setPublishTime(long publishTime) {
-		this.publishTime = publishTime;
-	}
-	
-	@Override
-	public double getRefUnitCost() {
-		return refUnitCost;
-	}
-
-	void setRefUnitCost(double refUnitCost) {
-		this.refUnitCost = refUnitCost;
-	}
-
-	@Override
 	public boolean isMmAssigned() {
 		return mmAssigned;
 	}
@@ -138,6 +120,26 @@ public class PartAcquisitionInfoDto extends ObjectModelInfoDto implements PartAc
 	void setMmMano(String mmMano) {
 		this.mmMano = mmMano;
 	}
+	
+	@Override
+	public long getPublishTime() {
+		return publishTime;
+	}
+
+	void setPublishTime(long publishTime) {
+		this.publishTime = publishTime;
+	}
+	
+	@Override
+	public double getRefUnitCost() {
+		return refUnitCost;
+	}
+
+	void setRefUnitCost(double refUnitCost) {
+		this.refUnitCost = refUnitCost;
+	}
+
+	
 	
 	// -------------------------------------------------------------------------------
 	@Override

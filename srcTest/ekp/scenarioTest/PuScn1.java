@@ -136,9 +136,9 @@ public class PuScn1 extends AbstractEkpInitTest {
 		log.info("1a-2.建立paA1。 [{}][{}][{}][{}]", paA1.getId(), paA1.getName(), paA1.getTypeName(), paA1.getStatusName());
 		ParsInfo parsA1 = mbomDel. buildParsType1(paA1, tt,"010","組裝A1", "把原料組裝成完成品。");
 		log.info("1a-3.建立parsA1。 [{}][{}][{}]", parsA1.getSeq(), parsA1.getName(), parsA1.getDesp());
-		assertTrue(mbomDel.partAssignMm(tt, partA1, mmA1));
-		partA1 = partA1.reload();
-		log.info("1a-4.partA1完成指定料件基本檔。 [{}][{}][{}]", partA1.getPin(), partA1.isMmAssigned(), partA1.getMmMano());
+		assertTrue(mbomDel.paAssignMm(tt, paA1, mmA1));
+		paA1 = paA1.reload();
+		log.info("1a-4.paA1完成指定料件基本檔。 [{}][{}][{}]", paA1.getPartPin(), paA1.isMmAssigned(), paA1.getMmMano());
 		
 		/* 1b.建立partB1 */
 		PartInfo partB1 = mbomDel.buildPartType0(tt, "B1", "PART_B1", PartUnit.SPL);
@@ -146,9 +146,9 @@ public class PuScn1 extends AbstractEkpInitTest {
 		PartAcqInfo paB1 = mbomDel.buildPartAcqType0(partB1, tt, "PART_ACQ_B1", "PART_B1採購", PartAcquisitionType.PURCHASING);
 		log.info("1b-2.建立paB1。 [{}][{}][{}][{}]", paB1.getId(), paB1.getName(), paB1.getTypeName(), paB1.getStatusName());
 		//
-		assertTrue(mbomDel.partAssignMm(tt, partB1, mmB1));
-		partB1 = partB1.reload();
-		log.info("1b-4.partB1完成指定料件基本檔。 [{}][{}][{}]", partB1.getPin(), partB1.isMmAssigned(), partB1.getMmMano());
+		assertTrue(mbomDel.paAssignMm(tt, paB1, mmB1));
+		paB1 = paB1.reload();
+		log.info("1b-4.paB1完成指定料件基本檔。 [{}][{}][{}]", paB1.getPartPin(), paB1.isMmAssigned(), paB1.getMmMano());
 		
 		/* 1c.建立partC1 */
 		PartInfo partC1 = mbomDel.buildPartType0(tt, "C1", "PART_C1", PartUnit.SHE);
@@ -156,9 +156,9 @@ public class PuScn1 extends AbstractEkpInitTest {
 		PartAcqInfo paC1 = mbomDel.buildPartAcqType0(partC1, tt, "PART_ACQ_C1", "PART_C1採購", PartAcquisitionType.PURCHASING);
 		log.info("1c-2.建立paC1。 [{}][{}][{}][{}]", paC1.getId(), paC1.getName(), paC1.getTypeName(), paC1.getStatusName());
 		//
-		assertTrue(mbomDel.partAssignMm(tt, partC1, mmC1));
-		partC1 = partC1.reload();
-		log.info("1c-4.partC1完成指定料件基本檔。 [{}][{}][{}]", partC1.getPin(), partC1.isMmAssigned(), partC1.getMmMano());
+		assertTrue(mbomDel.paAssignMm(tt, paC1, mmC1));
+		paC1 = paC1.reload();
+		log.info("1c-4.paC1完成指定料件基本檔。 [{}][{}][{}]", paC1.getPartPin(), paC1.isMmAssigned(), paC1.getMmMano());
 		
 		
 		/* 1x.建立關連 */
@@ -219,9 +219,10 @@ public class PuScn1 extends AbstractEkpInitTest {
 		
 		/* 3a. */
 		log.debug("================================================================");
-		WorkorderInfo wo = mfDel.buildWo(tt, partA1, paA1, 10);
+//		WorkorderInfo wo = mfDel.buildWo(tt, partA1, paA1, 10);
+		WorkorderInfo wo = mfDel.buildWo(tt, paA1, pcA1, 10);
 		assertNotNull("wo should NOT be null.", wo);
-		log.info("3a.產生工令。 [{}][{}][{}][{}][{}][{}]", wo.getWoNo(), wo.getPartPin(), wo.getPartMmMano(), wo.getPartAcqId(), wo.getRqQty(),  wo.getStatusName());
+		log.info("3a.產生工令。 [{}][{}][{}][{}][{}][{}][{}]", wo.getWoNo(), wo.getPartPin(), wo.getPartAcqId(), wo.getPartAcqMmMano(),wo.getPartCfgId(), wo.getRqQty(),  wo.getStatusName());
 		
 		log.debug("wo.getWomList().size(): {}", wo.getWomList().size());
 		

@@ -53,7 +53,7 @@ public enum MbomBpuType implements BpuType {
 	PART_ACQ_$DEL0(PaBpuDel0.class, PartAcqInfo.class), //
 	PART_ACQ_$PUBLISH(PaBpuPublish.class, PartAcqInfo.class), //
 	PART_ACQ_$UPDATE_REF_UNIT_COST(PaBpuUpdateRefUnitCost.class, PartAcqInfo.class), //
-	PART_ACQ_$ASSIGN_MM(PaBpuAsignMm.class, PartInfo.class), //
+	PART_ACQ_$ASSIGN_MM(PaBpuAsignMm.class, PartAcqInfo.class), //
 	
 	/* pars */
 	PARS_1(ParsBuilder1.class, PartAcqInfo.class), //
