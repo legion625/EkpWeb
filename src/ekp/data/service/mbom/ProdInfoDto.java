@@ -1,5 +1,10 @@
 package ekp.data.service.mbom;
 
+import java.util.List;
+
+import ekp.data.BizObjLoader;
+import ekp.data.MbomDataService;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
 public class ProdInfoDto extends ObjectModelInfoDto implements ProdInfo {
@@ -28,4 +33,19 @@ public class ProdInfoDto extends ObjectModelInfoDto implements ProdInfo {
 	void setName(String name) {
 		this.name = name;
 	}
+
+	// -------------------------------------------------------------------------------
+	@Override
+	public ProdInfo reload() {
+		return DataServiceFactory.getInstance().getService(MbomDataService.class).loadProd(getUid());
+	}
+
+	private BizObjLoader<List<ProdCtlInfo>> prodCtlListLv1Loader = BizObjLoader
+			.of(() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadProdCtlListLv1(getUid()));
+
+	@Override
+	public List<ProdCtlInfo> getProdCtlListLv1() {
+		return prodCtlListLv1Loader.getObj();
+	}
+
 }

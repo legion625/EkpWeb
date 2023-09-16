@@ -1,5 +1,10 @@
 package ekp.data.service.mbom;
 
+import java.util.List;
+
+import ekp.data.BizObjLoader;
+import ekp.data.MbomDataService;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
 public class ProdCtlInfoDto extends ObjectModelInfoDto implements ProdCtlInfo{
@@ -82,4 +87,35 @@ public class ProdCtlInfoDto extends ObjectModelInfoDto implements ProdCtlInfo{
 		this.prodUid = prodUid;
 	}
 
+	// -------------------------------------------------------------------------------
+	@Override
+	public ProdCtlInfo reload() {
+		return DataServiceFactory.getInstance().getService(MbomDataService.class).loadProdCtl(getUid());
+	}
+
+	private BizObjLoader<List<ProdCtlInfo>> childrenListLoader = BizObjLoader
+			.of(() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadProdCtlList(getUid()));
+
+	@Override
+	public List<ProdCtlInfo> getChildrenList() {
+		return childrenListLoader.getObj();
+	}
+	
+	
+	private BizObjLoader<ProdInfo> prodLoader = BizObjLoader.PROD.get();
+
+	@Override
+	public ProdInfo getProd() {
+		return prodLoader.getObj(getProdUid());
+	}
+
+	private BizObjLoader<List<ProdCtlPartCfgConjInfo>> pcpccListLoader = BizObjLoader.of(() -> DataServiceFactory
+			.getInstance().getService(MbomDataService.class).loadProdCtlPartCfgConjList1(getUid()));
+
+	@Override
+	public List<ProdCtlPartCfgConjInfo> getPcpccList() {
+		return pcpccListLoader.getObj();
+	}
+	
+	
 }

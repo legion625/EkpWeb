@@ -4,7 +4,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.junit.After;
@@ -36,6 +38,7 @@ import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.data.service.mbom.PpartInfo;
 import ekp.data.service.mbom.ProdCtlInfo;
+import ekp.data.service.mbom.ProdCtlPartCfgConjInfo;
 import ekp.data.service.mbom.ProdInfo;
 import ekp.data.service.mf.WorkorderInfo;
 import ekp.data.service.pu.PurchInfo;
@@ -178,15 +181,15 @@ public class PuScn1 extends AbstractEkpInitTest {
 		log.info("1x-3-C1 [{}][{}][{}][{}][{}]", DataUtil.getStr(b1x3C1), paC1.getId(), paC1.getName(), paC1.getTypeName(), paC1.getStatusName());
 		
 		/* 1y.建立構型 */
-		PartCfgInfo pcA1 = mbomDel.buildPartCfg0(partA1.getUid(), partA1.getPin(), tt, "PCA1_ID", "PCA1_NAME", "PCA1_DESP");
-		log.info("1y-1. 建立構型A1 [{}][{}][{}][{}][{}]",pcA1.getRootPartPin(),  pcA1.getId(), pcA1.getName(), pcA1.getStatusName(), pcA1.getDesp());
-		log.info("1y-2. 構型指定PartAcq", DataUtil.getStr(mbomDel.runPartCfgEditing(pcA1, tt, paA1, paB1, paC1)));
-		for(PartCfgConjInfo pcc: pcA1.getPccList(true))
+		PartCfgInfo pcCfg1 = mbomDel.buildPartCfg0(partA1.getUid(), partA1.getPin(), tt, "PCA1_ID", "PCA1_NAME", "PCA1_DESP");
+		log.info("1y-1. 建立構型Cfg1 [{}][{}][{}][{}][{}]",pcCfg1.getRootPartPin(),  pcCfg1.getId(), pcCfg1.getName(), pcCfg1.getStatusName(), pcCfg1.getDesp());
+		log.info("1y-2. 構型指定PartAcq", DataUtil.getStr(mbomDel.runPartCfgEditing(pcCfg1, tt, paA1, paB1, paC1)));
+		for(PartCfgConjInfo pcc: pcCfg1.getPccList(true))
 			log.info("  [{}][{}][{}][{}][{}][{}]", pcc.getPartCfg().getId(), pcc.getPartCfg().getRootPartPin(), pcc.getPartAcq().getPartPin(),  pcc.getPartAcq().getId(), pcc.getPartAcq().getName(), pcc.getPartAcq().getStatusName());
 		// 發布構型
-		boolean b1y3A1 = mbomDel.runPartCfgPublish(tt, pcA1);
-		pcA1 = pcA1.reload();
-		log.info("1y-3-A1. 發布構型A1 [{}][{}][{}][{}][{}][{}]",DataUtil.getStr(b1y3A1), pcA1.getRootPartPin(),  pcA1.getId(), pcA1.getName(), pcA1.getStatusName(), pcA1.getDesp());
+		boolean b1y3Cfg1 = mbomDel.runPartCfgPublish(tt, pcCfg1);
+		pcCfg1 = pcCfg1.reload();
+		log.info("1y-3-A1. 發布構型Cfg1 [{}][{}][{}][{}][{}][{}]",DataUtil.getStr(b1y3Cfg1), pcCfg1.getRootPartPin(),  pcCfg1.getId(), pcCfg1.getName(), pcCfg1.getStatusName(), pcCfg1.getDesp());
 
 		/* 2a.產生購案 */
 		log.info("================================================================");
@@ -220,7 +223,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 		/* 3a. */
 		log.debug("================================================================");
 //		WorkorderInfo wo = mfDel.buildWo(tt, partA1, paA1, 10);
-		WorkorderInfo wo = mfDel.buildWo(tt, paA1, pcA1, 10);
+		WorkorderInfo wo = mfDel.buildWo(tt, paA1, pcCfg1, 10);
 		assertNotNull("wo should NOT be null.", wo);
 		log.info("3a.產生工令。 [{}][{}][{}][{}][{}][{}][{}]", wo.getWoNo(), wo.getPartPin(), wo.getPartAcqId(), wo.getPartAcqMmMano(),wo.getPartCfgId(), wo.getRqQty(),  wo.getStatusName());
 		
@@ -312,11 +315,31 @@ public class PuScn1 extends AbstractEkpInitTest {
 		assertNotNull("prodA should NOT be null.", prodA);
 		log.info("9a.完成建立產品A。 [{}][{}]", prodA.getId(), prodA.getName());
 		
-		ProdCtlInfo prodCtl1A = mbomDel.buildProdCtl0(tt, "ProdCtlA", 1, "A", true);
+		ProdCtlInfo prodCtlA = mbomDel.buildProdCtl0(tt, "ProdCtlA", 1, "A", true);
+		ProdCtlInfo prodCtlB = mbomDel.buildProdCtl0(tt, "ProdCtlB", 2, "B", true);
+		ProdCtlInfo prodCtlC = mbomDel.buildProdCtl0(tt, "ProdCtlC", 2, "C", true);
+		
+		Map<ProdCtlInfo, ProdCtlInfo> prodCtlParentMapA = new HashMap<>();
+		prodCtlParentMapA.put(prodCtlB, prodCtlA);
+		prodCtlParentMapA.put(prodCtlC, prodCtlA);
+		assertTrue(mbomDel.runProdEditCtl(prodA, tt, prodCtlParentMapA));
+		//
+		prodCtlA = prodCtlA.reload();
+		prodCtlB = prodCtlB.reload();
+		prodCtlC = prodCtlC.reload();
+		log.info("9b-A.完成建立產品分類A。 [{}][{}][{}][{}][{}][{}]", prodCtlA.getId(),prodCtlA.getLv(), prodCtlA.getName(),DataUtil.getStr(prodCtlA.isReq()), prodCtlA.getParentId(), prodCtlA.getProd().getId());
+		log.info("9b-B.完成建立產品分類B。 [{}][{}][{}][{}][{}][{}]", prodCtlB.getId(),prodCtlB.getLv(), prodCtlB.getName(),DataUtil.getStr(prodCtlB.isReq()), prodCtlB.getParentId(), prodCtlB.getProd().getId());
+		log.info("9b-C.完成建立產品分類C。 [{}][{}][{}][{}][{}][{}]", prodCtlC.getId(),prodCtlC.getLv(), prodCtlC.getName(),DataUtil.getStr(prodCtlC.isReq()), prodCtlC.getParentId(), prodCtlC.getProd().getId());
+		
+		// 設定每個產品分類可對應的構型
+		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlA, tt, pcCfg1));
+		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlB, tt, pcCfg1));
+		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlC, tt, pcCfg1));
+		
+		showProdInfo(prodA);
 		
 		
-		// TODO 工令領料單
-		
+		// TODO ProdMod, ProdModItem
 		
 		
 //		invtDataService.loadMaterialBinStockList(_mmUid)
@@ -328,6 +351,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 //		PurchInfo p = puDel.buildPurch(tt);
 	}
 	
+	// -------------------------------------------------------------------------------
 	private void showMbsRelatedInfo(List<MaterialMasterInfo> mmList) {
 		for (MaterialMasterInfo mm : mmList) {
 			mm = mm.reload();
@@ -363,7 +387,29 @@ public class PuScn1 extends AbstractEkpInitTest {
 		}
 		
 	}
+	
+	private void showProdInfo(ProdInfo prod) {
+		prod = prod.reload();
+		log.debug("{}\t{}", prod.getId(), prod.getName());
+		for(ProdCtlInfo prodCtl: prod.getProdCtlListLv1()) {
+			showProdCtlInfo(prodCtl, 1);
+		}
+	}
+	
+	private void showProdCtlInfo(ProdCtlInfo prodCtl, int lv) {
+		StringBuilder sbLvSpace = new StringBuilder();
+		for (int i = 0; i < lv; i++)
+			sbLvSpace.append("  ");
+		log.debug("{}{}\t{}\t{}\t{}", sbLvSpace.toString(), prodCtl.getId(), prodCtl.getLv(), prodCtl.getName(),
+				DataUtil.getStr(prodCtl.isReq()));
+		for (ProdCtlPartCfgConjInfo pcpcc : prodCtl.getPcpccList()) {
+			log.debug("  {}-構型\t{}", sbLvSpace.toString(), pcpcc.getPartCfg().getId());
+		}
 
+		for (ProdCtlInfo childProdCtl : prodCtl.getChildrenList()) {
+			showProdCtlInfo(childProdCtl, lv + 1);
+		}
+	}
 	
 
 }

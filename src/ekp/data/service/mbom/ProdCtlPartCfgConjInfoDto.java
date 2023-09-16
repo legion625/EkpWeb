@@ -1,5 +1,6 @@
 package ekp.data.service.mbom;
 
+import ekp.data.BizObjLoader;
 import legion.ObjectModelInfoDto;
 
 public class ProdCtlPartCfgConjInfoDto extends ObjectModelInfoDto implements ProdCtlPartCfgConjInfo {
@@ -27,6 +28,14 @@ public class ProdCtlPartCfgConjInfoDto extends ObjectModelInfoDto implements Pro
 
 	void setPartCfgUid(String partCfgUid) {
 		this.partCfgUid = partCfgUid;
+	}
+
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<PartCfgInfo> partCfgLoader = BizObjLoader.PART_CFG.get();
+
+	@Override
+	public PartCfgInfo getPartCfg() {
+		return partCfgLoader.getObj(getPartCfgUid());
 	}
 
 }
