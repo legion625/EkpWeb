@@ -25,10 +25,10 @@ import ekp.mbom.issue.MbomBpuType;
 import ekp.mbom.issue.parsPart.ParsPartBuilder0;
 import ekp.mbom.issue.parsPart.ParsPartBuilder1;
 import ekp.mbom.issue.parsProc.ParsProcBuilder0;
-import ekp.mbom.issue.part.PartBpuAsignMm;
 import ekp.mbom.issue.part.PartBuilder0;
 import ekp.mbom.issue.partAcq.PaBpuPublish;
 import ekp.mbom.issue.partAcq.PartAcqBuilder0;
+import ekp.mbom.issue.partAcq.PaBpuAsignMm;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBuilder1;
 import ekp.mbom.issue.partCfg.PartCfgBuilder0;
 import ekp.mbom.issue.partCfg.PartCfgBpuEditing;
@@ -92,29 +92,6 @@ public class MbomBuilderDelegate {
 		return buildPartType0(_tt, "TEST_PIN", "TEST_NAME", PartUnit.EAC);
 	}
 
-	public boolean partAssignMm(TimeTraveler _tt, PartInfo _part, MaterialMasterInfo _mm) {
-		PartBpuAsignMm bpu = bpuFacade.getBuilder(MbomBpuType.PART_$ASSIGN_MM, _part);
-		bpu.appendMm(_mm);
-
-		// validate
-		StringBuilder msgValidate = new StringBuilder();
-		assertTrue(bpu.validate(msgValidate), msgValidate.toString());
-
-		// verify
-		StringBuilder msgVerify = new StringBuilder();
-		assertTrue(bpu.verify(msgVerify), msgVerify.toString());
-
-		// build
-		StringBuilder msgBuild = new StringBuilder();
-		Boolean result = bpu.build(msgBuild, _tt);
-		assertTrue(result);
-
-		// check
-		// TODO
-
-		return result;
-	}
-	
 	// -------------------------------------------------------------------------------
 	// ------------------------------------PartAcq------------------------------------
 	public PartAcqInfo buildPartAcqType0(PartInfo _p, TimeTraveler _tt, String _id, String _name,
@@ -156,6 +133,29 @@ public class MbomBuilderDelegate {
 
 	public PartAcqInfo buildPartAcqType03(PartInfo _p, TimeTraveler _tt) {
 		return buildPartAcqType0(_p, _tt, "TEST_ACQ_ID_3", "TEST_ACQ_NAME_3", PartAcquisitionType.SELF_PRODUCING);
+	}
+	
+	public boolean paAssignMm(TimeTraveler _tt, PartAcqInfo _pa, MaterialMasterInfo _mm) {
+		PaBpuAsignMm bpu = bpuFacade.getBuilder(MbomBpuType.PART_ACQ_$ASSIGN_MM, _pa);
+		bpu.appendMm(_mm);
+
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(bpu.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(bpu.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		Boolean result = bpu.build(msgBuild, _tt);
+		assertTrue(result);
+
+		// check
+		// TODO
+
+		return result;
 	}
 	
 	public boolean paPublish(PartAcqInfo _pa, TimeTraveler _tt) {

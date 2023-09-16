@@ -35,6 +35,7 @@ import ekp.data.service.mbom.PartCfgConjInfo;
 import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.data.service.mbom.PpartInfo;
+import ekp.data.service.mbom.ProdCtlInfo;
 import ekp.data.service.mbom.ProdInfo;
 import ekp.data.service.mf.WorkorderInfo;
 import ekp.data.service.pu.PurchInfo;
@@ -310,7 +311,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 		assertNotNull("prodA should NOT be null.", prodA);
 		log.info("9a.完成建立產品A。 [{}][{}]", prodA.getId(), prodA.getName());
 		
-		
+		ProdCtlInfo prodCtl1A = mbomDel.buildProdCtl0(tt, "ProdCtlA", 1, "A", true);
 		
 		
 		// TODO 工令領料單

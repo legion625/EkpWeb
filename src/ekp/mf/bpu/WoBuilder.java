@@ -14,9 +14,9 @@ public abstract class WoBuilder extends Bpu<WorkorderInfo> {
 	/* base */
 	private String partUid;
 	private String partPin;
-	private String partMmMano;
 	private String partAcqUid;
 	private String partAcqId;
+	private String partAcqMmMano;
 	private double rqQty; // 需求數量
 
 	/* data */
@@ -34,10 +34,7 @@ public abstract class WoBuilder extends Bpu<WorkorderInfo> {
 		return this;
 	}
 
-	protected WoBuilder appendPartMmMano(String partMmMano) {
-		this.partMmMano = partMmMano;
-		return this;
-	}
+	
 
 	protected WoBuilder appendPartAcqUid(String partAcqUid) {
 		this.partAcqUid = partAcqUid;
@@ -49,6 +46,11 @@ public abstract class WoBuilder extends Bpu<WorkorderInfo> {
 		return this;
 	}
 
+	protected WoBuilder appendPartAcqMmMano(String partAcqMmMano) {
+		this.partAcqMmMano = partAcqMmMano;
+		return this;
+	}
+	
 	protected WoBuilder appendRqQty(double rqQty) {
 		this.rqQty = rqQty;
 		return this;
@@ -65,7 +67,7 @@ public abstract class WoBuilder extends Bpu<WorkorderInfo> {
 	}
 
 	public String getPartMmMano() {
-		return partMmMano;
+		return partAcqMmMano;
 	}
 
 	public String getPartAcqUid() {

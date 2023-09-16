@@ -5,6 +5,7 @@ import java.util.List;
 
 import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.mbom.PartAcqInfo;
+import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.data.service.mbom.PpartInfo;
 import ekp.data.service.mf.WorkorderInfo;
@@ -13,21 +14,35 @@ import legion.util.TimeTraveler;
 
 public class WoBuilder1 extends WoBuilder {
 	/* base */
-	private PartInfo p;
+	private PartAcqInfo pa;
+	private PartCfgInfo pc;
 
 	/* data */
-	private PartAcqInfo pa;
 	private List<WomBuilder1> womBuilderList;
-//	private PartAcqInfo pa; XXX
 
 	// -------------------------------------------------------------------------------
 	@Override
 	protected WoBuilder1 appendBase() {
 		/* base */
-		p = (PartInfo) args[0];
-		appendPartUid(p.getUid()).appendPartPin(p.getPin()).appendPartMmMano(p.getMmMano());
+		pa = (PartAcqInfo) args[0];
+		pc = (PartCfgInfo) args[1];
+		PartInfo p = pa.getPart(false);
+		appendPartUid(p.getUid()).appendPartPin(p.getPin());
+		appendPartAcqUid(pa.getUid()).appendPartAcqId(pa.getId()).appendPartAcqMmMano(pa.getMmMano());
+		
 
 		/* data */
+		womBuilderList = new ArrayList<>();
+		for (PpartInfo ppart : pa.getPpartList()) {
+			WomBuilder1 womBuilder = new WomBuilder1();
+//			MaterialMasterInfo mm = ppart.getPart().getMm();
+			PartAcqInfo womPa = ppart.getPart().getPa(pc.getUid());
+			womBuilder.appendMm(womPa.getMm()).appendMultiplier(ppart.getPartReqQty());
+//			.appendQty(rqQty * ppart.getPartReqQty());
+			womBuilderList.add(womBuilder);
+		}
+		
+		
 		// none
 
 		return this;
@@ -35,25 +50,32 @@ public class WoBuilder1 extends WoBuilder {
 
 	// -------------------------------------------------------------------------------
 	// XXX
-	public WoBuilder1 appendPa(PartAcqInfo pa, double rqQty) {
-		this.pa = pa;
-		appendPartAcqUid(pa.getUid()).appendPartAcqId(pa.getId()).appendRqQty(rqQty);
+//	public WoBuilder1 appendPa(PartAcqInfo pa, double rqQty) {
+	public WoBuilder1 appendRqQty( double rqQty) {
+//		this.pa = pa;
+//		appendPartAcqUid(pa.getUid()).appendPartAcqId(pa.getId()).appendRqQty(rqQty);
+		super.appendRqQty(rqQty);
 
-		womBuilderList = new ArrayList<>();
-		for (PpartInfo ppart : pa.getPpartList()) {
-			WomBuilder1 womBuilder = new WomBuilder1();
-			MaterialMasterInfo mm = ppart.getPart().getMm();
-			womBuilder.appendMm(mm).appendQty(rqQty * ppart.getPartReqQty());
-			womBuilderList.add(womBuilder);
+		for(WomBuilder1 womBuilder: womBuilderList) {
+//			womBuilder	.appendQty(rqQty * ppart.getPartReqQty());
+			womBuilder.appendWoRqQty(rqQty);
 		}
+		
+//		womBuilderList = new ArrayList<>();
+//		for (PpartInfo ppart : pa.getPpartList()) {
+//			WomBuilder1 womBuilder = new WomBuilder1();
+//			MaterialMasterInfo mm = ppart.getPart().getMm();
+//			womBuilder.appendMm(mm).appendQty(rqQty * ppart.getPartReqQty());
+//			womBuilderList.add(womBuilder);
+//		}
 		return this;
 	}
 	
 
-	// -------------------------------------------------------------------------------
-	public PartInfo getP() {
-		return p;
-	}
+//	// -------------------------------------------------------------------------------
+//	public PartInfo getP() {
+//		return p;
+//	}
 
 	public PartAcqInfo getPa() {
 		return pa;

@@ -6,7 +6,9 @@ import legion.ObjectModelInfoDto;
 import java.util.List;
 
 import ekp.data.BizObjLoader;
+import ekp.data.InvtDataService;
 import ekp.data.MbomDataService;
+import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.mbom.type.PartAcqStatus;
 import ekp.mbom.type.PartAcquisitionType;
 
@@ -30,6 +32,11 @@ public class PartAcquisitionInfoDto extends ObjectModelInfoDto implements PartAc
 	private long publishTime;
 	
 	private double refUnitCost;
+	
+	// mm
+	private boolean mmAssigned;
+	private String mmUid;
+	private String mmMano;
 
 	// -------------------------------------------------------------------------------
 	// ---------------------------------getter&setter---------------------------------
@@ -105,6 +112,33 @@ public class PartAcquisitionInfoDto extends ObjectModelInfoDto implements PartAc
 		this.refUnitCost = refUnitCost;
 	}
 
+	@Override
+	public boolean isMmAssigned() {
+		return mmAssigned;
+	}
+
+	void setMmAssigned(boolean mmAssigned) {
+		this.mmAssigned = mmAssigned;
+	}
+
+	@Override
+	public String getMmUid() {
+		return mmUid;
+	}
+
+	void setMmUid(String mmUid) {
+		this.mmUid = mmUid;
+	}
+
+	@Override
+	public String getMmMano() {
+		return mmMano;
+	}
+
+	void setMmMano(String mmMano) {
+		this.mmMano = mmMano;
+	}
+	
 	// -------------------------------------------------------------------------------
 	@Override
 	public PartAcqInfo reload() {
@@ -132,6 +166,15 @@ public class PartAcquisitionInfoDto extends ObjectModelInfoDto implements PartAc
 	@Override
 	public List<PartCfgConjInfo> getPartCfgConjList(boolean _reload) {
 		return pccListLoader.getObj(_reload);
+	}
+	
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<MaterialMasterInfo> mmLoader = BizObjLoader.of(() -> isMmAssigned() ?
+			DataServiceFactory.getInstance().getService(InvtDataService.class).loadMaterialMaster(getMmUid()) : null);
+
+	@Override
+	public MaterialMasterInfo getMm() {
+		return mmLoader.getObj();
 	}
 
 }

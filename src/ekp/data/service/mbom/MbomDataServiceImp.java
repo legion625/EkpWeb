@@ -146,25 +146,7 @@ public class MbomDataServiceImp implements MbomDataService {
 		}
 	}
 
-	@Override
-	public boolean partAssignMm(String _uid, String _mmUid, String _mmMano) {
-		try {
-			return getEkpKernelRmi().partAssignMm(_uid, _mmUid, _mmMano);
-		} catch (Throwable e) {
-			LogUtil.log(log, e, Level.ERROR);
-			return false;
-		}
-	}
 
-	@Override
-	public boolean partRevertAssignMm(String _uid) {
-		try {
-			return getEkpKernelRmi().partRevertAssignMm(_uid);
-		} catch (Throwable e) {
-			LogUtil.log(log, e, Level.ERROR);
-			return false;
-		}
-	}
 
 	// -------------------------------------------------------------------------------
 	// --------------------------------PartAcquisition--------------------------------
@@ -242,6 +224,27 @@ public class MbomDataServiceImp implements MbomDataService {
 		}
 	}
 	@Override
+	public boolean partAcqAssignMm(String _uid, String _mmUid, String _mmMano) {
+		try {
+			return getEkpKernelRmi().partAcqAssignMm(_uid, _mmUid, _mmMano);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+
+	@Override
+	public boolean partAcqRevertAssignMm(String _uid) {
+		try {
+			return getEkpKernelRmi().partAcqRevertAssignMm(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+	
+	
+	@Override
 	public boolean partAcqPublish(String _uid, long _publishTime){
 		try {
 			return getEkpKernelRmi().partAcqPublish(_uid, _publishTime);
@@ -280,6 +283,11 @@ public class MbomDataServiceImp implements MbomDataService {
 			return false;
 		}
 	}
+	
+//	public boolean partAcqAssignMm(String _uid, String _mmUid, String _mmMano);
+//
+//	public boolean partAcqRevertAssignMm(String _uid);
+	
 	
 	// -------------------------------------------------------------------------------
 	// ------------------------------PartAcqRoutingStep-------------------------------

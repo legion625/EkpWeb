@@ -14,7 +14,9 @@ public class WomBuilder1 extends WomBuilder {
 	/* data */
 	private WorkorderInfo wo;
 	private MaterialMasterInfo mm;
-	private double qty;
+	private double multiplier; // 單階配賦量
+	private double woRqQty;
+//	private double qty;
 
 	@Override
 	protected Bpu<WorkorderMaterialInfo> appendBase() {
@@ -41,8 +43,18 @@ public class WomBuilder1 extends WomBuilder {
 		return this;
 	}
 	 
-	 WomBuilder1 appendQty(double qty) {
-		 this.qty = qty;
+//	 WomBuilder1 appendQty(double qty) {
+//		 this.qty = qty;
+//		 return this;
+//	 }
+	 
+	 WomBuilder1 appendMultiplier(double multiplier) {
+		 this.multiplier = multiplier;
+		 return this;
+	 }
+	 
+	 WomBuilder1 appendWoRqQty(double woRqQty) {
+		 this.woRqQty = woRqQty;
 		 return this;
 	 }
 	 
@@ -57,8 +69,17 @@ public class WomBuilder1 extends WomBuilder {
 		return mm;
 	}
 	
+	public double getMultiplier() {
+		return multiplier;
+	}
+
+	public double getWoRqQty() {
+		return woRqQty;
+	}
+
+	// -------------------------------------------------------------------------------
 	public double getQty() {
-		return qty;
+		return getMultiplier() * getWoRqQty();
 	}
 
 	// -------------------------------------------------------------------------------

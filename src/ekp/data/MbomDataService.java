@@ -53,9 +53,9 @@ public interface MbomDataService extends IntegrationService {
 	
 	public boolean partUpdate(String _uid, String _pin, String _name, PartUnit _unit);
 	
-	public boolean partAssignMm(String _uid, String _mmUid, String _mmMano);
-
-	public boolean partRevertAssignMm(String _uid);
+//	public boolean partAssignMm(String _uid, String _mmUid, String _mmMano);
+//
+//	public boolean partRevertAssignMm(String _uid);
 
 	// -------------------------------------------------------------------------------
 	// --------------------------------PartAcquisition--------------------------------
@@ -73,6 +73,10 @@ public interface MbomDataService extends IntegrationService {
 
 	public boolean partAcqRevertStartEditing(String _uid);
 
+	public boolean partAcqAssignMm(String _uid, String _mmUid, String _mmMano);
+
+	public boolean partAcqRevertAssignMm(String _uid);
+	
 	public boolean partAcqPublish(String _uid, long _publishTime);
 
 	public boolean partAcqRevertPublish(String _uid);
@@ -80,6 +84,8 @@ public interface MbomDataService extends IntegrationService {
 	public boolean partAcqUpdateInfo(String _uid, String _id, String _name, PartAcquisitionType _type);
 	
 	public boolean partAcqUpdateRefUnitCost(String _uid, double _refUnitCost);
+	
+	
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------PartAcqRoutingStep-------------------------------

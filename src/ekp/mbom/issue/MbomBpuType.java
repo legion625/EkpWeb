@@ -19,7 +19,6 @@ import ekp.mbom.issue.parsPart.ParsPartBuilder0;
 import ekp.mbom.issue.parsPart.ParsPartBuilder1;
 import ekp.mbom.issue.parsPart.PpartBpuDel0;
 import ekp.mbom.issue.parsProc.ParsProcBuilder0;
-import ekp.mbom.issue.part.PartBpuAsignMm;
 import ekp.mbom.issue.part.PartBpuDel0;
 import ekp.mbom.issue.part.PartBpuPcAssignPa;
 import ekp.mbom.issue.part.PartBpuUpdate;
@@ -28,6 +27,7 @@ import ekp.mbom.issue.partAcq.PaBpuDel0;
 import ekp.mbom.issue.partAcq.PaBpuPublish;
 import ekp.mbom.issue.partAcq.PaBpuUpdateRefUnitCost;
 import ekp.mbom.issue.partAcq.PartAcqBuilder0;
+import ekp.mbom.issue.partAcq.PaBpuAsignMm;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBpuDel0;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBuilder1;
 import ekp.mbom.issue.partCfg.PartCfgBpuEditing;
@@ -47,12 +47,13 @@ public enum MbomBpuType implements BpuType {
 	PART_$DEL0(PartBpuDel0.class, PartInfo.class), //
 	PART_$PC_ASSIGN_PA(PartBpuPcAssignPa.class, PartInfo.class, PartCfgInfo.class), //
 	PART_$UPDATE(PartBpuUpdate.class, PartInfo.class), //
-	PART_$ASSIGN_MM(PartBpuAsignMm.class, PartInfo.class), //
+//	PART_$ASSIGN_MM(PartBpuAsignMm.class, PartInfo.class), //
 	/* pa */
 	PART_ACQ_0(PartAcqBuilder0.class), //
 	PART_ACQ_$DEL0(PaBpuDel0.class, PartAcqInfo.class), //
 	PART_ACQ_$PUBLISH(PaBpuPublish.class, PartAcqInfo.class), //
 	PART_ACQ_$UPDATE_REF_UNIT_COST(PaBpuUpdateRefUnitCost.class, PartAcqInfo.class), //
+	PART_ACQ_$ASSIGN_MM(PaBpuAsignMm.class, PartInfo.class), //
 	
 	/* pars */
 	PARS_1(ParsBuilder1.class, PartAcqInfo.class), //
@@ -105,12 +106,10 @@ public enum MbomBpuType implements BpuType {
 		case PART_$DEL0:
 			return matchBizPartDel0((PartInfo) _args[0]);
 		case PART_$PC_ASSIGN_PA:
-//			return matchBizPartPcAssignPa((PartInfo) _args[0], (PartCfgInfo) _args[1]);
 			return true;
 		case PART_$UPDATE:
 			return true;
-		case PART_$ASSIGN_MM:
-			return matchBizPartAssignMm((PartInfo) _args[0]);
+		
 		/* part acq */
 		case PART_ACQ_0:
 			return true;
@@ -120,6 +119,8 @@ public enum MbomBpuType implements BpuType {
 			return matchBizPaPublish((PartAcqInfo) _args[0]);
 		case PART_ACQ_$UPDATE_REF_UNIT_COST:
 			return true;
+		case PART_ACQ_$ASSIGN_MM:
+			return matchBizPaAssignMm((PartAcqInfo) _args[0]);
 		/* pars */
 		case PARS_1:
 			return matchBizPars1((PartAcqInfo) _args[0]);
@@ -188,40 +189,7 @@ public enum MbomBpuType implements BpuType {
 		return true;
 	}
 
-//	private boolean matchBizPartPcAssignPa(PartInfo _p, PartCfgInfo _pc) {
-//		if (_p == null) {
-//			log.warn("_p null.");
-//			return false;
-//		}
-//		if (_pc == null) {
-//			log.warn("_pc null.");
-//			return false;
-//		}
-//		
-//		if(_pc.getRootPart().equals(_p)) {
-//			log.info("The root part of configuration pc null.");
-//			return false;
-//		}
-//		
-//		return true;
-//	}
 	
-	private boolean matchBizPartAssignMm(PartInfo _p) {
-		if (_p == null) {
-			log.warn("_p null.");
-			return false;
-		} else {
-			if (_p.isMmAssigned()) {
-				log.debug("_part should NOT have assigned mm. [{}][{}]", _p.getUid(), _p.getPin());
-				return false;
-			}
-		}
-
-		return true;
-	}
-	
-	
-
 	// -------------------------------------------------------------------------------
 	// ------------------------------------partAcq------------------------------------
 	// TODO
@@ -261,6 +229,21 @@ public enum MbomBpuType implements BpuType {
 		if (PartAcqStatus.EDITING != _pa.getStatus()) {
 			log.trace("PartAcqStatus should be EDITING. [{}][{}]", _pa.getUid(), _pa.getStatus());
 			return false;
+		}
+
+		return true;
+	}
+	
+	private boolean matchBizPaAssignMm(PartAcqInfo _pa) {
+		if (_pa == null) {
+			log.warn("_pa null.");
+			return false;
+		} else {
+			if (_pa.isMmAssigned()) {
+				log.debug("PartAcq should NOT have assigned mm. [{}][{}][{}]", _pa.getUid(), _pa.getPartPin(),
+						_pa.getId());
+				return false;
+			}
 		}
 
 		return true;

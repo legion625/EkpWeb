@@ -21,11 +21,11 @@ public interface PartInfo extends ObjectModelInfo {
 
 	PartUnit getUnit();
 
-	boolean isMmAssigned();
-
-	String getMmUid();
-
-	String getMmMano();
+//	boolean isMmAssigned();
+//
+//	String getMmUid();
+//
+//	String getMmMano();
 
 	// -------------------------------------------------------------------------------
 	default String getUnitName() {
@@ -49,6 +49,15 @@ public interface PartInfo extends ObjectModelInfo {
 	
 	List<PartCfgInfo> getRootPartCfgList(boolean _reload);
 	
+	default PartAcqInfo getPa(String _partCfgUid) {
+		return getPa(_partCfgUid, false);
+	} 
+
+	default PartAcqInfo getPa(String _partCfgUid, boolean _reload) {
+		return getPaList(_reload).stream().filter(pa -> pa.getPartCfgConj(_partCfgUid, _reload) != null).findAny()
+				.orElse(null);
+	}
+	
 	default PartAcqInfo getPa(PartCfgInfo _partCfg) {
 		return getPa(_partCfg, false);
 	} 
@@ -71,6 +80,6 @@ public interface PartInfo extends ObjectModelInfo {
 		return ppartList;
 	}
 	
-	// -------------------------------------------------------------------------------
-	MaterialMasterInfo getMm();
+//	// -------------------------------------------------------------------------------
+//	MaterialMasterInfo getMm();
 }

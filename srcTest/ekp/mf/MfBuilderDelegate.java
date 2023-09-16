@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import ekp.TestLogMark;
 import ekp.data.service.mbom.PartAcqInfo;
+import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.data.service.mbom.PpartInfo;
 import ekp.data.service.mf.WorkorderInfo;
@@ -41,9 +42,11 @@ public class MfBuilderDelegate {
 
 	// -------------------------------------------------------------------------------
 	// -----------------------------------Workorder-----------------------------------
-	public WorkorderInfo buildWo(TimeTraveler _tt, PartInfo _p, PartAcqInfo _pa, double _rqQty) {
-		WoBuilder1 wob = bpuFacade.getBuilder(MfBpuType.WO_1, _p);
-		wob.appendPa(_pa, _rqQty);
+	public WorkorderInfo buildWo(TimeTraveler _tt,  PartAcqInfo _pa, PartCfgInfo _pc, double _rqQty) {
+//		WoBuilder1 wob = bpuFacade.getBuilder(MfBpuType.WO_1, _p);
+		WoBuilder1 wob = bpuFacade.getBuilder(MfBpuType.WO_1,_pa , _pc);
+//		wob.appendPa(_pa, _rqQty);
+		wob.appendRqQty(_rqQty);
 
 		// validate
 		StringBuilder msgValidate = new StringBuilder();
@@ -60,7 +63,8 @@ public class MfBuilderDelegate {
 
 		// check
 		Map<String, PpartInfo> ppartMap = _pa.getPpartList().stream()
-				.collect(Collectors.toMap(pp -> pp.getPart().getMmMano(), pp -> pp));
+//				.collect(Collectors.toMap(pp -> pp.getPart().getMmMano(), pp -> pp));
+				.collect(Collectors.toMap(pp -> pp.getPart().getPa(_pc).getMmMano(), pp -> pp));
 		for (WorkorderMaterialInfo wom : wo.getWomList()) {
 			PpartInfo ppart = ppartMap.get(wom.getMmMano());
 			assertNotNull(ppart);
