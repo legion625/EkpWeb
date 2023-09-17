@@ -13,6 +13,8 @@ public interface ProdModItemInfo extends ObjectModelInfo{
 	String getPartCfgUid();
 	
 	// -------------------------------------------------------------------------------
+	ProdModItemInfo reload();
+	
 	ProdCtlInfo getProdCtl();
 	PartCfgInfo getPartCfg();
 

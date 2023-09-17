@@ -1,6 +1,8 @@
 package ekp.data.service.mbom;
 
 import ekp.data.BizObjLoader;
+import ekp.data.MbomDataService;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
 public class ProdModItemInfoDto extends ObjectModelInfoDto implements ProdModItemInfo{
@@ -52,6 +54,11 @@ public class ProdModItemInfoDto extends ObjectModelInfoDto implements ProdModIte
 	}
 
 	// -------------------------------------------------------------------------------
+	@Override
+		public ProdModItemInfo reload() {
+		return DataServiceFactory.getInstance().getService(MbomDataService.class).loadProdModItem(getUid());
+	}
+	
 	private BizObjLoader<ProdCtlInfo> prodCtlLoader = BizObjLoader.PROD_CTL.get();
 
 	@Override

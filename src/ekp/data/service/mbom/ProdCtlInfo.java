@@ -28,5 +28,7 @@ public interface ProdCtlInfo extends ObjectModelInfo{
 	ProdInfo getProd();
 	
 	List<ProdCtlPartCfgConjInfo> getPcpccList();
+	
+	// -------------------------------------------------------------------------------
 
 }

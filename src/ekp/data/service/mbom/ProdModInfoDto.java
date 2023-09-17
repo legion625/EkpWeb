@@ -1,6 +1,8 @@
 package ekp.data.service.mbom;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ekp.data.BizObjLoader;
 import ekp.data.MbomDataService;
@@ -75,5 +77,17 @@ public class ProdModInfoDto extends ObjectModelInfoDto implements ProdModInfo{
 	@Override
 	public List<ProdModItemInfo> getProdModItemList() {
 		return prodModItemListLoader.getObj();
+	}
+	
+	private BizObjLoader<Map<String, ProdModItemInfo>> prodCtlUidProdModItemMapLoader = BizObjLoader.of(() -> {
+		Map<String, ProdModItemInfo> map = new HashMap<>();
+		for (ProdModItemInfo prodModItem : getProdModItemList())
+			map.put(prodModItem.getProdCtlUid(), prodModItem);
+		return map;
+	});
+
+	@Override
+	public Map<String, ProdModItemInfo> getProdCtlUidProdModItemMap() {
+		return prodCtlUidProdModItemMapLoader.getObj();
 	}
 }
