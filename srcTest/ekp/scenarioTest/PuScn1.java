@@ -40,6 +40,8 @@ import ekp.data.service.mbom.PpartInfo;
 import ekp.data.service.mbom.ProdCtlInfo;
 import ekp.data.service.mbom.ProdCtlPartCfgConjInfo;
 import ekp.data.service.mbom.ProdInfo;
+import ekp.data.service.mbom.ProdModInfo;
+import ekp.data.service.mbom.ProdModItemInfo;
 import ekp.data.service.mf.WorkorderInfo;
 import ekp.data.service.pu.PurchInfo;
 import ekp.data.service.pu.PurchItemInfo;
@@ -309,15 +311,15 @@ public class PuScn1 extends AbstractEkpInitTest {
 		// TODO
 //		
 		
-		/* 9a. */
+		/* 9a.建立產品A */
 		log.debug("================================================================");
 		ProdInfo prodA = mbomDel.buildProd0(tt, "ProdA", "Product A");
 		assertNotNull("prodA should NOT be null.", prodA);
 		log.info("9a.完成建立產品A。 [{}][{}]", prodA.getId(), prodA.getName());
-		
+		/* 9b.建立產品A分類 */
 		ProdCtlInfo prodCtlA = mbomDel.buildProdCtl0(tt, "ProdCtlA", 1, "A", true);
-		ProdCtlInfo prodCtlB = mbomDel.buildProdCtl0(tt, "ProdCtlB", 2, "B", true);
-		ProdCtlInfo prodCtlC = mbomDel.buildProdCtl0(tt, "ProdCtlC", 2, "C", true);
+		ProdCtlInfo prodCtlB = mbomDel.buildProdCtl0(tt, "ProdCtlB", 2, "B", false);
+		ProdCtlInfo prodCtlC = mbomDel.buildProdCtl0(tt, "ProdCtlC", 2, "C", false);
 		
 		Map<ProdCtlInfo, ProdCtlInfo> prodCtlParentMapA = new HashMap<>();
 		prodCtlParentMapA.put(prodCtlB, prodCtlA);
@@ -338,8 +340,24 @@ public class PuScn1 extends AbstractEkpInitTest {
 		
 		showProdInfo(prodA);
 		
+		/* 9c.建立模型1 */
+		ProdModInfo prodMod1 = mbomDel.buildProdMod1(tt, prodA, "M1", "Model1", "The first model.");
+		assertNotNull(prodMod1);
+		log.info("9c.完成建立模型1");
 		
-		// TODO ProdMod, ProdModItem
+		
+		/* 9d.模型1指定構型 */
+		prodMod1 = prodMod1.reload();
+		for (ProdModItemInfo prodModItem : prodMod1.getProdModItemList()) {
+			// 只指定ProdModItem-A的構型
+			if (prodModItem.getProdCtl().getId().equals(prodCtlA.getId())) {
+				assertTrue(mbomDel.runProdModItemAssignPartCfg(tt, prodModItem, pcCfg1.getUid()));
+			}
+		}
+		log.info("9d.完成模型1指定構型");
+		
+		showProdModInfo(prodMod1);
+		
 		
 		
 //		invtDataService.loadMaterialBinStockList(_mmUid)
@@ -410,6 +428,16 @@ public class PuScn1 extends AbstractEkpInitTest {
 			showProdCtlInfo(childProdCtl, lv + 1);
 		}
 	}
-	
+
+	private void showProdModInfo(ProdModInfo prodMod) {
+		prodMod = prodMod.reload();
+		log.debug("{}\t{}\t{}", prodMod.getProd().getId(), prodMod.getId(), prodMod.getName());
+		log.debug("prodMod.getProdModItemList().size(): {}", prodMod.getProdModItemList().size());
+		for (ProdModItemInfo prodModItem : prodMod.getProdModItemList()) {
+			log.debug("  {}\t{}\t{}\t{}\t{}", prodModItem.getProdCtl().getId(), prodModItem.getProdCtl().getLv(),
+					DataUtil.getStr(prodModItem.getProdCtl().isReq()), DataUtil.getStr(prodModItem.isPartCfgAssigned()),
+					prodModItem.isPartCfgAssigned() ? prodModItem.getPartCfg().getId() : "");
+		}
+	}
 
 }

@@ -15,4 +15,6 @@ public interface ProdInfo extends ObjectModelInfo{
 	
 	List<ProdCtlInfo> getProdCtlListLv1();
 	
+	
+	
 }

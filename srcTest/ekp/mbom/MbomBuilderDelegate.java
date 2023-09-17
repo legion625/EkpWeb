@@ -21,6 +21,8 @@ import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.data.service.mbom.ProdCtlInfo;
 import ekp.data.service.mbom.ProdInfo;
+import ekp.data.service.mbom.ProdModInfo;
+import ekp.data.service.mbom.ProdModItemInfo;
 import ekp.mbom.issue.MbomBpuType;
 import ekp.mbom.issue.parsPart.ParsPartBuilder0;
 import ekp.mbom.issue.parsPart.ParsPartBuilder1;
@@ -37,6 +39,8 @@ import ekp.mbom.issue.prod.ProdBuilder0;
 import ekp.mbom.issue.prod.ProdBpuEditCtl;
 import ekp.mbom.issue.prodCtl.ProdCtlBpuPartCfgConj;
 import ekp.mbom.issue.prodCtl.ProdCtlBuilder0;
+import ekp.mbom.issue.prodMod.ProdModBuilder1;
+import ekp.mbom.issue.prodMod.ProdModItemBpuAssignPartCfg;
 import ekp.mbom.type.PartAcqStatus;
 import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartCfgStatus;
@@ -571,6 +575,60 @@ public class MbomBuilderDelegate {
 		ProdCtlBpuPartCfgConj bpu = bpuFacade.getBuilder(MbomBpuType.PROD_CTL_$PART_CFG_CONJ, _prodCtl);
 		for (PartCfgInfo _partCfg : _partCfgs)
 			bpu.appendPartCfg(_partCfg);
+
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(bpu.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(bpu.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		boolean b = bpu.build(msgBuild, _tt);
+		assertTrue(b, msgBuild.toString());
+
+		// check
+		// none
+
+		return b;
+	}
+	
+	// -------------------------------------------------------------------------------
+	// ------------------------------------ProdMod------------------------------------
+	public ProdModInfo buildProdMod1(TimeTraveler _tt,ProdInfo _prod, String _id, String _name, String _desp) {
+		ProdModBuilder1 pmb = bpuFacade.getBuilder(MbomBpuType.PROD_MOD_1, _prod);
+		pmb.appendId(_id).appendName(_name).appendDesp(_desp);
+		
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(pmb.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(pmb.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		ProdModInfo pm = pmb.build(msgBuild, _tt);
+		assertNotNull(msgBuild.toString(), pm);
+
+		// check
+		assertEquals(_prod.getUid(), pm.getProdUid());
+		assertEquals(_id, pm.getId());
+		assertEquals(_name, pm.getName());
+		assertEquals(_desp, pm.getDesp());
+		
+		return pm;
+	}
+	
+	// -------------------------------------------------------------------------------
+	// ----------------------------------ProdModItem----------------------------------
+	public boolean runProdModItemAssignPartCfg(TimeTraveler _tt, ProdModItemInfo _prodModItem, String _partCfgUid) {
+		ProdModItemBpuAssignPartCfg bpu = bpuFacade.getBuilder(MbomBpuType.PROD_MOD_ITEM_$ASSIGN_PART_CFG,
+				_prodModItem);
+		bpu.appendPartCfgUid(_partCfgUid);
 
 		// validate
 		StringBuilder msgValidate = new StringBuilder();

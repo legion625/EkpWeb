@@ -1,5 +1,6 @@
 package ekp.data.service.mbom;
 
+import ekp.data.BizObjLoader;
 import legion.ObjectModelInfoDto;
 
 public class ProdModItemInfoDto extends ObjectModelInfoDto implements ProdModItemInfo{
@@ -48,5 +49,20 @@ public class ProdModItemInfoDto extends ObjectModelInfoDto implements ProdModIte
 
 	void setPartCfgUid(String partCfgUid) {
 		this.partCfgUid = partCfgUid;
+	}
+
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<ProdCtlInfo> prodCtlLoader = BizObjLoader.PROD_CTL.get();
+
+	@Override
+	public ProdCtlInfo getProdCtl() {
+		return prodCtlLoader.getObj(getProdCtlUid());
+	}
+
+	private BizObjLoader<PartCfgInfo> partCfgLoader = BizObjLoader.PART_CFG.get();
+
+	@Override
+	public PartCfgInfo getPartCfg() {
+		return partCfgLoader.getObj(getPartCfgUid());
 	}
 }

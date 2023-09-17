@@ -11,5 +11,9 @@ public interface ProdModItemInfo extends ObjectModelInfo{
 	boolean isPartCfgAssigned();
 
 	String getPartCfgUid();
+	
+	// -------------------------------------------------------------------------------
+	ProdCtlInfo getProdCtl();
+	PartCfgInfo getPartCfg();
 
 }

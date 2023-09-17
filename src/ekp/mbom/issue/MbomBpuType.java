@@ -15,6 +15,7 @@ import ekp.data.service.mbom.PpartInfo;
 import ekp.data.service.mbom.PprocInfo;
 import ekp.data.service.mbom.ProdCtlInfo;
 import ekp.data.service.mbom.ProdInfo;
+import ekp.data.service.mbom.ProdModItemInfo;
 import ekp.mbom.issue.parsPart.ParsPartBuilder0;
 import ekp.mbom.issue.parsPart.ParsPartBuilder1;
 import ekp.mbom.issue.parsPart.PpartBpuDel0;
@@ -36,6 +37,8 @@ import ekp.mbom.issue.prod.ProdBuilder0;
 import ekp.mbom.issue.prod.ProdBpuEditCtl;
 import ekp.mbom.issue.prodCtl.ProdCtlBpuPartCfgConj;
 import ekp.mbom.issue.prodCtl.ProdCtlBuilder0;
+import ekp.mbom.issue.prodMod.ProdModBuilder1;
+import ekp.mbom.issue.prodMod.ProdModItemBpuAssignPartCfg;
 import ekp.mbom.issue.partCfg.PartCfgBuilder0;
 import ekp.mbom.type.PartAcqStatus;
 import ekp.mbom.type.PartCfgStatus;
@@ -70,11 +73,16 @@ public enum MbomBpuType implements BpuType {
 	PART_CFG_0(PartCfgBuilder0.class), //
 	PART_CFG_$EDITING(PartCfgBpuEditing.class, PartCfgInfo.class), //
 	PART_CFG_$PUBLISH(PartCfgBpuPublish.class, PartCfgInfo.class), //
-	/**/
+	
+	/* Prod, ProdCtl*/
 	PROD_0(ProdBuilder0.class), //
 	PROD_$EDIT_CTL(ProdBpuEditCtl.class, ProdInfo.class), //
 	PROD_CTL_0(ProdCtlBuilder0.class), //
 	PROD_CTL_$PART_CFG_CONJ(ProdCtlBpuPartCfgConj.class, ProdCtlInfo.class), //
+	
+	/* ProdMod, ProdModItem*/
+	PROD_MOD_1(ProdModBuilder1.class,ProdInfo.class), //
+	PROD_MOD_ITEM_$ASSIGN_PART_CFG(ProdModItemBpuAssignPartCfg.class, ProdModItemInfo.class), //
 
 	;
 
@@ -152,6 +160,12 @@ public enum MbomBpuType implements BpuType {
 			return true;
 		case PROD_CTL_$PART_CFG_CONJ:
 			return matchBizProdCtlPartCfgConj((ProdCtlInfo) _args[0]);
+		/* prod mod */
+		case PROD_MOD_1:
+			return true;
+		/* prod mod item */
+		case PROD_MOD_ITEM_$ASSIGN_PART_CFG:
+			return matchBizProdModItemAssignPartCfg((ProdModItemInfo) _args[0]);
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + this);
 		}
@@ -368,6 +382,22 @@ public enum MbomBpuType implements BpuType {
 	private boolean matchBizProdCtlPartCfgConj(ProdCtlInfo _prodCtl) {
 		if (_prodCtl == null) {
 			log.warn("_prodCtl null");
+			return false;
+		}
+
+		return true;
+	}
+
+	// -------------------------------------------------------------------------------
+	// ----------------------------------ProdModItem----------------------------------
+	private boolean matchBizProdModItemAssignPartCfg(ProdModItemInfo _prodModItem) {
+		if (_prodModItem == null) {
+			log.warn("_prodModItem null");
+			return false;
+		}
+
+		if (_prodModItem.isPartCfgAssigned()) {
+			log.warn("partCfg has benn assigned.");
 			return false;
 		}
 
