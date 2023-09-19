@@ -311,7 +311,6 @@ public class PuScn1 extends AbstractEkpInitTest {
 		showMbsRelatedInfo(mmList);
 		
 		// TODO
-//		
 		
 		/* 9a.建立產品A */
 		log.debug("================================================================");
@@ -319,9 +318,9 @@ public class PuScn1 extends AbstractEkpInitTest {
 		assertNotNull("prodA should NOT be null.", prodA);
 		log.info("9a.完成建立產品A。 [{}][{}]", prodA.getId(), prodA.getName());
 		/* 9b.建立產品A分類 */
-		ProdCtlInfo prodCtlA = mbomDel.buildProdCtl0(tt, "A", 1, "ProdCtlA", true);
-		ProdCtlInfo prodCtlB = mbomDel.buildProdCtl0(tt, "B", 2, "ProdCtlB", false);
-		ProdCtlInfo prodCtlC = mbomDel.buildProdCtl0(tt, "C", 2, "ProdCtlC", false);
+		ProdCtlInfo prodCtlA = mbomDel.buildProdCtl1(tt, 1, partA, true);
+		ProdCtlInfo prodCtlB = mbomDel.buildProdCtl1(tt, 2, partB, true);
+		ProdCtlInfo prodCtlC = mbomDel.buildProdCtl1(tt, 2, partC, true);
 		
 		Map<ProdCtlInfo, ProdCtlInfo> prodCtlParentMapA = new HashMap<>();
 		prodCtlParentMapA.put(prodCtlB, prodCtlA);
@@ -331,9 +330,9 @@ public class PuScn1 extends AbstractEkpInitTest {
 		prodCtlA = prodCtlA.reload();
 		prodCtlB = prodCtlB.reload();
 		prodCtlC = prodCtlC.reload();
-		log.info("9b-A.完成建立產品分類A。 [{}][{}][{}][{}][{}][{}]", prodCtlA.getId(),prodCtlA.getLv(), prodCtlA.getName(),DataUtil.getStr(prodCtlA.isReq()), prodCtlA.getParentId(), prodCtlA.getProd().getId());
-		log.info("9b-B.完成建立產品分類B。 [{}][{}][{}][{}][{}][{}]", prodCtlB.getId(),prodCtlB.getLv(), prodCtlB.getName(),DataUtil.getStr(prodCtlB.isReq()), prodCtlB.getParentId(), prodCtlB.getProd().getId());
-		log.info("9b-C.完成建立產品分類C。 [{}][{}][{}][{}][{}][{}]", prodCtlC.getId(),prodCtlC.getLv(), prodCtlC.getName(),DataUtil.getStr(prodCtlC.isReq()), prodCtlC.getParentId(), prodCtlC.getProd().getId());
+		log.info("9b-A.完成建立產品分類A。 [{}][{}][{}][{}][{}]", prodCtlA.getLv(), prodCtlA.getPartUid(), prodCtlA.getPartName(),DataUtil.getStr(prodCtlA.isReq()),  prodCtlA.getProd().getId());
+		log.info("9b-B.完成建立產品分類B。 [{}][{}][{}][{}][{}]", prodCtlB.getLv(),prodCtlB.getPartUid(), prodCtlB.getPartName(),DataUtil.getStr(prodCtlB.isReq()),  prodCtlB.getProd().getId());
+		log.info("9b-C.完成建立產品分類C。 [{}][{}][{}][{}][{}]", prodCtlC.getLv(),prodCtlC.getPartUid(), prodCtlC.getPartName(),DataUtil.getStr(prodCtlC.isReq()),  prodCtlC.getProd().getId());
 		
 		// 設定每個產品分類可對應的構型
 		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlA, tt, pcCfg1));
@@ -350,26 +349,16 @@ public class PuScn1 extends AbstractEkpInitTest {
 		
 		/* 9d.模型1指定構型 */
 		prodMod1 = prodMod1.reload();
-		for (ProdModItemInfo prodModItem : prodMod1.getProdModItemList()) {
-			// 只指定ProdModItem-A的構型
-			if (prodModItem.getProdCtl().getId().equals(prodCtlA.getId())) {
-//				log.debug("test aaa: {}", prodModItem.getUid());
-				assertTrue(mbomDel.runProdModItemAssignPartCfg(tt, prodModItem, pcCfg1.getUid()));
-//				log.debug("test bbb: {}\t{}", prodModItem.isPartCfgAssigned(), prodModItem.getPartCfgUid());
-				prodModItem = prodModItem.reload();
-//				log.debug("test ccc: {}\t{}", prodModItem.isPartCfgAssigned(), prodModItem.getPartCfgUid());
-			}
-			
-		}
-		log.info("9d.完成模型1指定構型");
-		showProdModInfo(prodMod1);
 		
+		ProdModItemInfo prodModItem1A = prodMod1.getProdModItem(partA.getUid());
+		assertTrue(mbomDel.runProdModItemAssignPartCfg(tt, prodModItem1A, pcCfg1.getUid()));
+		log.info("9d.完成模型1指定構型");
 		
 		/* output */
 		log.debug("================================================================");
 		log.debug("================================================================");
-//		log.debug("prodMod1.hashCode(): {}",prodMod1.hashCode());
 		prodMod1 = prodMod1.reload();
+		showProdModInfo(prodMod1);
 		List<ProdModPa> rootPmpList = parseRootProdModPaList(prodMod1, Arrays.asList(partA, partB, partC));
 		int count = 0;
 		for (ProdModPa pmp : rootPmpList)
@@ -425,7 +414,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 		StringBuilder sbLvSpace = new StringBuilder();
 		for (int i = 0; i < lv; i++)
 			sbLvSpace.append("  ");
-		log.info("{}{}\t{}\t{}\t{}", sbLvSpace.toString(), prodCtl.getId(), prodCtl.getLv(), prodCtl.getName(),
+		log.info("{}{}\t{}\t{}\t{}", sbLvSpace.toString(), prodCtl.getLv(), prodCtl.getPartPin(), prodCtl.getPartName(),
 				DataUtil.getStr(prodCtl.isReq()));
 		for (ProdCtlPartCfgConjInfo pcpcc : prodCtl.getPcpccList()) {
 			log.info("  {}-構型\t{}", sbLvSpace.toString(), pcpcc.getPartCfg().getId());
@@ -442,7 +431,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 		log.info("{}\t{}\t{}", prodMod.getProd().getId(), prodMod.getId(), prodMod.getName());
 //		log.debug("prodMod.getProdModItemList().size(): {}", prodMod.getProdModItemList().size());
 		for (ProdModItemInfo prodModItem : prodMod.getProdModItemList()) {
-			log.info("  {}\t{}\t{}\t{}\t{}", prodModItem.getProdCtl().getId(), prodModItem.getProdCtl().getLv(),
+			log.info("  {}\t{}\t{}\t{}\t{}", prodModItem.getProdCtl().getLv(), prodModItem.getProdCtl().getPartPin(),
 					DataUtil.getStr(prodModItem.getProdCtl().isReq()), DataUtil.getStr(prodModItem.isPartCfgAssigned()),
 					prodModItem.isPartCfgAssigned() ? prodModItem.getPartCfg().getId() : "");
 		}
@@ -460,10 +449,14 @@ public class PuScn1 extends AbstractEkpInitTest {
 
 	private ProdModPa parseProdModPa(ProdModInfo _prodMod, List<PartInfo> _allPartList, ProdCtlInfo _prodCtl,
 			PartCfgInfo _parentPartCfg, PpartInfo _parentPpart) {
-		PartInfo part = _allPartList.stream().filter(p -> p.getPin().equals(_prodCtl.getId())).findAny().orElse(null);
+//		PartInfo part = _allPartList.stream().filter(p -> p.getPin().equals(_prodCtl.getId())).findAny().orElse(null); // FIXME
+		PartInfo part = _prodCtl.getPart();
 		assertNotNull(part);
 
-		ProdModItemInfo prodModItem = _prodMod.getProdModItem(_prodCtl.getUid());
+//		ProdModItemInfo prodModItem = _prodMod.getProdModItem(_prodCtl.getUid());
+		ProdModItemInfo prodModItem =_prodMod.getProdModItem(part.getUid());
+		
+		
 //		prodModItem = prodModItem.reload();
 //		log.debug("prodModItem.getUid(): {}\tprodModItem.getProdCtl().getId(): {}",prodModItem.getUid(), prodModItem.getProdCtl().getId());
 //		log.debug("prodModItem.isPartCfgAssigned(): {}\t{}", prodModItem.isPartCfgAssigned(), prodModItem.getPartCfgUid());
@@ -482,10 +475,11 @@ public class PuScn1 extends AbstractEkpInitTest {
 
 		List<ProdModPa> childrenList = new ArrayList<>();
 		for (ProdCtlInfo childProdCtl : _prodCtl.getChildrenList()) {
-			PartInfo childPart = _allPartList.stream().filter(p -> p.getPin().equals(childProdCtl.getId())).findAny().orElse(null);
+//			PartInfo childPart = _allPartList.stream().filter(p -> p.getPin().equals(childProdCtl.getId())).findAny().orElse(null);
+			PartInfo childPart = childProdCtl.getPart();
 			PpartInfo thisPpart = pa.getPpartList().stream().filter(ppart -> ppart.getPartPin().equalsIgnoreCase(childPart.getPin()))
 					.findAny().orElse(null);
-			log.debug("{}\t{}\t{}\t{}",childProdCtl.getId(), childPart.getPin(), thisPpart.getPartPin(), thisPpart.getPartReqQty());
+//			log.debug("{}\t{}\t{}", childPart.getPin(), thisPpart.getPartPin(), thisPpart.getPartReqQty());
 			
 			childrenList.add(parseProdModPa(_prodMod, _allPartList, childProdCtl, partCfg, thisPpart));
 		}
@@ -551,7 +545,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 		String prefix = _prefix + (!DataFO.isEmptyString(_prefix) ? "-" : "") + _seq;
 
 		
-		log.debug("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}", prefix, _pmp.getProdCtl().getName(), _pmp.getPart().getPin(),
+		log.debug("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}", prefix,  _pmp.getPart().getPin(),
 				
 				_pmp.getQty(),
 				_pmp.getPartCfg().getName(), _pmp.getPa().getId(), _pmp.getPa().getName(),

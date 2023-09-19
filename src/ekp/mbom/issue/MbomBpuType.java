@@ -36,7 +36,7 @@ import ekp.mbom.issue.partCfg.PartCfgBpuPublish;
 import ekp.mbom.issue.prod.ProdBuilder0;
 import ekp.mbom.issue.prod.ProdBpuEditCtl;
 import ekp.mbom.issue.prodCtl.ProdCtlBpuPartCfgConj;
-import ekp.mbom.issue.prodCtl.ProdCtlBuilder0;
+import ekp.mbom.issue.prodCtl.ProdCtlBuilder1;
 import ekp.mbom.issue.prodMod.ProdModBuilder1;
 import ekp.mbom.issue.prodMod.ProdModItemBpuAssignPartCfg;
 import ekp.mbom.issue.partCfg.PartCfgBuilder0;
@@ -77,7 +77,8 @@ public enum MbomBpuType implements BpuType {
 	/* Prod, ProdCtl*/
 	PROD_0(ProdBuilder0.class), //
 	PROD_$EDIT_CTL(ProdBpuEditCtl.class, ProdInfo.class), //
-	PROD_CTL_0(ProdCtlBuilder0.class), //
+//	PROD_CTL_0(ProdCtlBuilder0.class), //
+	PROD_CTL_1(ProdCtlBuilder1.class), //
 	PROD_CTL_$PART_CFG_CONJ(ProdCtlBpuPartCfgConj.class, ProdCtlInfo.class), //
 	
 	/* ProdMod, ProdModItem*/
@@ -156,7 +157,7 @@ public enum MbomBpuType implements BpuType {
 			return true;
 		case PROD_$EDIT_CTL:
 			return matchBizProdEditCtl((ProdInfo) _args[0]);
-		case PROD_CTL_0:
+		case PROD_CTL_1:
 			return true;
 		case PROD_CTL_$PART_CFG_CONJ:
 			return matchBizProdCtlPartCfgConj((ProdCtlInfo) _args[0]);

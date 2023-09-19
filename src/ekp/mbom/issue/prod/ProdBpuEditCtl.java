@@ -102,8 +102,8 @@ public class ProdBpuEditCtl extends ProdBpu {
 			//
 //			if (!(pcChild.getLv() > pcParent.getLv())) {
 			if (!(pcChild.getLv() == pcParent.getLv() + 1)) {
-				_msg.append("The lv of child [" + pcChild.getId() + "," + pcChild.getLv()
-						+ "] should be greater than the lv of parent [" + pcParent.getId() + "," + pcParent.getLv()
+				_msg.append("The lv of child [" + pcChild.getPartPin() + "," + pcChild.getLv()
+						+ "] should be greater than the lv of parent [" + pcParent.getPartPin() + "," + pcParent.getLv()
 						+ "].").append(System.lineSeparator());
 				v = false;
 			}
@@ -134,19 +134,18 @@ public class ProdBpuEditCtl extends ProdBpu {
 		for (Entry<String, String> e : prodCtlParentUidMap.entrySet()) {
 			ProdCtlInfo pcChild = getProdCtlMap().get(e.getKey());
 			String origParentUid = pcChild.getParentUid();
-			String origParentId = pcChild.getParentId();
 			ProdCtlInfo pcParent = getProdCtlMap().get(e.getValue());
 
-			if (!mbomDataService.prodCtlAssignParent(pcChild.getUid(), pcParent.getUid(), pcParent.getId())) {
+			if (!mbomDataService.prodCtlAssignParent(pcChild.getUid(), pcParent.getUid(), "")) {
 				tt.travel();
 				log.error("mbomDataSerivce.prodCtlAssignParent return false. [{}][{}][{}]", pcChild.getUid(),
-						pcParent.getUid(), pcParent.getId());
+						pcParent.getUid(), pcParent.getPartUid());
 				return false;
 			}
 			tt.addSite("revert prodCtlAssignParent",
-					() -> mbomDataService.prodCtlAssignParent(pcChild.getUid(), origParentUid, origParentId));
+					() -> mbomDataService.prodCtlAssignParent(pcChild.getUid(), origParentUid, ""));
 			log.info("mbomDataService.prodCtlAssignParent [{}][{}][{}]", pcChild.getUid(), pcParent.getUid(),
-					pcParent.getId());
+					pcParent.getPartUid());
 		}
 
 		//

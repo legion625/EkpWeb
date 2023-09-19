@@ -13,25 +13,29 @@ public class ProdCtlInfoDto extends ObjectModelInfoDto implements ProdCtlInfo{
 		super(uid, objectCreateTime, objectUpdateTime);
 	}
 	
-	private String id; // 型號 biz key
+//	private String id; // 型號 biz key
 	private int lv; // 1:系統;2:次系統;3:模組 預設先展到第3階
-	private String name; // 名稱
+//	private String name; // 名稱
+	private String partUid;
+	private String partPin;
+	private String partName;
 	private boolean req; // 是否為必要的
 
 	private String parentUid;
+	@Deprecated
 	private String parentId;
 
 	//
 	private String prodUid;
 
-	@Override
-	public String getId() {
-		return id;
-	}
-
-	void setId(String id) {
-		this.id = id;
-	}
+//	@Override
+//	public String getId() {
+//		return id;
+//	}
+//
+//	void setId(String id) {
+//		this.id = id;
+//	}
 
 	@Override
 	public int getLv() {
@@ -42,19 +46,46 @@ public class ProdCtlInfoDto extends ObjectModelInfoDto implements ProdCtlInfo{
 		this.lv = lv;
 	}
 
+//	@Override
+//	public String getName() {
+//		return name;
+//	}
+//
+//	void setName(String name) {
+//		this.name = name;
+//	}
+	
 	@Override
-	public String getName() {
-		return name;
+	public String getPartUid() {
+		return partUid;
 	}
 
-	void setName(String name) {
-		this.name = name;
+	void setPartUid(String partUid) {
+		this.partUid = partUid;
+	}
+	@Override
+	public String getPartPin() {
+		return partPin;
+	}
+
+	void setPartPin(String partPin) {
+		this.partPin = partPin;
+	}
+	@Override
+	public String getPartName() {
+		return partName;
+	}
+
+	void setPartName(String partName) {
+		this.partName = partName;
 	}
 
 	@Override
 	public boolean isReq() {
 		return req;
 	}
+
+
 
 	void setReq(boolean req) {
 		this.req = req;
@@ -93,6 +124,13 @@ public class ProdCtlInfoDto extends ObjectModelInfoDto implements ProdCtlInfo{
 		return DataServiceFactory.getInstance().getService(MbomDataService.class).loadProdCtl(getUid());
 	}
 
+	private BizObjLoader<PartInfo> partLoader = BizObjLoader.PART.get();
+	
+	@Override
+	public PartInfo getPart() {
+		return partLoader.getObj(getPartUid());
+	}
+	
 	private BizObjLoader<List<ProdCtlInfo>> childrenListLoader = BizObjLoader
 			.of(() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadProdCtlList(getUid()));
 
