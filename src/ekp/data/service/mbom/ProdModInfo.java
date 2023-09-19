@@ -24,13 +24,17 @@ public interface ProdModInfo extends ObjectModelInfo{
 	
 	List<ProdModItemInfo> getProdModItemList();
 	
+	default ProdModItemInfo getProdModItem(String _partUid) {
+		return getProdModItemList().stream().filter(pmi->pmi.getProdCtl().getPartUid().equalsIgnoreCase(_partUid)).findAny().orElse(null);
+	}
+	
 	
 	// -------------------------------------------------------------------------------
 	Map<String, ProdModItemInfo> getProdCtlUidProdModItemMap();
 	
-	default ProdModItemInfo getProdModItem(String _prodCtlUid) {
-		return getProdCtlUidProdModItemMap().get(_prodCtlUid);
-	}
+//	default ProdModItemInfo getProdModItem(String _prodCtlUid) {
+//		return getProdCtlUidProdModItemMap().get(_prodCtlUid);
+//	}
 	
 	// -------------------------------------------------------------------------------
 	default boolean isReady() {

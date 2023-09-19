@@ -817,17 +817,6 @@ public class MbomDataServiceImp implements MbomDataService {
 	}
 
 	@Override
-	public ProdCtlInfo loadProdCtlById(String _id) {
-		try {
-			ProdCtlRemote remote = getEkpKernelRmi().loadProdCtlById(_id);
-			return remote == null ? null : MbomFO.parseProdCtl(remote);
-		} catch (Throwable e) {
-			LogUtil.log(log, e, Level.ERROR);
-			return null;
-		}
-	}
-
-	@Override
 	public List<ProdCtlInfo> loadProdCtlList(String _parentUid) {
 		try {
 			List<ProdCtlRemote> remoteList = getEkpKernelRmi().loadProdCtlList(_parentUid);
