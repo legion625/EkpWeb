@@ -141,7 +141,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 		log.info("1a-1.建立partA。 [{}][{}][{}]", partA.getPin(), partA.getName(), partA.getUnitName());
 		PartAcqInfo paA1 = mbomDel.buildPartAcqType0(partA, tt, "PART_ACQ_A1", "PART_A1自製", PartAcquisitionType.SELF_PRODUCING);
 		log.info("1a-2.建立paA1。 [{}][{}][{}][{}]", paA1.getId(), paA1.getName(), paA1.getTypeName(), paA1.getStatusName());
-		ParsInfo parsA1 = mbomDel. buildParsType1(paA1, tt,"010","組裝A1", "把原料組裝成完成品。");
+		ParsInfo parsA1 = mbomDel.buildParsType1(paA1, tt,"010","組裝A1", "把原料組裝成完成品。");
 		log.info("1a-3.建立parsA1。 [{}][{}][{}]", parsA1.getSeq(), parsA1.getName(), parsA1.getDesp());
 		assertTrue(mbomDel.paAssignMm(tt, paA1, mmA1));
 		paA1 = paA1.reload();
@@ -184,16 +184,18 @@ public class PuScn1 extends AbstractEkpInitTest {
 		paC1 = paC1.reload();
 		log.info("1x-3-C1 [{}][{}][{}][{}][{}]", DataUtil.getStr(b1x3C1), paC1.getId(), paC1.getName(), paC1.getTypeName(), paC1.getStatusName());
 		
-		/* 1y.建立構型 */
-		PartCfgInfo pcCfg1 = mbomDel.buildPartCfg0(partA.getUid(), partA.getPin(), tt, "PCA1_ID", "PCA1_NAME", "PCA1_DESP");
-		log.info("1y-1. 建立構型Cfg1 [{}][{}][{}][{}][{}]",pcCfg1.getRootPartPin(),  pcCfg1.getId(), pcCfg1.getName(), pcCfg1.getStatusName(), pcCfg1.getDesp());
-		log.info("1y-2. 構型指定PartAcq", DataUtil.getStr(mbomDel.runPartCfgEditing(pcCfg1, tt, paA1, paB1, paC1)));
+		/* 1y-1.建立構型 */
+		PartCfgInfo pcCfg1 = mbomDel.buildPartCfg0(partA.getUid(), partA.getPin(), tt, "PART_CFG_1", "PART_CFG_1_NAME", "PART_CFG_1_DESP");
+		log.info("1y-1-1. 建立構型Cfg1 [{}][{}][{}][{}][{}]",pcCfg1.getRootPartPin(),  pcCfg1.getId(), pcCfg1.getName(), pcCfg1.getStatusName(), pcCfg1.getDesp());
+		log.info("1y-1-2. 構型指定PartAcq", DataUtil.getStr(mbomDel.runPartCfgEditing(pcCfg1, tt, paA1, paB1, paC1)));
 		for(PartCfgConjInfo pcc: pcCfg1.getPccList(true))
 			log.info("  [{}][{}][{}][{}][{}][{}]", pcc.getPartCfg().getId(), pcc.getPartCfg().getRootPartPin(), pcc.getPartAcq().getPartPin(),  pcc.getPartAcq().getId(), pcc.getPartAcq().getName(), pcc.getPartAcq().getStatusName());
 		// 發布構型
 		boolean b1y3Cfg1 = mbomDel.runPartCfgPublish(tt, pcCfg1);
 		pcCfg1 = pcCfg1.reload();
-		log.info("1y-3-A1. 發布構型Cfg1 [{}][{}][{}][{}][{}][{}]",DataUtil.getStr(b1y3Cfg1), pcCfg1.getRootPartPin(),  pcCfg1.getId(), pcCfg1.getName(), pcCfg1.getStatusName(), pcCfg1.getDesp());
+		log.info("1y-1-3. 發布構型Cfg1 [{}][{}][{}][{}][{}][{}]",DataUtil.getStr(b1y3Cfg1), pcCfg1.getRootPartPin(),  pcCfg1.getId(), pcCfg1.getName(), pcCfg1.getStatusName(), pcCfg1.getDesp());
+		
+		
 
 		/* 2a.產生購案 */
 		log.info("================================================================");
@@ -318,9 +320,12 @@ public class PuScn1 extends AbstractEkpInitTest {
 		assertNotNull("prodA should NOT be null.", prodA);
 		log.info("9a.完成建立產品A。 [{}][{}]", prodA.getId(), prodA.getName());
 		/* 9b.建立產品A分類 */
-		ProdCtlInfo prodCtlA = mbomDel.buildProdCtl1(tt, 1, partA, true);
-		ProdCtlInfo prodCtlB = mbomDel.buildProdCtl1(tt, 2, partB, true);
-		ProdCtlInfo prodCtlC = mbomDel.buildProdCtl1(tt, 2, partC, true);
+//		ProdCtlInfo prodCtlA = mbomDel.buildProdCtl1(tt, 1, partA, true);
+//		ProdCtlInfo prodCtlB = mbomDel.buildProdCtl1(tt, 2, partB, true);
+//		ProdCtlInfo prodCtlC = mbomDel.buildProdCtl1(tt, 2, partC, true);
+		ProdCtlInfo prodCtlA = mbomDel.buildProdCtl0(tt, 1, "產品A", true);
+		ProdCtlInfo prodCtlB = mbomDel.buildProdCtl0(tt, 2, "模組B", false);
+		ProdCtlInfo prodCtlC = mbomDel.buildProdCtl0(tt, 2, "模組C", false);
 		
 		Map<ProdCtlInfo, ProdCtlInfo> prodCtlParentMapA = new HashMap<>();
 		prodCtlParentMapA.put(prodCtlB, prodCtlA);
@@ -330,14 +335,14 @@ public class PuScn1 extends AbstractEkpInitTest {
 		prodCtlA = prodCtlA.reload();
 		prodCtlB = prodCtlB.reload();
 		prodCtlC = prodCtlC.reload();
-		log.info("9b-A.完成建立產品分類A。 [{}][{}][{}][{}][{}]", prodCtlA.getLv(), prodCtlA.getPartUid(), prodCtlA.getPartName(),DataUtil.getStr(prodCtlA.isReq()),  prodCtlA.getProd().getId());
-		log.info("9b-B.完成建立產品分類B。 [{}][{}][{}][{}][{}]", prodCtlB.getLv(),prodCtlB.getPartUid(), prodCtlB.getPartName(),DataUtil.getStr(prodCtlB.isReq()),  prodCtlB.getProd().getId());
-		log.info("9b-C.完成建立產品分類C。 [{}][{}][{}][{}][{}]", prodCtlC.getLv(),prodCtlC.getPartUid(), prodCtlC.getPartName(),DataUtil.getStr(prodCtlC.isReq()),  prodCtlC.getProd().getId());
+		log.info("9b-A.完成建立產品分類A。 [{}][{}][{}][{}]", prodCtlA.getLv(), prodCtlA.getName(),DataUtil.getStr(prodCtlA.isReq()),  prodCtlA.getProd().getId());
+		log.info("9b-B.完成建立產品分類B。 [{}][{}][{}][{}]", prodCtlB.getLv(),prodCtlB.getName(),DataUtil.getStr(prodCtlB.isReq()),  prodCtlB.getProd().getId());
+		log.info("9b-C.完成建立產品分類C。 [{}][{}][{}][{}]", prodCtlC.getLv(),prodCtlC.getName(),DataUtil.getStr(prodCtlC.isReq()),  prodCtlC.getProd().getId());
 		
 		// 設定每個產品分類可對應的構型
-		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlA, tt, pcCfg1));
-		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlB, tt, pcCfg1));
-		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlC, tt, pcCfg1));
+		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlA, tt, Map.entry(paA1, pcCfg1)));
+		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlB, tt, Map.entry(paB1, pcCfg1)));
+		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlC, tt, Map.entry(paC1, pcCfg1)));
 		
 		showProdInfo(prodA);
 		
@@ -347,11 +352,11 @@ public class PuScn1 extends AbstractEkpInitTest {
 		log.info("9c.完成建立模型1");
 		
 		
-		/* 9d.模型1指定構型 */
+		/* 9d.模型1指定構型及獲取方式 */
 		prodMod1 = prodMod1.reload();
+		ProdModItemInfo prodModItem1A = prodMod1.getProdModItem(prodCtlA.getUid());
 		
-		ProdModItemInfo prodModItem1A = prodMod1.getProdModItem(partA.getUid());
-		assertTrue(mbomDel.runProdModItemAssignPartCfg(tt, prodModItem1A, pcCfg1.getUid()));
+		assertTrue(mbomDel.runProdModItemAssignPartAcqCfg(tt, prodModItem1A, pcCfg1.getUid(), paA1.getUid()));
 		log.info("9d.完成模型1指定構型");
 		
 		/* output */
@@ -359,10 +364,14 @@ public class PuScn1 extends AbstractEkpInitTest {
 		log.debug("================================================================");
 		prodMod1 = prodMod1.reload();
 		showProdModInfo(prodMod1);
-		List<ProdModPa> rootPmpList = parseRootProdModPaList(prodMod1, Arrays.asList(partA, partB, partC));
+//		List<ProdModPa> rootPmpList = parseRootProdModPaList(prodMod1, Arrays.asList(partA, partB, partC));
+//		int count = 0;
+//		for (ProdModPa pmp : rootPmpList)
+//			showProdModPa(pmp, "", ++count);
+		List<ProdModPaNew> rootPmpList = parseRootProdModPaNewList(prodMod1);
 		int count = 0;
-		for (ProdModPa pmp : rootPmpList)
-			showProdModPa(pmp, "", ++count);
+		for (ProdModPaNew pmp : rootPmpList)
+			showProdModPaNew(pmp, "", ++count);
 	}
 	
 	// -------------------------------------------------------------------------------
@@ -414,7 +423,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 		StringBuilder sbLvSpace = new StringBuilder();
 		for (int i = 0; i < lv; i++)
 			sbLvSpace.append("  ");
-		log.info("{}{}\t{}\t{}\t{}", sbLvSpace.toString(), prodCtl.getLv(), prodCtl.getPartPin(), prodCtl.getPartName(),
+		log.info("{}{}\t{}\t{}", sbLvSpace.toString(), prodCtl.getLv(), prodCtl.getName(), 
 				DataUtil.getStr(prodCtl.isReq()));
 		for (ProdCtlPartCfgConjInfo pcpcc : prodCtl.getPcpccList()) {
 			log.info("  {}-構型\t{}", sbLvSpace.toString(), pcpcc.getPartCfg().getId());
@@ -431,136 +440,259 @@ public class PuScn1 extends AbstractEkpInitTest {
 		log.info("{}\t{}\t{}", prodMod.getProd().getId(), prodMod.getId(), prodMod.getName());
 //		log.debug("prodMod.getProdModItemList().size(): {}", prodMod.getProdModItemList().size());
 		for (ProdModItemInfo prodModItem : prodMod.getProdModItemList()) {
-			log.info("  {}\t{}\t{}\t{}\t{}", prodModItem.getProdCtl().getLv(), prodModItem.getProdCtl().getPartPin(),
-					DataUtil.getStr(prodModItem.getProdCtl().isReq()), DataUtil.getStr(prodModItem.isPartCfgAssigned()),
-					prodModItem.isPartCfgAssigned() ? prodModItem.getPartCfg().getId() : "");
+			log.info("  {}\t{}\t{}\t{}\t{}", prodModItem.getProdCtl().getLv(), 
+					DataUtil.getStr(prodModItem.getProdCtl().isReq()), DataUtil.getStr(prodModItem.isPartAcqCfgAssigned()),
+					prodModItem.isPartAcqCfgAssigned() ? prodModItem.getPartCfg().getId() : ""
+						
+					,prodModItem.isPartAcqCfgAssigned() ? prodModItem.getPartAcq().getId() : ""
+					);
 		}
 	}
 	
 	// -------------------------------------------------------------------------------
-	public List<ProdModPa> parseRootProdModPaList(ProdModInfo _prodMod, List<PartInfo> _allPartList) {
-		ProdInfo prod = _prodMod.getProd();
-		List<ProdModPa> list = new ArrayList<>();
-		for (ProdCtlInfo prodCtl : prod.getProdCtlListLv1()) {
-			list.add(parseProdModPa(_prodMod, _allPartList, prodCtl, null, null));
-		}
-		return list;
-	}
-
-	private ProdModPa parseProdModPa(ProdModInfo _prodMod, List<PartInfo> _allPartList, ProdCtlInfo _prodCtl,
-			PartCfgInfo _parentPartCfg, PpartInfo _parentPpart) {
-//		PartInfo part = _allPartList.stream().filter(p -> p.getPin().equals(_prodCtl.getId())).findAny().orElse(null); // FIXME
-		PartInfo part = _prodCtl.getPart();
-		assertNotNull(part);
-
-//		ProdModItemInfo prodModItem = _prodMod.getProdModItem(_prodCtl.getUid());
-		ProdModItemInfo prodModItem =_prodMod.getProdModItem(part.getUid());
-		
-		
-//		prodModItem = prodModItem.reload();
-//		log.debug("prodModItem.getUid(): {}\tprodModItem.getProdCtl().getId(): {}",prodModItem.getUid(), prodModItem.getProdCtl().getId());
-//		log.debug("prodModItem.isPartCfgAssigned(): {}\t{}", prodModItem.isPartCfgAssigned(), prodModItem.getPartCfgUid());
-//		log.debug("_prodCtl.getId(): {}", _prodCtl.getId());
-		assertNotNull(part);
-
-		PartCfgInfo partCfg = prodModItem.isPartCfgAssigned() ? prodModItem.getPartCfg() : _parentPartCfg;
-//		log.debug("_parentPartCfg: {}", _parentPartCfg);
-		assertNotNull(partCfg);
-
-		PartCfgConjInfo partCfgConj = partCfg.getPccList(false).stream()
-				.filter(pcc -> pcc.getPartAcq().getPartPin().equals(part.getPin())).findAny().orElse(null);
-		assertNotNull(part);
-
-		PartAcqInfo pa = partCfgConj.getPartAcq();
-
-		List<ProdModPa> childrenList = new ArrayList<>();
-		for (ProdCtlInfo childProdCtl : _prodCtl.getChildrenList()) {
-//			PartInfo childPart = _allPartList.stream().filter(p -> p.getPin().equals(childProdCtl.getId())).findAny().orElse(null);
-			PartInfo childPart = childProdCtl.getPart();
-			PpartInfo thisPpart = pa.getPpartList().stream().filter(ppart -> ppart.getPartPin().equalsIgnoreCase(childPart.getPin()))
-					.findAny().orElse(null);
-//			log.debug("{}\t{}\t{}", childPart.getPin(), thisPpart.getPartPin(), thisPpart.getPartReqQty());
-			
-			childrenList.add(parseProdModPa(_prodMod, _allPartList, childProdCtl, partCfg, thisPpart));
-		}
-		ProdModPa pmp = new ProdModPa(_prodCtl, part,partCfg,_parentPpart, pa, childrenList);
-		return pmp;
-	}
-
-	private class ProdModPa {
-		private ProdCtlInfo prodCtl;
-		private PartInfo part;
-		//
+	// 以Pa為主體
+	private class ProdModPaNew{
+		private PartAcqInfo partAcq; 
 		private PartCfgInfo partCfg;
 		
-		private PpartInfo parentPpart;
-		private PartAcqInfo pa; //
+		private ProdModItemInfo pmi; // 若沒指定到，就是NULL。
 		
+		private PpartInfo parentPpart; // 若有parentPpart，才能知道「配賦量」。根節點的parentPpart是NULL。
 		
-		
+		private List<ProdModPaNew> childrenList;
 
-		private List<ProdModPa> childrenList;
-
-		private ProdModPa(ProdCtlInfo prodCtl, PartInfo part,PartCfgInfo partCfg, PpartInfo parentPpart,PartAcqInfo pa, List<ProdModPa> childrenList) {
-			this.prodCtl = prodCtl;
-			this.part = part;
+		private ProdModPaNew(PartAcqInfo partAcq, PartCfgInfo partCfg, ProdModItemInfo pmi, PpartInfo parentPpart,
+				List<ProdModPaNew> childrenList) {
+			this.partAcq = partAcq;
 			this.partCfg = partCfg;
+			this.pmi = pmi;
 			this.parentPpart = parentPpart;
-			this.pa = pa;
 			this.childrenList = childrenList;
 		}
 
-		public ProdCtlInfo getProdCtl() {
-			return prodCtl;
+		public PartAcqInfo getPartAcq() {
+			return partAcq;
 		}
 
-		public PartInfo getPart() {
-			return part;
-		}
-		
 		public PartCfgInfo getPartCfg() {
 			return partCfg;
+		}
+
+		public ProdModItemInfo getPmi() {
+			return pmi;
 		}
 
 		public PpartInfo getParentPpart() {
 			return parentPpart;
 		}
 
-		public PartAcqInfo getPa() {
-			return pa;
-		}
-
-		public List<ProdModPa> getChildrenList() {
+		public List<ProdModPaNew> getChildrenList() {
 			return childrenList;
 		}
 		
+		// ---------------------------------------------------------------------------
 		public double getQty() {
 			return getParentPpart() == null ? 1 : getParentPpart().getPartReqQty();
 		}
-
+		
 	}
 	
+	public List<ProdModPaNew> parseRootProdModPaNewList(ProdModInfo _prodMod){
+		List<ProdModItemInfo> lv1PmiList = _prodMod.getProdModItemListLv1();
+		
+		List<ProdModPaNew> pmpList = new ArrayList<>();
+		for (ProdModItemInfo pmi : lv1PmiList) {
+			assertTrue(pmi.isPartAcqCfgAssigned()); // lv1一定要有指定
+			PartAcqInfo partAcq = pmi.getPartAcq(); // lv1一定要有指定
+			PartCfgInfo partCfg = pmi.getPartCfg(); // lv1一定要有指定
+			
+			ProdModPaNew pmp = parseProdModPaNew(_prodMod, partAcq, partCfg, pmi, null);
+			pmpList.add(pmp);
+		}
+		return pmpList;
+	}
+	
+	private ProdModPaNew parseProdModPaNew(ProdModInfo _prodMod, PartAcqInfo _partAcq, PartCfgInfo _partCfg, ProdModItemInfo _prodModItem
+			, PpartInfo _parentPpart) {
+		
+		List<ProdModPaNew> childrenList = new ArrayList<>();
+		for (PpartInfo ppart : _partAcq.getPpartList()) {
+//_prodMod.getProdModItem(_prodCtlUid)
+			ProdModItemInfo childPmi = _prodMod.getProdModItemByPartUid(ppart.getPartUid());
+			PartCfgInfo childPartCfg = childPmi == null ? _partCfg : childPmi.getPartCfg();
+			assertNotNull(childPartCfg);
+			PartAcqInfo childPartAcq = childPartCfg.getPartAcqByPart(ppart.getPartUid());
+			assertNotNull(childPartAcq);
+			
+			ProdModPaNew childPmp = parseProdModPaNew(_prodMod, childPartAcq, childPartCfg, childPmi, ppart);
+			childrenList.add(childPmp);
+		}
+		
+		ProdModPaNew pmp = new ProdModPaNew(_partAcq, _partCfg, _prodModItem, _parentPpart, childrenList);
+		return pmp;
+	}
+	
+	
+	
 	// -------------------------------------------------------------------------------
-	private void showProdModPa(ProdModPa _pmp, String _prefix, int _seq) {
-		String prefix = _prefix + (!DataFO.isEmptyString(_prefix) ? "-" : "") + _seq;
+//	@Deprecated
+//	public List<ProdModPa> parseRootProdModPaList(ProdModInfo _prodMod, List<PartInfo> _allPartList) {
+//		ProdInfo prod = _prodMod.getProd();
+//		List<ProdModPa> list = new ArrayList<>();
+//		for (ProdCtlInfo prodCtl : prod.getProdCtlListLv1()) {
+////			list.add(parseProdModPa(_prodMod, _allPartList, prodCtl, null, null));
+//			list.add(parseProdModPa(_prodMod, prodCtl, null, null));
+//		}
+//		return list;
+//	}
+
+//	private ProdModPa parseProdModPa(ProdModInfo _prodMod, List<PartInfo> _allPartList, ProdCtlInfo _prodCtl,
+//			PartCfgInfo _parentPartCfg, PpartInfo _parentPpart) {
+//	@Deprecated
+//	private ProdModPa parseProdModPa(ProdModInfo _prodMod,  ProdCtlInfo _prodCtl,
+//			PartCfgInfo _parentPartCfg, PpartInfo _parentPpart) {
+////		PartInfo part = _allPartList.stream().filter(p -> p.getPin().equals(_prodCtl.getId())).findAny().orElse(null); // FIXME
+//		
+//		
+////		PartInfo part = _prodCtl.getPart();
+////		assertNotNull(part);
+//
+//		ProdModItemInfo prodModItem = _prodMod.getProdModItem(_prodCtl.getUid());
+////		ProdModItemInfo prodModItem =_prodMod.getProdModItem(part.getUid());
+//		
+//		
+////		prodModItem = prodModItem.reload();
+////		log.debug("prodModItem.getUid(): {}\tprodModItem.getProdCtl().getId(): {}",prodModItem.getUid(), prodModItem.getProdCtl().getId());
+////		log.debug("prodModItem.isPartCfgAssigned(): {}\t{}", prodModItem.isPartCfgAssigned(), prodModItem.getPartCfgUid());
+////		log.debug("_prodCtl.getId(): {}", _prodCtl.getId());
+////		assertNotNull(part);
+//
+//		PartCfgInfo partCfg = prodModItem.isPartAcqCfgAssigned() ? prodModItem.getPartCfg() : _parentPartCfg;
+////		log.debug("_parentPartCfg: {}", _parentPartCfg);
+//		assertNotNull(partCfg);
+//
+////		PartCfgConjInfo partCfgConj = partCfg.getPccList(false).stream()
+////				.filter(pcc -> pcc.getPartAcq().getPartPin().equals(part.getPin())).findAny().orElse(null);
+////		assertNotNull(part);
+////
+////		PartAcqInfo pa = partCfgConj.getPartAcq();
+//		PartAcqInfo pa =prodModItem.getPartAcq();
+//
+//		List<ProdModPa> childrenList = new ArrayList<>();
+//		for (ProdCtlInfo childProdCtl : _prodCtl.getChildrenList()) {
+//			
+//			ProdModItemInfo childProdModItem = _prodMod.getProdModItem(childProdCtl.getUid());
+////			PartInfo childPart = _allPartList.stream().filter(p -> p.getPin().equals(childProdCtl.getId())).findAny().orElse(null);
+////			PartInfo childPart = childProdCtl.getPart();
+////			PpartInfo thisPpart = pa.getPpartList().stream().filter(ppart -> ppart.getPartPin().equalsIgnoreCase(childPart.getPin()))
+////					.findAny().orElse(null);
+//			PpartInfo thisPpart = pa.getPpartList().stream().filter(ppart -> ppart.getPartPin().equalsIgnoreCase(childProdModItem.getPartAcq().getPartPin()))
+//			.findAny().orElse(null);
+////			log.debug("{}\t{}\t{}", childPart.getPin(), thisPpart.getPartPin(), thisPpart.getPartReqQty());
+//			
+////			childrenList.add(parseProdModPa(_prodMod, _allPartList, childProdCtl, partCfg, thisPpart));
+//			childrenList.add(parseProdModPa(_prodMod, childProdCtl, partCfg, thisPpart));
+//		}
+//		ProdModPa pmp = new ProdModPa(_prodCtl, part,partCfg,_parentPpart, pa, childrenList);
+//		return pmp;
+//	}
+	
+//@Deprecated
+//	private class ProdModPa {
+//		private ProdCtlInfo prodCtl;
+//		private PartInfo part;
+//		//
+//		private PartCfgInfo partCfg;
+//		
+//		private PpartInfo parentPpart;
+//		private PartAcqInfo pa; //
+//		
+//
+//		private List<ProdModPa> childrenList;
+//
+//		private ProdModPa(ProdCtlInfo prodCtl, PartInfo part,PartCfgInfo partCfg, PpartInfo parentPpart,PartAcqInfo pa, List<ProdModPa> childrenList) {
+//			this.prodCtl = prodCtl;
+//			this.part = part;
+//			this.partCfg = partCfg;
+//			this.parentPpart = parentPpart;
+//			this.pa = pa;
+//			this.childrenList = childrenList;
+//		}
+//
+//		public ProdCtlInfo getProdCtl() {
+//			return prodCtl;
+//		}
+//
+//		public PartInfo getPart() {
+//			return part;
+//		}
+//		
+//		public PartCfgInfo getPartCfg() {
+//			return partCfg;
+//		}
+//
+//		public PpartInfo getParentPpart() {
+//			return parentPpart;
+//		}
+//
+//		public PartAcqInfo getPa() {
+//			return pa;
+//		}
+//
+//		public List<ProdModPa> getChildrenList() {
+//			return childrenList;
+//		}
+//		
+//		public double getQty() {
+//			return getParentPpart() == null ? 1 : getParentPpart().getPartReqQty();
+//		}
+//
+//	}
+	
+	// -------------------------------------------------------------------------------
+//@Deprecated
+//	private void showProdModPa(ProdModPa _pmp, String _prefix, int _seq) {
+//		String prefix = _prefix + (!DataFO.isEmptyString(_prefix) ? "-" : "") + _seq;
+//
+//		
+//		log.debug("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}", prefix,  _pmp.getPart().getPin(),
+//				
+//				_pmp.getQty(),
+//				_pmp.getPartCfg().getName(), _pmp.getPa().getId(), _pmp.getPa().getName(),
+//				_pmp.getPa().getRefUnitCost(), _pmp.getPa().getMm().getAvgStockValue()
+//				,
+//				 _pmp.getPa().getMm().getIoiAvgOrderValue(InvtOrderType.I1),
+//				_pmp.getPa().getMm().getIoiAvgOrderValue(InvtOrderType.I2),
+//				_pmp.getPa().getMm().getIoiAvgOrderValue(InvtOrderType.O2),
+//				_pmp.getPa().getMm().getIoiAvgOrderValue(InvtOrderType.O9)
+//				
+//				);
+//		int seq = 0;
+//		for (ProdModPa childPmp : _pmp.getChildrenList())
+//			showProdModPa(childPmp, prefix, ++seq);
+//
+//	}
+
+	// -------------------------------------------------------------------------------
+	private void showProdModPaNew(ProdModPaNew _pmp, String _prefix, int _seq) {
+String prefix = _prefix + (!DataFO.isEmptyString(_prefix) ? "-" : "") + _seq;
 
 		
-		log.debug("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}", prefix,  _pmp.getPart().getPin(),
+		log.debug("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}", prefix,  _pmp.getPartAcq().getPartPin(),
 				
 				_pmp.getQty(),
-				_pmp.getPartCfg().getName(), _pmp.getPa().getId(), _pmp.getPa().getName(),
-				_pmp.getPa().getRefUnitCost(), _pmp.getPa().getMm().getAvgStockValue()
+				_pmp.getPartCfg().getName(), _pmp.getPartAcq().getId(), _pmp.getPartAcq().getName(),
+				_pmp.getPartAcq().getRefUnitCost(), _pmp.getPartAcq().getMm().getAvgStockValue()
 				,
-				 _pmp.getPa().getMm().getIoiAvgOrderValue(InvtOrderType.I1),
-				_pmp.getPa().getMm().getIoiAvgOrderValue(InvtOrderType.I2),
-				_pmp.getPa().getMm().getIoiAvgOrderValue(InvtOrderType.O2),
-				_pmp.getPa().getMm().getIoiAvgOrderValue(InvtOrderType.O9)
+				 _pmp.getPartAcq().getMm().getIoiAvgOrderValue(InvtOrderType.I1),
+				_pmp.getPartAcq().getMm().getIoiAvgOrderValue(InvtOrderType.I2),
+				_pmp.getPartAcq().getMm().getIoiAvgOrderValue(InvtOrderType.O2),
+				_pmp.getPartAcq().getMm().getIoiAvgOrderValue(InvtOrderType.O9)
 				
 				);
 		int seq = 0;
-		for (ProdModPa childPmp : _pmp.getChildrenList())
-			showProdModPa(childPmp, prefix, ++seq);
-
+		for (ProdModPaNew childPmp : _pmp.getChildrenList())
+			showProdModPaNew(childPmp, prefix, ++seq);
 	}
-
 }
+

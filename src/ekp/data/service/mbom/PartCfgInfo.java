@@ -34,7 +34,16 @@ public interface PartCfgInfo extends ObjectModelInfo {
 	
 	List<PartCfgConjInfo> getPccList(boolean _reload);
 	
+	default PartAcqInfo getPartAcqByPart(String _partUid) {
+		PartCfgConjInfo selectedPcc =getPccList(false).stream().filter(pcc -> pcc.getPartAcq().getPartUid().equals(_partUid)).findAny()
+				.orElse(null); 
+		return selectedPcc==null?null:selectedPcc.getPartAcq();
+	}
+	
 	List<PpartSkewer> getPpartSkewerList(boolean _reload);
+	
+	
+	
 	
 	
 

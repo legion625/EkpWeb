@@ -36,9 +36,9 @@ import ekp.mbom.issue.partCfg.PartCfgBpuPublish;
 import ekp.mbom.issue.prod.ProdBuilder0;
 import ekp.mbom.issue.prod.ProdBpuEditCtl;
 import ekp.mbom.issue.prodCtl.ProdCtlBpuPartCfgConj;
-import ekp.mbom.issue.prodCtl.ProdCtlBuilder1;
+import ekp.mbom.issue.prodCtl.ProdCtlBuilder0;
 import ekp.mbom.issue.prodMod.ProdModBuilder1;
-import ekp.mbom.issue.prodMod.ProdModItemBpuAssignPartCfg;
+import ekp.mbom.issue.prodMod.ProdModItemBpuAssignPartAcqCfg;
 import ekp.mbom.issue.partCfg.PartCfgBuilder0;
 import ekp.mbom.type.PartAcqStatus;
 import ekp.mbom.type.PartCfgStatus;
@@ -77,13 +77,12 @@ public enum MbomBpuType implements BpuType {
 	/* Prod, ProdCtl*/
 	PROD_0(ProdBuilder0.class), //
 	PROD_$EDIT_CTL(ProdBpuEditCtl.class, ProdInfo.class), //
-//	PROD_CTL_0(ProdCtlBuilder0.class), //
-	PROD_CTL_1(ProdCtlBuilder1.class), //
+	PROD_CTL_0(ProdCtlBuilder0.class), //
 	PROD_CTL_$PART_CFG_CONJ(ProdCtlBpuPartCfgConj.class, ProdCtlInfo.class), //
 	
 	/* ProdMod, ProdModItem*/
 	PROD_MOD_1(ProdModBuilder1.class,ProdInfo.class), //
-	PROD_MOD_ITEM_$ASSIGN_PART_CFG(ProdModItemBpuAssignPartCfg.class, ProdModItemInfo.class), //
+	PROD_MOD_ITEM_$ASSIGN_PART_ACQ_CFG(ProdModItemBpuAssignPartAcqCfg.class, ProdModItemInfo.class), //
 
 	;
 
@@ -157,7 +156,7 @@ public enum MbomBpuType implements BpuType {
 			return true;
 		case PROD_$EDIT_CTL:
 			return matchBizProdEditCtl((ProdInfo) _args[0]);
-		case PROD_CTL_1:
+		case PROD_CTL_0:
 			return true;
 		case PROD_CTL_$PART_CFG_CONJ:
 			return matchBizProdCtlPartCfgConj((ProdCtlInfo) _args[0]);
@@ -165,8 +164,8 @@ public enum MbomBpuType implements BpuType {
 		case PROD_MOD_1:
 			return true;
 		/* prod mod item */
-		case PROD_MOD_ITEM_$ASSIGN_PART_CFG:
-			return matchBizProdModItemAssignPartCfg((ProdModItemInfo) _args[0]);
+		case PROD_MOD_ITEM_$ASSIGN_PART_ACQ_CFG:
+			return matchBizProdModItemAssignPartAcqCfg((ProdModItemInfo) _args[0]);
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + this);
 		}
@@ -391,14 +390,14 @@ public enum MbomBpuType implements BpuType {
 
 	// -------------------------------------------------------------------------------
 	// ----------------------------------ProdModItem----------------------------------
-	private boolean matchBizProdModItemAssignPartCfg(ProdModItemInfo _prodModItem) {
+	private boolean matchBizProdModItemAssignPartAcqCfg(ProdModItemInfo _prodModItem) {
 		if (_prodModItem == null) {
 			log.warn("_prodModItem null");
 			return false;
 		}
 
-		if (_prodModItem.isPartCfgAssigned()) {
-			log.warn("partCfg has benn assigned.");
+		if (_prodModItem.isPartAcqCfgAssigned()) {
+			log.warn("partCfg / partAcq has benn assigned.");
 			return false;
 		}
 

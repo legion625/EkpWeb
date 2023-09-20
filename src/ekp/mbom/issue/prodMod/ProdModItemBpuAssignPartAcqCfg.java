@@ -4,16 +4,17 @@ import ekp.data.service.mbom.ProdModItemInfo;
 import legion.util.DataFO;
 import legion.util.TimeTraveler;
 
-public class ProdModItemBpuAssignPartCfg extends ProdModItemBpu {
+public class ProdModItemBpuAssignPartAcqCfg extends ProdModItemBpu {
 	/* base */
 	private ProdModItemInfo prodModItem;
 
 	/* data */
 	private String partCfgUid;
+	private String partAcqUid;
 
 	// -------------------------------------------------------------------------------
 	@Override
-	protected ProdModItemBpuAssignPartCfg appendBase() {
+	protected ProdModItemBpuAssignPartAcqCfg appendBase() {
 		/* base */
 		prodModItem = (ProdModItemInfo) args[0];
 		appendProdModItem(prodModItem);
@@ -22,14 +23,24 @@ public class ProdModItemBpuAssignPartCfg extends ProdModItemBpu {
 	}
 
 	// -------------------------------------------------------------------------------
-	public ProdModItemBpuAssignPartCfg appendPartCfgUid(String partCfgUid) {
+	public ProdModItemBpuAssignPartAcqCfg appendPartCfgUid(String partCfgUid) {
 		this.partCfgUid = partCfgUid;
 		return this;
 	}
+
+	public ProdModItemBpuAssignPartAcqCfg appendPartAcqUid(String partAcqUid) {
+		this.partAcqUid = partAcqUid;
+		return this;
+	}
+	
 	// -------------------------------------------------------------------------------
 
 	public String getPartCfgUid() {
 		return partCfgUid;
+	}
+
+	public String getPartAcqUid() {
+		return partAcqUid;
 	}
 
 	// -------------------------------------------------------------------------------
@@ -52,6 +63,11 @@ public class ProdModItemBpuAssignPartCfg extends ProdModItemBpu {
 			_msg.append("partCfgUid null.").append(System.lineSeparator());
 			v = false;
 		}
+		
+		if (DataFO.isEmptyString(getPartAcqUid())) {
+			_msg.append("partAcqUid null.").append(System.lineSeparator());
+			v = false;
+		}
 
 		return v;
 
@@ -62,13 +78,13 @@ public class ProdModItemBpuAssignPartCfg extends ProdModItemBpu {
 		TimeTraveler tt = new TimeTraveler();
 
 		//
-		if (!mbomDataService.prodModItemAssignPartCfg(getProdModItem().getUid(), getPartCfgUid())) {
+		if (!mbomDataService.prodModItemAssignPartAcqCfg(getProdModItem().getUid(), getPartCfgUid(), getPartAcqUid())) {
 			tt.travel();
-			log.error("mbomDataSerivce.prodModItemAssignPartCfg return false.");
+			log.error("mbomDataSerivce.prodModItemAssignPartAcqCfg return false.");
 			return null;
 		}
-		tt.addSite("revert prodModItemAssignPartCfg",
-				() -> mbomDataService.prodModItemUnassignPartCfg(getProdModItem().getUid()));
+		tt.addSite("revert prodModItemAssignPartAcqCfg",
+				() -> mbomDataService.prodModItemUnassignPartAcqCfg(getProdModItem().getUid()));
 
 		//
 		if (_tt != null)

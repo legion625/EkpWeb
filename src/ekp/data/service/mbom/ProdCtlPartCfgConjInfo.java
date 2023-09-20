@@ -8,6 +8,8 @@ public interface ProdCtlPartCfgConjInfo extends ObjectModelInfo{
 
 	String getPartCfgUid();
 	
+	String getPartAcqUid();
+	
 	// -------------------------------------------------------------------------------
 	PartCfgInfo getPartCfg();
 
