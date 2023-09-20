@@ -4,38 +4,27 @@ import java.util.List;
 
 import legion.ObjectModelInfo;
 
-public interface ProdCtlInfo extends ObjectModelInfo{
-
-//	String getId();
+public interface ProdCtlInfo extends ObjectModelInfo {
 
 	int getLv();
 
-//	String getName();
-	
-	String getPartUid();
-	String getPartPin();
-	String getPartName();
+	String getName();
 
 	boolean isReq();
 
 	String getParentUid();
 
-	@Deprecated
-	String getParentId();
-
 	String getProdUid();
-	
+
 	// -------------------------------------------------------------------------------
 	ProdCtlInfo reload();
-	
-	PartInfo getPart();
-	
+
 	List<ProdCtlInfo> getChildrenList();
-	
+
 	ProdInfo getProd();
-	
+
 	List<ProdCtlPartCfgConjInfo> getPcpccList();
-	
+
 	// -------------------------------------------------------------------------------
 
 }

@@ -224,12 +224,9 @@ public class MbomFO {
 		ProdCtlInfoDto dto = new ProdCtlInfoDto(_remote.getUid(), _remote.getObjectCreateTime(),
 				_remote.getObjectUpdateTime());
 		dto.setLv(_remote.getLv());
-		dto.setPartUid(_remote.getPartUid());
-		dto.setPartPin(_remote.getPartPin());
-		dto.setPartName(_remote.getPartName());
+		dto.setName(_remote.getName());
 		dto.setReq(_remote.isReq());
 		dto.setParentUid(_remote.getParentUid());
-		dto.setParentId(_remote.getParentId());
 		dto.setProdUid(_remote.getProdUid());
 		return dto;
 	}
@@ -237,9 +234,7 @@ public class MbomFO {
 	public static ProdCtlCreateObjRemote parseProdCtlCreateObjRemote(ProdCtlCreateObj _dto) {
 		ProdCtlCreateObjRemote remote = new ProdCtlCreateObjRemote();
 		remote.setLv(_dto.getLv());
-		remote.setPartUid(_dto.getPartUid());
-		remote.setPartPin(_dto.getPartPin());
-		remote.setPartName(_dto.getPartName());
+		remote.setName(_dto.getName());
 		remote.setReq(_dto.isReq());
 		return remote;
 	}
@@ -251,6 +246,7 @@ public class MbomFO {
 				_remote.getObjectUpdateTime());
 		dto.setProdCtlUid(_remote.getProdCtlUid());
 		dto.setPartCfgUid(_remote.getPartCfgUid());
+		dto.setPartAcqUid(_remote.getPartAcqUid());
 		return dto;
 	}
 
@@ -282,8 +278,9 @@ public class MbomFO {
 				_remote.getObjectUpdateTime());
 		dto.setProdModUid(_remote.getProdModUid());
 		dto.setProdCtlUid(_remote.getProdCtlUid());
-		dto.setPartCfgAssigned(_remote.isPartCfgAssigned());
+		dto.setPartAcqCfgAssigned(_remote.isPartAcqCfgAssigned());
 		dto.setPartCfgUid(_remote.getPartCfgUid());
+		dto.setPartAcqUid(_remote.getPartAcqUid());
 		return dto;
 	}
 

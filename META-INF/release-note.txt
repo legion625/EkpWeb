@@ -1,3 +1,7 @@
+Min-Hua, 2023.09.21
+[lib]
+1. ekp_kernel: 0.5.2 -> 0.5.4
+
 Min-Hua, 2023.09.16
 [lib]
 1. ekp_kernel: 0.5.0 -> 0.5.1

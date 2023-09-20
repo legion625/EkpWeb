@@ -24,21 +24,31 @@ public interface ProdModInfo extends ObjectModelInfo{
 	
 	List<ProdModItemInfo> getProdModItemList();
 	
-	default ProdModItemInfo getProdModItem(String _partUid) {
-		return getProdModItemList().stream().filter(pmi->pmi.getProdCtl().getPartUid().equalsIgnoreCase(_partUid)).findAny().orElse(null);
+	default List<ProdModItemInfo> getProdModItemListLv1(){
+		return getProdModItemList().stream().filter(pmi->pmi.getProdCtl().getLv()==1).collect(Collectors.toList());
 	}
+	
+//	default ProdModItemInfo getProdModItem(String _partUid) {
+//		return getProdModItemList().stream().filter(pmi->pmi.getProdCtl().getPartUid().equalsIgnoreCase(_partUid)).findAny().orElse(null);
+//	}
 	
 	
 	// -------------------------------------------------------------------------------
 	Map<String, ProdModItemInfo> getProdCtlUidProdModItemMap();
 	
-//	default ProdModItemInfo getProdModItem(String _prodCtlUid) {
-//		return getProdCtlUidProdModItemMap().get(_prodCtlUid);
-//	}
+	default ProdModItemInfo getProdModItem(String _prodCtlUid) {
+		return getProdCtlUidProdModItemMap().get(_prodCtlUid);
+	}
+	
+	default ProdModItemInfo getProdModItemByPartUid(String _partUid) {
+		return getProdModItemList().stream()
+				.filter(pmi -> pmi.isPartAcqCfgAssigned() && pmi.getPartAcq().getPartUid().equals(_partUid)).findAny()
+				.orElse(null);
+	}
 	
 	// -------------------------------------------------------------------------------
 	default boolean isReady() {
-		return getProdModItemList().stream().allMatch(pmi -> !pmi.getProdCtl().isReq() || pmi.isPartCfgAssigned());
+		return getProdModItemList().stream().allMatch(pmi -> !pmi.getProdCtl().isReq() || pmi.isPartAcqCfgAssigned());
 	}
 	
 //	default double getUnitPrice1() {
