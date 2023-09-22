@@ -13,4 +13,5 @@ public interface ProdCtlPartCfgConjInfo extends ObjectModelInfo{
 	// -------------------------------------------------------------------------------
 	PartCfgInfo getPartCfg();
 
+	PartAcqInfo getPartAcq();
 }

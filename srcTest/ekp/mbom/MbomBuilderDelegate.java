@@ -29,6 +29,7 @@ import ekp.mbom.issue.parsPart.ParsPartBuilder1;
 import ekp.mbom.issue.parsProc.ParsProcBuilder0;
 import ekp.mbom.issue.part.PartBuilder0;
 import ekp.mbom.issue.partAcq.PaBpuPublish;
+import ekp.mbom.issue.partAcq.PaBpuUpdateRefUnitCost;
 import ekp.mbom.issue.partAcq.PartAcqBuilder0;
 import ekp.mbom.issue.partAcq.PaBpuAsignMm;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBuilder1;
@@ -197,6 +198,30 @@ public class MbomBuilderDelegate {
 		}
 
 		return;
+	}
+	
+	public boolean runPaUpdateRefUnitCost(TimeTraveler _tt, PartAcqInfo _pa, double _refUnitCost) {
+		PaBpuUpdateRefUnitCost b = bpuFacade.getBuilder(MbomBpuType.PART_ACQ_$UPDATE_REF_UNIT_COST, _pa);
+		b.appendRefUnitCost(_refUnitCost);
+		
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(b.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(b.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		boolean result = b.build(msgBuild, _tt);
+		assertTrue(result);
+
+		// check
+		PartAcqInfo pa = _pa.reload();
+		assertEquals(_refUnitCost, pa.getRefUnitCost());
+
+		return result;
 	}
 
 	// -------------------------------------------------------------------------------
