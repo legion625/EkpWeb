@@ -10,7 +10,7 @@ public class InvtOrderBuilder0 extends InvtOrderBuilder {
 	/* base */
 
 	/* data */
-	private List<InvtOrderItemBuilder0> ioiBuilderList;
+	private List<InvtOrderItemBuilder21> ioiBuilderList;
 
 	// -------------------------------------------------------------------------------
 	@Override
@@ -27,15 +27,15 @@ public class InvtOrderBuilder0 extends InvtOrderBuilder {
 		return (InvtOrderBuilder0) super.appendRemark(remark);
 	}
 
-	public InvtOrderItemBuilder0 addIoiBuilder() {
-		InvtOrderItemBuilder0 ioib = new InvtOrderItemBuilder0();
+	public InvtOrderItemBuilder21 addIoiBuilder() {
+		InvtOrderItemBuilder21 ioib = new InvtOrderItemBuilder21();
 		ioiBuilderList.add(ioib);
 		return ioib;
 	}
 	
 	// -------------------------------------------------------------------------------
 	@Override
-	public List<InvtOrderItemBuilder0> getInvtOrderItemBuilderList() {
+	public List<InvtOrderItemBuilder21> getInvtOrderItemBuilderList() {
 		return ioiBuilderList;
 	}
 	

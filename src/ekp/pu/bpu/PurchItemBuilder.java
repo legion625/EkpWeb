@@ -3,6 +3,7 @@ package ekp.pu.bpu;
 import ekp.data.PuDataService;
 import ekp.data.service.pu.PurchItemCreateObj;
 import ekp.data.service.pu.PurchItemInfo;
+import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartUnit;
 import legion.DataServiceFactory;
 import legion.biz.Bpu;
@@ -22,6 +23,10 @@ public abstract class PurchItemBuilder extends Bpu<PurchItemInfo> {
 	private String mmName; // 品名
 	private String mmSpecification;
 	private PartUnit mmStdUnit;
+	/* 快照了當下主要參考的PartAcq */
+	private boolean refPa;
+	private String refPaUid;
+	private PartAcquisitionType refPaType;
 	// 依物料基本檔輸入採購的數量和總價
 	private double qty;
 	private double value;
@@ -57,6 +62,21 @@ public abstract class PurchItemBuilder extends Bpu<PurchItemInfo> {
 
 	protected PurchItemBuilder appendMmStdUnit(PartUnit mmStdUnit) {
 		this.mmStdUnit = mmStdUnit;
+		return this;
+	}
+
+	protected PurchItemBuilder appendRefPa(boolean refPa) {
+		this.refPa = refPa;
+		return this;
+	}
+
+	protected PurchItemBuilder appendRefPaUid(String refPaUid) {
+		this.refPaUid = refPaUid;
+		return this;
+	}
+
+	protected PurchItemBuilder appendRefPaType(PartAcquisitionType refPaType) {
+		this.refPaType = refPaType;
 		return this;
 	}
 
@@ -101,6 +121,18 @@ public abstract class PurchItemBuilder extends Bpu<PurchItemInfo> {
 		return mmStdUnit;
 	}
 
+	public boolean isRefPa() {
+		return refPa;
+	}
+
+	public String getRefPaUid() {
+		return refPaUid;
+	}
+
+	public PartAcquisitionType getRefPaType() {
+		return refPaType;
+	}
+
 	public double getQty() {
 		return qty;
 	}
@@ -122,6 +154,9 @@ public abstract class PurchItemBuilder extends Bpu<PurchItemInfo> {
 		dto.setMmName(getMmName());
 		dto.setMmSpecification(getMmSpecification());
 		dto.setMmStdUnit(getMmStdUnit());
+		dto.setRefPa(isRefPa());
+		dto.setRefPaUid(getRefPaUid());
+		dto.setRefPaType(getRefPaType());
 		dto.setQty(getQty());
 		dto.setValue(getValue());
 		dto.setRemark(getRemark());

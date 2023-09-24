@@ -249,31 +249,77 @@ public class PuScn1 extends AbstractEkpInitTest {
 			log.info("  [{}][{}][{}][{}][{}][{}]", pcc.getPartCfg().getId(), pcc.getPartCfg().getRootPartPin(), pcc.getPartAcq().getPartPin(),  pcc.getPartAcq().getId(), pcc.getPartAcq().getName(), pcc.getPartAcq().getStatusName());
 		
 
-		/* XXX 2a.產生購案 */
+		/* XXX 2.產生購案 */
 		log.info("================================================================");
-		// 先取第1筆MM
+		/* 2a */
 		String[][] bizPartners = MockData.bizPartner;
 		Random random = new Random();
 		int i = random.nextInt(bizPartners.length);
-		PurchInfo p1 = puDel.buildPurch12(tt, "採購B1C1", bizPartners[i][0], bizPartners[i][1], mmB1, 20, 2000,
-				"採購MM000B共20個", mmC1, 100, 3000, "採購MM000C共100個");
-		assertNotNull("p0 should NOT be null.", p1);
-		log.info("2a.完成建立購案。 [{}][{}]", p1.getPuNo(), p1.getTitle());
+		/* 2a-1.建立購案 */
+		PurchInfo p1 = puDel.buildPurch12(tt, "採購B1C1", bizPartners[i][0], bizPartners[i][1], mmB1, paB1, 100, 10000,
+				"採購MM000B共100個", mmC1, paC1, 100, 3000, "採購MM000C共100個");
+		assertNotNull("p1 should NOT be null.", p1);
+		log.info("2a-1.完成建立購案。 [{}][{}]", p1.getPuNo(), p1.getTitle());
 		for (PurchItemInfo pi : p1.getPurchItemList()) {
-			log.info("  [{}][{}][{}][{}][{}]", pi.getMmUid(), pi.getMmMano(), pi.getMmStdUnit(), pi.getQty(),
-					pi.getValue());
+			log.info("  [{}][{}][{}][{}][{}][{}][{}]", pi.getMmUid(), pi.getMmMano(), pi.getMmStdUnit(),
+					pi.getRefPa().getId(), pi.getRefPaType().getName(), pi.getQty(), pi.getValue());
+		}
+
+		/* 2a-2.購案履約（依Purch產生InvtOrder、InvtOrderItem、MbsbStmt） */
+		InvtOrderInfo io2a = invtDel.buildIo11(tt, p1, "USER1", "Min-Hua", wbA101);
+		assertNotNull("io2a should NOT be null.", io2a);
+		log.info("2a-2.完成產生InvtOrder。 [{}][{}][{}][{}]", io2a.getIosn(), io2a.getStatus(), io2a.getIoiList().size(),
+				io2a.getMbsbStmtList().size());
+
+		/* 2a-3.InvtOrder登帳 */
+		assertTrue(invtDel.ioApv(tt, io2a));
+		io2a = io2a.reload();
+		log.info("2a-3.完成InvtOrder登帳。 [{}][{}][{}][{}]", io2a.getIosn(), io2a.getStatus(), io2a.getIoiList().size(),
+				io2a.getMbsbStmtList().size());
+		showIoRelatedInfo(io2a);
+		
+		
+		/* 2b */
+		i = random.nextInt(bizPartners.length);
+		/* 2b-1. */
+		PurchInfo p2 = puDel.buildPurch11(tt, "供料委外A2", bizPartners[i][0], bizPartners[i][1], mmA, paA2, 10, 3500, "供料委外A2共10個");
+		assertNotNull("p2 should NOT be null.", p2);
+		log.info("2b-1.完成建立購案。 [{}][{}]", p2.getPuNo(), p2.getTitle());
+		for (PurchItemInfo pi : p2.getPurchItemList()) {
+			log.info("  [{}][{}][{}][{}][{}][{}][{}]", pi.getMmUid(), pi.getMmMano(), pi.getMmStdUnit(),
+					pi.getRefPa().getId(), pi.getRefPaType().getName(), pi.getQty(), pi.getValue());
 		}
 		
-		/* 2b.購案履約（依Purch產生InvtOrder、InvtOrderItem、MbsbStmt） */
-		InvtOrderInfo io2b = invtDel.buildIo11(tt, p1, "USER1", "Min-Hua", wbA101);
-		assertNotNull("io2b should NOT be null.", io2b);
-		log.info("2b.完成產生InvtOrder。 [{}][{}][{}][{}]", io2b.getIosn(), io2b.getStatus(), io2b.getIoiList().size(),io2b.getMbsbStmtList().size());
+		/* 2b-2-1. 供料IO */
+		InvtOrderInfo io2b1 = invtDel.buildIo21(tt, "USER1", "Min-Hua", p2, paA2, pcCfg2, 10);
+		assertNotNull("io2b should NOT be null.", io2b1);
+		log.info("2b-2-1.完成產生io2b1。 [{}][{}][{}][{}]", io2b1.getIosn(), io2b1.getStatus(), io2b1.getIoiList().size(),io2b1.getMbsbStmtList().size());
 		
-		/* 2c.InvtOrder登帳 */
-		assertTrue(invtDel.ioApv(tt, io2b));
-		io2b = io2b.reload();
-		log.info("2c.完成InvtOrder登帳。 [{}][{}][{}][{}]", io2b.getIosn(), io2b.getStatus(), io2b.getIoiList().size(),io2b.getMbsbStmtList().size());
-		showIoRelatedInfo(io2b);
+		/* 2b-2-2. 購案履約-入庫IO(（依Purch產生InvtOrder、InvtOrderItem、MbsbStmt）) */
+		InvtOrderInfo io2b2 = invtDel.buildIo11(tt, p2, "USER1", "Min-Hua", wbA102);
+		assertNotNull("io2b2 should NOT be null.", io2b2);
+		log.info("2b-2-2.完成產生InvtOrder。 [{}][{}][{}][{}]", io2b2.getIosn(), io2b2.getStatus(),
+				io2b2.getIoiList().size(), io2b2.getMbsbStmtList().size());
+		
+		/* 2b-3-1. 供料登帳 */
+		assertTrue(invtDel.ioApv(tt, io2b1));
+		io2b1 = io2b1.reload();
+		log.info("2b-3-1.完成供料IO登帳。 [{}][{}][{}][{}]", io2b1.getIosn(), io2b1.getStatus(), io2b1.getIoiList().size(),
+				io2b1.getMbsbStmtList().size());
+		showIoRelatedInfo(io2b1);
+		
+		/* 2b-3-2. 入庫登帳*/
+		assertTrue(invtDel.ioApv(tt, io2b2));
+		io2b2 = io2b2.reload();
+		log.info("2b-3-2.完成供料委外入庫IO登帳。 [{}][{}][{}][{}]", io2b2.getIosn(), io2b2.getStatus(), io2b2.getIoiList().size(),
+				io2b2.getMbsbStmtList().size());
+		showIoRelatedInfo(io2b2);
+		
+		
+		
+		
+		
+		
 		
 		// showMbsRelatedInfo
 		showMbsRelatedInfo(mmList);

@@ -31,8 +31,8 @@ import ekp.invt.bpu.invtOrder.InvtOrderBuilder11;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder12;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder22;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder29;
-import ekp.invt.bpu.invtOrder.InvtOrderBuilder4OutsourcingPurch;
-import ekp.invt.bpu.invtOrder.InvtOrderItemBuilder0;
+import ekp.invt.bpu.invtOrder.InvtOrderBuilder21;
+import ekp.invt.bpu.invtOrder.InvtOrderItemBuilder21;
 import ekp.invt.bpu.invtOrder.InvtOrderItemBuilder12;
 import ekp.invt.bpu.invtOrder.InvtOrderItemBuilder22;
 import ekp.invt.bpu.invtOrder.InvtOrderItemBuilder29;
@@ -228,18 +228,20 @@ public class InvtDelegate {
 	}
 
 	public InvtOrderInfo buildIo21(TimeTraveler _tt, String _applierId, String _applierName, PurchInfo _purch, PartAcqInfo _paOutSourcing, PartCfgInfo _partCfg, double _qty) {
-		InvtOrderBuilder4OutsourcingPurch iob = bpuFacade.getBuilder(InvtBpuType.IO_21, _purch, _paOutSourcing, _partCfg);
+		InvtOrderBuilder21 iob = bpuFacade.getBuilder(InvtBpuType.IO_21, _purch, _paOutSourcing, _partCfg, _qty);
 		iob.appendApplierId(_applierId).appendApplierName(_applierName);
 		
 		
 		BizObjLoader<MaterialMasterInfo> mmLoader = BizObjLoader.MM.get();
-		for(InvtOrderItemBuilder0 ioib: iob.getInvtOrderItemBuilderList()) {
+		for(InvtOrderItemBuilder21 ioib: iob.getInvtOrderItemBuilderList()) {
 			MaterialMasterInfo mm = mmLoader.getObj(ioib.getMmUid());
 			List<MaterialBinStockBatchInfo> mbsbList = mm.getMbsbList();
 			log.debug("{}\t{}", mm.getMano(), mbsbList.size());
 			double a = ioib.getOrderQty();
 			double alcQty = 0;
 			for (MaterialBinStockBatchInfo mbsb : mbsbList) {
+				if(mbsb.getStockQty()<=0)
+					continue;
 				alcQty = Math.min(a, mbsb.getStockQty()); // 先找出「待分配數量」和「庫存數量」的較小值，作為「分配量」
 				double stmtValue = alcQty * mbsb.getStockValue() / mbsb.getStockQty();
 				ioib.addMbsbStmtBuilder(mbsb.getUid(), alcQty, stmtValue);
@@ -286,6 +288,8 @@ public class InvtDelegate {
 			double a = wom.getQty0();
 			double alcQty = 0;
 			for (MaterialBinStockBatchInfo mbsb : mbsbList) {
+				if(mbsb.getStockQty()<=0)
+					continue;
 				alcQty = Math.min(a, mbsb.getStockQty()); // 先找出「待分配數量」和「庫存數量」的較小值，作為「分配量」
 				double stmtValue = alcQty * mbsb.getStockValue() / mbsb.getStockQty();
 				ioib.addMbsbStmtBuilder(mbsb.getUid(), alcQty, stmtValue);
@@ -336,6 +340,8 @@ public class InvtDelegate {
 			double a = soi.getQty();
 			double alcQty = 0;
 			for (MaterialBinStockBatchInfo mbsb : mbsbList) {
+				if(mbsb.getStockQty()<=0)
+					continue;
 				alcQty = Math.min(a, mbsb.getStockQty()); // 先找出「待分配數量」和「庫存數量」的較小值，作為「分配量」
 				double stmtValue = alcQty * mbsb.getStockValue() / mbsb.getStockQty();
 				ioib.addMbsbStmtBuilder(mbsb.getUid(), alcQty, stmtValue);

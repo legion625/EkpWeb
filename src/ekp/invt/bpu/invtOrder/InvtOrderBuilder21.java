@@ -13,7 +13,7 @@ import ekp.invt.type.InvtOrderType;
 import ekp.invt.type.IoiTargetType;
 import legion.util.TimeTraveler;
 
-public class InvtOrderBuilder4OutsourcingPurch extends InvtOrderBuilder {
+public class InvtOrderBuilder21 extends InvtOrderBuilder {
 	/* base */
 	private PurchInfo purch;
 	private PartAcqInfo partAcq;
@@ -21,11 +21,11 @@ public class InvtOrderBuilder4OutsourcingPurch extends InvtOrderBuilder {
 	private double qty;
 
 	/* data */
-	private List<InvtOrderItemBuilder0> ioiBuilderList;
+	private List<InvtOrderItemBuilder21> ioiBuilderList;
 
 	// -------------------------------------------------------------------------------
 	@Override
-	protected InvtOrderBuilder4OutsourcingPurch appendBase() {
+	protected InvtOrderBuilder21 appendBase() {
 		// base
 		purch = (PurchInfo) args[0];
 		partAcq = (PartAcqInfo) args[1];
@@ -36,7 +36,8 @@ public class InvtOrderBuilder4OutsourcingPurch extends InvtOrderBuilder {
 		ioiBuilderList = new ArrayList<>();
 		for (PpartInfo ppart : partAcq.getPpartList()) {
 			PartAcqInfo childPa = ppart.getPart().getPa(partCfg);
-			InvtOrderItemBuilder0 ioib = new InvtOrderItemBuilder0();
+			InvtOrderItemBuilder21 ioib = new InvtOrderItemBuilder21();
+			ioib.init();
 			ioib.appendMmUid(childPa.getMmUid());
 			ioib.appendIoType(InvtOrderType.O1);
 			ioib.appendTargetType(IoiTargetType.PURCH).appendTargetUid(purch.getUid())
@@ -74,7 +75,7 @@ public class InvtOrderBuilder4OutsourcingPurch extends InvtOrderBuilder {
 	}
 
 	@Override
-	public List<InvtOrderItemBuilder0> getInvtOrderItemBuilderList() {
+	public List<InvtOrderItemBuilder21> getInvtOrderItemBuilderList() {
 		return ioiBuilderList;
 	}
 
