@@ -1,5 +1,6 @@
 package ekp.data.service.pu;
 
+import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartUnit;
 
 public class PurchItemCreateObj {
@@ -12,6 +13,10 @@ public class PurchItemCreateObj {
 	private String mmName; // 品名
 	private String mmSpecification;
 	private PartUnit mmStdUnit;
+	/* 快照了當下主要參考的PartAcq */
+	private boolean refPa;
+	private String refPaUid;
+	private PartAcquisitionType refPaType;
 	// 依物料基本檔輸入採購的數量和總價
 	private double qty;
 	private double value;
@@ -64,6 +69,32 @@ public class PurchItemCreateObj {
 
 	public void setMmStdUnit(PartUnit mmStdUnit) {
 		this.mmStdUnit = mmStdUnit;
+	}
+
+	
+	
+	public boolean isRefPa() {
+		return refPa;
+	}
+
+	public void setRefPa(boolean refPa) {
+		this.refPa = refPa;
+	}
+
+	public String getRefPaUid() {
+		return refPaUid;
+	}
+
+	public void setRefPaUid(String refPaUid) {
+		this.refPaUid = refPaUid;
+	}
+
+	public PartAcquisitionType getRefPaType() {
+		return refPaType;
+	}
+
+	public void setRefPaType(PartAcquisitionType refPaType) {
+		this.refPaType = refPaType;
 	}
 
 	public double getQty() {

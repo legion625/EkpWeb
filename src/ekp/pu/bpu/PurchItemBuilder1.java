@@ -1,7 +1,9 @@
 package ekp.pu.bpu;
 
 import ekp.data.service.invt.MaterialMasterInfo;
+import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.pu.PurchItemInfo;
+import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartUnit;
 import legion.util.TimeTraveler;
 
@@ -11,6 +13,7 @@ public class PurchItemBuilder1 extends PurchItemBuilder{
 	
 	/* data */
 	private MaterialMasterInfo mm;
+	private PartAcqInfo pa;
 	
 	// -------------------------------------------------------------------------------
 	@Override
@@ -29,6 +32,15 @@ public class PurchItemBuilder1 extends PurchItemBuilder{
 		this.mm = mm;
 		appendMmUid(mm.getUid()).appendMmMano(mm.getMano()).appendMmName(mm.getName())
 				.appendMmSpecification(mm.getSpecification()).appendMmStdUnit(mm.getStdUnit());
+		return this;
+	}
+
+	public PurchItemBuilder1 appendPa(PartAcqInfo pa) {
+		this.pa = pa;
+		if (pa != null)
+			appendRefPa(true).appendRefPaUid(pa.getUid()).appendRefPaType(pa.getType());
+		else
+			appendRefPa(false).appendRefPaUid("").appendRefPaType(PartAcquisitionType.UNDEFINED);
 		return this;
 	}
 
