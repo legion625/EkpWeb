@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.mbom.ParsInfo;
 import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.mbom.PartCfgInfo;
@@ -54,6 +55,10 @@ public class BizObjLoader<T> {
 			map.put(DUMMY_KEY, fnLoad.apply(DUMMY_KEY));
 		return map.get(DUMMY_KEY);
 	}
+	
+	// -------------------------------------------------------------------------------
+	private static InvtDataService invtDataService = DataServiceFactory.getInstance().getService(InvtDataService.class);
+	public final static Supplier<BizObjLoader<MaterialMasterInfo>> MM = () -> of(invtDataService::loadMaterialMaster);
 	
 	// -------------------------------------------------------------------------------
 	private static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
