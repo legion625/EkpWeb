@@ -11,7 +11,7 @@ import ekp.data.service.mbom.ProdCtlInfo;
 import ekp.data.service.mbom.ProdInfo;
 
 public class ProdModBuilder1 extends ProdModBuilder{
-	private Logger log =LoggerFactory.getLogger(DebugLogMark.class);
+	private Logger log =LoggerFactory.getLogger(ProdModBuilder1.class);
 	
 	/* base */
 	private ProdInfo prod;

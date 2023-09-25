@@ -60,7 +60,7 @@ public enum InvtBpuType implements BpuType {
 //	IO_0(InvtOrderBuilder0.class), //
 	IO_11(InvtOrderBuilder11.class,PurchInfo.class), // [採購入庫] io, ioi (mi,mbsbStmt ), io->TO_APV, pu->Perfed
 	IO_12(InvtOrderBuilder12.class, WorkorderInfo.class), // [工件入庫] io, ioi (mi,mbsbStmt), io -> TO_APV
-	IO_21(InvtOrderBuilder21.class, PurchInfo.class, PartAcqInfo.class, PartCfgInfo.class, Double.class), //
+	IO_21(InvtOrderBuilder21.class, PurchItemInfo.class, PartAcqInfo.class, PartCfgInfo.class, Double.class), //
 	IO_22(InvtOrderBuilder22.class,WorkorderInfo.class), // [工令領料] io, ioi (mbsbStmt ), io->TO_APV
 	IO_29(InvtOrderBuilder29.class, SalesOrderInfo.class), // [成品出庫](整個訂單一起出庫) O9(29, "成品出庫", ""),io, ioi (mbsbStmt ), io->TO_APV, soi->finishDelivered //
 	IO_$APPROVE(IoBpuApprove.class, InvtOrderInfo.class ), //
@@ -107,7 +107,7 @@ public enum InvtBpuType implements BpuType {
 		case IO_12:
 			return matchBizIo12((WorkorderInfo)_args[0]);
 		case IO_21:
-			return matchBizIo21((PurchInfo) _args[0], (PartAcqInfo)_args[1], (PartCfgInfo)_args[2], (Double) _args[3]);
+			return matchBizIo21((PurchItemInfo) _args[0], (PartAcqInfo)_args[1], (PartCfgInfo)_args[2], (Double) _args[3]);
 		case IO_22:
 			return matchBizIo22((WorkorderInfo)_args[0]);
 		case IO_29:
@@ -160,9 +160,9 @@ public enum InvtBpuType implements BpuType {
 		return true;
 	}
 	
-	private boolean matchBizIo21(PurchInfo _purch, PartAcqInfo _partAcq, PartCfgInfo _partCfg, Double _qty) {
-		if (_purch == null) {
-			log.warn("_purch null.");
+	private boolean matchBizIo21(PurchItemInfo _purchItem, PartAcqInfo _partAcq, PartCfgInfo _partCfg, Double _qty) {
+		if (_purchItem == null) {
+			log.warn("_purchItem null.");
 			return false;
 		}
 		if (_partAcq == null) {

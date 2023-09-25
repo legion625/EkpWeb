@@ -28,11 +28,14 @@ import ekp.data.service.invt.query.InvtOrderItemQueryParam;
 import ekp.data.service.invt.query.InvtOrderQueryParam;
 import ekp.data.service.invt.query.MaterialMasterQueryParam;
 import ekp.data.service.invt.query.MbsbStmtQueryParam;
+import ekp.invt.type.InvtOrderType;
+import ekp.invt.type.IoiTargetType;
 import ekp.serviceFacade.rmi.invt.MaterialBinStockRemote;
 import ekp.serviceFacade.rmi.invt.MaterialInstSrcConjCreateObjRemote;
 import ekp.serviceFacade.rmi.invt.MaterialInstSrcConjRemote;
 import legion.IntegrationService;
 import legion.util.query.QueryOperation;
+import legion.util.query.QueryOperation.CompareOp;
 import legion.util.query.QueryOperation.QueryValue;
 
 public interface InvtDataService extends IntegrationService, EkpKernelRmi {

@@ -63,6 +63,7 @@ import ekp.util.DataUtil;
 import legion.DataServiceFactory;
 import legion.util.DataFO;
 import legion.util.DateFormatUtil;
+import legion.util.NumberFormatUtil;
 import legion.util.TimeTraveler;
 
 public class PuScn1 extends AbstractEkpInitTest {
@@ -291,7 +292,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 		}
 		
 		/* 2b-2-1. 供料IO */
-		InvtOrderInfo io2b1 = invtDel.buildIo21(tt, "USER1", "Min-Hua", p2, paA2, pcCfg2, 10);
+		InvtOrderInfo io2b1 = invtDel.buildIo21(tt, "USER1", "Min-Hua", p2.getPurchItemList().get(0), paA2, pcCfg2, 10);
 		assertNotNull("io2b should NOT be null.", io2b1);
 		log.info("2b-2-1.完成產生io2b1。 [{}][{}][{}][{}]", io2b1.getIosn(), io2b1.getStatus(), io2b1.getIoiList().size(),io2b1.getMbsbStmtList().size());
 		
@@ -482,18 +483,22 @@ public class PuScn1 extends AbstractEkpInitTest {
 	private void showMbsRelatedInfo(List<MaterialMasterInfo> mmList) {
 		for (MaterialMasterInfo mm : mmList) {
 			mm = mm.reload();
-			log.debug("{}\t{}\t{}\t{}\t{}", mm.getMano(), mm.getName(), mm.getStdUnit(), mm.getSumStockQty(),
-					mm.getSumStockValue());
+			log.debug("{}\t{}\t{}\t{}\t{}", mm.getMano(), mm.getName(), mm.getStdUnit(),
+					NumberFormatUtil.getDecimalString(mm.getSumStockQty(), 2),
+					NumberFormatUtil.getDecimalString(mm.getSumStockValue(), 2));
 			List<MaterialBinStockInfo> mbsList = mm.getMbsList();
 			for (MaterialBinStockInfo mbs : mbsList) {
 				log.debug("  {}\t{}\t{}\t{}\t{}", mbs.getMano(), mbs.getWrhsLocName(), mbs.getWrhsBinName(),
-						mbs.getSumStockQty(), mbs.getSumStockValue());
+						NumberFormatUtil.getDecimalString(mbs.getSumStockQty(), 2),
+						NumberFormatUtil.getDecimalString(mbs.getSumStockValue(), 2));
 				for (MaterialBinStockBatchInfo mbsb : mbs.getMbsbList()) {
 					log.debug("    {}\t{}\t{}\t{}\t{}", mbsb.getMi().getMisn(), mbsb.getMi().getMiac(),
-							mbsb.getMi().getMiacSrcNo(), mbsb.getStockQty(), mbsb.getStockValue());
+							mbsb.getMi().getMiacSrcNo(), NumberFormatUtil.getDecimalString(mbsb.getStockQty(), 2),
+							NumberFormatUtil.getDecimalString(mbsb.getStockValue(), 2));
 					for (MbsbStmtInfo stmt : mbsb.getStmtList()) {
-						log.debug("      {}\t{}\t{}\t{}\t{}", stmt.getIoiIoType().getName(), stmt.getMbsbFlowType(), stmt.getStmtQty(),
-								stmt.getStmtValue(), stmt.getPostingStatus());
+						log.debug("      {}\t{}\t{}\t{}\t{}", stmt.getIoiIoType().getName(), stmt.getMbsbFlowType(),
+								NumberFormatUtil.getDecimalString(stmt.getStmtQty(), 2),
+								NumberFormatUtil.getDecimalString(stmt.getStmtValue(), 2), stmt.getPostingStatus());
 					}
 				}
 			}
@@ -502,17 +507,22 @@ public class PuScn1 extends AbstractEkpInitTest {
 	
 	private void showIoRelatedInfo(InvtOrderInfo io) {
 		io = io.reload();
-		log.debug("{}\t{}\t{}\t{}", io.getIosn(), io.getApplierName(),
-				DateFormatUtil.transToTime(io.getApplyTime()), DateFormatUtil.transToTime(io.getApvTime()));
-		for(InvtOrderItemInfo ioi: io.getIoiList()) {
-			log.debug("  {}\t{}\t{}\t{}\t{}",ioi.getMmUid(), ioi.getIoTypeName(), ioi.getOrderQty(), ioi.getOrderValue(), DataUtil.getStr(ioi.isMbsbStmtCreated()));
-			for(MbsbStmtInfo stmt: ioi.getMbsbStmtList()) {
+		log.debug("{}\t{}\t{}\t{}", io.getIosn(), io.getApplierName(), DateFormatUtil.transToTime(io.getApplyTime()),
+				DateFormatUtil.transToTime(io.getApvTime()));
+		for (InvtOrderItemInfo ioi : io.getIoiList()) {
+			log.debug("  {}\t{}\t{}\t{}\t{}", ioi.getMmUid(), ioi.getIoTypeName(),
+					NumberFormatUtil.getDecimalString(ioi.getOrderQty(), 2),
+					NumberFormatUtil.getDecimalString(ioi.getOrderValue(), 2),
+					DataUtil.getStr(ioi.isMbsbStmtCreated()));
+			for (MbsbStmtInfo stmt : ioi.getMbsbStmtList()) {
 				MaterialInstInfo mi = stmt.getMbsb().getMi();
-				log.debug("      {}\t{}\t{}\t{}\t{}\t{}", stmt.getMbsbFlowType(), stmt.getStmtQty(),
-						stmt.getStmtValue(), stmt.getPostingStatus(), mi.getMmUid(), mi.getUid());
+				log.debug("      {}\t{}\t{}\t{}\t{}\t{}", stmt.getMbsbFlowType(),
+						NumberFormatUtil.getDecimalString(stmt.getStmtQty(), 2),
+						NumberFormatUtil.getDecimalString(stmt.getStmtValue(), 2), stmt.getPostingStatus(),
+						mi.getMmUid(), mi.getUid());
 			}
 		}
-		
+
 	}
 	
 	private void showProdInfo(ProdInfo prod) {
@@ -646,11 +656,14 @@ public class PuScn1 extends AbstractEkpInitTest {
 		log.debug("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}", prefix, _pmp.getPartAcq().getPartPin(),
 
 				_pmp.getQty(), _pmp.getPartCfg().getName(), _pmp.getPartAcq().getId(), _pmp.getPartAcq().getName(),
-				_pmp.getPartAcq().getRefUnitCost(), _pmp.getPartAcq().getMm().getAvgStockValue(),
-				_pmp.getPartAcq().getMm().getIoiAvgOrderValue(InvtOrderType.I1),
-				_pmp.getPartAcq().getMm().getIoiAvgOrderValue(InvtOrderType.I2),
-				_pmp.getPartAcq().getMm().getIoiAvgOrderValue(InvtOrderType.O2),
-				_pmp.getPartAcq().getMm().getIoiAvgOrderValue(InvtOrderType.O9)
+			NumberFormatUtil.getDecimalString(_pmp.getPartAcq().getRefUnitCost(), 2)	, 
+			NumberFormatUtil.getDecimalString(_pmp.getPartAcq().getMm().getAvgStockValue(), 2)
+			,
+			
+			NumberFormatUtil.getDecimalString(_pmp.getPartAcq().getMm().getIoiAvgOrderValue(InvtOrderType.I1), 2)	,
+			NumberFormatUtil.getDecimalString(_pmp.getPartAcq().getMm().getIoiAvgOrderValue(InvtOrderType.I2), 2),
+			NumberFormatUtil.getDecimalString(_pmp.getPartAcq().getMm().getIoiAvgOrderValue(InvtOrderType.O2), 2),
+			NumberFormatUtil.getDecimalString(_pmp.getPartAcq().getMm().getIoiAvgOrderValue(InvtOrderType.O9), 2)
 
 		);
 		int seq = 0;

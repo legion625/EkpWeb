@@ -8,6 +8,7 @@ import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PpartInfo;
 import ekp.data.service.pu.PurchInfo;
+import ekp.data.service.pu.PurchItemInfo;
 import ekp.invt.bpu.material.MbsbStmtBuilder2;
 import ekp.invt.type.InvtOrderType;
 import ekp.invt.type.IoiTargetType;
@@ -15,7 +16,8 @@ import legion.util.TimeTraveler;
 
 public class InvtOrderBuilder21 extends InvtOrderBuilder {
 	/* base */
-	private PurchInfo purch;
+//	private PurchInfo purch;
+	private PurchItemInfo purchItem;
 	private PartAcqInfo partAcq;
 	private PartCfgInfo partCfg;
 	private double qty;
@@ -27,7 +29,7 @@ public class InvtOrderBuilder21 extends InvtOrderBuilder {
 	@Override
 	protected InvtOrderBuilder21 appendBase() {
 		// base
-		purch = (PurchInfo) args[0];
+		purchItem= (PurchItemInfo) args[0];
 		partAcq = (PartAcqInfo) args[1];
 		partCfg = (PartCfgInfo) args[2];
 		qty = (double) args[3];
@@ -40,30 +42,23 @@ public class InvtOrderBuilder21 extends InvtOrderBuilder {
 			ioib.init();
 			ioib.appendMmUid(childPa.getMmUid());
 			ioib.appendIoType(InvtOrderType.O1);
-			ioib.appendTargetType(IoiTargetType.PURCH).appendTargetUid(purch.getUid())
-					.appendTargetBizKey(purch.getPuNo());
+//			ioib.appendTargetType(IoiTargetType.PURCH).appendTargetUid(purchItem.getUid())
+			ioib.appendTargetType(IoiTargetType.PURCH_ITEM).appendTargetUid(purchItem.getUid())
+					.appendTargetBizKey(purchItem.getPurch().getPuNo());
 			ioib.appendOrderQty(qty * ppart.getPartReqQty()); // 乘上單階配賦量
 			// orderValue必須依賴從Mbsb挑完才能決定
 			ioiBuilderList.add(ioib);
 		}
 		
-//		for (PartAcqInfo _childPa : partAcq.getChildrenList(partCfg)) {
-//			InvtOrderItemBuilder0 ioib = new InvtOrderItemBuilder0();
-//			ioib.appendMmUid(_childPa.getMmUid());
-//			ioib.appendIoType(InvtOrderType.O1);
-//			ioib.appendTargetType(IoiTargetType.PURCH).appendTargetUid(purch.getUid())
-//					.appendTargetBizKey(purch.getPuNo());
-//			// orderQty和orderValue必須依賴從Mbsb挑完才能決定
-//
-//			ioiBuilderList.add(ioib);
-//		}
-
 		return this;
 	}
 
 	// -------------------------------------------------------------------------------
-	public PurchInfo getPurch() {
-		return purch;
+//	public PurchInfo getPurch() {
+//		return purch;
+//	}
+	public PurchItemInfo getPurchItem() {
+		return purchItem;
 	}
 
 	public PartAcqInfo getPartAcq() {
@@ -93,7 +88,7 @@ public class InvtOrderBuilder21 extends InvtOrderBuilder {
 		}
 
 		/**/
-		// 工令沒有狀態控制
+		// 購案沒有供料狀態控制
 
 		//
 		if (_tt != null)

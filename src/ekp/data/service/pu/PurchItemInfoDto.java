@@ -1,12 +1,23 @@
 package ekp.data.service.pu;
 
+import java.util.List;
+
+import org.zkoss.util.logging.Log;
+
 import ekp.data.BizObjLoader;
+import ekp.data.InvtDataService;
 import ekp.data.PuDataService;
+import ekp.data.service.invt.InvtOrderItemInfo;
+import ekp.data.service.invt.query.InvtOrderItemQueryParam;
 import ekp.data.service.mbom.PartAcqInfo;
+import ekp.invt.type.InvtOrderType;
+import ekp.invt.type.IoiTargetType;
 import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartUnit;
 import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
+import legion.util.query.QueryOperation;
+import legion.util.query.QueryOperation.CompareOp;
 
 public class PurchItemInfoDto extends ObjectModelInfoDto implements PurchItemInfo {
 	protected PurchItemInfoDto(String uid, long objectCreateTime, long objectUpdateTime) {
@@ -155,6 +166,23 @@ public class PurchItemInfoDto extends ObjectModelInfoDto implements PurchItemInf
 	@Override
 	public PartAcqInfo getRefPa() {
 		return paLoader.getObj(getRefPaUid());
+	}
+
+	private BizObjLoader<List<InvtOrderItemInfo>> ioType21IoiListLoader = BizObjLoader.of(() -> {
+		QueryOperation<InvtOrderItemQueryParam, InvtOrderItemInfo> param = new QueryOperation<>();
+		param.appendCondition(
+				QueryOperation.value(InvtOrderItemQueryParam.IO_TYPE_IDX, CompareOp.equal, InvtOrderType.O1.getIdx()));
+		param.appendCondition(QueryOperation.value(InvtOrderItemQueryParam.TARGET_TYPE_IDX, CompareOp.equal,
+				IoiTargetType.PURCH_ITEM.getIdx()));
+		param.appendCondition(QueryOperation.value(InvtOrderItemQueryParam.TARGET_UID, CompareOp.equal, getUid()));
+		param = DataServiceFactory.getInstance().getService(InvtDataService.class).searchInvtOrderItem(param, null);
+		return param.getQueryResult();
+	});
+
+	/** 取得所有供料供外的Ioi帳值。 */
+	@Override
+	public double getIoType21Value() {
+		return ioType21IoiListLoader.getObj().stream().mapToDouble(ioi -> ioi.getOrderValue()).sum();
 	}
 
 }

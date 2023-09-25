@@ -23,6 +23,7 @@ import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mf.WorkorderInfo;
 import ekp.data.service.mf.WorkorderMaterialInfo;
 import ekp.data.service.pu.PurchInfo;
+import ekp.data.service.pu.PurchItemInfo;
 import ekp.data.service.sd.SalesOrderInfo;
 import ekp.data.service.sd.SalesOrderItemInfo;
 import ekp.invt.bpu.InvtBpuType;
@@ -141,8 +142,6 @@ public class InvtDelegate {
 
 	// -------------------------------------------------------------------------------
 	// -----------------------------------InvtOrder-----------------------------------
-	
-	
 	public InvtOrderInfo buildIo11(TimeTraveler _tt, PurchInfo _p, String _applierId, String _applierName,
 			WrhsBinInfo _wb) {
 		InvtOrderBuilder11 iob = bpuFacade.getBuilder(InvtBpuType.IO_11, _p);
@@ -227,8 +226,8 @@ public class InvtDelegate {
 		return result;
 	}
 
-	public InvtOrderInfo buildIo21(TimeTraveler _tt, String _applierId, String _applierName, PurchInfo _purch, PartAcqInfo _paOutSourcing, PartCfgInfo _partCfg, double _qty) {
-		InvtOrderBuilder21 iob = bpuFacade.getBuilder(InvtBpuType.IO_21, _purch, _paOutSourcing, _partCfg, _qty);
+	public InvtOrderInfo buildIo21(TimeTraveler _tt, String _applierId, String _applierName, PurchItemInfo _purchItem, PartAcqInfo _paOutSourcing, PartCfgInfo _partCfg, double _qty) {
+		InvtOrderBuilder21 iob = bpuFacade.getBuilder(InvtBpuType.IO_21, _purchItem, _paOutSourcing, _partCfg, _qty);
 		iob.appendApplierId(_applierId).appendApplierName(_applierName);
 		
 		

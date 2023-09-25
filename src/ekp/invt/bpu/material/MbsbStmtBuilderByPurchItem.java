@@ -48,7 +48,10 @@ public class MbsbStmtBuilderByPurchItem extends MbsbStmtBuilder{
 		/* data */
 		appendMbsbFlowType(MbsbFlowType.IN);
 		// 假設訂購數量和金額全數入帳
-		appendStmtQty(pi.getQty()).appendStmtValue(pi.getValue());
+		appendStmtQty(pi.getQty());
+//		appendStmtQty(pi.getQty()).appendStmtValue(pi.getValue());
+		double orderValue = pi.getValue()+pi.getIoType21Value(); // 採購品項的金額+供料的金額
+		appendStmtValue(orderValue);
 		
 		return this;
 	}

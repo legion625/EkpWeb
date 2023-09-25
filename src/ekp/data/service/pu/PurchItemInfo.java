@@ -33,11 +33,10 @@ public interface PurchItemInfo extends ObjectModelInfo {
 
 	// -------------------------------------------------------------------------------
 	PurchInfo getPurch();
-	
+
 	PartAcqInfo getRefPa();
-	
-	// TODO
-//	/** 取得所有供料供外的Ioi帳值。 */
-//	double getIoType21Value();
+
+	/** 取得所有供料供外的Ioi帳值。 */
+	double getIoType21Value();
 
 }

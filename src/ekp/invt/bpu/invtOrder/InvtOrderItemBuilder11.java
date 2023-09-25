@@ -36,14 +36,19 @@ public class InvtOrderItemBuilder11 extends InvtOrderItemBuilder {
 		appendMmUid(pi.getMmUid());
 		appendIoType(InvtOrderType.I1);
 		appendTargetType(IoiTargetType.PURCH_ITEM).appendTargetUid(pi.getUid()).appendTargetBizKey(pi.getPurch().getPuNo());
-		appendOrderQty(pi.getQty()).appendOrderValue(pi.getValue());
+//		appendOrderQty(pi.getQty()).appendOrderValue(pi.getValue());
+		appendOrderQty(pi.getQty());
+		double orderValue = pi.getValue()+pi.getIoType21Value(); // 採購品項的金額+供料的金額
+		appendOrderValue(orderValue);
+		
 
 		/* data */
 		// miBuilder
 		miBuilder = BpuFacade.getInstance().getBuilder(InvtBpuType.MI_0);
 		miBuilder.appendMmUid(pi.getMmUid());
 		miBuilder.appendMiac(MaterialInstAcqChannel.PURCHASING).appendMiacSrcNo(pi.getPurch().getPuNo());
-		miBuilder.appendQty(pi.getQty()).appendValue(pi.getValue());
+//		miBuilder.appendQty(pi.getQty()).appendValue(pi.getValue());
+		miBuilder.appendQty(pi.getQty()).appendValue(orderValue);
 		Date dateEff = DateFormatUtil.getEarliestTimeInDate(new Date(System.currentTimeMillis()));
 		miBuilder.appendEffDate(dateEff.getTime());
 		LocalDate ldEff = DateFormatUtil.parseLocalDate(dateEff);
