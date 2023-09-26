@@ -266,7 +266,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 		/* 1g.建partG */
 		PartInfo partG = mbomDel.buildPartType0(tt, "G", "PART_G", PartUnit.EAC);
 		log.info("1g-1.建立partG。 [{}][{}][{}]", partG.getPin(), partG.getName(), partG.getUnitName());
-		PartAcqInfo paG = mbomDel.buildPartAcqType0(partD, tt, "PART_ACQ_G", "PART_G採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paG = mbomDel.buildPartAcqType0(partG, tt, "PART_ACQ_G", "PART_G採購", PartAcquisitionType.PURCHASING);
 		log.info("1g-2.建立paG。 [{}][{}][{}][{}]", paG.getId(), paG.getName(), paG.getTypeName(), paG.getStatusName());
 		assertTrue(mbomDel.paAssignMm(tt, paG, mmG));
 		paG = paG.reload();
@@ -351,6 +351,17 @@ public class PuScn1 extends AbstractEkpInitTest {
 		log.info("1y-3-2. 構型指定PartAcq", DataUtil.getStr(mbomDel.runPartCfgEditing(pcCfg3, tt, paA3)));
 		for(PartCfgConjInfo pcc: pcCfg3.getPccList(true))
 			log.info("  [{}][{}][{}][{}][{}][{}]", pcc.getPartCfg().getId(), pcc.getPartCfg().getRootPartPin(), pcc.getPartAcq().getPartPin(),  pcc.getPartAcq().getId(), pcc.getPartAcq().getName(), pcc.getPartAcq().getStatusName());
+		
+		/* 1y-4.建立構型 */
+		PartCfgInfo pcCfg4 = mbomDel.buildPartCfg0(partA.getUid(), partA.getPin(), tt, "PART_CFG_4", "PART_CFG_4_NAME", "PART_CFG_4_DESP");
+		log.info("1y-4-1. 建立構型Cfg4 [{}][{}][{}][{}][{}]",pcCfg4.getRootPartPin(),  pcCfg4.getId(), pcCfg4.getName(), pcCfg4.getStatusName(), pcCfg4.getDesp());
+		log.info("1y-4-2. 構型指定PartAcq", DataUtil.getStr(mbomDel.runPartCfgEditing(pcCfg4, tt, paA1, paB3, paC3, paD, paE, paF, paG)));
+		for(PartCfgConjInfo pcc: pcCfg4.getPccList(true))
+			log.info("  [{}][{}][{}][{}][{}][{}]", pcc.getPartCfg().getId(), pcc.getPartCfg().getRootPartPin(), pcc.getPartAcq().getPartPin(),  pcc.getPartAcq().getId(), pcc.getPartAcq().getName(), pcc.getPartAcq().getStatusName());
+		// 發布構型
+		boolean b1y3Cfg4 = mbomDel.runPartCfgPublish(tt, pcCfg4);
+		pcCfg4 = pcCfg4.reload();
+		log.info("1y-4-3. 發布構型Cfg4 [{}][{}][{}][{}][{}][{}]",DataUtil.getStr(b1y3Cfg4), pcCfg4.getRootPartPin(),  pcCfg4.getId(), pcCfg4.getName(), pcCfg4.getStatusName(), pcCfg4.getDesp());
 		
 
 		/* XXX 2.產生購案 */
@@ -552,9 +563,9 @@ public class PuScn1 extends AbstractEkpInitTest {
 		log.info("9b-C.完成建立產品分類C。 [{}][{}][{}][{}]", prodCtlC.getLv(),prodCtlC.getName(),DataUtil.getStr(prodCtlC.isReq()),  prodCtlC.getProd().getId());
 		
 		// 設定每個產品分類可對應的構型
-		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlA, tt, Map.entry(paA1, pcCfg1),Map.entry(paA2, pcCfg2), Map.entry(paA3, pcCfg3)));
-		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlB, tt, Map.entry(paB1, pcCfg1)));
-		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlC, tt, Map.entry(paC1, pcCfg1)));
+		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlA, tt, Map.entry(paA1, pcCfg1),Map.entry(paA1, pcCfg4),Map.entry(paA2, pcCfg2), Map.entry(paA3, pcCfg3)));
+		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlB, tt, Map.entry(paB1, pcCfg1),Map.entry(paB3, pcCfg4)));
+		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlC, tt, Map.entry(paC1, pcCfg1),Map.entry(paC3, pcCfg4)));
 		
 		showProdInfo(prodA);
 		
@@ -593,7 +604,6 @@ public class PuScn1 extends AbstractEkpInitTest {
 		showProdModInfo(prodMod2);
 		
 		
-		
 		log.debug("================================================================");
 		log.debug("================================================================");
 		/* 9c-3-1.建立模型3 */
@@ -609,6 +619,44 @@ public class PuScn1 extends AbstractEkpInitTest {
 		log.debug("----------------------------------------------------------------");
 		prodMod3 = prodMod3.reload();
 		showProdModInfo(prodMod3);
+		
+		log.debug("================================================================");
+		log.debug("================================================================");
+		/* 9c-P-1.建立模型P */
+		ProdModInfo prodModP = mbomDel.buildProdMod1(tt, prodA, "MP", "ModelP", "The P model.");
+		assertNotNull(prodModP);
+		log.info("9c-P-1.完成建立模型P");
+		/* 9c-P-2.模型P指定構型及獲取方式 */
+		ProdModItemInfo prodModItemPA = prodModP.getProdModItem(prodCtlA.getUid());
+		assertTrue(mbomDel.runProdModItemAssignPartAcqCfg(tt, prodModItemPA, pcCfg1.getUid(), paA1.getUid()));
+		ProdModItemInfo prodModItemPB = prodModP.getProdModItem(prodCtlB.getUid());
+		assertTrue(mbomDel.runProdModItemAssignPartAcqCfg(tt, prodModItemPB, pcCfg4.getUid(), paB3.getUid()));
+		log.info("9c-P-2.完成模型1指定構型");
+		/* output */
+		log.debug("----------------------------------------------------------------");
+		prodModP = prodModP.reload();
+		showProdModInfo(prodModP);
+		
+		
+		log.debug("================================================================");
+		log.debug("================================================================");
+		/* 9c-Q-1.建立模型Q */
+		ProdModInfo prodModQ = mbomDel.buildProdMod1(tt, prodA, "MQ", "ModelQ", "The Q model.");
+		assertNotNull(prodModQ);
+		log.info("9c-Q-1.完成建立模型Q");
+		/* 9c-Q-2.模型Q指定構型及獲取方式 */
+		ProdModItemInfo prodModItemQA = prodModQ.getProdModItem(prodCtlA.getUid());
+		assertTrue(mbomDel.runProdModItemAssignPartAcqCfg(tt, prodModItemQA, pcCfg1.getUid(), paA1.getUid()));
+		ProdModItemInfo prodModItemQC = prodModQ.getProdModItem(prodCtlB.getUid());
+		assertTrue(mbomDel.runProdModItemAssignPartAcqCfg(tt, prodModItemQC, pcCfg4.getUid(), paC3.getUid()));
+		log.info("9c-Q-2.完成模型Q指定構型");
+		/* output */
+		log.debug("----------------------------------------------------------------");
+		prodModQ = prodModQ.reload();
+		showProdModInfo(prodModQ);
+		
+		
+		
 		
 	}
 	
