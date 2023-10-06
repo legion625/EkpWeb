@@ -53,9 +53,9 @@ public interface MbomDataService extends IntegrationService {
 	
 	public boolean partUpdate(String _uid, String _pin, String _name, PartUnit _unit);
 	
-	public boolean partAssignMm(String _uid, String _mmUid, String _mmMano);
-
-	public boolean partRevertAssignMm(String _uid);
+//	public boolean partAssignMm(String _uid, String _mmUid, String _mmMano);
+//
+//	public boolean partRevertAssignMm(String _uid);
 
 	// -------------------------------------------------------------------------------
 	// --------------------------------PartAcquisition--------------------------------
@@ -73,6 +73,10 @@ public interface MbomDataService extends IntegrationService {
 
 	public boolean partAcqRevertStartEditing(String _uid);
 
+	public boolean partAcqAssignMm(String _uid, String _mmUid, String _mmMano);
+
+	public boolean partAcqRevertAssignMm(String _uid);
+	
 	public boolean partAcqPublish(String _uid, long _publishTime);
 
 	public boolean partAcqRevertPublish(String _uid);
@@ -80,6 +84,8 @@ public interface MbomDataService extends IntegrationService {
 	public boolean partAcqUpdateInfo(String _uid, String _id, String _name, PartAcquisitionType _type);
 	
 	public boolean partAcqUpdateRefUnitCost(String _uid, double _refUnitCost);
+	
+	
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------PartAcqRoutingStep-------------------------------
@@ -195,14 +201,12 @@ public interface MbomDataService extends IntegrationService {
 	public boolean deleteProdCtl(String _uid);
 
 	public ProdCtlInfo loadProdCtl(String _uid);
-	
-	public ProdCtlInfo loadProdCtlById(String _id);
 
 	public List<ProdCtlInfo> loadProdCtlList(String _parentUid);
 
 	public List<ProdCtlInfo> loadProdCtlListLv1(String _prodUid);
 
-	public boolean prodCtlAssignParent(String _uid, String _parentUid, String _parentId);
+	public boolean prodCtlAssignParent(String _uid, String _parentUid);
 
 	public boolean prodCtlUnassignParent(String _uid);
 
@@ -212,17 +216,19 @@ public interface MbomDataService extends IntegrationService {
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------ProdCtlPartCfgConj-------------------------------
-	public ProdCtlPartCfgConjInfo createProdCtlPartCfgConj(String _prodCtlUid, String _partCfgUid);
+	public ProdCtlPartCfgConjInfo createProdCtlPartCfgConj(String _prodCtlUid, String _partCfgUid, String _partAcqUid);
 
 	public boolean deleteProdCtlPartCfgConj(String _uid);
 
 	public ProdCtlPartCfgConjInfo loadProdCtlPartCfgConj(String _uid);
 	
-	public ProdCtlPartCfgConjInfo loadProdCtlPartCfgConj(String _prodCtlUid, String _partCfgUid);
-
+	public ProdCtlPartCfgConjInfo loadProdCtlPartCfgConj(String _prodCtlUid, String _partCfgUid, String _partAcqUid);
+	
 	public List<ProdCtlPartCfgConjInfo> loadProdCtlPartCfgConjList1(String _prodCtlUid);
 
 	public List<ProdCtlPartCfgConjInfo> loadProdCtlPartCfgConjList2(String _partCfgUid);
+	
+	public List<ProdCtlPartCfgConjInfo> loadProdCtlPartCfgConjList3(String _partAcqUid);
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------------ProdMod------------------------------------
@@ -244,12 +250,12 @@ public interface MbomDataService extends IntegrationService {
 
 	public ProdModItemInfo loadProdModItem(String _uid);
 	public ProdModItemInfo loadProdModItem(String _prodModUid, String _prodCtlUid);
-	public ProdModItemInfo loadProdModItem(String _prodModUid, String _prodCtlUid, String _partCfgUid);
+	public ProdModItemInfo loadProdModItem(String _prodModUid, String _prodCtlUid, String _partCfgUid, String _partAcqUid);
 
 	public List<ProdModItemInfo> loadProdModItemList(String _prodModUid);
 
-	public boolean prodModItemAssignPartCfg(String _uid, String _partCfgUid);
+	public boolean prodModItemAssignPartAcqCfg(String _uid, String _partCfgUid, String _partAcqUid);
 
-	public boolean prodModItemUnassignPartCfg(String _uid);
+	public boolean prodModItemUnassignPartAcqCfg(String _uid);
 
 }

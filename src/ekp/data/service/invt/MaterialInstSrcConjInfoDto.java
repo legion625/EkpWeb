@@ -1,5 +1,8 @@
 package ekp.data.service.invt;
 
+import ekp.data.BizObjLoader;
+import ekp.data.InvtDataService;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
 public class MaterialInstSrcConjInfoDto extends ObjectModelInfoDto implements MaterialInstSrcConjInfo {
@@ -47,6 +50,20 @@ public class MaterialInstSrcConjInfoDto extends ObjectModelInfoDto implements Ma
 
 	void setSrcMiValue(double srcMiValue) {
 		this.srcMiValue = srcMiValue;
+	}
+	
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<MaterialInstInfo> miLoader = BizObjLoader
+			.of(DataServiceFactory.getInstance().getService(InvtDataService.class)::loadMaterialInst);
+
+	@Override
+	public MaterialInstInfo getMi() {
+		return miLoader.getObj(getMiUid());
+	}
+
+	@Override
+	public MaterialInstInfo getSrcMi() {
+		return miLoader.getObj(getSrcMiUid());
 	}
 
 }

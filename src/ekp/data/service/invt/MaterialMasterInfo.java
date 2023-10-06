@@ -1,7 +1,9 @@
 package ekp.data.service.invt;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import ekp.invt.type.InvtOrderType;
 import ekp.mbom.type.PartUnit;
 import legion.ObjectModelInfo;
 
@@ -42,6 +44,30 @@ public interface MaterialMasterInfo extends ObjectModelInfo{
 
 	default List<MaterialBinStockInfo> getMbsList() {
 		return getMbsList(false);
+	}
+	
+	default List<MaterialBinStockBatchInfo> getMbsbList() {
+		return getMbsList().stream().flatMap(mbs -> mbs.getMbsbList().stream()).collect(Collectors.toList());
+	}
+	
+	default double getAvgStockValue() {
+		return getSumStockValue() / getSumStockQty();
+	}
+
+	List<InvtOrderItemInfo> getIoiList();
+
+	default List<InvtOrderItemInfo> getIoiList(InvtOrderType _ioType) {
+		return getIoiList().stream().filter(ioi -> ioi.getIoType() == _ioType).collect(Collectors.toList());
+	}
+	
+	default double getIoiAvgOrderValue(InvtOrderType _ioType) {
+		List<InvtOrderItemInfo> ioiList = getIoiList(_ioType);
+		double sumOrderQty= 0, sumOrderValue = 0;
+		for(InvtOrderItemInfo ioi: ioiList) {
+			sumOrderQty+=ioi.getOrderQty();
+			sumOrderValue+=ioi.getOrderValue();
+		}
+		return sumOrderValue / sumOrderQty;
 	}
 
 }

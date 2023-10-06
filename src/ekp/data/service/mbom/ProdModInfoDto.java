@@ -1,5 +1,12 @@
 package ekp.data.service.mbom;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import ekp.data.BizObjLoader;
+import ekp.data.MbomDataService;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
 public class ProdModInfoDto extends ObjectModelInfoDto implements ProdModInfo{
@@ -48,5 +55,39 @@ public class ProdModInfoDto extends ObjectModelInfoDto implements ProdModInfo{
 
 	void setDesp(String desp) {
 		this.desp = desp;
+	}
+
+	// -------------------------------------------------------------------------------
+	@Override
+	public ProdModInfo reload() {
+		return DataServiceFactory.getInstance().getService(MbomDataService.class).loadProdMod(getUid());
+	}
+
+	private BizObjLoader<ProdInfo> prodLoader = BizObjLoader.PROD.get();
+
+	@Override
+	public ProdInfo getProd() {
+		return prodLoader.getObj(getProdUid());
+	}
+
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<List<ProdModItemInfo>> prodModItemListLoader = BizObjLoader
+			.of(() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadProdModItemList(getUid()));
+
+	@Override
+	public List<ProdModItemInfo> getProdModItemList() {
+		return prodModItemListLoader.getObj();
+	}
+	
+	private BizObjLoader<Map<String, ProdModItemInfo>> prodCtlUidProdModItemMapLoader = BizObjLoader.of(() -> {
+		Map<String, ProdModItemInfo> map = new HashMap<>();
+		for (ProdModItemInfo prodModItem : getProdModItemList())
+			map.put(prodModItem.getProdCtlUid(), prodModItem);
+		return map;
+	});
+
+	@Override
+	public Map<String, ProdModItemInfo> getProdCtlUidProdModItemMap() {
+		return prodCtlUidProdModItemMapLoader.getObj();
 	}
 }

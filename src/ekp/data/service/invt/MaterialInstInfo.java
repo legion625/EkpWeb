@@ -1,5 +1,7 @@
 package ekp.data.service.invt;
 
+import java.util.List;
+
 import ekp.invt.type.MaterialInstAcqChannel;
 import ekp.invt.type.MaterialInstSrcStatus;
 import legion.ObjectModelInfo;
@@ -29,4 +31,8 @@ public interface MaterialInstInfo extends ObjectModelInfo {
 		return (getMiac() == null ? MaterialInstAcqChannel.UNDEFINED : getMiac()).getName();
 	}
 
+	MaterialMasterInfo getMm();
+	
+	List<MaterialInstSrcConjInfo> getSrcMaterialInstSrcConjList();
+	
 }

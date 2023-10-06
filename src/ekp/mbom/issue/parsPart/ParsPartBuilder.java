@@ -40,7 +40,7 @@ public abstract class ParsPartBuilder extends Bpu<PpartInfo> {
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 
 		// parsUid

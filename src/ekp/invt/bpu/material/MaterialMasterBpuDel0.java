@@ -34,7 +34,7 @@ public class MaterialMasterBpuDel0 extends MaterialMasterBpu {
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 		if(getMm()==null) {
 			v = false;

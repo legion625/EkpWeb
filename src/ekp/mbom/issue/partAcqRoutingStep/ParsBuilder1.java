@@ -25,8 +25,8 @@ public class ParsBuilder1 extends ParsBuilder{
 	
 	// -------------------------------------------------------------------------------
 	@Override
-	public ParsBuilder1 appendId(String id) {
-		return (ParsBuilder1) super.appendId(id);
+	public ParsBuilder1 appendSeq(String seq) {
+		return (ParsBuilder1) super.appendSeq(seq);
 	}
 
 	@Override
@@ -46,8 +46,8 @@ public class ParsBuilder1 extends ParsBuilder{
 	
 	// -------------------------------------------------------------------------------
 	@Override
-	public boolean verify(StringBuilder _msg) {
-		boolean v = super.verify(_msg);
+	public boolean verify(StringBuilder _msg, boolean _full) {
+		boolean v = super.verify(_msg, _full);
 
 		if (PartAcqStatus.EDITING != getPa().getStatus()) {
 			_msg.append("The status of part acquisition should not be EDITING.").append(System.lineSeparator());

@@ -56,8 +56,8 @@ public class ParsPartBuilder1 extends ParsPartBuilder {
 
 	// -------------------------------------------------------------------------------
 	@Override
-	public boolean verify(StringBuilder _msg) {
-		boolean v = super.verify(_msg);
+	public boolean verify(StringBuilder _msg, boolean _full) {
+		boolean v = super.verify(_msg, _full);
 
 		if (getPars() == null) {
 			_msg.append("pars null.").append(System.lineSeparator());

@@ -54,7 +54,7 @@ public abstract class WrhsLocBuilder extends Bpu<WrhsLocInfo> {
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 		
 		if(invtDataService.loadWrhsLocById(getId())!=null) {

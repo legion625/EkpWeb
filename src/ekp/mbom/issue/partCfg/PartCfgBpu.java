@@ -12,8 +12,8 @@ import legion.biz.Bpu;
 import legion.util.TimeTraveler;
 
 public abstract class PartCfgBpu extends Bpu<Boolean> {
-//	protected Logger log = LoggerFactory.getLogger(PartCfgBpu.class);
-	protected Logger log = LoggerFactory.getLogger(DebugLogMark.class);
+	protected Logger log = LoggerFactory.getLogger(PartCfgBpu.class);
+//	protected Logger log = LoggerFactory.getLogger(DebugLogMark.class);
 	protected static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);
 
 	/* base */
@@ -40,7 +40,7 @@ public abstract class PartCfgBpu extends Bpu<Boolean> {
 	public abstract boolean validate(StringBuilder _msg);
 
 	@Override
-	public abstract boolean verify(StringBuilder _msg);
+	public abstract boolean verify(StringBuilder _msg, boolean _full);
 
 	@Override
 	protected abstract Boolean buildProcess(TimeTraveler _tt);

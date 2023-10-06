@@ -32,7 +32,7 @@ public class WrhsBinBpuDel0 extends WrhsBinBpu {
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		return true;
 	}
 	

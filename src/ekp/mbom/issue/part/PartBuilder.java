@@ -71,7 +71,7 @@ public abstract class PartBuilder extends Bpu<PartInfo> {
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 		//
 		if (DataFO.isEmptyString(getPin())) {

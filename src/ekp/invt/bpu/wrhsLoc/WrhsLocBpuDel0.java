@@ -33,7 +33,7 @@ public class WrhsLocBpuDel0 extends WrhsLocBpu {
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 		if(getWrhsLoc()==null) {
 			v = false;

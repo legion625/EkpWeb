@@ -91,12 +91,12 @@ public class InvtFO {
 		dto.setIoUid(_remote.getIoUid());
 		dto.setMmUid(_remote.getMmUid());
 		dto.setIoType(_remote.getIoType());
+		dto.setTargetType(_remote.getTargetType());
+		dto.setTargetUid(_remote.getTargetUid());
+		dto.setTargetBizKey(_remote.getTargetBizKey());
 		dto.setOrderQty(_remote.getOrderQty());
 		dto.setOrderValue(_remote.getOrderValue());
-		dto.setMiAssigned(_remote.isMiAssigned());
-		dto.setMiUid(_remote.getMiUid());
-		dto.setWrhsBinAssigned(_remote.isWrhsBinAssigned());
-		dto.setWrhsBinUid(_remote.getWrhsBinUid());
+		dto.setMbsbStmtCreated(_remote.isMbsbStmtCreated());
 		return dto;
 	}
 	
@@ -105,6 +105,9 @@ public class InvtFO {
 		remote.setIoUid(_dto.getIoUid());
 		remote.setMmUid(_dto.getMmUid());
 		remote.setIoType(_dto.getIoType());
+		remote.setTargetType(_dto.getTargetType());
+		remote.setTargetUid(_dto.getTargetUid());
+		remote.setTargetBizKey(_dto.getTargetBizKey());
 		remote.setOrderQty(_dto.getOrderQty());
 		remote.setOrderValue(_dto.getOrderValue());
 		return remote;

@@ -28,11 +28,14 @@ import ekp.data.service.invt.query.InvtOrderItemQueryParam;
 import ekp.data.service.invt.query.InvtOrderQueryParam;
 import ekp.data.service.invt.query.MaterialMasterQueryParam;
 import ekp.data.service.invt.query.MbsbStmtQueryParam;
+import ekp.invt.type.InvtOrderType;
+import ekp.invt.type.IoiTargetType;
 import ekp.serviceFacade.rmi.invt.MaterialBinStockRemote;
 import ekp.serviceFacade.rmi.invt.MaterialInstSrcConjCreateObjRemote;
 import ekp.serviceFacade.rmi.invt.MaterialInstSrcConjRemote;
 import legion.IntegrationService;
 import legion.util.query.QueryOperation;
+import legion.util.query.QueryOperation.CompareOp;
 import legion.util.query.QueryOperation.QueryValue;
 
 public interface InvtDataService extends IntegrationService, EkpKernelRmi {
@@ -94,17 +97,13 @@ public interface InvtDataService extends IntegrationService, EkpKernelRmi {
 	public List<InvtOrderItemInfo> loadInvtOrderItemList(String _ioUid);
 	
 	public List<InvtOrderItemInfo> loadInvtOrderItemListByMm(String _mmUid);
-	public List<InvtOrderItemInfo> loadInvtOrderItemListByMi(String _miUid);
-	public List<InvtOrderItemInfo> loadInvtOrderItemListByWb(String _wrhsBinUid);
 
 	public QueryOperation<InvtOrderItemQueryParam, InvtOrderItemInfo> searchInvtOrderItem(
 			QueryOperation<InvtOrderItemQueryParam, InvtOrderItemInfo> _param,
 			Map<InvtOrderItemQueryParam, QueryValue[]> _existsDetailMap);
 	
-	public boolean invtOrderItemAssignMi(String _uid, String _miUid);
-	public boolean invtOrderItemRevertAssignMi(String _uid);
-	public boolean invtOrderItemAssignWrhsBin(String _uid, String _wrhsBinUid);
-	public boolean invtOrderItemRevertAssignWrhsBin(String _uid);
+	public boolean invtOrderItemMbsbStmtCreated(String _uid);
+	public boolean invtOrderItemRevertMbsbStmtCreated(String _uid);
 
 	// -------------------------------------------------------------------------------
 	// --------------------------------MaterialMaster---------------------------------
@@ -128,6 +127,8 @@ public interface InvtDataService extends IntegrationService, EkpKernelRmi {
 	public MaterialInstInfo loadMaterialInst(String _uid);
 
 	public MaterialInstInfo loadMaterialInstByMisn(String _misn);
+	
+	public MaterialInstInfo loadMaterialInstByMiacSrcNo(String _miacSrcNo);
 
 	public List<MaterialInstInfo> loadMaterialInstList(String _mmUid);
 	

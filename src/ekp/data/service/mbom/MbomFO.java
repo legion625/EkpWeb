@@ -31,9 +31,6 @@ public class MbomFO {
 		dto.setPin(_remote.getPin());
 		dto.setName(_remote.getName());
 		dto.setUnit(_remote.getUnit());
-		dto.setMmAssigned(_remote.isMmAssigned());
-		dto.setMmUid(_remote.getMmUid());
-		dto.setMmMano(_remote.getMmMano());
 		return dto;
 	}
 
@@ -56,6 +53,9 @@ public class MbomFO {
 		dto.setId(_remote.getId());
 		dto.setName(_remote.getName());
 		dto.setType(_remote.getType());
+		dto.setMmAssigned(_remote.isMmAssigned());
+		dto.setMmUid(_remote.getMmUid());
+		dto.setMmMano(_remote.getMmMano());
 		dto.setPublishTime(_remote.getPublishTime());
 		dto.setRefUnitCost(_remote.getRefUnitCost());
 		return dto;
@@ -223,19 +223,16 @@ public class MbomFO {
 	public static ProdCtlInfo parseProdCtl(ProdCtlRemote _remote) {
 		ProdCtlInfoDto dto = new ProdCtlInfoDto(_remote.getUid(), _remote.getObjectCreateTime(),
 				_remote.getObjectUpdateTime());
-		dto.setId(_remote.getId());
 		dto.setLv(_remote.getLv());
 		dto.setName(_remote.getName());
 		dto.setReq(_remote.isReq());
 		dto.setParentUid(_remote.getParentUid());
-		dto.setParentId(_remote.getParentId());
 		dto.setProdUid(_remote.getProdUid());
 		return dto;
 	}
 
 	public static ProdCtlCreateObjRemote parseProdCtlCreateObjRemote(ProdCtlCreateObj _dto) {
 		ProdCtlCreateObjRemote remote = new ProdCtlCreateObjRemote();
-		remote.setId(_dto.getId());
 		remote.setLv(_dto.getLv());
 		remote.setName(_dto.getName());
 		remote.setReq(_dto.isReq());
@@ -249,6 +246,7 @@ public class MbomFO {
 				_remote.getObjectUpdateTime());
 		dto.setProdCtlUid(_remote.getProdCtlUid());
 		dto.setPartCfgUid(_remote.getPartCfgUid());
+		dto.setPartAcqUid(_remote.getPartAcqUid());
 		return dto;
 	}
 
@@ -280,8 +278,9 @@ public class MbomFO {
 				_remote.getObjectUpdateTime());
 		dto.setProdModUid(_remote.getProdModUid());
 		dto.setProdCtlUid(_remote.getProdCtlUid());
-		dto.setPartCfgAssigned(_remote.isPartCfgAssigned());
+		dto.setPartAcqCfgAssigned(_remote.isPartAcqCfgAssigned());
 		dto.setPartCfgUid(_remote.getPartCfgUid());
+		dto.setPartAcqUid(_remote.getPartAcqUid());
 		return dto;
 	}
 

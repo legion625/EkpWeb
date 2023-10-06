@@ -43,7 +43,7 @@ public class PaBpuUpdateRefUnitCost extends PaBpu{
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 		if (getPa() == null) {
 			v = false;

@@ -95,6 +95,7 @@ public abstract class MaterialInstBuilder extends Bpu<MaterialInstInfo> {
 	// -------------------------------------------------------------------------------
 	private MaterialInstCreateObj packMaterialInstCreateObj() {
 		MaterialInstCreateObj dto = new MaterialInstCreateObj();
+		dto.setMmUid(getMmUid());
 		dto.setMiac(getMiac());
 		dto.setMiacSrcNo(getMiacSrcNo());
 		dto.setQty(getQty());
@@ -111,7 +112,7 @@ public abstract class MaterialInstBuilder extends Bpu<MaterialInstInfo> {
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 
 		if (DataFO.isEmptyString(getMmUid())) {

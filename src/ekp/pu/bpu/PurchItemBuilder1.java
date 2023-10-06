@@ -1,7 +1,9 @@
 package ekp.pu.bpu;
 
 import ekp.data.service.invt.MaterialMasterInfo;
+import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.pu.PurchItemInfo;
+import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartUnit;
 import legion.util.TimeTraveler;
 
@@ -11,7 +13,7 @@ public class PurchItemBuilder1 extends PurchItemBuilder{
 	
 	/* data */
 	private MaterialMasterInfo mm;
-	// none
+	private PartAcqInfo pa;
 	
 	// -------------------------------------------------------------------------------
 	@Override
@@ -30,6 +32,15 @@ public class PurchItemBuilder1 extends PurchItemBuilder{
 		this.mm = mm;
 		appendMmUid(mm.getUid()).appendMmMano(mm.getMano()).appendMmName(mm.getName())
 				.appendMmSpecification(mm.getSpecification()).appendMmStdUnit(mm.getStdUnit());
+		return this;
+	}
+
+	public PurchItemBuilder1 appendPa(PartAcqInfo pa) {
+		this.pa = pa;
+		if (pa != null)
+			appendRefPa(true).appendRefPaUid(pa.getUid()).appendRefPaType(pa.getType());
+		else
+			appendRefPa(false).appendRefPaUid("").appendRefPaType(PartAcquisitionType.UNDEFINED);
 		return this;
 	}
 
@@ -58,9 +69,12 @@ public class PurchItemBuilder1 extends PurchItemBuilder{
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 
+		if(!verifyThis(_msg,  _full))
+			v = false;
+		
 		if (getMm() == null) {
 			_msg.append("料件基本檔有誤。").append(System.lineSeparator());
 			v = false;

@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ekp.DebugLogMark;
+import ekp.data.service.invt.MaterialMasterInfo;
+import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartUnit;
 import legion.ObjectModelInfo;
 
@@ -19,11 +21,11 @@ public interface PartInfo extends ObjectModelInfo {
 
 	PartUnit getUnit();
 
-	boolean isMmAssigned();
-
-	String getMmUid();
-
-	String getMmMano();
+//	boolean isMmAssigned();
+//
+//	String getMmUid();
+//
+//	String getMmMano();
 
 	// -------------------------------------------------------------------------------
 	default String getUnitName() {
@@ -35,6 +37,10 @@ public interface PartInfo extends ObjectModelInfo {
 	// -------------------------------------------------------------------------------
 	List<PartAcqInfo> getPaList(boolean _reload);
 	
+	default List<PartAcqInfo> getPaList(PartAcquisitionType _paType) {
+		return getPaList(false).stream().filter(pa -> pa.getType() == _paType).collect(Collectors.toList());
+	}
+	
 	default List<PartCfgInfo> getReferencedPartCfgList(boolean _reload){
 		return getPaList(_reload).stream().flatMap(pa->pa.getPartCfgList(_reload).stream()).distinct().collect(Collectors.toList());
 	}
@@ -42,6 +48,15 @@ public interface PartInfo extends ObjectModelInfo {
 	List<PpartInfo> getPpartList(boolean _reload); // 被引用到的地方
 	
 	List<PartCfgInfo> getRootPartCfgList(boolean _reload);
+	
+	default PartAcqInfo getPa(String _partCfgUid) {
+		return getPa(_partCfgUid, false);
+	} 
+
+	default PartAcqInfo getPa(String _partCfgUid, boolean _reload) {
+		return getPaList(_reload).stream().filter(pa -> pa.getPartCfgConj(_partCfgUid, _reload) != null).findAny()
+				.orElse(null);
+	}
 	
 	default PartAcqInfo getPa(PartCfgInfo _partCfg) {
 		return getPa(_partCfg, false);
@@ -54,10 +69,7 @@ public interface PartInfo extends ObjectModelInfo {
 	
 	// 指定構型的下階ppart
 	default List<PpartInfo> getPpartChildren(PartCfgInfo _partCfg){
-//		getPartCfgList(false)
 		Logger log = LoggerFactory.getLogger(DebugLogMark.class);
-//		PartAcqInfo thisPa = getPaList(false).stream().filter(pa -> pa.getPartCfgList(false).contains(_partCfg)).findAny()
-//				.orElse(null);
 		PartAcqInfo thisPa  = getPa(_partCfg);
 		if(thisPa==null)
 			return new ArrayList<>();
@@ -67,4 +79,7 @@ public interface PartInfo extends ObjectModelInfo {
 				.collect(Collectors.toList());
 		return ppartList;
 	}
+	
+//	// -------------------------------------------------------------------------------
+//	MaterialMasterInfo getMm();
 }

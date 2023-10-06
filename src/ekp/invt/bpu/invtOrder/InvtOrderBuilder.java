@@ -4,6 +4,7 @@ import java.util.List;
 
 import ekp.data.InvtDataService;
 import ekp.data.PuDataService;
+import ekp.data.SdDataService;
 import ekp.data.service.invt.InvtOrderCreateObj;
 import ekp.data.service.invt.InvtOrderInfo;
 import ekp.data.service.invt.InvtOrderItemInfo;
@@ -16,6 +17,7 @@ import legion.util.TimeTraveler;
 public abstract class InvtOrderBuilder extends Bpu<InvtOrderInfo> {
 	private static InvtDataService invtDataService = DataServiceFactory.getInstance().getService(InvtDataService.class);
 	protected static PuDataService puDataService =  DataServiceFactory.getInstance().getService(PuDataService.class);
+	protected static SdDataService sdDataService = DataServiceFactory.getInstance().getService(SdDataService.class);
 
 	/* base */
 	private String applierId;
@@ -85,7 +87,7 @@ public abstract class InvtOrderBuilder extends Bpu<InvtOrderInfo> {
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 		
 		if(DataFO.isEmptyString(getApplierId())) {

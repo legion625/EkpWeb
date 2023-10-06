@@ -1,7 +1,12 @@
 package ekp.data.service.invt;
 
+import java.util.List;
+
+import ekp.data.BizObjLoader;
+import ekp.data.InvtDataService;
 import ekp.invt.type.MaterialInstAcqChannel;
 import ekp.invt.type.MaterialInstSrcStatus;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
 
 public class MaterialInstInfoDto extends ObjectModelInfoDto implements MaterialInstInfo{
@@ -85,6 +90,24 @@ public class MaterialInstInfoDto extends ObjectModelInfoDto implements MaterialI
 	}
 	 void setSrcStatus(MaterialInstSrcStatus srcStatus) {
 		this.srcStatus = srcStatus;
+	}
+	 
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<MaterialMasterInfo> mmLoader = BizObjLoader.of(
+			() -> DataServiceFactory.getInstance().getService(InvtDataService.class).loadMaterialMaster(getMmUid()));
+
+	@Override
+	public MaterialMasterInfo getMm() {
+		return mmLoader.getObj();
+	}
+	
+	private BizObjLoader<List<MaterialInstSrcConjInfo>> srcMaterialInstSrcConjListLoader = BizObjLoader
+			.of(() -> DataServiceFactory.getInstance().getService(InvtDataService.class)
+					.loadMaterialInstSrcConjList(getUid()));
+	
+	@Override
+	public List<MaterialInstSrcConjInfo> getSrcMaterialInstSrcConjList(){
+		return srcMaterialInstSrcConjListLoader.getObj();
 	}
 	
 	

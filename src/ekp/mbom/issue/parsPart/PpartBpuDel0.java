@@ -32,7 +32,7 @@ public class PpartBpuDel0 extends PpartBpu {
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 		if (getPpart() == null) {
 			v = false;

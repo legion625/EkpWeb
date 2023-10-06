@@ -77,7 +77,7 @@ public class ProdBpuEditCtl extends ProdBpu {
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 
 		if (getProd() == null) {
@@ -100,10 +100,9 @@ public class ProdBpuEditCtl extends ProdBpu {
 			}
 
 			//
-//			if (!(pcChild.getLv() > pcParent.getLv())) {
 			if (!(pcChild.getLv() == pcParent.getLv() + 1)) {
-				_msg.append("The lv of child [" + pcChild.getId() + "," + pcChild.getLv()
-						+ "] should be greater than the lv of parent [" + pcParent.getId() + "," + pcParent.getLv()
+				_msg.append("The lv of child [" + pcChild.getLv() + "," + pcChild.getName()
+						+ "] should be greater than the lv of parent [" + pcParent.getLv() + "," + pcParent.getName()
 						+ "].").append(System.lineSeparator());
 				v = false;
 			}
@@ -134,19 +133,18 @@ public class ProdBpuEditCtl extends ProdBpu {
 		for (Entry<String, String> e : prodCtlParentUidMap.entrySet()) {
 			ProdCtlInfo pcChild = getProdCtlMap().get(e.getKey());
 			String origParentUid = pcChild.getParentUid();
-			String origParentId = pcChild.getParentId();
 			ProdCtlInfo pcParent = getProdCtlMap().get(e.getValue());
 
-			if (!mbomDataService.prodCtlAssignParent(pcChild.getUid(), pcParent.getUid(), pcParent.getId())) {
+			if (!mbomDataService.prodCtlAssignParent(pcChild.getUid(), pcParent.getUid())) {
 				tt.travel();
-				log.error("mbomDataSerivce.prodCtlAssignParent return false. [{}][{}][{}]", pcChild.getUid(),
-						pcParent.getUid(), pcParent.getId());
+				log.error("mbomDataSerivce.prodCtlAssignParent return false. [{}][{}][{}][{}]", pcChild.getUid(),pcChild.getName(),
+						pcParent.getUid(), pcParent.getName());
 				return false;
 			}
 			tt.addSite("revert prodCtlAssignParent",
-					() -> mbomDataService.prodCtlAssignParent(pcChild.getUid(), origParentUid, origParentId));
-			log.info("mbomDataService.prodCtlAssignParent [{}][{}][{}]", pcChild.getUid(), pcParent.getUid(),
-					pcParent.getId());
+					() -> mbomDataService.prodCtlAssignParent(pcChild.getUid(), origParentUid));
+			log.info("mbomDataService.prodCtlAssignParent [{}][{}][{}][{}]",pcChild.getUid(),pcChild.getName(),
+					pcParent.getUid(), pcParent.getName());
 		}
 
 		//

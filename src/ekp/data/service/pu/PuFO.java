@@ -41,6 +41,9 @@ public class PuFO {
 		dto.setMmName(_remote.getMmName());
 		dto.setMmSpecification(_remote.getMmSpecification());
 		dto.setMmStdUnit(_remote.getMmStdUnit());
+		dto.setRefPa(_remote.isRefPa());
+		dto.setRefPaUid(_remote.getRefPaUid());
+		dto.setRefPaType(_remote.getRefPaType());
 		dto.setQty(_remote.getQty());
 		dto.setValue(_remote.getValue());
 		dto.setRemark(_remote.getRemark());
@@ -55,6 +58,9 @@ public class PuFO {
 		remote.setMmName(_dto.getMmName());
 		remote.setMmSpecification(_dto.getMmSpecification());
 		remote.setMmStdUnit(_dto.getMmStdUnit());
+		remote.setRefPa(_dto.isRefPa());
+		remote.setRefPaUid(_dto.getRefPaUid());
+		remote.setRefPaType(_dto.getRefPaType());
 		remote.setQty(_dto.getQty());
 		remote.setValue(_dto.getValue());
 		remote.setRemark(_dto.getRemark());

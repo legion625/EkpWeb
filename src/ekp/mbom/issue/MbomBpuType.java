@@ -15,6 +15,7 @@ import ekp.data.service.mbom.PpartInfo;
 import ekp.data.service.mbom.PprocInfo;
 import ekp.data.service.mbom.ProdCtlInfo;
 import ekp.data.service.mbom.ProdInfo;
+import ekp.data.service.mbom.ProdModItemInfo;
 import ekp.mbom.issue.parsPart.ParsPartBuilder0;
 import ekp.mbom.issue.parsPart.ParsPartBuilder1;
 import ekp.mbom.issue.parsPart.PpartBpuDel0;
@@ -27,6 +28,7 @@ import ekp.mbom.issue.partAcq.PaBpuDel0;
 import ekp.mbom.issue.partAcq.PaBpuPublish;
 import ekp.mbom.issue.partAcq.PaBpuUpdateRefUnitCost;
 import ekp.mbom.issue.partAcq.PartAcqBuilder0;
+import ekp.mbom.issue.partAcq.PaBpuAsignMm;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBpuDel0;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBuilder1;
 import ekp.mbom.issue.partCfg.PartCfgBpuEditing;
@@ -35,6 +37,8 @@ import ekp.mbom.issue.prod.ProdBuilder0;
 import ekp.mbom.issue.prod.ProdBpuEditCtl;
 import ekp.mbom.issue.prodCtl.ProdCtlBpuPartCfgConj;
 import ekp.mbom.issue.prodCtl.ProdCtlBuilder0;
+import ekp.mbom.issue.prodMod.ProdModBuilder1;
+import ekp.mbom.issue.prodMod.ProdModItemBpuAssignPartAcqCfg;
 import ekp.mbom.issue.partCfg.PartCfgBuilder0;
 import ekp.mbom.type.PartAcqStatus;
 import ekp.mbom.type.PartCfgStatus;
@@ -46,11 +50,13 @@ public enum MbomBpuType implements BpuType {
 	PART_$DEL0(PartBpuDel0.class, PartInfo.class), //
 	PART_$PC_ASSIGN_PA(PartBpuPcAssignPa.class, PartInfo.class, PartCfgInfo.class), //
 	PART_$UPDATE(PartBpuUpdate.class, PartInfo.class), //
+//	PART_$ASSIGN_MM(PartBpuAsignMm.class, PartInfo.class), //
 	/* pa */
 	PART_ACQ_0(PartAcqBuilder0.class), //
 	PART_ACQ_$DEL0(PaBpuDel0.class, PartAcqInfo.class), //
 	PART_ACQ_$PUBLISH(PaBpuPublish.class, PartAcqInfo.class), //
 	PART_ACQ_$UPDATE_REF_UNIT_COST(PaBpuUpdateRefUnitCost.class, PartAcqInfo.class), //
+	PART_ACQ_$ASSIGN_MM(PaBpuAsignMm.class, PartAcqInfo.class), //
 	
 	/* pars */
 	PARS_1(ParsBuilder1.class, PartAcqInfo.class), //
@@ -67,11 +73,16 @@ public enum MbomBpuType implements BpuType {
 	PART_CFG_0(PartCfgBuilder0.class), //
 	PART_CFG_$EDITING(PartCfgBpuEditing.class, PartCfgInfo.class), //
 	PART_CFG_$PUBLISH(PartCfgBpuPublish.class, PartCfgInfo.class), //
-	/**/
+	
+	/* Prod, ProdCtl*/
 	PROD_0(ProdBuilder0.class), //
 	PROD_$EDIT_CTL(ProdBpuEditCtl.class, ProdInfo.class), //
 	PROD_CTL_0(ProdCtlBuilder0.class), //
 	PROD_CTL_$PART_CFG_CONJ(ProdCtlBpuPartCfgConj.class, ProdCtlInfo.class), //
+	
+	/* ProdMod, ProdModItem*/
+	PROD_MOD_1(ProdModBuilder1.class,ProdInfo.class), //
+	PROD_MOD_ITEM_$ASSIGN_PART_ACQ_CFG(ProdModItemBpuAssignPartAcqCfg.class, ProdModItemInfo.class), //
 
 	;
 
@@ -103,10 +114,10 @@ public enum MbomBpuType implements BpuType {
 		case PART_$DEL0:
 			return matchBizPartDel0((PartInfo) _args[0]);
 		case PART_$PC_ASSIGN_PA:
-//			return matchBizPartPcAssignPa((PartInfo) _args[0], (PartCfgInfo) _args[1]);
 			return true;
 		case PART_$UPDATE:
 			return true;
+		
 		/* part acq */
 		case PART_ACQ_0:
 			return true;
@@ -116,6 +127,8 @@ public enum MbomBpuType implements BpuType {
 			return matchBizPaPublish((PartAcqInfo) _args[0]);
 		case PART_ACQ_$UPDATE_REF_UNIT_COST:
 			return true;
+		case PART_ACQ_$ASSIGN_MM:
+			return matchBizPaAssignMm((PartAcqInfo) _args[0]);
 		/* pars */
 		case PARS_1:
 			return matchBizPars1((PartAcqInfo) _args[0]);
@@ -147,6 +160,12 @@ public enum MbomBpuType implements BpuType {
 			return true;
 		case PROD_CTL_$PART_CFG_CONJ:
 			return matchBizProdCtlPartCfgConj((ProdCtlInfo) _args[0]);
+		/* prod mod */
+		case PROD_MOD_1:
+			return true;
+		/* prod mod item */
+		case PROD_MOD_ITEM_$ASSIGN_PART_ACQ_CFG:
+			return matchBizProdModItemAssignPartAcqCfg((ProdModItemInfo) _args[0]);
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + this);
 		}
@@ -184,24 +203,7 @@ public enum MbomBpuType implements BpuType {
 		return true;
 	}
 
-//	private boolean matchBizPartPcAssignPa(PartInfo _p, PartCfgInfo _pc) {
-//		if (_p == null) {
-//			log.warn("_p null.");
-//			return false;
-//		}
-//		if (_pc == null) {
-//			log.warn("_pc null.");
-//			return false;
-//		}
-//		
-//		if(_pc.getRootPart().equals(_p)) {
-//			log.info("The root part of configuration pc null.");
-//			return false;
-//		}
-//		
-//		return true;
-//	}
-
+	
 	// -------------------------------------------------------------------------------
 	// ------------------------------------partAcq------------------------------------
 	// TODO
@@ -241,6 +243,21 @@ public enum MbomBpuType implements BpuType {
 		if (PartAcqStatus.EDITING != _pa.getStatus()) {
 			log.trace("PartAcqStatus should be EDITING. [{}][{}]", _pa.getUid(), _pa.getStatus());
 			return false;
+		}
+
+		return true;
+	}
+	
+	private boolean matchBizPaAssignMm(PartAcqInfo _pa) {
+		if (_pa == null) {
+			log.warn("_pa null.");
+			return false;
+		} else {
+			if (_pa.isMmAssigned()) {
+				log.debug("PartAcq should NOT have assigned mm. [{}][{}][{}]", _pa.getUid(), _pa.getPartPin(),
+						_pa.getId());
+				return false;
+			}
 		}
 
 		return true;
@@ -365,6 +382,22 @@ public enum MbomBpuType implements BpuType {
 	private boolean matchBizProdCtlPartCfgConj(ProdCtlInfo _prodCtl) {
 		if (_prodCtl == null) {
 			log.warn("_prodCtl null");
+			return false;
+		}
+
+		return true;
+	}
+
+	// -------------------------------------------------------------------------------
+	// ----------------------------------ProdModItem----------------------------------
+	private boolean matchBizProdModItemAssignPartAcqCfg(ProdModItemInfo _prodModItem) {
+		if (_prodModItem == null) {
+			log.warn("_prodModItem null");
+			return false;
+		}
+
+		if (_prodModItem.isPartAcqCfgAssigned()) {
+			log.warn("partCfg / partAcq has benn assigned.");
 			return false;
 		}
 

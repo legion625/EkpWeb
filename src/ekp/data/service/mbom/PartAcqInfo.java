@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ekp.DebugLogMark;
+import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.mbom.type.PartAcqStatus;
 import ekp.mbom.type.PartAcquisitionType;
 
@@ -27,9 +28,17 @@ public interface PartAcqInfo extends ObjectModelInfo {
 
 	PartAcquisitionType getType();
 	
+	boolean isMmAssigned();
+
+	String getMmUid();
+
+	String getMmMano();
+	
 	long getPublishTime();
 	
 	double getRefUnitCost();
+	
+	
 	
 	// -------------------------------------------------------------------------------
 	default String getStatusName() {
@@ -65,9 +74,13 @@ public interface PartAcqInfo extends ObjectModelInfo {
 	default List<PpartInfo> getPpartList(){
 		return getParsList().stream().flatMap(pars -> pars.getPpartList().stream()).collect(Collectors.toList());
 	}
+	
 
 	default List<PartAcqInfo> getChildrenList(PartCfgInfo _partCfg) {
-		return getPpartList().stream().map(ppart -> ppart.getPart().getPa(_partCfg)).filter(ppart -> ppart != null)
+		return getPpartList().stream().map(ppart -> ppart.getPart().getPa(_partCfg)).filter(childPa -> childPa != null)
 				.collect(Collectors.toList());
 	}
+	
+	// -------------------------------------------------------------------------------
+	MaterialMasterInfo getMm();
 }

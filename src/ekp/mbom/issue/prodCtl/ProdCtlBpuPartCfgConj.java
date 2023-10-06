@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ekp.data.MbomDataService;
+import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.ProdCtlInfo;
 import ekp.data.service.mbom.ProdCtlPartCfgConjInfo;
@@ -23,7 +24,7 @@ public class ProdCtlBpuPartCfgConj extends ProdCtlBpu {
 	private ProdCtlInfo prodCtl;
 
 	/* data */
-	private Map<String, PartCfgInfo> partCfgMap;
+	private Map<String, Object[]> partAcqCfgMap; // key: partAcqUid, value, PartAcqInfo, PartCfgInfo
 
 	// -------------------------------------------------------------------------------
 	@Override
@@ -33,24 +34,25 @@ public class ProdCtlBpuPartCfgConj extends ProdCtlBpu {
 		appendProdCtl(prodCtl);
 		
 		/* data */
-		partCfgMap = new HashMap<>();
+		partAcqCfgMap = new HashMap<>();
 		
 		return this;
 	}
 
 	// -------------------------------------------------------------------------------
 	// -----------------------------------appender------------------------------------
-	public ProdCtlBpuPartCfgConj appendPartCfg(PartCfgInfo _partCfg) {
-		if(_partCfg!=null)
-			partCfgMap.put(_partCfg.getUid(), _partCfg);
-		else
-			log.warn("_partCfg null.");
+	public ProdCtlBpuPartCfgConj appendPartAcqCfg(PartAcqInfo _partAcq, PartCfgInfo _partCfg) {
+		if (_partCfg == null || _partAcq == null) {
+			log.warn("_partCfg null or _partAcq null.");
+		} else {
+			partAcqCfgMap.put(_partAcq.getUid(), new Object[] { _partAcq, _partCfg });
+		}
 		return this;
 	}
 
-	public ProdCtlBpuPartCfgConj removePartCfg(PartCfgInfo _partCfg) {
-		if (_partCfg != null)
-			partCfgMap.remove(_partCfg.getUid());
+	public ProdCtlBpuPartCfgConj removePartAcqCfg(PartAcqInfo _partAcq) {
+		if (_partAcq != null)
+			partAcqCfgMap.remove(_partAcq.getUid());
 		else
 			log.warn("_partAcq null.");
 		return this;
@@ -58,13 +60,13 @@ public class ProdCtlBpuPartCfgConj extends ProdCtlBpu {
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------------getter-------------------------------------
-	private Map<String, PartCfgInfo> getPartCfgMap() {
-		return partCfgMap;
+	private Map<String, Object[]> getPartAcqCfgMap() {
+		return partAcqCfgMap;
 	}
-	
-	public List<PartCfgInfo> getPartCfgList(){
-		return new ArrayList<>(getPartCfgMap().values());
-	}
+
+//	public List<PartCfgInfo> getPartCfgList(){
+//		return new ArrayList<>(getPartCfgMap().values());
+//	}
 
 	// -------------------------------------------------------------------------------
 	@Override
@@ -73,7 +75,7 @@ public class ProdCtlBpuPartCfgConj extends ProdCtlBpu {
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 		
 		/* ProdCtl */
@@ -83,17 +85,21 @@ public class ProdCtlBpuPartCfgConj extends ProdCtlBpu {
 		}
 		
 		/* PartCfg */
-		List<PartCfgInfo> partCfgList = getPartCfgList();
-		if (partCfgList == null || partCfgList.size() <= 0) {
-			_msg.append("partCfgList should not be empty.").append(System.lineSeparator());
+		Map<String, Object[]> map = getPartAcqCfgMap();
+		if (map == null || map.size() <= 0) {
+			_msg.append("partAcqCfgMap should not be empty.").append(System.lineSeparator());
 			v = false;
 		} else {
-			for (PartCfgInfo partCfg : partCfgList) {
-				if (mbomDataService.loadProdCtlPartCfgConj(getProdCtl().getUid(), partCfg.getUid()) != null) {
+			for (String key : map.keySet()) {
+				Object[] value = map.get(key);
+				PartAcqInfo pa = (PartAcqInfo) value[0];
+				PartCfgInfo pc = (PartCfgInfo) value[1];
+				if (mbomDataService.loadProdCtlPartCfgConj(getProdCtl().getUid(), pc.getUid(), pa.getUid()) != null) {
 					_msg.append("Some conjunctions exist.").append(System.lineSeparator());
 					v = false;
 				}
 			}
+
 		}
 		
 		return v;
@@ -104,10 +110,15 @@ public class ProdCtlBpuPartCfgConj extends ProdCtlBpu {
 		TimeTraveler tt = new TimeTraveler();
 		
 		// createProdCtlPartCfgConj
-		List<PartCfgInfo> partCfgList = getPartCfgList();
-		for (PartCfgInfo partCfg : partCfgList) {
+//		List<PartCfgInfo> partCfgList = getPartCfgList();
+		Map<String, Object[]> map = getPartAcqCfgMap();
+//		for (PartCfgInfo partCfg : partCfgList) {
+		for (String key : map.keySet()) {
+			Object[] value = map.get(key);
+			PartAcqInfo pa = (PartAcqInfo) value[0];
+			PartCfgInfo pc = (PartCfgInfo) value[1];
 			ProdCtlPartCfgConjInfo pcpcc = mbomDataService.createProdCtlPartCfgConj(getProdCtl().getUid(),
-					partCfg.getUid());
+					pc.getUid(), pa.getUid());
 			if (pcpcc == null) {
 				tt.travel();
 				log.error("mbomDataSerivce.createProdCtlPartCfgConj return null.");
@@ -115,8 +126,8 @@ public class ProdCtlBpuPartCfgConj extends ProdCtlBpu {
 			}
 			tt.addSite("revert createProdCtlPartCfgConj",
 					() -> mbomDataService.deleteProdCtlPartCfgConj(pcpcc.getUid()));
-			log.info("mbomDataService.createProdCtlPartCfgConj [{}][{}][{}]", pcpcc.getUid(), pcpcc.getProdCtlUid(),
-					pcpcc.getPartCfgUid());
+			log.info("mbomDataService.createProdCtlPartCfgConj [{}][{}][{}][{}]", pcpcc.getUid(), pcpcc.getProdCtlUid(),
+					pcpcc.getPartCfgUid(), pcpcc.getPartAcqUid());
 		}
 		
 		//

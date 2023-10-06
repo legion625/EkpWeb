@@ -3,7 +3,9 @@ package ekp.data.service.mbom;
 import java.util.List;
 
 import ekp.data.BizObjLoader;
+import ekp.data.InvtDataService;
 import ekp.data.MbomDataService;
+import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.mbom.type.PartUnit;
 import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
@@ -18,11 +20,6 @@ public class PartInfoDto extends ObjectModelInfoDto implements PartInfo {
 	private String pin;
 	private String name;
 	private PartUnit unit;
-
-	// mm
-	private boolean mmAssigned;
-	private String mmUid;
-	private String mmMano;
 
 	// -------------------------------------------------------------------------------
 	// ---------------------------------getter&setter---------------------------------
@@ -51,33 +48,6 @@ public class PartInfoDto extends ObjectModelInfoDto implements PartInfo {
 
 	void setUnit(PartUnit unit) {
 		this.unit = unit;
-	}
-
-	@Override
-	public boolean isMmAssigned() {
-		return mmAssigned;
-	}
-
-	void setMmAssigned(boolean mmAssigned) {
-		this.mmAssigned = mmAssigned;
-	}
-
-	@Override
-	public String getMmUid() {
-		return mmUid;
-	}
-
-	void setMmUid(String mmUid) {
-		this.mmUid = mmUid;
-	}
-
-	@Override
-	public String getMmMano() {
-		return mmMano;
-	}
-
-	void setMmMano(String mmMano) {
-		this.mmMano = mmMano;
 	}
 
 	// -------------------------------------------------------------------------------
@@ -110,4 +80,14 @@ public class PartInfoDto extends ObjectModelInfoDto implements PartInfo {
 	public List<PartCfgInfo> getRootPartCfgList(boolean _reload) {
 		return partCfgListLoader.getObj(_reload);
 	}
+	
+//	// -------------------------------------------------------------------------------
+//	private BizObjLoader<MaterialMasterInfo> mmLoader = BizObjLoader.of(() -> isMmAssigned() ?
+//
+//			DataServiceFactory.getInstance().getService(InvtDataService.class).loadMaterialMaster(getMmUid()) : null);
+//
+//	@Override
+//	public MaterialMasterInfo getMm() {
+//		return mmLoader.getObj();
+//	}
 }

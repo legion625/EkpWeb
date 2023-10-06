@@ -14,26 +14,34 @@ import ekp.TestLogMark;
 import ekp.data.service.mbom.PpartInfo;
 import ekp.data.service.mbom.PprocInfo;
 import ekp.data.MbomDataService;
+import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.mbom.ParsInfo;
 import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.data.service.mbom.ProdCtlInfo;
 import ekp.data.service.mbom.ProdInfo;
+import ekp.data.service.mbom.ProdModInfo;
+import ekp.data.service.mbom.ProdModItemInfo;
 import ekp.mbom.issue.MbomBpuType;
 import ekp.mbom.issue.parsPart.ParsPartBuilder0;
 import ekp.mbom.issue.parsPart.ParsPartBuilder1;
 import ekp.mbom.issue.parsProc.ParsProcBuilder0;
 import ekp.mbom.issue.part.PartBuilder0;
 import ekp.mbom.issue.partAcq.PaBpuPublish;
+import ekp.mbom.issue.partAcq.PaBpuUpdateRefUnitCost;
 import ekp.mbom.issue.partAcq.PartAcqBuilder0;
+import ekp.mbom.issue.partAcq.PaBpuAsignMm;
 import ekp.mbom.issue.partAcqRoutingStep.ParsBuilder1;
 import ekp.mbom.issue.partCfg.PartCfgBuilder0;
 import ekp.mbom.issue.partCfg.PartCfgBpuEditing;
+import ekp.mbom.issue.partCfg.PartCfgBpuPublish;
 import ekp.mbom.issue.prod.ProdBuilder0;
 import ekp.mbom.issue.prod.ProdBpuEditCtl;
 import ekp.mbom.issue.prodCtl.ProdCtlBpuPartCfgConj;
 import ekp.mbom.issue.prodCtl.ProdCtlBuilder0;
+import ekp.mbom.issue.prodMod.ProdModBuilder1;
+import ekp.mbom.issue.prodMod.ProdModItemBpuAssignPartAcqCfg;
 import ekp.mbom.type.PartAcqStatus;
 import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartCfgStatus;
@@ -132,6 +140,29 @@ public class MbomBuilderDelegate {
 		return buildPartAcqType0(_p, _tt, "TEST_ACQ_ID_3", "TEST_ACQ_NAME_3", PartAcquisitionType.SELF_PRODUCING);
 	}
 	
+	public boolean paAssignMm(TimeTraveler _tt, PartAcqInfo _pa, MaterialMasterInfo _mm) {
+		PaBpuAsignMm bpu = bpuFacade.getBuilder(MbomBpuType.PART_ACQ_$ASSIGN_MM, _pa);
+		bpu.appendMm(_mm);
+
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(bpu.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(bpu.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		Boolean result = bpu.build(msgBuild, _tt);
+		assertTrue(result);
+
+		// check
+		// TODO
+
+		return result;
+	}
+	
 	public boolean paPublish(PartAcqInfo _pa, TimeTraveler _tt) {
 		PaBpuPublish b = bpuFacade.getBuilder(MbomBpuType.PART_ACQ_$PUBLISH, _pa);
 		// validate
@@ -168,12 +199,36 @@ public class MbomBuilderDelegate {
 
 		return;
 	}
+	
+	public boolean runPaUpdateRefUnitCost(TimeTraveler _tt, PartAcqInfo _pa, double _refUnitCost) {
+		PaBpuUpdateRefUnitCost b = bpuFacade.getBuilder(MbomBpuType.PART_ACQ_$UPDATE_REF_UNIT_COST, _pa);
+		b.appendRefUnitCost(_refUnitCost);
+		
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(b.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(b.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		boolean result = b.build(msgBuild, _tt);
+		assertTrue(result);
+
+		// check
+		PartAcqInfo pa = _pa.reload();
+		assertEquals(_refUnitCost, pa.getRefUnitCost());
+
+		return result;
+	}
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------PartAcqRoutingStep-------------------------------
-	public ParsInfo buildParsType1(PartAcqInfo _partAcq, TimeTraveler _tt, String _id, String _name, String _desp) {
+	public ParsInfo buildParsType1(PartAcqInfo _partAcq, TimeTraveler _tt, String _seq, String _name, String _desp) {
 		ParsBuilder1 parsb = bpuFacade.getBuilder(MbomBpuType.PARS_1, _partAcq);
-		parsb.appendId(_id).appendName(_name).appendDesp(_desp);
+		parsb.appendSeq(_seq).appendName(_name).appendDesp(_desp);
 
 		// validate
 		StringBuilder msgValidate = new StringBuilder();
@@ -190,7 +245,7 @@ public class MbomBuilderDelegate {
 
 		// check
 		assertEquals(_partAcq.getUid(), pars.getPartAcqUid());
-		assertEquals(_id, pars.getSeq());
+		assertEquals(_seq, pars.getSeq());
 		assertEquals(_name, pars.getName());
 		assertEquals(_desp, pars.getDesp());
 
@@ -344,6 +399,31 @@ public class MbomBuilderDelegate {
 		return b;
 	}
 	
+	public boolean runPartCfgPublish(TimeTraveler _tt, PartCfgInfo _pc) {
+		PartCfgBpuPublish bpu = bpuFacade.getBuilder(MbomBpuType.PART_CFG_$PUBLISH, _pc);
+
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(bpu.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(bpu.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		boolean b = bpu.build(msgBuild, _tt);
+		assertTrue(b, msgBuild.toString());
+
+		// check
+		// none
+
+		return b;
+	}
+	
+	
+	
+	
 	// -------------------------------------------------------------------------------
 	// -------------------------------------Prod--------------------------------------
 	public ProdInfo buildProd0(TimeTraveler _tt, String _id, String _name) {
@@ -407,9 +487,38 @@ public class MbomBuilderDelegate {
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------------PartCtl------------------------------------
-	public ProdCtlInfo buildProdCtl0(TimeTraveler _tt, String _id, int _lv, String _name, boolean _req) {
+//	public ProdCtlInfo buildProdCtl1(TimeTraveler _tt, int _lv, PartInfo _part, boolean _req) {
+//		ProdCtlBuilder0 pcb = bpuFacade.getBuilder(MbomBpuType.PROD_CTL_1);
+//		pcb.appendLv(_lv).appendPart(_part).appendReq(_req);
+//		
+//		// validate
+//		StringBuilder msgValidate = new StringBuilder();
+//		assertTrue(pcb.validate(msgValidate), msgValidate.toString());
+//
+//		// verify
+//		StringBuilder msgVerify = new StringBuilder();
+//		assertTrue(pcb.verify(msgVerify), msgVerify.toString());
+//
+//		// build
+//		StringBuilder msgBuild = new StringBuilder();
+//		ProdCtlInfo pc = pcb.build(msgBuild, _tt);
+//		assertNotNull(msgBuild.toString(), pc);
+//				
+//		// check
+////		assertEquals(_id, pc.getId());
+//		assertEquals(_lv, pc.getLv());
+//		assertEquals(_part.getUid(), pc.getPartUid());
+//		assertEquals(_part.getPin(), pc.getPartPin());
+//		assertEquals(_part.getName(), pc.getPartName());
+////		assertEquals(_name, pc.getName());
+//		assertEquals(_req, pc.isReq());
+//
+//		return pc;	
+//	}
+	
+	public ProdCtlInfo buildProdCtl0(TimeTraveler _tt,  int _lv, String _name, boolean _req) {
 		ProdCtlBuilder0 pcb = bpuFacade.getBuilder(MbomBpuType.PROD_CTL_0);
-		pcb.appendId(_id).appendLv(_lv).appendName(_name).appendReq(_req);
+		pcb.appendLv(_lv).appendName(_name).appendReq(_req);
 
 		// validate
 		StringBuilder msgValidate = new StringBuilder();
@@ -425,101 +534,87 @@ public class MbomBuilderDelegate {
 		assertNotNull(msgBuild.toString(), pc);
 
 		// check
-		assertEquals(_id, pc.getId());
 		assertEquals(_lv, pc.getLv());
 		assertEquals(_name, pc.getName());
 		assertEquals(_req, pc.isReq());
 
 		return pc;
-		
 	} 
 	
 	public ProdCtlInfo buildProdCtl01(TimeTraveler _tt) {
-		return buildProdCtl0(_tt, "TEST_LV1_ID", 1, "TEST_LV1_NAME", true);
-//		ProdCtlBuilder0 pcb = bpuFacade.getBuilder(MbomBpuType.PROD_CTL_0);
-//		pcb.appendId("TEST_LV1_ID").appendLv(1).appendName("TEST_LV1_NAME").appendReq(true);
-//
-//		// validate
-//		StringBuilder msgValidate = new StringBuilder();
-//		assertTrue(pcb.validate(msgValidate), msgValidate.toString());
-//
-//		// verify
-//		StringBuilder msgVerify = new StringBuilder();
-//		assertTrue(pcb.verify(msgVerify), msgVerify.toString());
-//
-//		// build
-//		StringBuilder msgBuild = new StringBuilder();
-//		ProdCtlInfo pc = pcb.build(msgBuild, _tt);
-//		assertNotNull(msgBuild.toString(), pc);
-//
-//		// check
-//		assertEquals("TEST_LV1_ID", pc.getId());
-//		assertEquals(1, pc.getLv());
-//		assertEquals("TEST_LV1_NAME", pc.getName());
-//		assertEquals(true, pc.isReq());
-//
-//		return pc;
+		return buildProdCtl0(_tt,  1, "TEST_LV1_NAME", true);
 	}
 	
 	public ProdCtlInfo buildProdCtl02(TimeTraveler _tt) {
-		return buildProdCtl0(_tt, "TEST_LV2_ID", 2, "TEST_LV2_NAME", true);
-//		ProdCtlBuilder0 pcb = bpuFacade.getBuilder(MbomBpuType.PROD_CTL_0);
-//		pcb.appendId("TEST_LV2_ID").appendLv(2).appendName("TEST_LV2_NAME").appendReq(true);
-//
-//		// validate
-//		StringBuilder msgValidate = new StringBuilder();
-//		assertTrue(pcb.validate(msgValidate), msgValidate.toString());
-//
-//		// verify
-//		StringBuilder msgVerify = new StringBuilder();
-//		assertTrue(pcb.verify(msgVerify), msgVerify.toString());
-//
-//		// build
-//		StringBuilder msgBuild = new StringBuilder();
-//		ProdCtlInfo pc = pcb.build(msgBuild, _tt);
-//		assertNotNull(msgBuild.toString(), pc);
-//
-//		// check
-//		assertEquals("TEST_LV2_ID", pc.getId());
-//		assertEquals(2, pc.getLv());
-//		assertEquals("TEST_LV2_NAME", pc.getName());
-//		assertEquals(true, pc.isReq());
-//
-//		return pc;
+		return buildProdCtl0(_tt,  2, "TEST_LV2_NAME", true);
 	}
 	
 	public ProdCtlInfo buildProdCtl03(TimeTraveler _tt) {
-		return buildProdCtl0(_tt, "TEST_LV3_ID", 3, "TEST_LV3_NAME", true);
-//		
-//		ProdCtlBuilder0 pcb = bpuFacade.getBuilder(MbomBpuType.PROD_CTL_0);
-//		pcb.appendId("TEST_LV3_ID").appendLv(3).appendName("TEST_LV3_NAME").appendReq(true);
-//
-//		// validate
-//		StringBuilder msgValidate = new StringBuilder();
-//		assertTrue(pcb.validate(msgValidate), msgValidate.toString());
-//
-//		// verify
-//		StringBuilder msgVerify = new StringBuilder();
-//		assertTrue(pcb.verify(msgVerify), msgVerify.toString());
-//
-//		// build
-//		StringBuilder msgBuild = new StringBuilder();
-//		ProdCtlInfo pc = pcb.build(msgBuild, _tt);
-//		assertNotNull(msgBuild.toString(), pc);
-//
-//		// check
-//		assertEquals("TEST_LV3_ID", pc.getId());
-//		assertEquals(3, pc.getLv());
-//		assertEquals("TEST_LV3_NAME", pc.getName());
-//		assertEquals(true, pc.isReq());
-//
-//		return pc;
+		return buildProdCtl0(_tt,  3, "TEST_LV3_NAME", true);
 	}
 
-	public boolean runProdCtlPartCfgConj(ProdCtlInfo _prodCtl, TimeTraveler _tt, PartCfgInfo... _partCfgs) {
+//	public boolean runProdCtlPartCfgConj(ProdCtlInfo _prodCtl, TimeTraveler _tt, PartCfgInfo... _partCfgs) {
+	public boolean runProdCtlPartCfgConj(ProdCtlInfo _prodCtl, TimeTraveler _tt, Entry<PartAcqInfo, PartCfgInfo>... partAcqCfgEntries) {
 		ProdCtlBpuPartCfgConj bpu = bpuFacade.getBuilder(MbomBpuType.PROD_CTL_$PART_CFG_CONJ, _prodCtl);
-		for (PartCfgInfo _partCfg : _partCfgs)
-			bpu.appendPartCfg(_partCfg);
+//		for (PartCfgInfo _partCfg : _partCfgs)
+//			bpu.appendPartCfg(_partCfg);
+		for(Entry<PartAcqInfo, PartCfgInfo> entry: partAcqCfgEntries) {
+			bpu.appendPartAcqCfg(entry.getKey(), entry.getValue());
+		}
+
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(bpu.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(bpu.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		boolean b = bpu.build(msgBuild, _tt);
+		assertTrue(b, msgBuild.toString());
+
+		// check
+		// none
+
+		return b;
+	}
+	
+	// -------------------------------------------------------------------------------
+	// ------------------------------------ProdMod------------------------------------
+	public ProdModInfo buildProdMod1(TimeTraveler _tt,ProdInfo _prod, String _id, String _name, String _desp) {
+		ProdModBuilder1 pmb = bpuFacade.getBuilder(MbomBpuType.PROD_MOD_1, _prod);
+		pmb.appendId(_id).appendName(_name).appendDesp(_desp);
+		
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(pmb.validate(msgValidate), msgValidate.toString());
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(pmb.verify(msgVerify), msgVerify.toString());
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		ProdModInfo pm = pmb.build(msgBuild, _tt);
+		assertNotNull(msgBuild.toString(), pm);
+
+		// check
+		assertEquals(_prod.getUid(), pm.getProdUid());
+		assertEquals(_id, pm.getId());
+		assertEquals(_name, pm.getName());
+		assertEquals(_desp, pm.getDesp());
+		
+		return pm;
+	}
+	
+	// -------------------------------------------------------------------------------
+	// ----------------------------------ProdModItem----------------------------------
+	public boolean runProdModItemAssignPartAcqCfg(TimeTraveler _tt, ProdModItemInfo _prodModItem, String _partCfgUid, String _partAcqUid) {
+		ProdModItemBpuAssignPartAcqCfg bpu = bpuFacade.getBuilder(MbomBpuType.PROD_MOD_ITEM_$ASSIGN_PART_ACQ_CFG,
+				_prodModItem);
+		bpu.appendPartCfgUid(_partCfgUid).appendPartAcqUid(_partAcqUid);
 
 		// validate
 		StringBuilder msgValidate = new StringBuilder();

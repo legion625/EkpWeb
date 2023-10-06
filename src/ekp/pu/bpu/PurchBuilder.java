@@ -72,7 +72,7 @@ public abstract class PurchBuilder extends Bpu<PurchInfo> {
 	}
 
 	@Override
-	public boolean verify(StringBuilder _msg) {
+	public boolean verify(StringBuilder _msg, boolean _full) {
 		boolean v = true;
 
 		if (DataFO.isEmptyString(getTitle())) {

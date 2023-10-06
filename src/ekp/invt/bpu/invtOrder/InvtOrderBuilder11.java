@@ -18,7 +18,6 @@ public class InvtOrderBuilder11 extends InvtOrderBuilder {
 	/* data */
 	private List<InvtOrderItemBuilder11> ioiBuilderList;
 	private WrhsBinInfo wb;
-	// TODO
 
 	// -------------------------------------------------------------------------------
 	@Override
@@ -44,18 +43,22 @@ public class InvtOrderBuilder11 extends InvtOrderBuilder {
 	public InvtOrderBuilder11 appendWb(WrhsBinInfo wb) {
 		this.wb = wb;
 		if (ioiBuilderList != null)
-			ioiBuilderList.forEach(ioib -> ioib.appendWrhsBinUid(wb.getUid()));
+			ioiBuilderList.forEach(ioib -> ioib.appendWb(wb));
 		return this;
 	}
 
 	// -------------------------------------------------------------------------------
+	public PurchInfo getPurch() {
+		return purch;
+	}
+	
 	@Override
 	protected List<InvtOrderItemBuilder11> getInvtOrderItemBuilderList() {
 		return ioiBuilderList;
 	}
-
-	public PurchInfo getPurch() {
-		return purch;
+	
+	public WrhsBinInfo getWb() {
+		return wb;
 	}
 	
 	// -------------------------------------------------------------------------------
@@ -78,7 +81,7 @@ public class InvtOrderBuilder11 extends InvtOrderBuilder {
 			return null;
 		}
 		tt.addSite("revert puDataService.purchPerf", () -> puDataService.purchRevertPerf(getPurch().getUid()));
-
+		log.info("puDataService.purchPerf {}\t{}", getPurch().getUid(), getPurch().getPuNo());
 		//
 		if (_tt != null)
 			_tt.copySitesFrom(tt);

@@ -1,6 +1,19 @@
 package ekp.data.service.mf;
 
+import java.util.List;
+
+import ekp.data.BizObjLoader;
+import ekp.data.InvtDataService;
+import ekp.data.MfDataService;
+import ekp.data.service.invt.InvtOrderItemInfo;
+import ekp.data.service.invt.MaterialMasterInfo;
+import ekp.data.service.invt.query.InvtOrderItemQueryParam;
+import ekp.invt.type.InvtOrderType;
+import ekp.invt.type.IoiTargetType;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
+import legion.util.query.QueryOperation;
+import legion.util.query.QueryOperation.CompareOp;
 
 public class WorkorderMaterialInfoDto extends ObjectModelInfoDto implements WorkorderMaterialInfo {
 	protected WorkorderMaterialInfoDto(String uid, long objectCreateTime, long objectUpdateTime) {
@@ -79,4 +92,37 @@ public class WorkorderMaterialInfoDto extends ObjectModelInfoDto implements Work
 	void setQty1(double qty1) {
 		this.qty1 = qty1;
 	}
+
+	// -------------------------------------------------------------------------------
+	@Override
+	public WorkorderMaterialInfo reload() {
+		return DataServiceFactory.getInstance().getService(MfDataService.class).loadWorkorderMaterial(getUid());
+	}
+	
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<MaterialMasterInfo> mmLoader = BizObjLoader.of(
+			() -> DataServiceFactory.getInstance().getService(InvtDataService.class).loadMaterialMaster(getMmUid()));
+
+	@Override
+	public MaterialMasterInfo getMm() {
+		return mmLoader.getObj();
+	}
+	
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<List<InvtOrderItemInfo>> qty1IoiListLoader = BizObjLoader.of(() -> {
+		QueryOperation<InvtOrderItemQueryParam, InvtOrderItemInfo> param = new QueryOperation<>();
+		param.appendCondition(
+				QueryOperation.value(InvtOrderItemQueryParam.IO_TYPE_IDX, CompareOp.equal, InvtOrderType.O2.getIdx())); // 料件領用
+		param.appendCondition(QueryOperation.value(InvtOrderItemQueryParam.TARGET_TYPE_IDX, CompareOp.equal,
+				IoiTargetType.WOM.getIdx())); // 料件領用
+		param.appendCondition(QueryOperation.value(InvtOrderItemQueryParam.TARGET_UID, CompareOp.equal, this.getUid())); // 料件領用
+		param = DataServiceFactory.getInstance().getService(InvtDataService.class).searchInvtOrderItem(param, null);
+		return param.getQueryResult();
+	});
+
+	@Override
+	public List<InvtOrderItemInfo> getQty1IoiList() {
+		return qty1IoiListLoader.getObj();
+	}
+
 }

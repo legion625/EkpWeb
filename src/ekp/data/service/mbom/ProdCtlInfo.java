@@ -1,10 +1,10 @@
 package ekp.data.service.mbom;
 
+import java.util.List;
+
 import legion.ObjectModelInfo;
 
-public interface ProdCtlInfo extends ObjectModelInfo{
-
-	String getId();
+public interface ProdCtlInfo extends ObjectModelInfo {
 
 	int getLv();
 
@@ -14,8 +14,17 @@ public interface ProdCtlInfo extends ObjectModelInfo{
 
 	String getParentUid();
 
-	String getParentId();
-
 	String getProdUid();
+
+	// -------------------------------------------------------------------------------
+	ProdCtlInfo reload();
+
+	List<ProdCtlInfo> getChildrenList();
+
+	ProdInfo getProd();
+
+	List<ProdCtlPartCfgConjInfo> getPcpccList();
+
+	// -------------------------------------------------------------------------------
 
 }
