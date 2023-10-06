@@ -4,6 +4,12 @@
 		<panelchildren>
 			Part list
 			<listbox id="lbxPart" vflex="1" emptyMessage="(No data)">
+			<auxhead>
+			<auxheader></auxheader>
+			<auxheader><textbox id="txbFltrPin" hflex="1" /></auxheader>
+			<auxheader><textbox id="txbFltrName" hflex="1" /></auxheader>
+			<auxheader><combobox id="cbbFltrUnit" hflex="1" /></auxheader>
+			</auxhead>
 				<listhead sizable="true">
 					<listheader width="50px">
 						<toolbarbutton id="btnAddPart" iconSclass="fa fa-plus" />

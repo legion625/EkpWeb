@@ -31,10 +31,15 @@ import ekp.mbom.issue.part.PartBpuDel0;
 import ekp.mbom.issue.part.PartBpuUpdate;
 import ekp.mbom.issue.part.PartBuilder0;
 import ekp.mbom.type.PartUnit;
+import ekp.web.control.zk.filter.LbxFltrCtrl;
+import ekp.web.control.zk.filter.biz.PartFp;
 import legion.BusinessServiceFactory;
 import legion.biz.BpuFacade;
+import legion.util.DataFO;
 import legion.util.LogUtil;
 import legion.util.TimeTraveler;
+import legion.util.filter.FilterOperation;
+import legion.util.filter.FilterOperation.FilterCompareOp;
 import legion.web.control.zk.legionmodule.pageTemplate.FnCntProxy;
 import legion.web.zk.ZkMsgBox;
 import legion.web.zk.ZkNotification;
@@ -46,12 +51,18 @@ public class MbomFnComposer extends SelectorComposer<Component> {
 	// -------------------------------------------------------------------------------
 	@Wire
 	private Listbox lbxPart;
+	@Wire
+	private Textbox txbFltrPin, txbFltrName;
+	@Wire
+	private Combobox cbbFltrUnit;
+	
+	private LbxFltrCtrl<PartInfo> fltrCtrlLbxPart;
 
 	// -------------------------------------------------------------------------------
 	private MbomService mbomService = BusinessServiceFactory.getInstance().getService(MbomService.class);
 
 	private FnCntProxy fnCntProxy;
-
+	
 	// -------------------------------------------------------------------------------
 	@Override
 	public void doAfterCompose(Component comp) {
@@ -141,9 +152,45 @@ public class MbomFnComposer extends SelectorComposer<Component> {
 				partComposer.refreshPartInfo(p.reload());
 			});
 		};
-		lbxPart.setItemRenderer(partRenderer);
+		fltrCtrlLbxPart = LbxFltrCtrl.of(lbxPart, partRenderer);
+		Textbox[] txbsFltrPart = new Textbox[] {txbFltrPin, txbFltrName};
+		Combobox[] cbbsFltrPart = new Combobox[] {cbbFltrUnit};
+		fltrCtrlLbxPart.initFilter(txbsFltrPart, cbbsFltrPart, null, null, this::filterPart);
+		
+		ZkUtil.initCbb(cbbFltrUnit, PartUnit.values(), true);
+		
+//		lbxPart.setItemRenderer(partRenderer);
 	}
 
+	private List<PartInfo> filterPart(List<PartInfo> _list){
+		/**/
+		String fltrPin = txbFltrPin.getValue();
+		String fltrName = txbFltrName.getValue();
+		PartUnit fltrUnit = cbbFltrUnit.getSelectedItem()==null?null:
+			cbbFltrUnit.getSelectedItem().getValue();
+			
+		/* filter */
+		FilterOperation<PartFp, ?> fop  =new  FilterOperation<>();
+		// pin
+		if(!DataFO.isEmptyString(fltrPin))
+			fop.addCondition(FilterOperation.value(PartFp.PIN, FilterCompareOp.like, "%" + fltrPin + "%"));
+		// name
+		if(!DataFO.isEmptyString(fltrName))
+			fop.addCondition(FilterOperation.value(PartFp.NAME, FilterCompareOp.like, "%" + fltrName + "%"));
+		// partUnit
+		if(fltrUnit!=null)
+			fop.addCondition(FilterOperation.value(PartFp.UNIT, FilterCompareOp.equal,fltrUnit));
+			
+		try {
+			List<PartInfo> filteredList = fop.filterConditions(_list);
+			return filteredList;
+		} catch (Throwable e) {
+			LogUtil.log(e);
+			return new ArrayList<>();
+		}
+	}
+	
+	
 	// -------------------------------------------------------------------------------
 	// ---------------------------------wdCreatePart----------------------------------
 	@Wire
@@ -214,8 +261,9 @@ public class MbomFnComposer extends SelectorComposer<Component> {
 	// -------------------------------------------------------------------------------
 	// -------------------------------------------------------------------------------
 	private void setPartList(List<PartInfo> _partList) {
-		ListModelList<PartInfo> model = _partList == null ? new ListModelList<>() : new ListModelList<>(_partList);
-		lbxPart.setModel(model);
+//		ListModelList<PartInfo> model = _partList == null ? new ListModelList<>() : new ListModelList<>(_partList);
+//		lbxPart.setModel(model);
+		fltrCtrlLbxPart.refresh(_partList);
 	}
 
 }

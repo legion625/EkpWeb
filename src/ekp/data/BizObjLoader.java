@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import ekp.data.service.invt.InvtOrderInfo;
 import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.mbom.ParsInfo;
 import ekp.data.service.mbom.PartAcqInfo;
@@ -70,6 +71,8 @@ public class BizObjLoader<T> {
 	
 	public final static Supplier<BizObjLoader<ProdInfo>> PROD = () -> of(mbomDataService::loadProd);
 	public final static Supplier<BizObjLoader<ProdCtlInfo>> PROD_CTL = () -> of(mbomDataService::loadProdCtl);
+	
+	public final static Supplier<BizObjLoader<InvtOrderInfo>> IO = ()-> of(invtDataService::loadInvtOrder);
 	
 	
 	
