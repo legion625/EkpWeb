@@ -4,7 +4,7 @@ import java.util.List;
 
 import legion.ObjectModelInfo;
 
-public interface SalesOrderInfo extends ObjectModelInfo{
+public interface SalesOrderInfo extends ObjectModelInfo {
 
 	String getSosn();
 
@@ -19,9 +19,13 @@ public interface SalesOrderInfo extends ObjectModelInfo{
 	String getSalerName();
 
 	long getSaleDate();
-	
+
 	// -------------------------------------------------------------------------------
 	SalesOrderInfo reload();
 
 	List<SalesOrderItemInfo> getSalesOrderItemList();
+
+	default double getSumSoiAmt() {
+		return getSalesOrderItemList().stream().mapToDouble(SalesOrderItemInfo::getValue).sum();
+	}
 }

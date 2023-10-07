@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-	<div id="divWoSearchResult" vflex="1" apply="ekp.web.control.zk.wo.WoSearchResultComposer">
+	<div vflex="1" apply="ekp.web.control.zk.wo.WoSearchResultComposer">
 		<listbox id="lbxWo" vflex="1" emptyMessage="(no data)">
 			<listhead sizable="true">
 				<listheader label="工令編號" width="80px" sort="auto(woNo)"/>
@@ -9,7 +9,7 @@
 				<listheader label="獲取方式ID" width="100px" sort="auto(partAcqId)"/>
 				<listheader label="料號" width="80px" sort="auto(partAcqMmMano)"/>
 				<listheader label="構型ID" width="100px" sort="auto(partCfgId)"/>
-				<listheader label="需求量" width="80px" style="text-align:left" align="right" sort="auto(rqQty)"/>
+				<listheader label="需求量" width="60px" style="text-align:left" align="right" sort="auto(rqQty)"/>
 				<listheader label="開工日期" width="80px" sort="auto(startWorkTime)"/>
 				<listheader label="完工日期" width="80px" sort="auto(finishWorkTime)"/>
 				<listheader label="銷令日期" width="80px" sort="auto(overTime)"/>

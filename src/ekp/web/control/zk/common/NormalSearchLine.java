@@ -22,7 +22,7 @@ import legion.util.query.QueryParam;
 import legion.web.zk.ZkUtil;
 
 public class NormalSearchLine<P extends QueryParam, T> {
-	private static Logger log = LoggerFactory.getLogger(DebugLogMark.class);
+	private static Logger log = LoggerFactory.getLogger(NormalSearchLine.class);
 	
 	private String name;
 	private InputElement inputElem;
@@ -58,15 +58,11 @@ public class NormalSearchLine<P extends QueryParam, T> {
 	public static <P extends QueryParam, T> NormalSearchLine<P, T> ofTxbLine(String _name, P _p) {
 		Function<InputElement, Object> fnParseInput = txb -> ((Textbox) txb).getValue();
 		Function<Object, QueryValue<P, T>> fnParseInputQueryValue = o -> {
-			log.debug("o: {}", o);
-			
 			if (o == null || !(o instanceof String) || DataFO.isEmptyString((String) o))
 				return null; // 用null代表不設定此查詢條件
 			else {
-				log.debug("o: {}", o);
 				return (QueryValue<P, T>) QueryOperation.value(_p, CompareOp.like, "%" + o + "%");
 			}
-				
 		};
 
 		//

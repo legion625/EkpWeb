@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-	<div id="divPuSearchResult" vflex="1" apply="ekp.web.control.zk.pu.PuSearchResultComposer">
+	<div vflex="1" apply="ekp.web.control.zk.pu.PuSearchResultComposer">
 		<listbox id="lbxPu" vflex="1" emptyMessage="(no data)">
 			<listhead sizable="true">
 				<listheader label="購案案號" width="80px" sort="auto(puNo)" />

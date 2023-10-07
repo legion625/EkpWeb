@@ -26,10 +26,6 @@ public class WoSearchResultComposer extends SelectorComposer<Component> {
 	public final static String SRC = "/mf/woSearchResult.zul";
 	private Logger log = LoggerFactory.getLogger(WoSearchResultComposer.class);
 
-	public static WoSearchResultComposer of(Include _icd) {
-		return ZkUtil.of(_icd, SRC, "divPuSearchResult");
-	}
-
 	// -------------------------------------------------------------------------------
 	@Wire
 	private Listbox lbxWo;
@@ -67,7 +63,6 @@ public class WoSearchResultComposer extends SelectorComposer<Component> {
 	}
 
 	public void refreshData(List<WorkorderInfo> _woList) {
-		log.debug(" _woList.size(): {}", _woList.size());
 		ListModelList<WorkorderInfo> model = new ListModelList<>(_woList);
 		lbxWo.setModel(model);
 	}

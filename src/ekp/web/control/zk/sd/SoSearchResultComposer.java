@@ -1,4 +1,4 @@
-package ekp.web.control.zk.pu;
+package ekp.web.control.zk.sd;
 
 import java.util.List;
 
@@ -8,26 +8,24 @@ import org.slf4j.event.Level;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Wire;
-import org.zkoss.zul.Include;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.ListitemRenderer;
 
-import ekp.data.service.pu.PurchInfo;
+import ekp.data.service.sd.SalesOrderInfo;
+import legion.util.DateFormatUtil;
 import legion.util.LogUtil;
 import legion.util.NumberFormatUtil;
 import legion.web.control.zk.legionmodule.pageTemplate.FnCntProxy;
-import legion.web.zk.ZkUtil;
 
-public class PuSearchResultComposer extends SelectorComposer<Component> {
-	public final static String SRC = "/pu/puSearchResult.zul";
-
-	private Logger log = LoggerFactory.getLogger(PuSearchResultComposer.class);
+public class SoSearchResultComposer extends SelectorComposer<Component> {
+	public final static String SRC = "/sd/soSearchResult.zul";
+	private Logger log = LoggerFactory.getLogger(SoSearchResultComposer.class);
 
 	// -------------------------------------------------------------------------------
 	@Wire
-	private Listbox lbxPu;
+	private Listbox lbxSo;
 
 	// -------------------------------------------------------------------------------
 	private FnCntProxy fnCntProxy;
@@ -46,19 +44,20 @@ public class PuSearchResultComposer extends SelectorComposer<Component> {
 	}
 
 	private void init() {
-		ListitemRenderer<PurchInfo> puRenderer = (li, pu, i) -> {
-			li.appendChild(new Listcell(pu.getPuNo()));
-			li.appendChild(new Listcell(pu.getTitle()));
-			li.appendChild(new Listcell(pu.getSupplierBan()));
-			li.appendChild(new Listcell(pu.getSupplierName()));
-			li.appendChild(new Listcell(pu.getPerfStatus().getName()));
-			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(pu.getSumPurchItemAmt(), 2)));
+		ListitemRenderer<SalesOrderInfo> soRenderer = (li, so, i) -> {
+			li.appendChild(new Listcell(so.getSosn()));
+			li.appendChild(new Listcell(so.getTitle()));
+			li.appendChild(new Listcell(so.getCustomerName()));
+			li.appendChild(new Listcell(so.getCustomerBan()));
+			li.appendChild(new Listcell(so.getSalerName()));
+			li.appendChild(new Listcell(DateFormatUtil.transToDate(so.getSaleDate())));
+			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(so.getSumSoiAmt(), 2)));
 		};
-		lbxPu.setItemRenderer(puRenderer);
+		lbxSo.setItemRenderer(soRenderer);
 	}
 
-	public void refreshData(List<PurchInfo> _puList) {
-		ListModelList<PurchInfo> model = new ListModelList<>(_puList);
-		lbxPu.setModel(model);
+	public void refreshData(List<SalesOrderInfo> _soList) {
+		ListModelList<SalesOrderInfo> model = new ListModelList<>(_soList);
+		lbxSo.setModel(model);
 	}
 }

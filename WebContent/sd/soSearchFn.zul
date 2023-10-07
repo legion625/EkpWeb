@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="new page title" border="normal">
-New Content Here!
-</window>
+	<div vflex="1" apply="ekp.web.control.zk.sd.SoSearchFnComposer">
+		<include id="icdSearchFnPage" vflex="1" />
+	</div>
 </zk>

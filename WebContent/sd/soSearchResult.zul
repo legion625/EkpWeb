@@ -1,6 +1,16 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="new page title" border="normal">
-New Content Here!
-</window>
+	<div vflex="1" apply="ekp.web.control.zk.sd.SoSearchResultComposer">
+		<listbox id="lbxSo" vflex="1" emptyMessage="(no data)">
+			<listhead sizable="true">
+				<listheader label="序號" width="80px" sort="auto(sosn)" />
+				<listheader label="名稱" width="80px" sort="auto(title)" />
+				<listheader label="客戶名稱" width="120px" sort="auto(customerName)" />
+				<listheader label="客戶統編" width="80px" sort="auto(customerBan)" />
+				<listheader label="銷售人姓名" width="80px" sort="auto(salerName)" />
+				<listheader label="銷售日期" width="80px" sort="auto(saleDate)" />
+				<listheader label="金額" width="80px" style="text-align:left" align="right" sort="auto(sumSoiAmt)" />
+			</listhead>
+		</listbox>
+	</div>
 </zk>

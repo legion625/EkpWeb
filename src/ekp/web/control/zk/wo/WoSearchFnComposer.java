@@ -73,10 +73,8 @@ public class WoSearchFnComposer extends SelectorComposer<Component> {
 //			}
 			param = BusinessServiceFactory.getInstance().getService(MfService.class).searchWorkorder(param, null);
 			List<WorkorderInfo> woList = param.getQueryResult();
-			log.debug("woList.size(): {}", woList.size());
 			fnCntProxy.refreshCntUri(WoSearchResultComposer.SRC);
 			WoSearchResultComposer c = fnCntProxy.getComposer(WoSearchResultComposer.class);
-			
 			c.refreshData(woList);
 		});
 	}
