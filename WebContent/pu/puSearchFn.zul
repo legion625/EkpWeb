@@ -1,0 +1,11 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+
+	<!-- <cardlayout id="clyPuSearchFn" vflex="1" apply="ekp.web.control.zk.pu.PuSearchFnComposer"> -->
+	<div vflex="1" apply="ekp.web.control.zk.pu.PuSearchFnComposer">
+		<include id="icdSearchFnPage" vflex="1" />
+		<!-- <include id="icdSearchResultPage" /> -->
+	</div>
+	<!-- 	</cardlayout> -->
+
+</zk>

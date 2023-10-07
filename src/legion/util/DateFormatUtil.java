@@ -27,6 +27,10 @@ public class DateFormatUtil {
 			return SDF_DATE.format(_date);
 	}
 	
+	public static String transToDate(long _l) {
+		return transToDate(_l <= 0 ? null : new Date(_l));
+	}
+	
 	public static String transToTime(long _l) {
 		return transToTime(_l <= 0 ? null :new Date(_l));
 	}

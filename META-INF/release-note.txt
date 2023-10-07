@@ -1,4 +1,13 @@
+Min-Hua, 2023.10.07
+[change]
+1. [PU]新增查詢購案功能頁面。
+2. [MF]新增查詢工令功能頁面。
+
 Min-Hua, 2023.10.06
+[change]
+1. [MBOM]Part新增篩選功能。
+2. [IV]新增顯示MbsbStmt列表。
+
 [lib]
 1. legionmodule: 0.13.1 -> 0.14.0
 

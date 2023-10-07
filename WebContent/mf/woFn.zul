@@ -1,0 +1,11 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<div vflex="1" apply="ekp.web.control.zk.wo.WoFnComposer">
+		<groupbox title="查詢">
+			<button id="btnGotoSearchFnPage" label="查詢工令" />
+		</groupbox>
+		<groupbox title="功能操作">
+			<button id="btnCreateWo" label="產生工令" />
+		</groupbox>
+	</div>
+</zk>

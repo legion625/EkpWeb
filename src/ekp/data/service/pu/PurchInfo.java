@@ -23,5 +23,9 @@ public interface PurchInfo extends ObjectModelInfo {
 	PurchInfo reload();
 	
 	List<PurchItemInfo> getPurchItemList();
+	
+	default double getSumPurchItemAmt() {
+		return getPurchItemList().stream().mapToDouble(PurchItemInfo::getValue).sum();
+	}
 
 }
