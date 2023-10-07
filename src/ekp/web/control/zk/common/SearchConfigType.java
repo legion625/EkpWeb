@@ -3,6 +3,7 @@ package ekp.web.control.zk.common;
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.Supplier;
 
+import ekp.web.control.zk.invt.io.IoSearchConfig;
 import ekp.web.control.zk.pu.PuSearchConfig;
 import ekp.web.control.zk.sd.SoSearchConfig;
 import ekp.web.control.zk.wo.WoSearchConfig;
@@ -10,11 +11,10 @@ import legion.util.LogUtil;
 import legion.util.query.QueryOperation;
 
 public enum SearchConfigType {
+	IO(IoSearchConfig.class), //
 	PU(PuSearchConfig.class), //
 	SO(SoSearchConfig.class), //
 	WO(WoSearchConfig.class), //
-	
-	
 	;
 	
 
