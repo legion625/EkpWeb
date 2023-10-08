@@ -564,8 +564,12 @@ public class PuScn1 extends AbstractEkpInitTest {
 		
 		// 設定每個產品分類可對應的構型
 		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlA, tt, Map.entry(paA1, pcCfg1),Map.entry(paA1, pcCfg4),Map.entry(paA2, pcCfg2), Map.entry(paA3, pcCfg3)));
+//		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlA, tt, new Object[] { paA1, pcCfg1 },
+//				new Object[] { paA1, pcCfg4 }, new Object[] { paA2, pcCfg2 }, new Object[] { paA3, pcCfg3 }));
 		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlB, tt, Map.entry(paB1, pcCfg1),Map.entry(paB3, pcCfg4)));
+//		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlB, tt, new Object[] {paB1, pcCfg1},new Object[] {paB3, pcCfg4}));
 		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlC, tt, Map.entry(paC1, pcCfg1),Map.entry(paC3, pcCfg4)));
+//		assertTrue(mbomDel.runProdCtlPartCfgConj(prodCtlC, tt, new Object[] {paC1, pcCfg1},new Object[] {paC3, pcCfg4}));
 		
 		showProdInfo(prodA);
 		

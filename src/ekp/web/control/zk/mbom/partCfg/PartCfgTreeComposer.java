@@ -94,6 +94,9 @@ public class PartCfgTreeComposer extends SelectorComposer<Component> {
 			ti.getTreerow().appendChild(new Treecell(data.getPaName()));
 			ti.getTreerow().appendChild(new Treecell(data.getPaTypeName()));
 			ti.getTreerow().appendChild(new Treecell(data.getPaStatusName()));
+			
+			ti.getTreerow().appendChild(new Treecell(data.getPa().getMmMano()));
+			
 			// qty
 			ti.getTreerow().appendChild(new Treecell(data.getPpartReqQtyDisplay()));
 			//
@@ -123,7 +126,7 @@ public class PartCfgTreeComposer extends SelectorComposer<Component> {
 		}
 		// 僅顯示金額
 		else if (rg.getSelectedIndex() == 1) {
-			int[] idx1 = new int[] { 0, 1, 5,7, 8, 9, 10, 11, 12, 13, 14 };
+			int[] idx1 = new int[] { 0, 1, 5,7, 8, 9, 10, 11, 12, 13, 14,15 };
 			int j = 0;
 			for (int i = 0; i < tcList.size(); i++) {
 				if (idx1[j] == i) {

@@ -6,6 +6,8 @@ import java.util.Map;
 import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.data.service.mbom.PpartSkewer;
+import ekp.data.service.mbom.ProdCreateObj;
+import ekp.data.service.mbom.ProdInfo;
 import ekp.data.service.mbom.query.PartCfgQueryParam;
 import ekp.data.service.mbom.query.PartQueryParam;
 import ekp.data.service.mbom.query.PpartSkewerQueryParam;
@@ -39,4 +41,8 @@ public interface MbomService extends BusinessService{
 	public List<PartCfgInfo> loadPartCfgList();
 	
 	public QueryOperation<PartCfgQueryParam, PartCfgInfo> searchPartCfg(QueryOperation<PartCfgQueryParam, PartCfgInfo> _param);
+	
+	// -------------------------------------------------------------------------------
+	// -------------------------------------Prod--------------------------------------
+	public List<ProdInfo> loadProdList();
 }

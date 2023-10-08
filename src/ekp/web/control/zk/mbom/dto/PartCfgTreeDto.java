@@ -134,6 +134,10 @@ public class PartCfgTreeDto {
 	public String getPaStatusName() {
 		return DataUtil.nodataIfEmpty(getPa(), PartAcqInfo::getStatusName);
 	}
+	public String getPaMmMano() {
+		return DataUtil.nodataIfEmpty(getPa(), PartAcqInfo::getMmMano);
+	}
+	
 	public String getPpartReqQtyDisplay() {
 		return DataUtil.nodataIfEmpty(getPpart(), pp->NumberFormatUtil.getDecimalString(pp.getPartReqQty(), 3));
 	}

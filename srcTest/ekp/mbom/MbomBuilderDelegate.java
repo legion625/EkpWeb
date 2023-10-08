@@ -555,11 +555,12 @@ public class MbomBuilderDelegate {
 
 //	public boolean runProdCtlPartCfgConj(ProdCtlInfo _prodCtl, TimeTraveler _tt, PartCfgInfo... _partCfgs) {
 	public boolean runProdCtlPartCfgConj(ProdCtlInfo _prodCtl, TimeTraveler _tt, Entry<PartAcqInfo, PartCfgInfo>... partAcqCfgEntries) {
+//	public boolean runProdCtlPartCfgConj(ProdCtlInfo _prodCtl, TimeTraveler _tt, Object[]... _partAcqCfgs) {
 		ProdCtlBpuPartCfgConj bpu = bpuFacade.getBuilder(MbomBpuType.PROD_CTL_$PART_CFG_CONJ, _prodCtl);
-//		for (PartCfgInfo _partCfg : _partCfgs)
-//			bpu.appendPartCfg(_partCfg);
 		for(Entry<PartAcqInfo, PartCfgInfo> entry: partAcqCfgEntries) {
-			bpu.appendPartAcqCfg(entry.getKey(), entry.getValue());
+//		for(Object[] obj: _partAcqCfgs) {
+			bpu.appendPartAcqCfg(entry.getKey(),entry.getValue());
+//			bpu.appendPartAcqCfg((PartAcqInfo)obj[0], (PartCfgInfo)obj[1]);
 		}
 
 		// validate

@@ -1,0 +1,83 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<borderlayout vflex="1" apply="ekp.web.control.zk.mbom.prod.ProdListPageComposer">
+		<west width="30%" splittable="true" open="true" collapsible="true">
+			<div vflex="1">
+				<groupbox title="產品" vflex="1">
+					<listbox id="lbxProd" vflex="1" emptyMessage="(No data)" checkmark="true">
+						<listhead sizable="true">
+							<listheader width="50px"></listheader>
+							<listheader label="ID" sort="auto(id)" />
+							<listheader label="名稱" sort="auto(name)" />
+						</listhead>
+					</listbox>
+				</groupbox>
+				<groupbox title="產品模型" vflex="1">
+					<listbox id="lbxProdMod" vflex="1" emptyMessage="(No data)" checkmark="true">
+						<listhead sizable="true">
+							<listheader width="50px"></listheader>
+							<listheader label="ID" sort="auto(id)" />
+							<listheader label="名稱" sort="auto(name)" />
+							<listheader label="描述" sort="auto(desp)" />
+						</listhead>
+					</listbox>
+				</groupbox>
+			</div>
+		</west>
+		<center>
+			<div vflex="1">
+				<groupbox title="產品型錄" vflex="1">
+					<tree id="treeProdCtl" vflex="1" checkmark="false">
+						<frozen columns="1"></frozen>
+						<treecols sizable="true">
+							<treecol label="Name" width="110px" />
+							<treecol label="Required" width="60px" />
+							<treecol label="Part Cfg/Acqs" width="600px" />
+						</treecols>
+					</tree>
+				</groupbox>
+				<groupbox title="產品模型設定" vflex="1">
+					<tabbox vflex="1">
+						<tabs>
+							<tab label="設定" />
+							<tab label="展開MBOM" />
+						</tabs>
+						<tabpanels>
+							<tabpanel vflex="1">
+								<listbox id="lbxProdModItem" vflex="1" emptyMessage="(No data)" checkmark="true">
+									<listhead sizable="true">
+										<listheader width="50px"></listheader>
+										<listheader label="產品型錄名稱" width="100px" sort="auto(prodCtl.name)" />
+										<listheader label="已設定" width="60px" sort="auto(partAcqCfgAssigned)" />
+										<listheader label="構型ID" width="100px" sort="auto(partCfgId)" />
+										<listheader label="獲取方式ID" width="100px" sort="auto(partAcqId)" />
+									</listhead>
+								</listbox>
+							</tabpanel>
+							<tabpanel vflex="1">
+								<tree id="treeProdModPa" vflex="1" checkmark="false">
+									<frozen columns="1"></frozen>
+									<treecols sizable="true">
+										<treecol label="Part pin" width="150px" />
+										<treecol label="Qty" width="60px" style="text-align:left" align="right" />
+										<treecol label="構型ID" width="150px" />
+										<treecol label="Acq name" width="100px" />
+										<treecol label="料號" width="100px" />
+										<treecol label="Acq ref. unit cost" width="110px" style="text-align:left"
+											align="right" />
+										<treecol label="平均庫儲單價" width="90px" style="text-align:left" align="right" />
+										<treecol label="平均採購入庫單價" width="110px" style="text-align:left" align="right" />
+										<treecol label="平均自製入庫單價" width="110px" style="text-align:left" align="right" />
+										<treecol label="平均料件領用單價" width="110px" style="text-align:left" align="right" />
+										<treecol label="平均成品出庫單價" width="110px" style="text-align:left" align="right" />
+										<treecol label="平均訂單單價" width="90px" style="text-align:left" align="right" />
+									</treecols>
+								</tree>
+							</tabpanel>
+						</tabpanels>
+					</tabbox>
+				</groupbox>
+			</div>
+		</center>
+	</borderlayout>
+</zk>

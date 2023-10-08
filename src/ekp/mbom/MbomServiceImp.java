@@ -10,6 +10,7 @@ import ekp.data.MbomDataService;
 import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.data.service.mbom.PpartSkewer;
+import ekp.data.service.mbom.ProdInfo;
 import ekp.data.service.mbom.query.PartCfgQueryParam;
 import ekp.data.service.mbom.query.PartQueryParam;
 import ekp.data.service.mbom.query.PpartSkewerQueryParam;
@@ -71,6 +72,13 @@ public class MbomServiceImp implements MbomService{
 	@Override
 	public QueryOperation<PartCfgQueryParam, PartCfgInfo> searchPartCfg(QueryOperation<PartCfgQueryParam, PartCfgInfo> _param){
 		return dataService.searchPartCfg(_param);
+	}
+	
+	// -------------------------------------------------------------------------------
+	// -------------------------------------Prod--------------------------------------
+	@Override 
+	public List<ProdInfo> loadProdList(){
+		return dataService.loadProdList();
 	}
 
 }

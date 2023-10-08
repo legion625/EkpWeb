@@ -20,5 +20,13 @@ public interface ProdModItemInfo extends ObjectModelInfo{
 	ProdCtlInfo getProdCtl();
 	PartCfgInfo getPartCfg();
 	PartAcqInfo getPartAcq();
+	
+	default String getPartCfgId() {
+		return getPartCfg()==null?"":getPartCfg().getId();
+	}
+	default String getPartAcqId() {
+		return getPartAcq()==null?"":getPartAcq().getId();
+				
+	}
 
 }

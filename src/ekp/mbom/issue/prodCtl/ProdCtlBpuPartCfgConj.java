@@ -45,7 +45,7 @@ public class ProdCtlBpuPartCfgConj extends ProdCtlBpu {
 		if (_partCfg == null || _partAcq == null) {
 			log.warn("_partCfg null or _partAcq null.");
 		} else {
-			partAcqCfgMap.put(_partAcq.getUid(), new Object[] { _partAcq, _partCfg });
+			partAcqCfgMap.put(_partAcq.getUid()+"@!@"+_partCfg.getUid(), new Object[] { _partAcq, _partCfg });
 		}
 		return this;
 	}
