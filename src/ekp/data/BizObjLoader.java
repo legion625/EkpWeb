@@ -11,6 +11,7 @@ import ekp.data.service.mbom.ParsInfo;
 import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartInfo;
+import ekp.data.service.mbom.PpartInfo;
 import ekp.data.service.mbom.ProdCtlInfo;
 import ekp.data.service.mbom.ProdInfo;
 import legion.DataServiceFactory;
@@ -66,6 +67,7 @@ public class BizObjLoader<T> {
 	public final static Supplier<BizObjLoader<PartInfo>> PART = () -> of(mbomDataService::loadPart);
 	public final static Supplier<BizObjLoader<PartAcqInfo>> PART_ACQ = () -> of(mbomDataService::loadPartAcquisition);
 	public final static Supplier<BizObjLoader<ParsInfo>> PARS = () -> of(mbomDataService::loadPartAcqRoutingStep);
+	public final static Supplier<BizObjLoader<PpartInfo>> PPART = () -> of(mbomDataService::loadParsPart);
 	
 	public final static Supplier<BizObjLoader<PartCfgInfo>> PART_CFG = () -> of(mbomDataService::loadPartCfg);
 	

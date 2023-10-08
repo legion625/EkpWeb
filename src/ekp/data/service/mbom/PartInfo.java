@@ -1,17 +1,29 @@
 package ekp.data.service.mbom;
 
+import static legion.util.query.QueryOperation.CompareOp.equal;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.zkoss.util.logging.Log;
 
 import ekp.DebugLogMark;
+import ekp.data.MbomDataService;
 import ekp.data.service.invt.MaterialMasterInfo;
+import ekp.data.service.mbom.query.PartCfgQueryParam;
+import ekp.data.service.mbom.query.PpartSkewerQueryParam;
 import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartUnit;
+import legion.DataServiceFactory;
 import legion.ObjectModelInfo;
+import legion.util.query.QueryOperation;
+import legion.util.query.QueryOperation.CompareOp;
+import legion.util.query.QueryOperation.QueryValue;
 
 public interface PartInfo extends ObjectModelInfo {
 
@@ -78,6 +90,24 @@ public interface PartInfo extends ObjectModelInfo {
 		List<PpartInfo> ppartList = thisPa.getParsList().stream().flatMap(pars -> pars.getPpartList().stream())
 				.collect(Collectors.toList());
 		return ppartList;
+	}
+	
+	default PpartInfo getSrcPpart(PartCfgInfo _partCfg) {
+		Logger log = LoggerFactory.getLogger(DebugLogMark.class);
+		QueryOperation<PpartSkewerQueryParam, PpartSkewer> param = new QueryOperation<>();
+		Map<PpartSkewerQueryParam, QueryValue[]> existsQvMap = new HashMap<>();
+//		partUid
+		param.appendCondition(QueryOperation.value(PpartSkewerQueryParam.PART_UID, CompareOp.equal, getUid()));
+		param.appendCondition(QueryOperation.value(PpartSkewerQueryParam.B_OF_PC$_PA_EXISTS, CompareOp.equal, true));
+		existsQvMap.put(PpartSkewerQueryParam.B_OF_PC$_PA_EXISTS,
+				new QueryValue[] { QueryOperation.value(PartCfgQueryParam.ID, equal, _partCfg.getId()) });
+//		param.appendCondition(QueryOperation.value(PpartSkewerQueryParam.B_OF_PC$_PARENT_PART_EXISTS, CompareOp.equal, getUid()));
+		param = DataServiceFactory.getInstance().getService(MbomDataService.class).searchPpartSkewer(param,
+				existsQvMap);
+		log.debug("param.getQueryResult().size(): {}", param.getQueryResult().size());
+		if(param.getQueryResult().size()!=1)
+			return null;
+		return param.getQueryResult().get(0).getPpart();
 	}
 	
 //	// -------------------------------------------------------------------------------

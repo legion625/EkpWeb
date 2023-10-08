@@ -12,6 +12,12 @@ public class MockData {
 			{"M00E",	"料件00E		",	"EAC" },
 			{"M00F",	"料件00F		",	"CMK" },
 			{"M00G",	"料件00G		",	"EAC" },
+			
+			{"M00Afa",	"料件00AFA	",	"EAC" },
+			{"M00Beta",	"料件00Beta	",	"SPL" },
+			{"M00Gamma","料件00Gamma	",	"SHE" },
+			
+			
 //			{"M1101",	"互感線圈		",	"SPL" },
 //			{"M1102",	"矽鋼片			",	"SHE" },
 //			{"M1103",	"矽鋼片卷		",	"SPL" },

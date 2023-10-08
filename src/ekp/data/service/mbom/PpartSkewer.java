@@ -7,7 +7,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ekp.DebugLogMark;
 import ekp.data.BizObjLoader;
 import ekp.data.MbomDataService;
 import ekp.data.service.mbom.query.PartCfgQueryParam;
@@ -20,7 +19,7 @@ import legion.util.query.QueryOperation.QueryValue;
 public class PpartSkewer {
 	private Logger log = LoggerFactory.getLogger(PpartSkewer.class);
 //	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
-	
+
 	/* p */
 	private String pUid;
 	private String pPin;
@@ -196,19 +195,25 @@ public class PpartSkewer {
 	void setPartName(String partName) {
 		this.partName = partName;
 	}
-	
+
+	// -------------------------------------------------------------------------------
+	private BizObjLoader<PpartInfo> ppartLoader = BizObjLoader.PPART.get();
+	public PpartInfo getPpart() {
+		return ppartLoader.getObj(getUid());
+	}
+
 	// -------------------------------------------------------------------------------
 	private BizObjLoader<PartAcqInfo> paLoader = BizObjLoader.PART_ACQ.get();
-	
+
 	public PartAcqInfo getPa(boolean _reload) {
 		return paLoader.getObj(getPaUid(),_reload );
 	}
-	
+
 	public PartCfgConjInfo getPartCfgConj(String _partCfgUid, boolean _reload) {
 		PartAcqInfo pa = getPa(_reload);
 		return pa == null ? null : pa.getPartCfgConj(_partCfgUid, _reload);
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	public List<PpartSkewer> getParentList(String _partCfgId) {
 		QueryOperation<PpartSkewerQueryParam, PpartSkewer> param = new QueryOperation<>();
