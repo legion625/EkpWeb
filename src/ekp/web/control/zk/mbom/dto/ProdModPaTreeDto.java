@@ -24,7 +24,7 @@ import ekp.data.service.mbom.ProdModInfo;
 import ekp.data.service.mbom.ProdModItemInfo;
 
 public class ProdModPaTreeDto {
-	private static Logger log = LoggerFactory.getLogger(DebugLogMark.class);
+	private static Logger log = LoggerFactory.getLogger(ProdModPaTreeDto.class);
 	
 	private PartAcqInfo partAcq;
 	private PartCfgInfo partCfg;
@@ -74,31 +74,15 @@ public class ProdModPaTreeDto {
 			PartAcqInfo partAcq = pmi.getPartAcq(); // lv1一定要有指定
 			PartCfgInfo partCfg = pmi.getPartCfg(); // lv1一定要有指定
 			
-//			ProdModPaTreeDto pmp = of(_prodMod, partAcq, partCfg, pmi, null);
 			ProdModPaTreeDto pmp = ofNew(pmi.getProdCtl(), _prodMod, partAcq, partCfg, pmi, null);
 			pmpList.add(pmp);
 		}
 		return pmpList;
 	}
 
-//	@Deprecated
-//	private static ProdModPaTreeDto of(ProdModInfo _prodMod, PartAcqInfo _partAcq, PartCfgInfo _partCfg,
-//			ProdModItemInfo _prodModItem, PpartInfo _parentPpart) {
-//		List<ProdModPaTreeDto> childrenList = new ArrayList<>();
-//		for (PpartInfo ppart : _partAcq.getPpartList()) {
-//			ProdModItemInfo childPmi = _prodMod.getProdModItemByPartUid(ppart.getPartUid());
-//			PartCfgInfo childPartCfg = childPmi == null ? _partCfg : childPmi.getPartCfg();
-//			PartAcqInfo childPartAcq = childPartCfg.getPartAcqByPart(ppart.getPartUid());
-//
-//			ProdModPaTreeDto childPmp = of(_prodMod, childPartAcq, childPartCfg, childPmi, ppart);
-//			childrenList.add(childPmp);
-//		}
-//		ProdModPaTreeDto pmp = new ProdModPaTreeDto(_partAcq, _partCfg, _prodModItem, _parentPpart, childrenList);
-//		return pmp;
-//	}
-	
 	private static ProdModPaTreeDto ofNew(ProdCtlInfo _prodCtl, ProdModInfo _prodMod, PartAcqInfo _partAcq, PartCfgInfo _partCfg,
 			ProdModItemInfo _prodModItem, PpartInfo _parentPpart) {
+		log.debug("============================================================");
 		log.debug("{}\t{}\t{}\t{}\t{}\t{}",
 				_prodCtl==null?"null": _prodCtl.getName(),
 				_partCfg.getId(), 
@@ -112,24 +96,41 @@ public class ProdModPaTreeDto {
 		List<ProdModPaTreeDto> childrenList = new ArrayList<>();
 
 		// _prodCtl仍有子階，從這邊長子階。
-		if (_prodCtl!=null && _prodCtl.getChildrenList().size() >= 0) {
+		if (_prodCtl!=null && _prodCtl.getChildrenList().size() > 0) {
+			log.debug("test 1 {}", _partAcq.getId());
 			for (ProdCtlInfo _childProdCtl : _prodCtl.getChildrenList()) {
-				log.debug("test 1");
+				log.debug("test 1 {}", _childProdCtl.getName());
 				// 找PMI
 				ProdModItemInfo childPmi = _prodMod.getProdModItem(_childProdCtl.getUid());
 				PartCfgInfo childPartCfg = null;
 				PartAcqInfo childPartAcq = null;
-//				PpartInfo ppart = null;
 				if (childPmi.isPartAcqCfgAssigned()) {
+					log.debug("test 1a");
 					childPartCfg = childPmi.getPartCfg();
 					childPartAcq = childPmi.getPartAcq();
-//					ppart= childPartAcq.getPart(false).getSrcPpart(childPartCfg);
 				} else {
+					log.debug("test 1b");
 					childPartCfg = _partCfg;
+					log.debug("_partCfg: {}\t{}", _partCfg.getUid(), _partCfg.getId());
+					log.debug("_childProdCtl.getPcpccList().size(): {}", _childProdCtl.getPcpccList().size());
+					for(ProdCtlPartCfgConjInfo pcpcc: _childProdCtl.getPcpccList()) {
+						log.debug("{}\t{}\t{}\t{}", pcpcc.getPartAcqUid(),pcpcc.getPartAcq().getId(), pcpcc.getPartCfgUid(), pcpcc.getPartCfg().getId());
+					}
+					
 					// 沒有指定->從_partAcq和childPartCfg找出下階的所有_childPartAcq
 					List<ProdCtlPartCfgConjInfo> pcpccList = _childProdCtl.getPcpccList().stream()
-							.filter(pcpcc -> pcpcc.getPartCfgUid().equalsIgnoreCase(_partCfg.getUid()))
+//							.filter(pcpcc -> pcpcc.getPartCfgUid().equalsIgnoreCase(_partCfg.getUid()))
 							.collect(Collectors.toList());
+					log.debug("pcpccList.size(): {}", pcpccList.size());
+					for(ProdCtlPartCfgConjInfo pcpcc: pcpccList) {
+						log.debug("{}\t{}", pcpcc.getPartAcqUid(), pcpcc.getPartCfgUid());
+					}
+					List<PartAcqInfo> beforeFilter = _partAcq.getChildrenList(childPartCfg);
+					log.debug("beforeFilter.size(): {}", beforeFilter.size());
+					for(PartAcqInfo pa: beforeFilter) {
+						log.debug("{}\t{}\t{}",pa.getUid(),pa.getId(),  pa.getPartPin());
+					}
+					
 					childPartAcq = _partAcq.getChildrenList(childPartCfg).stream()
 							.filter(childPa -> pcpccList.stream()
 									.anyMatch(pcpcc -> pcpcc.getPartAcqUid().equalsIgnoreCase(childPa.getUid())))
@@ -137,7 +138,11 @@ public class ProdModPaTreeDto {
 //					ppart= childPartAcq.getPart(false).getSrcPpart(childPartCfg);
 
 				}
+				log.debug("childPartCfg: {}\tchildPartAcq: {}",childPartCfg, childPartAcq );
+				
+				
 				if(childPartCfg!=null && childPartAcq!=null) {
+					log.debug("test 1c");
 					PpartInfo ppart = childPartAcq.getPart(false).getSrcPpart(childPartCfg);
 					
 					
@@ -150,15 +155,8 @@ public class ProdModPaTreeDto {
 		}
 		// 沒有子階，從構型長。
 		else {
+			log.debug("test 2 {}", _partAcq.getId());
 			for (PpartInfo ppart : _partAcq.getPpartList()) {
-				log.debug("test 2");
-//				ProdModItemInfo childPmi = _prodMod.getProdModItemByPartUid(ppart.getPartUid());
-//				PartCfgInfo childPartCfg = childPmi == null ? _partCfg : childPmi.getPartCfg();
-//				PartAcqInfo childPartAcq = childPartCfg.getPartAcqByPart(ppart.getPartUid());
-//	
-//				ProdModPaTreeDto childPmp = of(_prodMod, childPartAcq, childPartCfg, childPmi, ppart);
-//				childrenList.add(childPmp);
-				
 				
 				ProdModPaTreeDto childPmp = ofNew(null, _prodMod, _partCfg.getPartAcqByPart(ppart.getPartUid()), _partCfg, null, ppart);
 				childrenList.add(childPmp);
@@ -166,17 +164,6 @@ public class ProdModPaTreeDto {
 		}
 		
 		
-		
-//		ProdModItemInfo pmi = _prodMod.getProdModItem(_prodCtl.getUid());
-//
-//		for (PpartInfo ppart : _partAcq.getPpartList()) {
-//			ProdModItemInfo childPmi = _prodMod.getProdModItemByPartUid(ppart.getPartUid());
-//			PartCfgInfo childPartCfg = childPmi == null ? _partCfg : childPmi.getPartCfg();
-//			PartAcqInfo childPartAcq = childPartCfg.getPartAcqByPart(ppart.getPartUid());
-//
-//			ProdModPaTreeDto childPmp = of(_prodMod, childPartAcq, childPartCfg, childPmi, ppart);
-//			childrenList.add(childPmp);
-//		}
 		ProdModPaTreeDto pmp = new ProdModPaTreeDto(_partAcq, _partCfg, _prodModItem, _parentPpart, childrenList);
 		return pmp;
 	}

@@ -81,7 +81,7 @@ public interface PartInfo extends ObjectModelInfo {
 	
 	// 指定構型的下階ppart
 	default List<PpartInfo> getPpartChildren(PartCfgInfo _partCfg){
-		Logger log = LoggerFactory.getLogger(DebugLogMark.class);
+		Logger log = LoggerFactory.getLogger(PartInfo.class);
 		PartAcqInfo thisPa  = getPa(_partCfg);
 		if(thisPa==null)
 			return new ArrayList<>();
@@ -93,7 +93,7 @@ public interface PartInfo extends ObjectModelInfo {
 	}
 	
 	default PpartInfo getSrcPpart(PartCfgInfo _partCfg) {
-		Logger log = LoggerFactory.getLogger(DebugLogMark.class);
+		Logger log = LoggerFactory.getLogger(PartInfo.class);
 		QueryOperation<PpartSkewerQueryParam, PpartSkewer> param = new QueryOperation<>();
 		Map<PpartSkewerQueryParam, QueryValue[]> existsQvMap = new HashMap<>();
 //		partUid
