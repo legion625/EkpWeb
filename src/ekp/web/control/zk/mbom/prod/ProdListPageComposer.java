@@ -143,6 +143,10 @@ public class ProdListPageComposer extends SelectorComposer<Component> {
 			ti.getTreerow().appendChild(new Treecell(data.getPartAcq().getMmMano()));
 			
 			ti.getTreerow().appendChild(new Treecell(NumberFormatUtil.getDecimalString(data.getPartAcq().getRefUnitCost(), 2) ));
+			ti.getTreerow().appendChild(new Treecell(NumberFormatUtil.getDecimalString(data.getSumChildrenRefUnitCost(), 2) ));
+			
+			
+			
 			ti.getTreerow().appendChild(new Treecell(NumberFormatUtil.getDecimalString(data.getPartAcq().getMm().getAvgStockValue(), 2) ));
 			ti.getTreerow().appendChild(new Treecell(NumberFormatUtil.getDecimalString(data.getPartAcq().getMm().getIoiAvgOrderValue(InvtOrderType.I1), 2) ));
 			ti.getTreerow().appendChild(new Treecell(NumberFormatUtil.getDecimalString(data.getPartAcq().getMm().getIoiAvgOrderValue(InvtOrderType.I2), 2) ));

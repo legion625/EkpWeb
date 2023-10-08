@@ -848,6 +848,10 @@ public class PuScn1 extends AbstractEkpInitTest {
 		
 		private List<ProdModPaNew> childrenList;
 
+		/**
+		 * 待修，如ProdModPaTreeDto模式
+		 */
+		@Deprecated // 
 		private ProdModPaNew(PartAcqInfo partAcq, PartCfgInfo partCfg, ProdModItemInfo pmi, PpartInfo parentPpart,
 				List<ProdModPaNew> childrenList) {
 			this.partAcq = partAcq;

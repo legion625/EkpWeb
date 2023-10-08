@@ -195,5 +195,14 @@ public class ProdModPaTreeDto {
 	}
 
 	// ---------------------------------------------------------------------------
+	public double getSumChildrenRefUnitCost() {
+//		getChildrenList().stream().map(c->c.getPartAcq().getRefUnitCost())
+		if (getChildrenList().size() <= 0) {
+			return getPartAcq().getRefUnitCost();
+		}
+		else 
+			return getChildrenList().stream().mapToDouble(c->c.getQty()* c.getSumChildrenRefUnitCost()).sum();
+		
+	}
 
 }
