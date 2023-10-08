@@ -9,10 +9,13 @@ import org.slf4j.LoggerFactory;
 import ekp.data.MbomDataService;
 import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartInfo;
+import ekp.data.service.mbom.PpartSkewer;
 import ekp.data.service.mbom.query.PartCfgQueryParam;
 import ekp.data.service.mbom.query.PartQueryParam;
+import ekp.data.service.mbom.query.PpartSkewerQueryParam;
 import legion.DataServiceFactory;
 import legion.util.query.QueryOperation;
+import legion.util.query.QueryOperation.QueryValue;
 
 public class MbomServiceImp implements MbomService{
 
@@ -44,6 +47,15 @@ public class MbomServiceImp implements MbomService{
 	}
 	
 	// -------------------------------------------------------------------------------
+	// ----------------------------------PpartSkewer----------------------------------
+	@Override
+	public QueryOperation<PpartSkewerQueryParam, PpartSkewer> searchPpartSkewer(
+			QueryOperation<PpartSkewerQueryParam, PpartSkewer> _param,
+			Map<PpartSkewerQueryParam, QueryValue[]> _existsQvMap){
+		return dataService.searchPpartSkewer(_param, _existsQvMap);
+	}
+	
+	// -------------------------------------------------------------------------------
 	// ------------------------------------PartCfg------------------------------------
 	@Override
 	public PartCfgInfo loadPartCfgById(String _id) {
@@ -54,6 +66,11 @@ public class MbomServiceImp implements MbomService{
 	public List<PartCfgInfo> loadPartCfgList() {
 		QueryOperation<PartCfgQueryParam, PartCfgInfo> param = new QueryOperation<>();
 		return dataService.searchPartCfg(param).getQueryResult();
+	}
+	
+	@Override
+	public QueryOperation<PartCfgQueryParam, PartCfgInfo> searchPartCfg(QueryOperation<PartCfgQueryParam, PartCfgInfo> _param){
+		return dataService.searchPartCfg(_param);
 	}
 
 }

@@ -1,3 +1,7 @@
+Min-Hua, 2023.10.08
+[change]
+1. [MBOM]調整MBOM功能區頁面。
+
 Min-Hua, 2023.10.07
 [change]
 1. [PU]新增查詢購案功能頁面。

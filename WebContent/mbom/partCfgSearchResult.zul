@@ -1,0 +1,15 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<div vflex="1" apply="ekp.web.control.zk.mbom.PartCfgSearchResultComposer">
+		<listbox id="lbxPartCfg" vflex="1" emptyMessage="(no data)">
+			<listhead sizable="true">
+				<listheader label="構型ID" width="100px" sort="auto(id)"/>
+				<listheader label="構型名稱" width="130px" sort="auto(name)"/>
+				<listheader label="根節點PIN" width="80px" sort="auto(rootPartPin)"/>
+				<listheader label="狀態" width="80px" sort="auto(status)"/>
+				<listheader label="描述" width="200px" sort="auto(desp)"/>
+			</listhead>
+		</listbox>
+	</div>
+
+</zk>

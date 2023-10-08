@@ -1,40 +1,15 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-	<panel vflex="1" apply="ekp.web.control.zk.mbom.MbomFnComposer">
-		<panelchildren>
-			Part list
-			<listbox id="lbxPart" vflex="1" emptyMessage="(No data)">
-			<auxhead>
-			<auxheader></auxheader>
-			<auxheader><textbox id="txbFltrPin" hflex="1" /></auxheader>
-			<auxheader><textbox id="txbFltrName" hflex="1" /></auxheader>
-			<auxheader><combobox id="cbbFltrUnit" hflex="1" /></auxheader>
-			</auxhead>
-				<listhead sizable="true">
-					<listheader width="50px">
-						<toolbarbutton id="btnAddPart" iconSclass="fa fa-plus" />
-					</listheader>
-					<listheader label="Pin" sort="auto(pin)" />
-					<listheader label="Name" sort="auto(name)"/>
-					<listheader label="Unit" sort="auto(unit)"/>
-				</listhead>
-			</listbox>
-			<window id="wdCreatePart" title="Create part" width="60%" height="100px" mode="highlighted"
-				closable="true" visible="false" sizable="true">
-				<hlayout hflex="1">
-					<label value="Pin" />
-					<textbox id="txbPin" hflex="1" />
-					<label value="Name" />
-					<textbox id="txbName" hflex="1"/>
-					<label value="Unit" />
-					<combobox id="cbbUnit" hflex="1" />
-				</hlayout>
-				<separator spacing="5px" />
-				<div align="center">
-					<button id="btnSubmit" label="Submit" />
-					<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
-				</div>
-			</window>
-		</panelchildren>
-	</panel>
+<div vflex="1" apply="ekp.web.control.zk.mbom.MbomFnComposer">
+		<groupbox title="查詢">
+		<vlayout>
+			<button id="btnGotoSearchPartFnPage" label="查詢料件" />
+			<button id="btnGotoSearchPartCfgFnPage" label="查詢構型" />
+			<button id="btnGotoSearchPpartFnPage" label="查詢構型父子階關連" />
+			</vlayout>
+		</groupbox>
+		<!-- <groupbox title="功能操作">
+			<toolbarbutton id="btnCreateWo" label="產生工令" />
+		</groupbox> -->
+	</div>
 </zk>

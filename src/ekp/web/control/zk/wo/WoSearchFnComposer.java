@@ -26,7 +26,6 @@ import legion.web.control.zk.legionmodule.pageTemplate.FnCntProxy;
 
 public class WoSearchFnComposer extends SelectorComposer<Component> {
 	public final static String SRC = "/mf/woSearchFn.zul";
-
 	private Logger log = LoggerFactory.getLogger(WoSearchFnComposer.class);
 
 	// -------------------------------------------------------------------------------
