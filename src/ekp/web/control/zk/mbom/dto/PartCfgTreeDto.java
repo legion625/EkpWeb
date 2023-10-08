@@ -13,6 +13,7 @@ import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartInfo;
 import ekp.data.service.mbom.PpartInfo;
+import ekp.invt.type.InvtOrderType;
 import ekp.util.DataUtil;
 import legion.util.NumberFormatUtil;
 
@@ -31,6 +32,10 @@ public class PartCfgTreeDto {
 		this.childrenList = childrenList;
 	}
 
+	public static PartCfgTreeDto of(PartCfgInfo _partCfg) {
+		return of(_partCfg, _partCfg.getRootPart());
+	}
+	
 	public static PartCfgTreeDto of(PartCfgInfo _partCfg, PartInfo _thisPart) {
 		log.debug("PartCfgTreeDto.of");
 //		PartInfo rootPart = _partCfg.getRootPart();
@@ -91,8 +96,6 @@ public class PartCfgTreeDto {
 		return pa;
 	}
 
-	
-
 	public PpartInfo getPpart() {
 		return ppart;
 	}
@@ -136,8 +139,46 @@ public class PartCfgTreeDto {
 	}
 	
 	public String getPaRefUnitCostDisplay() {
-		return DataUtil.nodataIfEmpty(getPa(), pa->NumberFormatUtil.getDecimalString(pa.getRefUnitCost(), 3));
+		double d = getPa() == null ? 0 : getPa().getRefUnitCost();
+		String dStr = d <= 0 || Double.isNaN(d) ? null : NumberFormatUtil.getDecimalString(d, 3);
+		return DataUtil.nodataIfEmpty(dStr);
 	}
+	
+	public String getPaMmAvgStockValueDisplay() {
+		double d = getPa() == null ? 0 : (getPa().getMm() == null ? 0 : getPa().getMm().getAvgStockValue());
+		String dStr = d <= 0 || Double.isNaN(d) ? null : NumberFormatUtil.getDecimalString(d, 3);
+		return DataUtil.nodataIfEmpty(dStr);
+	}
+	
+	public double getPaMmIoiAvgOrderValue(InvtOrderType _ioType) {
+		return getPa() == null ? 0 : (getPa().getMm() == null ? 0 : getPa().getMm().getIoiAvgOrderValue(_ioType));
+	}
+	
+	public String getPaMmIoiAvgOrderValueDisplay(InvtOrderType _ioType) {
+		double d = getPaMmIoiAvgOrderValue(_ioType);
+		String dStr = d <= 0 || Double.isNaN(d) ? null : NumberFormatUtil.getDecimalString(d, 3);
+		return DataUtil.nodataIfEmpty(dStr);
+	}
+	
+	public String getPaMmIoiAvgOrderValueDisplayI1Display() {
+		return getPaMmIoiAvgOrderValueDisplay(InvtOrderType.I1);
+	}
+	public String getPaMmIoiAvgOrderValueDisplayI2Display() {
+		return getPaMmIoiAvgOrderValueDisplay(InvtOrderType.I2);
+	}
+	public String getPaMmIoiAvgOrderValueDisplayO2Display() {
+		return getPaMmIoiAvgOrderValueDisplay(InvtOrderType.O2);
+	}
+	public String getPaMmIoiAvgOrderValueDisplayO9Display() {
+		return getPaMmIoiAvgOrderValueDisplay(InvtOrderType.O9);
+	}
+
+	public String getPaMmSoiAvgValueDisplay() {
+		double d = getPa() == null ? 0 : (getPa().getMm() == null ? 0 : getPa().getMm().getSoiAvgValue());
+		String dStr = d <= 0 || Double.isNaN(d) ? null : NumberFormatUtil.getDecimalString(d, 3);
+		return DataUtil.nodataIfEmpty(dStr);
+	}
+	
 
 	// ---------------------------------------------------------------------------
 	public void reloadPa(PartCfgInfo _partCfg) {

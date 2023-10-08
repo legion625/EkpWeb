@@ -59,6 +59,9 @@ public class MmiComposer extends SelectorComposer<Component> {
 
 	@Wire
 	private Listbox lbxMaterialInst;
+	
+	/**/
+	// TODO lbxMaterialBinStock
 
 	// -------------------------------------------------------------------------------
 	private InvtService invtService = BusinessServiceFactory.getInstance().getService(InvtService.class);

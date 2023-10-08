@@ -1,0 +1,31 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<div id="divPartCfgTree" vflex="1" apply="ekp.web.control.zk.mbom.partCfg.PartCfgTreeComposer">
+	<tree id="treePartCfg" vflex="1" checkmark="false">
+		<frozen columns="1"></frozen>
+		<treecols sizable="true">
+			<treecol label="Part pin" width="150px" />
+			<treecol label="Part name" width="130px" />
+			<treecol label="Part unit" width="70px" />
+			<treecol label="Acq id" width="100px" />
+			<treecol label="Acq name" width="100px" />
+			<treecol label="Acq type" width="70px" />
+			<treecol label="Acq status" width="80px" visible="false" />
+			<treecol label="Required quantity" width="110px" style="text-align:left" align="right" />
+			<treecol label="Acq ref. unit cost" width="110px" style="text-align:left" align="right" />
+			<treecol label="平均庫儲單價" width="90px" style="text-align:left" align="right" />
+			<treecol label="平均採購入庫單價" width="110px" style="text-align:left" align="right" />
+			<treecol label="平均自製入庫單價" width="110px" style="text-align:left" align="right" />
+			<treecol label="平均料件領用單價" width="110px" style="text-align:left" align="right" />
+			<treecol label="平均成品出庫單價" width="110px" style="text-align:left" align="right" />
+			<treecol label="平均訂單單價" width="90px" style="text-align:left" align="right" />
+		</treecols>
+	</tree>
+	<hlayout>
+		<radiogroup id="rg">
+			<radio label="完整顯示" selected="true"></radio>
+			<radio label="僅數量/金額"></radio>
+		</radiogroup>
+	</hlayout>
+</div>
+</zk>
