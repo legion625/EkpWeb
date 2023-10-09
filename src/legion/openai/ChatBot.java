@@ -137,6 +137,7 @@ public class ChatBot {
 	// -------------------------------------------------------------------------------
 	/* Models for newer endpoint (END_POINT_DEFAULT) */
 	public final static String MODEL_GPT_35_TURBO = "gpt-3.5-turbo";
+	public final static String MODEL_GPT_35_TURBO_0613 = "gpt-3.5-turbo-0613";
 	public final static String MODEL_GPT_4 = "";
 	
 	/* Models for older endpoint */
@@ -145,6 +146,6 @@ public class ChatBot {
 	
 	// -------------------------------------------------------------------------------
 	public static String sendQuery(String input, String apiKey) {
-		return sendQuery(input, apiKey, END_POINT_DEFAULT, MODEL_GPT_35_TURBO);
+		return sendQuery(input, apiKey, END_POINT_DEFAULT, MODEL_GPT_35_TURBO_0613);
 	}
 }

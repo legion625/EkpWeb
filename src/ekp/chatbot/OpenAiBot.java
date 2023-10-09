@@ -70,7 +70,10 @@ public class OpenAiBot implements SimpleBot{
 		I11(11,"查詢[產品]清單、[構型]清單或[產品型錄]"), //
 		I12(12,"展開指定[產品]的BOM(bill of material)、料表、或結構(structure)"), //
 		I13(13,"詢問指定[產品]的價格"), //
-		I90(90,"詢問這個chatbot的操作說明，或功能指引。"), //
+		I21(21,"查詢銷售訂單(sales order)或有哪些客戶(customer)"), //
+		I31(31,"查詢購案(purchsing)或相關供應商(supllier)"), //
+		I41(41,"查詢工令(workorder)"), //
+		I90(90,"詢問這個chatbot的操作說明，或功能指引。(how can you help me)"), //
 		I99(99,"其他，和以上意圖相似度均不高"), //
 		;
 		
