@@ -19,10 +19,13 @@ import legion.util.JsonUtil;
 import legion.util.LogUtil;
 
 public class OpenAiBot implements SimpleBot{
-	private Logger log = LoggerFactory.getLogger(OpenAiBot.class);
-//	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
+//	private Logger log = LoggerFactory.getLogger(OpenAiBot.class);
+	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
 
 	private String apiKey;
+	
+	private int status; // 0:normal; 1:check entity
+	private IntentType tempIntentType; // when status from 0->1, set tempIntentType
 	
 	public OpenAiBot() {
 		apiKey = SystemInfoDefault.getInstance().getAttribute("openai.apiKey");
@@ -59,10 +62,48 @@ public class OpenAiBot implements SimpleBot{
 	
 	@Override
 	public String[] getResponseNew(String _utterance) {
-		IntentType intentType = getIntent(_utterance);
-		log.debug("intentType: {}", intentType);
-		
-		return intentType.getResponse(_utterance, apiKey);
+		if (status == 0) {
+			IntentType intentType = getIntent(_utterance);
+//			log.debug("intentType: {}", intentType);
+
+			switch (intentType.getEntityType()) {
+			case E11: {
+				status = 1;
+				tempIntentType = intentType;
+
+				String entityStr = "";
+				for (String en : EntityType.E11.entityNames) {
+					if (!DataFO.isEmptyString(entityStr))
+						entityStr += " or ";
+					entityStr += en;
+				}
+
+				return new String[] { "請輸入" + entityStr };
+			}
+			case E99: {
+				return intentType.getResponse(apiKey, _utterance);
+			}
+			default:
+				return intentType.getResponse(apiKey);
+			}
+		} else if (status == 1) {
+			String[] response = null;
+			// tempIntentType為空，表示有異常，以一般文字處理。
+			if (tempIntentType == null) {
+				IntentType intentType = getIntent(_utterance);
+				response = intentType.getResponse(apiKey);
+			} else {
+				String entity = _utterance;
+				response = tempIntentType.getResponse(apiKey, entity);
+			}
+			status = 0;
+			tempIntentType = null;
+			return response;
+		} else {
+			status = 0;
+			tempIntentType = null;
+			return getResponseNew(_utterance);
+		}
 	}
 	
 	// -------------------------------------------------------------------------------
@@ -81,6 +122,7 @@ public class OpenAiBot implements SimpleBot{
 		
 		private int idx;
 		private String desp;
+//		private String entityCheckMsg;
 		
 		private IntentType(int idx, String desp) {
 			this.idx = idx;
@@ -98,36 +140,51 @@ public class OpenAiBot implements SimpleBot{
 			}
 		}
 		
-		public String[] getResponse(String _utterance, String apiKey) {
+		public String[] getResponse( String apiKey) {
+			return getResponse( apiKey, null);
+		}
+		
+//		public String[] getResponse(String _utterance, String apiKey, String _entity) {
+		public String[] getResponse( String apiKey, String _entity) {
 			EntityType entityType  = null;
 			switch (this) {
 			case I11:
 				return ChatbotServiceFacade.getInstance().pc1();
 			case I12:{
-				entityType =  EntityType.E11;
-				String rawResponse = ChatBot.sendQuery(entityType.getInputStr(_utterance), apiKey);
-				log.debug("rawResponse: {}", rawResponse);
-				for (String n : entityType.entityNames)
-					rawResponse = rawResponse.replaceAll(n, "");
-				List<String> entityValuesList = DataUtil.findInCurlyBrackets(rawResponse);
-				entityValuesList = entityValuesList.stream().map(DataUtil::sanitize).collect(Collectors.toList()); // 消毒
-				for(String entityValue:entityValuesList)
-					log.debug("entityValue: {}", entityValue);
+//				entityType =  EntityType.E11;
+//				String rawResponse = ChatBot.sendQuery(entityType.getInputStr(_utterance), apiKey);
+//				log.debug("rawResponse: {}", rawResponse);
+//				for (String n : entityType.entityNames)
+//					rawResponse = rawResponse.replaceAll(n, "");
+//				List<String> entityValuesList = DataUtil.findInCurlyBrackets(rawResponse);
+//				entityValuesList = entityValuesList.stream().map(DataUtil::sanitize).collect(Collectors.toList()); // 消毒
+//				for(String entityValue:entityValuesList)
+//					log.debug("entityValue: {}", entityValue);
+				List<String> entityValuesList =new ArrayList<>();
+				entityValuesList.add(_entity);
 				return ChatbotServiceFacade.getInstance().bom(entityValuesList, false);
 			}
 			case I13:{
-				entityType =  EntityType.E11;
-				String rawResponse = ChatBot.sendQuery(entityType.getInputStr(_utterance), apiKey);
-				log.debug("rawResponse: {}", rawResponse);
-				List<String> entityValuesList = DataUtil.findInCurlyBrackets(rawResponse);
-				entityValuesList = entityValuesList.stream().map(DataUtil::sanitize).collect(Collectors.toList()); // 消毒
+//				entityType =  EntityType.E11;
+//				String rawResponse = ChatBot.sendQuery(entityType.getInputStr(_utterance), apiKey);
+//				log.debug("rawResponse: {}", rawResponse);
+//				List<String> entityValuesList = DataUtil.findInCurlyBrackets(rawResponse);
+//				entityValuesList = entityValuesList.stream().map(DataUtil::sanitize).collect(Collectors.toList()); // 消毒
+				List<String> entityValuesList =new ArrayList<>();
+				entityValuesList.add(_entity);
 				return ChatbotServiceFacade.getInstance().cost(entityValuesList);
 			}
+			case I21:
+				return ChatbotServiceFacade.getInstance().soList();
+			case I31:
+				return ChatbotServiceFacade.getInstance().puList();
+			case I41:
+				return ChatbotServiceFacade.getInstance().woList();
 			case I90:
 				return new String[] { I11.desp, I12.desp, I13.desp };
 			case I99:
 			default:
-				return new String[] { ChatBot.sendQuery(_utterance, apiKey) };
+				return new String[] { ChatBot.sendQuery(_entity, apiKey) };
 			}
 		}
 		
@@ -156,6 +213,7 @@ public class OpenAiBot implements SimpleBot{
 		NONE(), //
 //		E11("產品編號"), E12("產品名稱"), //
 		E11("產品編號","產品名稱"), //
+		E99("Raw input"), //
 		;
 
 		private Logger log = LoggerFactory.getLogger(EntityType.class);

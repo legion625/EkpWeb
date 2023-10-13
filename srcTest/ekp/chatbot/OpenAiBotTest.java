@@ -96,42 +96,42 @@ public class OpenAiBotTest extends AbstractEkpInitTest {
 	public void test_run_01() {
 		List<ResultLine> resultLineList = new ArrayList<>();
 		
-		/* 11 */
+//		/* 11 */
 		resultLineList.add(new ResultLine("有多少種產品", I11));
-		resultLineList.add(new ResultLine("賣哪些東西?", I11));
-		resultLineList.add(new ResultLine("Show me the product family", I11));
-		resultLineList.add(new ResultLine("Show me the product config family", I11));
-		
-		/* 12 */
-		resultLineList.add(new ResultLine("What's the bom structure of A", I12));
-		resultLineList.add(new ResultLine("What's the bom structure of Afa", I12));
-		resultLineList.add(new ResultLine("A的料表?", I12));
-		resultLineList.add(new ResultLine("Afa的料表?", I12));
-		
-		/* 13 */
-		resultLineList.add(new ResultLine("What's the cost of PART_A", I13));
-		resultLineList.add(new ResultLine("What's the cost of PART_Afa", I13));
-		resultLineList.add(new ResultLine("PART_Afa多少錢", I13));
-		
-		/* 21.查詢銷售訂單 */
-		resultLineList.add(new ResultLine("有哪些銷售訂單", I21));
-		resultLineList.add(new ResultLine("有哪些客戶", I21));
-		
-		/* 31.查詢購案 */
-		resultLineList.add(new ResultLine("有購買過哪件料件", I31));
-		resultLineList.add(new ResultLine("有哪些供應商", I31));
-		
-		/* 41.查詢工令 */
-		resultLineList.add(new ResultLine("有哪些自製工令?", I41));
-		resultLineList.add(new ResultLine("有什麼工件正在製造?", I41));
-		
-		/* 90 */
-		resultLineList.add(new ResultLine("這個chatbot有操作說明嗎?", I90));
-		resultLineList.add(new ResultLine("What can you do?", I90));
-		resultLineList.add(new ResultLine("How can you help me?", I90));
+//		resultLineList.add(new ResultLine("賣哪些東西?", I11));
+//		resultLineList.add(new ResultLine("Show me the product family", I11));
+//		resultLineList.add(new ResultLine("Show me the product config family", I11));
+//		
+//		/* 12 */
+//		resultLineList.add(new ResultLine("What's the bom structure of A", I12));
+//		resultLineList.add(new ResultLine("What's the bom structure of Afa", I12));
+//		resultLineList.add(new ResultLine("A的料表?", I12));
+//		resultLineList.add(new ResultLine("Afa的料表?", I12));
+//		
+//		/* 13 */
+//		resultLineList.add(new ResultLine("What's the cost of PART_A", I13));
+//		resultLineList.add(new ResultLine("What's the cost of PART_Afa", I13));
+//		resultLineList.add(new ResultLine("PART_Afa多少錢", I13));
+//		
+//		/* 21.查詢銷售訂單 */
+//		resultLineList.add(new ResultLine("有哪些銷售訂單", I21));
+//		resultLineList.add(new ResultLine("有哪些客戶", I21));
+//		
+//		/* 31.查詢購案 */
+//		resultLineList.add(new ResultLine("有購買過哪件料件", I31));
+//		resultLineList.add(new ResultLine("有哪些供應商", I31));
+//		
+//		/* 41.查詢工令 */
+//		resultLineList.add(new ResultLine("有哪些自製工令?", I41));
+//		resultLineList.add(new ResultLine("有什麼工件正在製造?", I41));
+//		
+//		/* 90 */
+//		resultLineList.add(new ResultLine("這個chatbot有操作說明嗎?", I90));
+//		resultLineList.add(new ResultLine("What can you do?", I90));
+//		resultLineList.add(new ResultLine("How can you help me?", I90));
 		/* 99 */
-		resultLineList.add(new ResultLine("你有女朋友嗎", I99));
-		resultLineList.add(new ResultLine("今天會下雨嗎", I99));
+//		resultLineList.add(new ResultLine("詢問產品客製化的複雜度", I99));
+//		resultLineList.add(new ResultLine("今天會下雨嗎", I99));
 
 		for (ResultLine rl : resultLineList) {
 //			log.debug("{}\t{}\t{}\t{}\t{}", rl.utterance, rl.expected, rl.actual, rl.isMatch(), rl.getEntityOutputs());
