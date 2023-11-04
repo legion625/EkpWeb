@@ -3,6 +3,8 @@ package ekp.data.service.invt;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import ekp.data.service.sd.SalesOrderInfo;
+import ekp.data.service.sd.SalesOrderItemInfo;
 import ekp.invt.type.InvtOrderType;
 import ekp.mbom.type.PartUnit;
 import legion.ObjectModelInfo;
@@ -45,11 +47,11 @@ public interface MaterialMasterInfo extends ObjectModelInfo{
 	default List<MaterialBinStockInfo> getMbsList() {
 		return getMbsList(false);
 	}
-	
+
 	default List<MaterialBinStockBatchInfo> getMbsbList() {
 		return getMbsList().stream().flatMap(mbs -> mbs.getMbsbList().stream()).collect(Collectors.toList());
 	}
-	
+
 	default double getAvgStockValue() {
 		return getSumStockValue() / getSumStockQty();
 	}
@@ -59,15 +61,27 @@ public interface MaterialMasterInfo extends ObjectModelInfo{
 	default List<InvtOrderItemInfo> getIoiList(InvtOrderType _ioType) {
 		return getIoiList().stream().filter(ioi -> ioi.getIoType() == _ioType).collect(Collectors.toList());
 	}
-	
+
 	default double getIoiAvgOrderValue(InvtOrderType _ioType) {
 		List<InvtOrderItemInfo> ioiList = getIoiList(_ioType);
-		double sumOrderQty= 0, sumOrderValue = 0;
-		for(InvtOrderItemInfo ioi: ioiList) {
-			sumOrderQty+=ioi.getOrderQty();
-			sumOrderValue+=ioi.getOrderValue();
+		double sumOrderQty = 0, sumOrderValue = 0;
+		for (InvtOrderItemInfo ioi : ioiList) {
+			sumOrderQty += ioi.getOrderQty();
+			sumOrderValue += ioi.getOrderValue();
 		}
 		return sumOrderValue / sumOrderQty;
+	}
+	
+	List<SalesOrderItemInfo> getSoiList();
+	
+	default double getSoiAvgValue() {
+		List<SalesOrderItemInfo> soiList = getSoiList();
+		double sumQty = 0, sumValue = 0;
+		for (SalesOrderItemInfo soi : soiList) {
+			sumQty += soi.getQty();
+			sumValue += soi.getValue();
+		}
+		return sumValue / sumQty;
 	}
 
 }

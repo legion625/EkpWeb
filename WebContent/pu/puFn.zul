@@ -1,0 +1,11 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<div vflex="1" apply="ekp.web.control.zk.pu.PuFnComposer">
+		<groupbox title="查詢">
+			<button id="btnGotoSearchFnPage" label="查詢購案" />
+		</groupbox>
+		<groupbox title="功能操作">
+			<button id="btnCreatePu" label="建立購案" />
+		</groupbox>
+	</div>
+</zk>

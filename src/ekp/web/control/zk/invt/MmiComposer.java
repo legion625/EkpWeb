@@ -51,7 +51,7 @@ import legion.web.zk.ZkNotification;
 import legion.web.zk.ZkUtil;
 
 public class MmiComposer extends SelectorComposer<Component> {
-	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
+	private Logger log = LoggerFactory.getLogger(MmiComposer.class);
 
 	// -------------------------------------------------------------------------------
 	@Wire
@@ -59,6 +59,9 @@ public class MmiComposer extends SelectorComposer<Component> {
 
 	@Wire
 	private Listbox lbxMaterialInst;
+	
+	/**/
+	// TODO lbxMaterialBinStock
 
 	// -------------------------------------------------------------------------------
 	private InvtService invtService = BusinessServiceFactory.getInstance().getService(InvtService.class);

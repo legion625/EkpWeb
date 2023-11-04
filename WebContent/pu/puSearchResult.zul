@@ -1,0 +1,15 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<div vflex="1" apply="ekp.web.control.zk.pu.PuSearchResultComposer">
+		<listbox id="lbxPu" vflex="1" emptyMessage="(no data)">
+			<listhead sizable="true">
+				<listheader label="購案案號" width="80px" sort="auto(puNo)" />
+				<listheader label="購案名稱" width="100px" sort="auto(title)" />
+				<listheader label="供應商統編" width="80px" sort="auto(supplierBan)" />
+				<listheader label="供應商名稱" width="80px" sort="auto(supplierName)" />
+				<listheader label="履約狀態" width="60px" sort="auto(sumPurchItemAmt)" />
+				<listheader label="金額" width="80px" style="text-align:left" align="right" sort="auto(sumPurchItemAmt)" />
+			</listhead>
+		</listbox>
+	</div>
+</zk>

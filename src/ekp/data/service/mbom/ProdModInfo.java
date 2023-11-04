@@ -40,6 +40,7 @@ public interface ProdModInfo extends ObjectModelInfo{
 		return getProdCtlUidProdModItemMap().get(_prodCtlUid);
 	}
 	
+	@Deprecated
 	default ProdModItemInfo getProdModItemByPartUid(String _partUid) {
 		return getProdModItemList().stream()
 				.filter(pmi -> pmi.isPartAcqCfgAssigned() && pmi.getPartAcq().getPartUid().equals(_partUid)).findAny()

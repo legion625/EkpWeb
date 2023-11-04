@@ -1,0 +1,16 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<div vflex="1" apply="ekp.web.control.zk.invt.io.IoSearchResultComposer">
+		<listbox id="lbxIo" vflex="1" emptyMessage="(no data)">
+			<listhead sizable="true">
+				<listheader label="序號" width="80px" sort="auto(iosn)" />
+				<listheader label="狀態" width="80px" sort="auto(status)" />
+				<listheader label="申請人姓名" width="80px" sort="auto(applierName)" />
+				<listheader label="申請時間" width="110px" sort="auto(applyTime)" />
+				<listheader label="核定時間" width="110px" sort="auto(apvTime)" />
+				<listheader label="金額" width="80px" style="text-align:left" align="right" sort="auto(sumIoiOrderValue)" />
+				<listheader label="備註" width="200px" sort="auto(remark)" />
+			</listhead>
+		</listbox>
+	</div>
+</zk>

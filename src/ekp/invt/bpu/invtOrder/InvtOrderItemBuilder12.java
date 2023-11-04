@@ -102,6 +102,7 @@ public class InvtOrderItemBuilder12 extends InvtOrderItemBuilder {
 
 	public InvtOrderItemBuilder12 appendOrderValue(double orderValue) {
 		super.appendOrderValue(orderValue);
+		miBuilder.appendValue(orderValue);
 		mbsbStmtBuilder.appendStmtValue(orderValue);
 		return this;
 	}

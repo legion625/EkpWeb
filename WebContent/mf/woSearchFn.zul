@@ -1,0 +1,6 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<div vflex="1" apply="ekp.web.control.zk.wo.WoSearchFnComposer">
+		<include id="icdSearchFnPage" vflex="1" />
+	</div>
+</zk>

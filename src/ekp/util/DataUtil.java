@@ -5,11 +5,16 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import legion.util.DataFO;
 
 public class DataUtil {
 	public final static String NO_DATA = "(No data)";
+	
+	public static String getStrJ(List<String> _strList) {
+		return _strList.stream().collect(Collectors.joining(","));
+	}
 	
 	public static String getStr(boolean _b) {
 		return _b?"✓":"×";

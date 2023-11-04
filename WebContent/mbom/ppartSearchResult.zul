@@ -1,0 +1,20 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<div vflex="1" apply="ekp.web.control.zk.mbom.PpartSearchResultComposer">
+		<listbox id="lbxPpart" vflex="1" emptyMessage="(no data)">
+			<listhead sizable="true">
+			<listheader label="父階PIN" width="100px" sort="auto(ppin)"/>
+			<listheader label="父階料件名稱" width="100px" sort="auto(pname)"/>
+			<listheader label="父階獲取方式ID" width="100px" sort="auto(paId)"/>
+			<listheader label="父階獲取方式名稱" width="100px" sort="auto(paName)"/>
+			<listheader label="途程序號" width="80px" sort="auto(parsSeq)"/>
+			<listheader label="途程名稱" width="100px" sort="auto(parsName)"/>
+			<listheader label="途程描述" width="200px" sort="auto(parsDesp)" visible="false"/>
+			<listheader label="子階PIN" width="100px" sort="auto(partPin)"/>
+			<listheader label="子階料件名稱" width="130px" sort="auto(partName)"/>
+			<listheader label="子階配賦量" width="80px" style="text-align:left" align="right" sort="auto(partReqQty)"/>
+			
+			</listhead>
+		</listbox>
+	</div>
+</zk>

@@ -4,6 +4,9 @@ import java.util.List;
 
 import ekp.data.BizObjLoader;
 import ekp.data.InvtDataService;
+import ekp.data.SdDataService;
+import ekp.data.service.sd.SalesOrderInfo;
+import ekp.data.service.sd.SalesOrderItemInfo;
 import ekp.mbom.type.PartUnit;
 import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
@@ -107,6 +110,14 @@ public class MaterialMasterInfoDto extends ObjectModelInfoDto implements Materia
 	@Override
 	public List<InvtOrderItemInfo> getIoiList(){
 		return ioiListLoader.getObj();
+	}
+
+	private BizObjLoader<List<SalesOrderItemInfo>> soiListLoader = BizObjLoader.of(() -> DataServiceFactory
+			.getInstance().getService(SdDataService.class).loadSalesOrderItemListMyMm(getUid()));
+
+	@Override
+	public List<SalesOrderItemInfo> getSoiList() {
+		return soiListLoader.getObj();
 	}
 
 }

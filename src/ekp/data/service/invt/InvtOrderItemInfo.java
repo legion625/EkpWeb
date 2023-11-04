@@ -35,6 +35,8 @@ public interface InvtOrderItemInfo extends ObjectModelInfo {
 	InvtOrderItemInfo reload();
 
 	// -------------------------------------------------------------------------------
+	InvtOrderInfo getIo();
+	
 	List<MbsbStmtInfo> getMbsbStmtList();
 
 }

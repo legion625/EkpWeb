@@ -1,52 +1,52 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
 	<borderlayout vflex="1" apply="ekp.web.control.zk.invt.WrhsLocBinComposer">
-		<center title="Warehouse Location">
-			<div vflex="1">
-				<hlayout>
-					<toolbarbutton id="btnAddWrhsLoc" label="新增倉庫" iconSclass="fa fa-plus" />
-					<toolbarbutton id="btnDeleteWrhsLoc" label="移除倉庫" iconSclass="fas fa-trash-alt" />
-				</hlayout>
-				<listbox id="lbxWrhsLoc" vflex="1" emptyMessage="(No data)" checkmark="true">
-					<listhead sizable="true">
-						<listheader width="50px"></listheader>
-						<listheader label="ID" sort="auto(id)" />
-						<listheader label="Name" sort="auto(name)" />
-					</listhead>
-				</listbox>
-				<window id="wdCreateWl" title="Create warehouse location" width="60%" height="100px" mode="highlighted"
-					closable="true" visible="false" sizable="true">
-					<hlayout hflex="1">
-						<label value="ID" />
-						<textbox id="txbId" hflex="1" />
-						<label value="Name" />
-						<textbox id="txbName" hflex="1" />
-					</hlayout>
-					<separator spacing="5px" />
-					<div align="center">
-						<button id="btnSubmit" label="Submit" />
-						<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
-					</div>
-				</window>
-			</div>
-		</center>
-		<east title="Warehouse Bin" open="true" width="50%" splittable="true">
+		<west title="Warehouse Location" width="300px" open="true" splittable="true" collapsible="true">
+			<div vflex="1" style="overflow:auto">
+				<div height="300px">
+					<groupbox title="倉庫" vflex="1">
+						<hlayout>
+							<toolbarbutton id="btnAddWrhsLoc" label="新增倉庫" iconSclass="fa fa-plus" />
+							<toolbarbutton id="btnDeleteWrhsLoc" label="移除倉庫" iconSclass="fas fa-trash-alt" />
+						</hlayout>
+						<listbox id="lbxWrhsLoc" vflex="1" emptyMessage="(No data)" checkmark="true">
+							<listhead sizable="true">
+								<listheader width="45px"></listheader>
+								<listheader label="ID" width="70px" sort="auto(id)" />
+								<listheader label="Name" width="100px" sort="auto(name)" />
+							</listhead>
+						</listbox>
+					</groupbox>
+					<window id="wdCreateWl" title="Create warehouse location" width="60%" height="100px"
+						mode="highlighted" closable="true" visible="false" sizable="true">
+						<hlayout hflex="1">
+							<label value="ID" />
+							<textbox id="txbId" hflex="1" />
+							<label value="Name" />
+							<textbox id="txbName" hflex="1" />
+						</hlayout>
+						<separator spacing="5px" />
+						<div align="center">
+							<button id="btnSubmit" label="Submit" />
+							<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
+						</div>
+					</window>
+				</div>
+				<div height="300px">
+					<groupbox title="儲位" vflex="1">
+						<hlayout>
+							<toolbarbutton id="btnAddWrhsBin" label="新增儲位" iconSclass="fa fa-plus" />
+							<toolbarbutton id="btnDeleteWrhsBin" label="移除儲位" iconSclass="fas fa-trash-alt" />
+						</hlayout>
+						<listbox id="lbxWrhsBin" vflex="1" emptyMessage="無資料項" checkmark="true">
 
-		<borderlayout vflex="1">
-			<center>
-				<div vflex="1">
-					<hlayout>
-						<toolbarbutton id="btnAddWrhsBin" label="新增儲位" iconSclass="fa fa-plus" />
-						<toolbarbutton id="btnDeleteWrhsBin" label="移除儲位" iconSclass="fas fa-trash-alt" />
-					</hlayout>
-					<listbox id="lbxWrhsBin" vflex="1" emptyMessage="無資料項" checkmark="true">
-
-						<listhead sizable="true">
-							<listheader width="50px"></listheader>
-							<listheader label="ID" sort="auto(id)" />
-							<listheader label="Name" sort="auto(name)" />
-						</listhead>
-					</listbox>
+							<listhead sizable="true">
+								<listheader width="45px"></listheader>
+								<listheader label="ID" width="70px" sort="auto(id)" />
+								<listheader label="Name" width="100px" sort="auto(name)" />
+							</listhead>
+						</listbox>
+					</groupbox>
 					<window id="wdCreateWb" title="Create warehouse bin" width="400px" height="100px" mode="highlighted"
 						closable="true" visible="false" sizable="true">
 						<hlayout hflex="1">
@@ -62,25 +62,50 @@
 						</div>
 					</window>
 				</div>
-			</center>
-			<south height="300px">
-				<div vflex="1">
-					<listbox id="lbxMbsOfWb" vflex="1" emptyMessage="無資料項" checkmark="true">
-						<listhead sizable="true">
-							<listheader width="50px"></listheader>
-							<listheader label="料號" sort="auto(mano)" />
-							<listheader label="品名" sort="auto(mm.name)" />
-							<listheader label="計量單位" sort="auto(mm.stdUnit)" />
-							<listheader label="庫存數量" sort="auto(sumStockQty)" />
-							<listheader label="庫存帳值" sort="auto(sumStockValue)" />
-						</listhead>
-					</listbox>
-				</div>
-			</south>
+			</div>
+		</west>
+		<center title="Material Bin Stock">
+			<borderlayout>
+				<center>
+					<div vflex="1">
+						<listbox id="lbxMbsOfWb" vflex="1" emptyMessage="無資料項" checkmark="true">
+							<listhead sizable="true">
+								<listheader width="50px"></listheader>
+								<listheader label="料號" width="70px" sort="auto(mano)" />
+								<listheader label="品名" width="100px" sort="auto(mm.name)" />
+								<listheader label="計量單位" width="80px" sort="auto(mm.stdUnit)" />
+								<listheader label="庫存數量" width="80px" style="text-align:left" align="right"
+									sort="auto(sumStockQty)" />
+								<listheader label="庫存帳值" width="80px" style="text-align:left" align="right"
+									sort="auto(sumStockValue)" />
+							</listhead>
+						</listbox>
+					</div>
+				</center>
+				<east title="Statement" width="800px" open="false" splittable="true" collapsible="true">
+					<div vflex="1" hflex="1">
+						<listbox id="lbxMbsbStmt" hflex="1" vflex="1" emptyMessage="無資料項">
+							<listhead sizable="true">
+								<listheader label="MISN" width="100px" sort="auto(mbsb.mi.misn)" />
+								<listheader label="獲取方式" width="70px" sort="auto(mbsb.mi.miac)" />
+								<listheader label="出入庫單號" width="80px" sort="auto(ioi.io.iosn)" />
+								<listheader label="出入庫類型" width="80px" sort="auto(ioi.ioType)" />
+								<listheader label="來源單號" width="100px" sort="auto(ioi.targetBizKey)" />
+								<listheader label="流向" width="55px" sort="auto(mbsbFlowType)" />
+								<listheader label="數量" width="80px" style="text-align:left" align="right"
+									sort="auto(stmtQty)" />
+								<listheader label="帳值" width="80px" style="text-align:left" align="right"
+									sort="auto(stmtValue)" />
+								<listheader label="登帳狀態" width="70px" sort="auto(postingStatus)" />
+								<listheader label="登帳時間" width="130px" sort="auto(postingTime)" />
+							</listhead>
+						</listbox>
+					</div>
+				</east>
 
-		</borderlayout>
+			</borderlayout>
 
 
-		</east>
+		</center>
 	</borderlayout>
 </zk>

@@ -86,7 +86,7 @@
 						</tree>
 					</div>
 				</center>
-				<east vflex="1" title="Routing step part list" width="70%" collapsible="true" splittable="true"
+				<east vflex="1" title="Routing step part list" width="70%" collapsible="true" splittable="true" 
 					open="false">
 					<div vflex="1">
 						<hlayout>

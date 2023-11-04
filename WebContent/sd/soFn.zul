@@ -1,0 +1,11 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<div vflex="1" apply="ekp.web.control.zk.sd.SoFnComposer">
+		<groupbox title="查詢">
+			<button id="btnGotoSearchFnPage" label="查詢銷售訂單" />
+		</groupbox>
+		<groupbox title="功能操作">
+			<button id="btnCreateSo" label="產生銷售訂單" />
+		</groupbox>
+	</div>
+</zk>

@@ -84,10 +84,13 @@ public class MfDataServiceImp implements MfDataService {
 			QueryOperation<WorkorderQueryParam, WorkorderRemote> paramRemote = (QueryOperation<WorkorderQueryParam, WorkorderRemote>) _param
 					.copy();
 			paramRemote = getEkpKernelRmi().searchWorkorder(paramRemote, _existsDetailMap);
+			log.debug("paramRemote.getTotal(): {}", paramRemote.getTotal());
 			List<WorkorderInfo> list = paramRemote.getQueryResult().stream().map(MfFO::parseWorkorder)
 					.collect(Collectors.toList());
+			log.debug("list.size(): {}", list.size());
 			_param.setQueryResult(list);
 			_param.setTotal(paramRemote.getTotal());
+			log.debug("_param.getTotal(): {}", _param.getTotal());
 			return _param;
 		} catch (Throwable e) {
 			LogUtil.log(log, e, Level.ERROR);

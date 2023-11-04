@@ -22,6 +22,15 @@ public interface MbsbStmtInfo extends ObjectModelInfo{
 	long getPostingTime();
 	
 	// -------------------------------------------------------------------------------
+	default String getMbsbFlowTypeName() {
+		return (getMbsbFlowType()==null?MbsbFlowType.UNDEFINED:getMbsbFlowType()).getName();
+	}
+	
+	default String getPostingStatusName() {
+		return (getPostingStatus()==null?PostingStatus.UNDEFINED:getPostingStatus()).getName();
+	}
+	
+	// -------------------------------------------------------------------------------
 	MaterialBinStockBatchInfo getMbsb();
 	
 	InvtOrderItemInfo getIoi();

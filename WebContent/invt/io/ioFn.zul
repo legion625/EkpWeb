@@ -1,0 +1,11 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<div vflex="1" apply="ekp.web.control.zk.invt.io.IoFnComposer">
+		<groupbox title="查詢">
+			<button id="btnGotoSearchFnPage" label="查詢入出庫憑單" />
+		</groupbox>
+		<groupbox title="功能操作">
+			<button id="btnCreateIo" label="建立入出庫憑單" />
+		</groupbox>
+	</div>
+</zk>

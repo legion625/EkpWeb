@@ -14,4 +14,10 @@ public interface ProdCtlPartCfgConjInfo extends ObjectModelInfo{
 	PartCfgInfo getPartCfg();
 
 	PartAcqInfo getPartAcq();
+	
+	default String getDisplay() {
+		if (getPartCfg() == null || getPartAcq() == null)
+			return "";
+		return "[" + getPartCfg().getId() + "][" + getPartAcq().getId() + "]";
+	}
 }

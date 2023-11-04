@@ -65,6 +65,10 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 
 	private Logger log = LoggerFactory.getLogger(PartInfoComposer.class);
 //	private Logger log = LoggerFactory.getLogger(DebugLogMark.class);
+	
+	public static PartInfoComposer of(Include _icd) {
+		return ZkUtil.of(_icd, URI, "pnPartInfo");
+	}
 
 	// -------------------------------------------------------------------------------
 	/* Part */

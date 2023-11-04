@@ -47,5 +47,13 @@ public class ProdInfoDto extends ObjectModelInfoDto implements ProdInfo {
 	public List<ProdCtlInfo> getProdCtlListLv1() {
 		return prodCtlListLv1Loader.getObj();
 	}
+	
+	private BizObjLoader<List<ProdModInfo>> prodModListLoader = BizObjLoader
+			.of(() -> DataServiceFactory.getInstance().getService(MbomDataService.class).loadProdModList(getUid()));
+	
+	@Override
+	public List<ProdModInfo> getProdModList(){
+		return prodModListLoader.getObj();
+	}
 
 }
