@@ -1,3 +1,7 @@
+Min-Hua, 2023.11.04
+[lib]
+1. ekp_kernel: 0.5.6 -> 0.5.7
+
 Min-Hua, 2023.10.08
 [change]
 1. [MBOM]調整MBOM功能區頁面。
