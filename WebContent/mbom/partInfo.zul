@@ -1,7 +1,7 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-	<panel id="pnPartInfo" vflex="1" apply="ekp.web.control.zk.mbom.PartInfoComposer">
-		<panelchildren>
+	<panel id="pnPartInfo" vflex="1" apply="ekp.web.control.zk.mbom.PartInfoComposer" >
+		<panelchildren >
 			<hlayout valign="middle">
 				<label value="Pin: " style="font-size:20px; weight:bold" />
 				<label id="lbPin" style="font-size:20px; weight:bold" />
@@ -17,7 +17,7 @@
 					<tab label="Part configuration" />
 				</tabs>
 				<tabpanels>
-					<tabpanel>
+					<tabpanel vflex="1" style="overflow:auto">
 						<hlayout>
 							<button id="btnAddPa" label="New" iconSclass="fa fa-plus" />
 							<button id="btnAssignPc" label="Assign part configuration" iconSclass="fas fa-sitemap" />
@@ -25,12 +25,13 @@
 							<button id="btnPaDelete" label="Delete" iconSclass="fas fa-trash-alt" disabled="true" />
 						</hlayout>
 						<listbox id="lbxPartAcq" emptyMessage="(No data)" checkmark="true">
+						<frozen columns="2"/>
 							<listhead sizable="true">
 								<listheader width="40px" />
-								<listheader label="Id" width="100px" />
-								<listheader label="Name" width="180px" />
+								<listheader label="Id" width="80px" />
+								<listheader label="Name" width="150px" />
 								<listheader label="Type" width="50px" />
-								<listheader label="Status" width="100px" />
+								<listheader label="Status" width="80px" />
 								<listheader label="Referenced unit cost" width="130px" />
 								<listheader label="Referenced part configuraions" />
 							</listhead>
@@ -116,7 +117,7 @@
 												<listheader width="40px" />
 												<listheader label="Part pin" width="130px" />
 												<listheader label="Part name" width="180px" />
-												<listheader label="Part required quantity" width="150px" />
+												<listheader label="Part required quantity" width="150px" align="right" style="text-align:left" />
 											</listhead>
 										</listbox>
 
