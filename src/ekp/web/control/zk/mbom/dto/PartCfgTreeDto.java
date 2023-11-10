@@ -142,6 +142,10 @@ public class PartCfgTreeDto {
 		return DataUtil.nodataIfEmpty(getPpart(), pp->NumberFormatUtil.getDecimalString(pp.getPartReqQty(), 3));
 	}
 	
+	public double getPaRefUnitCost() {
+		return  getPa() == null ? 0 : getPa().getRefUnitCost();
+	}
+	
 	public String getPaRefUnitCostDisplay() {
 		double d = getPa() == null ? 0 : getPa().getRefUnitCost();
 		String dStr = d <= 0 || Double.isNaN(d) ? null : NumberFormatUtil.getDecimalString(d, 3);

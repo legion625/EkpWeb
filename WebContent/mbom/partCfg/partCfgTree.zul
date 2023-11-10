@@ -14,6 +14,10 @@
 			<treecol label="料號" width="80px" />
 			<treecol label="Required quantity" width="110px" style="text-align:left" align="right" />
 			<treecol label="Acq ref. unit cost" width="110px" style="text-align:left" align="right" />
+			
+			
+			
+			
 			<treecol label="平均庫儲單價" width="90px" style="text-align:left" align="right" />
 			<treecol label="平均採購入庫單價" width="110px" style="text-align:left" align="right" />
 			<treecol label="平均自製入庫單價" width="110px" style="text-align:left" align="right" />

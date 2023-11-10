@@ -1,7 +1,7 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
 	<borderlayout vflex="1" apply="ekp.web.control.zk.mbom.PartCfgSearchResultComposer">
-		<center >
+		<west id="west" splittable="true" collapsible="true" open="true">
 			<div vflex="1">
 				<listbox id="lbxPartCfg" vflex="1" emptyMessage="(no data)">
 					<frozen columns="1"></frozen>
@@ -14,12 +14,12 @@
 					</listhead>
 				</listbox>
 			</div>
-		</center>
-		<east id="east"  title="構型樹" vflex="1" width="70%" splittable="true" collapsible="true" open="false">
+		</west>
+		<center title="構型樹" vflex="1">
 			<div vflex="1">
 				<include id="icdPartCfgTree" vflex="1" />
 			</div>
-		</east>
+		</center>
 	</borderlayout>
 
 

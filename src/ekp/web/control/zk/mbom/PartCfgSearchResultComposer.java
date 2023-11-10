@@ -16,6 +16,7 @@ import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.ListitemRenderer;
+import org.zkoss.zul.West;
 
 import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mf.WorkorderInfo;
@@ -35,8 +36,9 @@ public class PartCfgSearchResultComposer extends SelectorComposer<Component> {
 	private Include icdPartCfgTree;
 	private PartCfgTreeComposer partCfgTreeComposer;
 
+	
 	@Wire
-	private East east;
+	private West west;
 	
 	// -------------------------------------------------------------------------------
 	private FnCntProxy fnCntProxy;
@@ -78,13 +80,14 @@ public class PartCfgSearchResultComposer extends SelectorComposer<Component> {
 
 	// -------------------------------------------------------------------------------
 	public void refreshData(List<PartCfgInfo> _partCfgList) {
+		
 		ListModelList<PartCfgInfo> model = new ListModelList<>(_partCfgList);
 		lbxPartCfg.setModel(model);
 	}
 	
 	private void showPartCfgTree(PartCfgInfo _partCfg) {
-		fnCntProxy.setFnOpen(false);
 		partCfgTreeComposer.refreshPartCfgTree(_partCfg);
-		east.setOpen(true);
+		fnCntProxy.setFnOpen(false);
+		west.setOpen(false);
 	}
 }

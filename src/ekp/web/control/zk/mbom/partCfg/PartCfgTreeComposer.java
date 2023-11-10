@@ -3,6 +3,7 @@ package ekp.web.control.zk.mbom.partCfg;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.DefaultTreeModel;
 import org.zkoss.zul.DefaultTreeNode;
+import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Include;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
@@ -36,6 +38,7 @@ import ekp.data.service.mbom.PartInfo;
 import ekp.mbom.issue.MbomBpuType;
 import ekp.mbom.issue.part.PartBpuPcAssignPa;
 import ekp.mbom.issue.partAcq.PaBpuPublish;
+import ekp.mbom.issue.partAcq.PaBpuUpdateRefUnitCost;
 import ekp.web.control.zk.mbom.PartCfgTreePageComposer;
 import ekp.web.control.zk.mbom.dto.PartCfgTreeDto;
 import legion.biz.BpuFacade;
@@ -82,6 +85,7 @@ public class PartCfgTreeComposer extends SelectorComposer<Component> {
 				ti.appendChild(tr);
 			}
 			PartCfgTreeDto data = tn.getData();
+			Treecell tc;
 
 			// part pin
 			ti.getTreerow().appendChild(new Treecell(data.getPartPin()));
@@ -100,7 +104,35 @@ public class PartCfgTreeComposer extends SelectorComposer<Component> {
 			// qty
 			ti.getTreerow().appendChild(new Treecell(data.getPpartReqQtyDisplay()));
 			//
-			ti.getTreerow().appendChild(new Treecell(data.getPaRefUnitCostDisplay()));
+			tc = new Treecell();
+			Doublebox dbbPaRefUnitCost = new Doublebox(data.getPaRefUnitCost());
+			dbbPaRefUnitCost.setInplace(true);
+			dbbPaRefUnitCost.setFormat("#,###.00");
+			dbbPaRefUnitCost.setStyle("text-align:right");
+			dbbPaRefUnitCost.addEventListener(Events.ON_CHANGE, evt->{
+				if(dbbPaRefUnitCost.getValue()==null)
+					return;
+				
+				PartAcqInfo pa = data.getPa();
+				if(pa==null) {
+					ZkNotification.info("尚未指定獲取方式(PartAcq)。");
+					return;
+				}
+				PaBpuUpdateRefUnitCost bpu = BpuFacade.getInstance().getBuilder(MbomBpuType.PART_ACQ_$UPDATE_REF_UNIT_COST, pa);
+						if(bpu==null) {
+							ZkNotification.error();
+							return;
+						}
+						
+						bpu.appendRefUnitCost(dbbPaRefUnitCost.getValue());
+						boolean b = bpu.build(new StringBuilder(), new TimeTraveler());
+				if(b)
+					ZkNotification.info("更新參考單價成功。");
+				else ZkNotification.error("更新參考單價失敗。");
+			});
+			tc.appendChild(dbbPaRefUnitCost);
+			ti.getTreerow().appendChild(tc);
+//			ti.getTreerow().appendChild(new Treecell(data.getPaRefUnitCostDisplay()));
 			//
 			ti.getTreerow().appendChild(new Treecell(data.getPaMmAvgStockValueDisplay()));
 			ti.getTreerow().appendChild(new Treecell(data.getPaMmIoiAvgOrderValueDisplayI1Display()));

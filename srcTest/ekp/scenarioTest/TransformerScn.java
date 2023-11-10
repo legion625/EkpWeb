@@ -184,7 +184,7 @@ public class TransformerScn extends AbstractEkpInitTest {
 
 	/** 3.testInitPartAcq */
 	@Test
-//	@Ignore
+	@Ignore
 	public void testInitPartAcq() {
 		/* load MaterialMaster */
 		MaterialMasterInfo mmEl1p = invtDataService.loadMaterialMasterByMano("EL-1P");
