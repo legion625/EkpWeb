@@ -13,6 +13,7 @@ import ekp.data.service.invt.query.InvtOrderItemQueryParam;
 import ekp.data.service.invt.query.InvtOrderQueryParam;
 import ekp.data.service.invt.query.MaterialMasterQueryParam;
 import ekp.data.service.invt.query.MbsbStmtQueryParam;
+import ekp.invt.type.MaterialInstAcqChannel;
 import ekp.serviceFacade.rmi.invt.InvtOrderCreateObjRemote;
 import ekp.serviceFacade.rmi.invt.InvtOrderItemCreateObjRemote;
 import ekp.serviceFacade.rmi.invt.InvtOrderItemRemote;
@@ -488,22 +489,21 @@ public class InvtDataServiceImp implements InvtDataService {
 			return null;
 		}
 	}
-
+	
+//	@Override
+//	public MaterialInstInfo loadMaterialInstByMiacSrcNo(String _miacSrcNo) {
+//		try {
+//			MaterialInstRemote remote = getEkpKernelRmi().loadMaterialInstByMiacSrcNo(_miacSrcNo);
+//			return remote == null ? null : InvtFO.parseMaterialInst(remote);
+//		} catch (Throwable e) {
+//			LogUtil.log(log, e, Level.ERROR);
+//			return null;
+//		}
+//	}
 	@Override
-	public MaterialInstInfo loadMaterialInstByMiacSrcNo(String _miacSrcNo) {
+	public List<MaterialInstInfo> loadMaterialInstList(String _mmUid,MaterialInstAcqChannel _miac,  String _miacSrcNo) {
 		try {
-			MaterialInstRemote remote = getEkpKernelRmi().loadMaterialInstByMiacSrcNo(_miacSrcNo);
-			return remote == null ? null : InvtFO.parseMaterialInst(remote);
-		} catch (Throwable e) {
-			LogUtil.log(log, e, Level.ERROR);
-			return null;
-		}
-	}
-
-	@Override
-	public List<MaterialInstInfo> loadMaterialInstList(String _mmUid) {
-		try {
-			List<MaterialInstRemote> remoteList = getEkpKernelRmi().loadMaterialInstList(_mmUid);
+			List<MaterialInstRemote> remoteList = getEkpKernelRmi().loadMaterialInstList(_mmUid, _miac,  _miacSrcNo);
 			List<MaterialInstInfo> list = remoteList.stream().map(InvtFO::parseMaterialInst)
 					.collect(Collectors.toList());
 			return list;

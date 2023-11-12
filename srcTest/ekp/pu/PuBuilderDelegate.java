@@ -4,15 +4,22 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ekp.TestLogMark;
+import ekp.data.service.invt.InvtOrderItemInfo;
+import ekp.data.service.invt.MaterialInstInfo;
 import ekp.data.service.invt.MaterialMasterInfo;
+import ekp.data.service.invt.WrhsBinInfo;
 import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.pu.PurchInfo;
+import ekp.data.service.pu.PurchItemInfo;
 import ekp.pu.bpu.PuBpuType;
 import ekp.pu.bpu.PurchBuilder1;
+import ekp.pu.bpu.PurchBuilderAll;
 import ekp.pu.bpu.PurchItemBuilder1;
 import legion.biz.BpuFacade;
 import legion.util.TimeTraveler;
@@ -104,6 +111,53 @@ public class PuBuilderDelegate {
 		assertEquals(2, p.getPurchItemList().size());
 
 		// TODO
+
+		return p;
+	}
+	
+	public PurchInfo buildPurchAll(TimeTraveler _tt,String _title, String _supplierName, String _supplierBan, WrhsBinInfo _wb, MaterialMasterInfo _mm, PartAcqInfo _pa
+			, double _qty, double _value) {
+		PurchBuilderAll pb = bpuFacade.getBuilder(PuBpuType.P_ALL);
+		pb.appendTitle(_title).appendSupplierName(_supplierName).appendSupplierBan(_supplierBan);
+		pb.appendWb(_wb);
+		PurchItemBuilder1 pib = pb.addPiBuilder();
+		pib.appendMm(_mm).appendPa(_pa).appendQty(_qty).appendValue(_value);
+		
+		// validate
+		StringBuilder msgValidate = new StringBuilder();
+		assertTrue(msgValidate.toString(), pb.validate(msgValidate));
+
+		// verify
+		StringBuilder msgVerify = new StringBuilder();
+		assertTrue(msgVerify.toString(), pb.verify(msgVerify));
+
+		// build
+		StringBuilder msgBuild = new StringBuilder();
+		PurchInfo p = pb.build(msgBuild, _tt);
+		assertNotNull(msgBuild.toString(), p);
+		
+		// check
+		assertEquals(_title, p.getTitle());
+		assertEquals(_supplierName, p.getSupplierName());
+		assertEquals(_supplierBan, p.getSupplierBan());
+		assertEquals(1, p.getPurchItemList().size());
+		
+		PurchItemInfo pi = p.getPurchItemList().get(0);
+		assertNotNull(pi);
+		List<InvtOrderItemInfo> ioiList = pi.getIoiListIoType21();
+		assertNotNull(ioiList);
+		assertEquals(1, ioiList.size());
+		
+		InvtOrderItemInfo ioi = ioiList.get(0);
+		assertEquals(ioi.getOrderQty(), pi.getQty(), 0.01);
+		assertEquals(ioi.getOrderValue(), pi.getValue(), 0.01);
+		
+		List<MaterialInstInfo> miList =  pi.getMiList();
+		assertNotNull(miList);
+		assertEquals(1, miList.size());
+		MaterialInstInfo mi = miList.get(0);
+		assertEquals(mi.getQty(), pi.getQty(), 0.01);
+		assertEquals(mi.getValue(), pi.getValue(), 0.01);
 
 		return p;
 	}

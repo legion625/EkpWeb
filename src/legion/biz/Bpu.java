@@ -41,6 +41,10 @@ public abstract class Bpu<U> {
 		return verify(_msg, false);
 	}
 
+	public final U build(TimeTraveler _tt) {
+		return build(new StringBuilder(), _tt);
+	}
+	
 	public final U build(StringBuilder _msg, TimeTraveler _tt) {
 		if (!verify(_msg, true))
 			return null;

@@ -123,7 +123,7 @@ public abstract class PurchBuilder extends Bpu<PurchInfo> {
 		/* 2.PurchItem */
 		for (PurchItemBuilder piBuilder : getPurchItemBuilderList()) {
 			piBuilder.appendPurchUid(p.getUid()); //
-			PurchItemInfo pi = piBuilder.build(new StringBuilder(), tt);
+			PurchItemInfo pi = piBuilder.build( tt);
 			if (pi == null) {
 				tt.travel();
 				log.error("piBuilder.build return null.");

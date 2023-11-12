@@ -30,6 +30,7 @@ import ekp.data.service.invt.query.MaterialMasterQueryParam;
 import ekp.data.service.invt.query.MbsbStmtQueryParam;
 import ekp.invt.type.InvtOrderType;
 import ekp.invt.type.IoiTargetType;
+import ekp.invt.type.MaterialInstAcqChannel;
 import ekp.serviceFacade.rmi.invt.MaterialBinStockRemote;
 import ekp.serviceFacade.rmi.invt.MaterialInstSrcConjCreateObjRemote;
 import ekp.serviceFacade.rmi.invt.MaterialInstSrcConjRemote;
@@ -128,9 +129,12 @@ public interface InvtDataService extends IntegrationService, EkpKernelRmi {
 
 	public MaterialInstInfo loadMaterialInstByMisn(String _misn);
 	
-	public MaterialInstInfo loadMaterialInstByMiacSrcNo(String _miacSrcNo);
+//	public MaterialInstInfo loadMaterialInstByMiacSrcNo(String _miacSrcNo);
 
-	public List<MaterialInstInfo> loadMaterialInstList(String _mmUid);
+	default List<MaterialInstInfo> loadMaterialInstList(String _mmUid){
+		return loadMaterialInstList(_mmUid,null, null);
+	}
+	public List<MaterialInstInfo> loadMaterialInstList(String _mmUid,MaterialInstAcqChannel _miac,  String _miacSrcNo);
 	
 	public boolean materialInstToAssignSrcMi(String _uid);
 	public boolean materialInstRevertToAssignSrcMi(String _uid);

@@ -8,10 +8,12 @@ import ekp.data.BizObjLoader;
 import ekp.data.InvtDataService;
 import ekp.data.PuDataService;
 import ekp.data.service.invt.InvtOrderItemInfo;
+import ekp.data.service.invt.MaterialInstInfo;
 import ekp.data.service.invt.query.InvtOrderItemQueryParam;
 import ekp.data.service.mbom.PartAcqInfo;
 import ekp.invt.type.InvtOrderType;
 import ekp.invt.type.IoiTargetType;
+import ekp.invt.type.MaterialInstAcqChannel;
 import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartUnit;
 import legion.DataServiceFactory;
@@ -179,10 +181,23 @@ public class PurchItemInfoDto extends ObjectModelInfoDto implements PurchItemInf
 		return param.getQueryResult();
 	});
 
+	@Override
+	public  List<InvtOrderItemInfo> getIoiListIoType21(){
+		return ioType21IoiListLoader.getObj();
+	}
+	
 	/** 取得所有供料供外的Ioi帳值。 */
 	@Override
 	public double getIoType21Value() {
 		return ioType21IoiListLoader.getObj().stream().mapToDouble(ioi -> ioi.getOrderValue()).sum();
+	}
+	
+	private BizObjLoader<List<MaterialInstInfo>> miListLoader = BizObjLoader.of(() -> DataServiceFactory.getInstance()
+			.getService(InvtDataService.class).loadMaterialInstList(getMmUid(), null, getPurch().getPuNo()));
+	
+	@Override
+	public List<MaterialInstInfo> getMiList(){
+		return miListLoader.getObj();
 	}
 
 }

@@ -11,12 +11,12 @@
 				<listbox id="lbxMaterialMaster" vflex="1" emptyMessage="(No data)" checkmark="true">
 					<listhead sizable="true">
 						<listheader width="50px"></listheader>
-						<listheader label="料號" sort="auto(mano)" />
-						<listheader label="品名" sort="auto(name)" />
-						<listheader label="規格" sort="auto(specification)" />
-						<listheader label="計量單位" sort="auto(stdUnit)" />
-						<listheader label="庫存數量" sort="auto(sumStockQty)" />
-						<listheader label="庫存帳值" sort="auto(sumStockValue)" />
+						<listheader label="料號" hflex="min" sort="auto(mano)" />
+						<listheader label="品名" hflex="min" sort="auto(name)" />
+						<listheader label="規格" hflex="min" sort="auto(specification)" />
+						<listheader label="計量單位" hflex="min" sort="auto(stdUnit)" />
+						<listheader label="庫存數量" hflex="min" sort="auto(sumStockQty)" style="text-align:left" align="right" />
+						<listheader label="庫存帳值" hflex="min" sort="auto(sumStockValue)" style="text-align:left" align="right" />
 					</listhead>
 				</listbox>
 				<window id="wdCreateMm" title="Create material master" width="60%" height="140px" mode="highlighted"
@@ -47,6 +47,7 @@
 			<tabs>
 				<tab label="物料實體" />
 				<tab label="倉儲管理"/>
+				<tab label="採購記錄"/>
 			</tabs>
 			<tabpanels>
 				<tabpanel vflex="1">
@@ -59,8 +60,8 @@
 							<listheader width="50px"></listheader>
 							<listheader label="序號" sort="auto(misn)" />
 							<listheader label="獲取方式" sort="auto(miac)" />
-							<listheader label="數量" sort="auto(qty)" />
-							<listheader label="帳值" sort="auto(value)" />
+							<listheader label="數量" sort="auto(qty)" style="text-align:left" align="right" />
+							<listheader label="帳值" sort="auto(value)" style="text-align:left" align="right" />
 							<listheader label="生效日期" sort="auto(effDate)" />
 							<listheader label="失效日期" sort="auto(expDate)" />
 						</listhead>
@@ -88,6 +89,7 @@
 						</div>
 					</window>
 				</tabpanel>
+				<!-- 倉儲管理 -->
 				<tabpanel>
 					<borderlayout>
 						<center>
@@ -104,7 +106,15 @@
 							</listbox>
 						</center>
 					</borderlayout>
-
+				</tabpanel>
+				<!-- 採購記錄 -->
+				<tabpanel>
+					<hlayout>
+						<toolbarbutton id="btnAddPurchAll" label="新增採購登帳" iconSclass="fa fa-plus" />
+					</hlayout>
+					<listbox id="lbxPurchItem">
+						<listhead></listhead>
+					</listbox>
 				</tabpanel>
 			</tabpanels>
 			</tabbox>

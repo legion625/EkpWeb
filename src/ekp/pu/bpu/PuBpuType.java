@@ -5,6 +5,7 @@ import legion.biz.BpuType;
 public enum PuBpuType implements BpuType {
 	/* Purch */
 	P_0(PurchBuilder1.class), //
+	P_ALL(PurchBuilderAll.class), //
 	;
 
 	private Class builderClass;
@@ -30,6 +31,8 @@ public enum PuBpuType implements BpuType {
 	public boolean matchBiz(Object... _args) {
 		switch (this) {
 		case P_0:
+			return true;
+		case P_ALL:
 			return true;
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + this);

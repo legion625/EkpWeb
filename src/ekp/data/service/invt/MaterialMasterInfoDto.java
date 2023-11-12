@@ -4,7 +4,9 @@ import java.util.List;
 
 import ekp.data.BizObjLoader;
 import ekp.data.InvtDataService;
+import ekp.data.PuDataService;
 import ekp.data.SdDataService;
+import ekp.data.service.pu.PurchItemInfo;
 import ekp.data.service.sd.SalesOrderInfo;
 import ekp.data.service.sd.SalesOrderItemInfo;
 import ekp.mbom.type.PartUnit;
@@ -120,4 +122,11 @@ public class MaterialMasterInfoDto extends ObjectModelInfoDto implements Materia
 		return soiListLoader.getObj();
 	}
 
+	private BizObjLoader<List<PurchItemInfo>> piListLoader = BizObjLoader
+			.of(() -> DataServiceFactory.getInstance().getService(PuDataService.class).loadPurchItemListByMm(getUid()));
+
+	@Override
+	public List<PurchItemInfo> getPiList() {
+		return piListLoader.getObj();
+	}
 }

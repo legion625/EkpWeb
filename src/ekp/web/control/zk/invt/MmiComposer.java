@@ -30,6 +30,7 @@ import ekp.data.service.invt.MaterialInstInfo;
 import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.invt.WrhsBinInfo;
 import ekp.data.service.invt.WrhsLocInfo;
+import ekp.data.service.pu.PurchItemInfo;
 import ekp.invt.InvtService;
 import ekp.invt.bpu.InvtBpuType;
 import ekp.invt.bpu.material.MaterialInstBpuDel0;
@@ -60,8 +61,13 @@ public class MmiComposer extends SelectorComposer<Component> {
 	@Wire
 	private Listbox lbxMaterialInst;
 	
+	// -------------------------------------------------------------------------------
 	/**/
 	// TODO lbxMaterialBinStock
+	
+	// -------------------------------------------------------------------------------
+	@Wire
+	private Listbox lbxPurchItem;
 
 	// -------------------------------------------------------------------------------
 	private InvtService invtService = BusinessServiceFactory.getInstance().getService(InvtService.class);
@@ -83,19 +89,27 @@ public class MmiComposer extends SelectorComposer<Component> {
 	}
 
 	private void init() {
-		ListitemRenderer<MaterialMasterInfo> mmRenderer = (li, mm, i)->{
+		/**/
+		ListitemRenderer<MaterialMasterInfo> mmRenderer = (li, mm, i) -> {
 			li.appendChild(new Listcell());
 			li.appendChild(new Listcell(mm.getMano()));
 			li.appendChild(new Listcell(mm.getName()));
 			li.appendChild(new Listcell(mm.getSpecification()));
 			li.appendChild(new Listcell(mm.getStdUnitChtName()));
-			li.appendChild(new Listcell( NumberFormatUtil.getDecimalString(mm.getSumStockQty(), 2) ));
-			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(mm.getSumStockValue(),2)));
+			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(mm.getSumStockQty(), 2)));
+			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(mm.getSumStockValue(), 2)));
 			//
-			li.addEventListener(Events.ON_CLICK, evt->refreshMiList(mm));
+			li.addEventListener(Events.ON_CLICK, evt -> {
+				refreshMiList(mm);
+				// TODO
+				refreshPiList(mm);
+			});
 		};
 		lbxMaterialMaster.setItemRenderer(mmRenderer);
+
+		ZkUtil.initCbb(cbbCreateMmStdUnit, PartUnit.values(), false);
 		
+		/**/
 		ListitemRenderer<MaterialInstInfo> miRenderer = (li, mi, i)->{
 			li.appendChild(new Listcell());
 			li.appendChild(new Listcell(mi.getMisn()));
@@ -109,9 +123,19 @@ public class MmiComposer extends SelectorComposer<Component> {
 		};
 		lbxMaterialInst.setItemRenderer(miRenderer);
 		
-		
-		ZkUtil.initCbb(cbbCreateMmStdUnit, PartUnit.values(), false);
 		ZkUtil.initCbb(cbbCreateMiMiac, MaterialInstAcqChannel.values(), false);
+		
+		/**/
+		ListitemRenderer<PurchItemInfo> piRenderer = (li, pi, i) -> {
+			li.appendChild(new Listcell(pi.getPurch().getPuNo()));
+			li.appendChild(new Listcell(pi.getPurch().getSupplierName()));
+			li.appendChild(new Listcell(pi.getPurch().getPerfStatus().getName()));
+			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(pi.getQty(), 2)));
+			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(pi.getValue(),2)));
+			li.appendChild(new Listcell(pi.getRefPa().getId()));
+			li.appendChild(new Listcell(pi.getRefPa().getName()));
+		};
+		lbxPurchItem.setItemRenderer(piRenderer);
 	}
 	
 	// -------------------------------------------------------------------------------
@@ -375,10 +399,21 @@ public class MmiComposer extends SelectorComposer<Component> {
 				: new ListModelList<>(_mmList);
 		lbxMaterialMaster.setModel(model);
 	}
-
+	
+	// -------------------------------------------------------------------------------
 	private void refreshMiList(MaterialMasterInfo _mm) {
 		List<MaterialInstInfo> miList = _mm.getMiList();
 		ListModelList<MaterialInstInfo> model = miList == null ? new ListModelList<>() : new ListModelList<>(miList);
 		lbxMaterialInst.setModel(model);
+	}
+	
+	// -------------------------------------------------------------------------------
+	// TODO mbs
+	
+	// -------------------------------------------------------------------------------
+	private void refreshPiList(MaterialMasterInfo _mm) {
+		List<PurchItemInfo> piList =  _mm.getPiList();
+		ListModelList<PurchItemInfo> model = piList == null ? new ListModelList<>() : new ListModelList<>(piList);
+		lbxPurchItem.setModel(model);
 	}
 }
