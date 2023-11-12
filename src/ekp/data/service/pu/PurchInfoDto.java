@@ -17,6 +17,7 @@ public class PurchInfoDto extends ObjectModelInfoDto implements PurchInfo {
 	// -----------------------------------attribute-----------------------------------
 	private String puNo; // 購案案號
 	private String title; // 名稱
+	private String supplierUid;
 	private String supplierName;
 	private String supplierBan; // 供應商統編（臺灣）
 	private PurchPerfStatus perfStatus; // 履約狀態
@@ -40,6 +41,15 @@ public class PurchInfoDto extends ObjectModelInfoDto implements PurchInfo {
 
 	void setTitle(String title) {
 		this.title = title;
+	}
+	
+	@Override
+	public String getSupplierUid() {
+		return supplierUid;
+	}
+
+	void setSupplierUid(String supplierUid) {
+		this.supplierUid = supplierUid;
 	}
 
 	@Override

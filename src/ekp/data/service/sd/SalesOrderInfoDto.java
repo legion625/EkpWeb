@@ -14,6 +14,7 @@ public class SalesOrderInfoDto extends ObjectModelInfoDto implements SalesOrderI
 
 	private String sosn;
 	private String title;
+	private String customerUid;
 	private String customerName;
 	private String customerBan;
 
@@ -37,6 +38,15 @@ public class SalesOrderInfoDto extends ObjectModelInfoDto implements SalesOrderI
 
 	void setTitle(String title) {
 		this.title = title;
+	}
+
+	@Override
+	public String getCustomerUid() {
+		return customerUid;
+	}
+
+	void setCustomerUid(String customerUid) {
+		this.customerUid = customerUid;
 	}
 
 	@Override

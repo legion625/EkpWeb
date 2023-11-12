@@ -10,6 +10,8 @@ public interface PurchInfo extends ObjectModelInfo {
 	String getPuNo();
 
 	String getTitle();
+	
+	String getSupplierUid();
 
 	String getSupplierName();
 

@@ -2,10 +2,6 @@ package ekp.sd;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import ekp.DebugLogMark;
 import ekp.data.SdDataService;
 import ekp.data.service.sd.SalesOrderCreateObj;
 import ekp.data.service.sd.SalesOrderInfo;
@@ -22,6 +18,7 @@ public abstract class SalesOrderBuilder extends Bpu<SalesOrderInfo> {
 
 	/* base */
 	private String title;
+	private String customerUid;
 	private String customerName;
 	private String customerBan;
 
@@ -36,6 +33,11 @@ public abstract class SalesOrderBuilder extends Bpu<SalesOrderInfo> {
 	// -----------------------------------appender------------------------------------
 	protected SalesOrderBuilder appendTitle(String title) {
 		this.title = title;
+		return this;
+	}
+
+	protected SalesOrderBuilder appendCustomerUid(String customerUid) {
+		this.customerUid = customerUid;
 		return this;
 	}
 
@@ -70,6 +72,10 @@ public abstract class SalesOrderBuilder extends Bpu<SalesOrderInfo> {
 		return title;
 	}
 
+	public String getCustomerUid() {
+		return customerUid;
+	}
+	
 	public String getCustomerName() {
 		return customerName;
 	}
@@ -97,6 +103,7 @@ public abstract class SalesOrderBuilder extends Bpu<SalesOrderInfo> {
 	private SalesOrderCreateObj packSalesOrderCreateObj() {
 		SalesOrderCreateObj dto = new SalesOrderCreateObj();
 		dto.setTitle(getTitle());
+		dto.setCustomerUid(getCustomerUid());
 		dto.setCustomerName(getCustomerName());
 		dto.setCustomerBan(getCustomerBan());
 		dto.setSalerId(getSalerId());
@@ -116,6 +123,11 @@ public abstract class SalesOrderBuilder extends Bpu<SalesOrderInfo> {
 		
 		if(DataFO.isEmptyString(getTitle())) {
 			_msg.append("Title should NOT be empty.").append(System.lineSeparator());
+			v = false;
+		}
+		
+		if(DataFO.isEmptyString(getCustomerUid())) {
+			_msg.append("Customer UID should NOT be empty.").append(System.lineSeparator());
 			v = false;
 		}
 		

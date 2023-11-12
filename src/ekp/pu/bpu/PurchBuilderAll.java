@@ -6,6 +6,7 @@ import java.util.List;
 import ekp.data.service.invt.InvtOrderInfo;
 import ekp.data.service.invt.WrhsBinInfo;
 import ekp.data.service.pu.PurchInfo;
+import ekp.data.service.sd.BizPartnerInfo;
 import ekp.invt.bpu.InvtBpuType;
 import ekp.invt.bpu.invtOrder.InvtOrderBuilder11;
 import ekp.invt.bpu.invtOrder.IoBpuApprove;
@@ -38,12 +39,24 @@ public class PurchBuilderAll extends PurchBuilder {
 		return (PurchBuilderAll) super.appendTitle(title);
 	}
 
-	public PurchBuilderAll appendSupplierName(String supplierName) {
-		return (PurchBuilderAll) super.appendSupplierName(supplierName);
-	}
-
-	public PurchBuilderAll appendSupplierBan(String supplierBan) {
-		return (PurchBuilderAll) super.appendSupplierBan(supplierBan);
+//	public PurchBuilderAll appendSupplierUid(String supplierUid) {
+//		return (PurchBuilderAll) super.appendSupplierUid(supplierUid);
+//	}
+//	
+//	public PurchBuilderAll appendSupplierName(String supplierName) {
+//		return (PurchBuilderAll) super.appendSupplierName(supplierName);
+//	}
+//
+//	public PurchBuilderAll appendSupplierBan(String supplierBan) {
+//		return (PurchBuilderAll) super.appendSupplierBan(supplierBan);
+//	}
+	
+	public PurchBuilderAll appendSupplier(BizPartnerInfo supplier) {
+		log.debug("supplier.getUid(): {}", supplier.getUid());
+		appendSupplierUid(supplier==null?"":supplier.getUid());
+		appendSupplierName(supplier==null?"":supplier.getName());
+		appendSupplierBan(supplier==null?"":supplier.getBan());
+		return this;
 	}
 	
 	public PurchBuilderAll appendWb(WrhsBinInfo wb) {
@@ -104,7 +117,7 @@ public class PurchBuilderAll extends PurchBuilder {
 		InvtOrderBuilder11 iob = BpuFacade.getInstance().getBuilder(InvtBpuType.IO_11, p);
 		iob.appendApplierId("USER1").appendApplierName("Min-Hua");
 		iob.appendWb(getWb());
-		InvtOrderInfo io = iob.build(_tt);
+		InvtOrderInfo io = iob.build(tt);
 		if (io == null) {
 			log.error("InvtOrderBuilder11.build return null");
 			tt.travel();

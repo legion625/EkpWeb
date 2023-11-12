@@ -18,7 +18,6 @@ public class IoBpuApprove extends IoBpu {
 	private InvtOrderInfo io;
 
 	/* data */
-//	private List<MbsbStmtBuilderByIoi> mbsbStmtBuilderList;
 	private List<MbsbStmtInfo> mbsbStmtList;
 	// none
 

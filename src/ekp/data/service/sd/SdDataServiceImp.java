@@ -9,12 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
 import ekp.data.SdDataService;
-import ekp.data.service.pu.PuFO;
-import ekp.data.service.pu.PurchInfo;
-import ekp.data.service.pu.query.PurchQueryParam;
 import ekp.data.service.sd.query.SalesOrderItemQueryParam;
 import ekp.data.service.sd.query.SalesOrderQueryParam;
-import ekp.serviceFacade.rmi.pu.PurchRemote;
+import ekp.serviceFacade.rmi.sd.BizPartnerCreateObjRemote;
+import ekp.serviceFacade.rmi.sd.BizPartnerRemote;
 import ekp.serviceFacade.rmi.sd.SalesOrderCreateObjRemote;
 import ekp.serviceFacade.rmi.sd.SalesOrderItemCreateObjRemote;
 import ekp.serviceFacade.rmi.sd.SalesOrderItemRemote;
@@ -40,11 +38,64 @@ public class SdDataServiceImp implements SdDataService {
 	public void destroy() {
 		// TODO Auto-generated method stub
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	@Override
 	public String getSrcEkpKernelRmi() {
 		return srcEkpKernelRmi;
+	}
+
+	// -------------------------------------------------------------------------------
+	// ----------------------------------BizPartner-----------------------------------
+	@Override
+	public BizPartnerInfo createBizPartner(BizPartnerCreateObj _dto) {
+		try {
+			BizPartnerCreateObjRemote dto = SdFO.parseBizPartnerCreateObjRemote(_dto);
+			return SdFO.parseBizPartner(getEkpKernelRmi().createBizPartner(dto));
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+	@Override
+	public boolean deleteBizPartner(String _uid) {
+		try {
+			return getEkpKernelRmi().deleteBizPartner(_uid);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+	@Override
+	public BizPartnerInfo loadBizPartner(String _uid) {
+		try {
+			return SdFO.parseBizPartner(getEkpKernelRmi().loadBizPartner(_uid));
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+	@Override
+	public BizPartnerInfo loadBizPartnerByBpsn(String _bpsn) {
+		try {
+			return SdFO.parseBizPartner(getEkpKernelRmi().loadBizPartnerByBpsn(_bpsn));
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+
+	@Override
+	public List<BizPartnerInfo> loadBizPartnerList() {
+		try {
+			List<BizPartnerRemote> remoteList = getEkpKernelRmi().loadBizPartnerList();
+			List<BizPartnerInfo> list = remoteList.stream().map(SdFO::parseBizPartner)
+					.collect(Collectors.toList());
+			return list;
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
 	}
 
 	// -------------------------------------------------------------------------------
@@ -117,8 +168,8 @@ public class SdDataServiceImp implements SdDataService {
 	public SalesOrderItemInfo createSalesOrderItem(String _soUid, SalesOrderItemCreateObj _dto) {
 		try {
 			SalesOrderItemCreateObjRemote dto = SdFO.parseSalesOrderItemCreateObjRemote(_dto);
-			
-			
+
+
 			return SdFO.parseSalesOrderItem(getEkpKernelRmi().createSalesOrderItem(_soUid, dto));
 		} catch (Throwable e) {
 			LogUtil.log(log, e, Level.ERROR);
