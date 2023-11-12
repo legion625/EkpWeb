@@ -1,11 +1,15 @@
 package legion.web.zk;
 
+import java.util.List;
+import java.util.function.Function;
+
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.util.Notification;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Include;
 
+import ekp.data.service.mbom.PartAcqInfo;
 import legion.type.IdEnum;
 import legion.type.IdxEnum;
 import legion.util.DataFO;
@@ -87,5 +91,33 @@ public class ZkUtil {
 			_cbb.appendChild(cbi);
 		}
 	}
+	
+	public static <T> void initCbb(Combobox _cbb, List<T> _objList, Function<T, String> _fnParseLabel, Function<T, String> _fnParseDesp
+			, boolean _containsBlank) {
+		if (_objList == null)
+			return;
+		T[] objs =  (T[]) _objList.toArray(new Object[0]);
+		initCbb(_cbb, objs, _fnParseLabel, _fnParseDesp, _containsBlank);
+	}
+	
+	public static <T> void initCbb(Combobox _cbb, T[] _objs, Function<T, String> _fnParseLabel, Function<T, String> _fnParseDesp
+			, boolean _containsBlank) {
+		if (_cbb == null)
+			return;
+		_cbb.getChildren().clear();
+		
+		if (_containsBlank) {
+			_cbb.appendChild(new Comboitem());
+		}
+		
+		for(T _obj:_objs) {
+			Comboitem cbi = new Comboitem(_fnParseLabel.apply(_obj));
+			cbi.setValue(_obj);
+			if(_fnParseDesp!=null)
+			cbi.setDescription(_fnParseDesp.apply(_obj));
+			_cbb.appendChild(cbi);
+		}
+	}
+	
 	
 }

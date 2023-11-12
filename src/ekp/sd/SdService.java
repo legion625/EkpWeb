@@ -1,7 +1,9 @@
 package ekp.sd;
 
+import java.util.List;
 import java.util.Map;
 
+import ekp.data.service.sd.BizPartnerInfo;
 import ekp.data.service.sd.SalesOrderInfo;
 import ekp.data.service.sd.query.SalesOrderQueryParam;
 import legion.BusinessService;
@@ -10,6 +12,10 @@ import legion.util.query.QueryOperation.QueryValue;
 
 public interface SdService extends BusinessService {
 
+	// -------------------------------------------------------------------------------
+	// ----------------------------------BizPartner-----------------------------------
+	public List<BizPartnerInfo> loadBizPartnerList();
+	
 	// -------------------------------------------------------------------------------
 	// ----------------------------------SalesOrder-----------------------------------
 	public QueryOperation<SalesOrderQueryParam, SalesOrderInfo> searchSalesOrder(

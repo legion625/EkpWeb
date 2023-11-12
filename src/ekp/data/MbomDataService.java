@@ -25,11 +25,13 @@ import ekp.data.service.mbom.ProdInfo;
 import ekp.data.service.mbom.ProdModCreateObj;
 import ekp.data.service.mbom.ProdModInfo;
 import ekp.data.service.mbom.ProdModItemInfo;
+import ekp.data.service.mbom.query.PartAcquisitionQueryParam;
 import ekp.data.service.mbom.query.PartCfgQueryParam;
 import ekp.data.service.mbom.query.PartQueryParam;
 import ekp.data.service.mbom.query.PpartSkewerQueryParam;
 import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartUnit;
+import ekp.serviceFacade.rmi.mbom.PartAcquisitionRemote;
 import ekp.serviceFacade.rmi.mbom.PartCfgRemote;
 import ekp.serviceFacade.rmi.mbom.PpartSkewerRemote;
 import legion.IntegrationService;
@@ -69,6 +71,9 @@ public interface MbomDataService extends IntegrationService {
 
 	public List<PartAcqInfo> loadPartAcquisitionList(String _partUid);
 
+	public QueryOperation<PartAcquisitionQueryParam, PartAcqInfo> searchPartAcquisition(
+			QueryOperation<PartAcquisitionQueryParam, PartAcqInfo> _param);
+	
 	public boolean partAcqStartEditing(String _uid);
 
 	public boolean partAcqRevertStartEditing(String _uid);

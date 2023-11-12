@@ -4,14 +4,19 @@ import java.util.List;
 
 import ekp.data.BizObjLoader;
 import ekp.data.InvtDataService;
+import ekp.data.MbomDataService;
 import ekp.data.PuDataService;
 import ekp.data.SdDataService;
+import ekp.data.service.mbom.PartAcqInfo;
+import ekp.data.service.mbom.query.PartAcquisitionQueryParam;
 import ekp.data.service.pu.PurchItemInfo;
 import ekp.data.service.sd.SalesOrderInfo;
 import ekp.data.service.sd.SalesOrderItemInfo;
 import ekp.mbom.type.PartUnit;
 import legion.DataServiceFactory;
 import legion.ObjectModelInfoDto;
+import legion.util.query.QueryOperation;
+import legion.util.query.QueryOperation.CompareOp;
 
 public class MaterialMasterInfoDto extends ObjectModelInfoDto implements MaterialMasterInfo {
 
@@ -128,5 +133,18 @@ public class MaterialMasterInfoDto extends ObjectModelInfoDto implements Materia
 	@Override
 	public List<PurchItemInfo> getPiList() {
 		return piListLoader.getObj();
+	}
+
+	private BizObjLoader<List<PartAcqInfo>> paListLoader = BizObjLoader.of(() -> {
+		QueryOperation<PartAcquisitionQueryParam, PartAcqInfo> param = new QueryOperation<>();
+		param.appendCondition(QueryOperation.value(PartAcquisitionQueryParam.MM_ASSIGNED, CompareOp.equal, true));
+		param.appendCondition(QueryOperation.value(PartAcquisitionQueryParam.MM_UID, CompareOp.equal, getUid()));
+		return DataServiceFactory.getInstance().getService(MbomDataService.class).searchPartAcquisition(param)
+				.getQueryResult();
+	});
+
+	@Override
+	public List<PartAcqInfo> getPaList() {
+		return paListLoader.getObj();
 	}
 }

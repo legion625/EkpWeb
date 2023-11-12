@@ -41,6 +41,10 @@ public interface PartAcqInfo extends ObjectModelInfo {
 	
 	
 	// -------------------------------------------------------------------------------
+	default String getPartPinWithId() {
+		return getPartPin()+" | "+getId();
+	}
+	
 	default String getStatusName() {
 		return (getStatus() == null ? PartAcqStatus.UNDEFINED : getStatus()).getName();
 	}

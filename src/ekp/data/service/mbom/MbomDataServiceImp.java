@@ -12,6 +12,7 @@ import org.slf4j.event.Level;
 
 import ekp.DebugLogMark;
 import ekp.data.MbomDataService;
+import ekp.data.service.mbom.query.PartAcquisitionQueryParam;
 import ekp.data.service.mbom.query.PartCfgQueryParam;
 import ekp.data.service.mbom.query.PartQueryParam;
 import ekp.data.service.mbom.query.PpartSkewerQueryParam;
@@ -205,6 +206,25 @@ public class MbomDataServiceImp implements MbomDataService {
 			return null;
 		}
 	}
+	
+	@Override
+	public QueryOperation<PartAcquisitionQueryParam, PartAcqInfo> searchPartAcquisition(
+			QueryOperation<PartAcquisitionQueryParam, PartAcqInfo> _param){
+		try {
+			QueryOperation<PartAcquisitionQueryParam,PartAcquisitionRemote> paramRemote = (QueryOperation<PartAcquisitionQueryParam, PartAcquisitionRemote>) _param
+					.copy();
+			paramRemote = getEkpKernelRmi().searchPartAcquisition(paramRemote);
+			List<PartAcqInfo> list = paramRemote.getQueryResult().stream().map(MbomFO::parsePartAcquisition)
+					.collect(Collectors.toList());
+			_param.setQueryResult(list);
+			_param.setTotal(paramRemote.getTotal());
+			return _param;
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+	}
+	
 	@Override
 	public boolean partAcqStartEditing(String _uid) {
 		try {

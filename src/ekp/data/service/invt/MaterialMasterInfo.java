@@ -3,6 +3,7 @@ package ekp.data.service.invt;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.pu.PurchItemInfo;
 import ekp.data.service.sd.SalesOrderInfo;
 import ekp.data.service.sd.SalesOrderItemInfo;
@@ -86,6 +87,8 @@ public interface MaterialMasterInfo extends ObjectModelInfo{
 	}
 	
 	List<PurchItemInfo> getPiList();
+	
+	List<PartAcqInfo> getPaList();
 	
 
 }

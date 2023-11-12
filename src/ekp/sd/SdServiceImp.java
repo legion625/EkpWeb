@@ -1,5 +1,6 @@
 package ekp.sd;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -7,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import ekp.data.PuDataService;
 import ekp.data.SdDataService;
+import ekp.data.service.sd.BizPartnerInfo;
 import ekp.data.service.sd.SalesOrderInfo;
 import ekp.data.service.sd.query.SalesOrderQueryParam;
 import legion.DataServiceFactory;
@@ -28,6 +30,13 @@ public class SdServiceImp implements SdService {
 		// TODO Auto-generated method stub
 	}
 
+	// -------------------------------------------------------------------------------
+	// ----------------------------------BizPartner-----------------------------------
+	@Override
+	public List<BizPartnerInfo> loadBizPartnerList(){
+		return dataService.loadBizPartnerList();
+	}
+	
 	// -------------------------------------------------------------------------------
 	// ----------------------------------SalesOrder-----------------------------------
 	@Override

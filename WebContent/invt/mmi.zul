@@ -100,8 +100,8 @@
 									<listheader label="倉庫名稱" sort="auto(wrhsLocName)" />
 									<listheader label="儲位ID" sort="auto(wrhsLocName)" />
 									<listheader label="儲位名稱" sort="auto(wrhsBinName)" />
-									<listheader label="庫存數量" sort="auto(sumStockQty)" />
-									<listheader label="庫存帳值" sort="auto(sumStockValue)" />
+									<listheader label="庫存數量" sort="auto(sumStockQty)" style="text-align:left" align="right"/>
+									<listheader label="庫存帳值" sort="auto(sumStockValue)" style="text-align:left" align="right"/>
 								</listhead>
 							</listbox>
 						</center>
@@ -110,11 +110,45 @@
 				<!-- 採購記錄 -->
 				<tabpanel>
 					<hlayout>
-						<toolbarbutton id="btnAddPurchAll" label="新增採購登帳" iconSclass="fa fa-plus" />
+						<toolbarbutton id="btnAddPurchWithPost" label="新增採購登帳" iconSclass="fa fa-plus" />
 					</hlayout>
-					<listbox id="lbxPurchItem">
-						<listhead></listhead>
+					<listbox id="lbxPurchItem" vflex="1" emptyMessage="無資料項" >
+						<listhead>
+						<listheader label="採購案號" sort="auto(purch.puNo)" />
+						<listheader label="供應商名稱" sort="auto(purch.supplierName)" />
+						<listheader label="履約狀態" sort="auto(purch.perfStatus.name)" />
+						<listheader label="數量" sort="auto(qty)" style="text-align:left" align="right"/>
+						<listheader label="金額" sort="auto(value)" style="text-align:left" align="right"/>
+						<listheader label="獲取方式ID" sort="auto(refPa.id)" />
+						<listheader label="獲取方式名稱" sort="auto(refPa.name)" />
+						</listhead>
 					</listbox>
+					<window id="wdAddPurchWithPost" title="新增採購登帳" width="400px" height="200px" mode="highlighted"
+					closable="true" visible="false" sizable="true">
+					<hlayout hflex="1">
+						<label value="料號" />
+						<label id="lbMano" hflex="1" />
+						<label value="獲取方式" />
+						<combobox id="cbbRefPa" hflex="1"/>
+					</hlayout>
+					<hlayout hflex="1">
+						<label value="供應商" />
+						<combobox id="cbbSupplier" hflex="1"/>
+						<label value="庫房儲位" />
+						<combobox id="cbbWb" hflex="1" />
+					</hlayout>
+					<hlayout hflex="1">
+						<label value="數量" />
+						<doublebox id="dbbQty" hflex="1"/>
+						<label value="金額" />
+						<doublebox id="dbbValue" hflex="1" />
+					</hlayout>
+					<separator spacing="5px" />
+					<div align="center">
+						<button id="btnSubmit" label="Submit" />
+						<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
+					</div>
+				</window>
 				</tabpanel>
 			</tabpanels>
 			</tabbox>
