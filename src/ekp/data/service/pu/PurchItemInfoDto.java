@@ -170,6 +170,23 @@ public class PurchItemInfoDto extends ObjectModelInfoDto implements PurchItemInf
 		return paLoader.getObj(getRefPaUid());
 	}
 
+	private BizObjLoader<List<InvtOrderItemInfo>> ioType11IoiListLoader= BizObjLoader.of(() -> {
+		QueryOperation<InvtOrderItemQueryParam, InvtOrderItemInfo> param = new QueryOperation<>();
+		param.appendCondition(
+				QueryOperation.value(InvtOrderItemQueryParam.IO_TYPE_IDX, CompareOp.equal, InvtOrderType.I1.getIdx()));
+		param.appendCondition(QueryOperation.value(InvtOrderItemQueryParam.TARGET_TYPE_IDX, CompareOp.equal,
+				IoiTargetType.PURCH_ITEM.getIdx()));
+		param.appendCondition(QueryOperation.value(InvtOrderItemQueryParam.TARGET_UID, CompareOp.equal, getUid()));
+		param = DataServiceFactory.getInstance().getService(InvtDataService.class).searchInvtOrderItem(param, null);
+		return param.getQueryResult();
+	});
+
+	@Override
+	public  List<InvtOrderItemInfo> getIoiListIoType11(){
+		return ioType11IoiListLoader.getObj();
+	}
+	
+	
 	private BizObjLoader<List<InvtOrderItemInfo>> ioType21IoiListLoader = BizObjLoader.of(() -> {
 		QueryOperation<InvtOrderItemQueryParam, InvtOrderItemInfo> param = new QueryOperation<>();
 		param.appendCondition(
@@ -181,10 +198,7 @@ public class PurchItemInfoDto extends ObjectModelInfoDto implements PurchItemInf
 		return param.getQueryResult();
 	});
 
-	@Override
-	public  List<InvtOrderItemInfo> getIoiListIoType21(){
-		return ioType21IoiListLoader.getObj();
-	}
+	
 	
 	/** 取得所有供料供外的Ioi帳值。 */
 	@Override

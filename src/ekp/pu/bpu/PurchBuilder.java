@@ -17,6 +17,7 @@ public abstract class PurchBuilder extends Bpu<PurchInfo> {
 
 	/* base */
 	private String title; // 名稱
+	private String supplierUid;
 	private String supplierName;
 	private String supplierBan; // 供應商統編（臺灣）
 
@@ -27,6 +28,11 @@ public abstract class PurchBuilder extends Bpu<PurchInfo> {
 	// -----------------------------------appender------------------------------------
 	protected PurchBuilder appendTitle(String title) {
 		this.title = title;
+		return this;
+	}
+
+	protected PurchBuilder appendSupplierUid(String supplierUid) {
+		this.supplierUid = supplierUid;
 		return this;
 	}
 
@@ -46,6 +52,10 @@ public abstract class PurchBuilder extends Bpu<PurchInfo> {
 		return title;
 	}
 
+	public String getSupplierUid() {
+		return supplierUid;
+	}
+
 	public String getSupplierName() {
 		return supplierName;
 	}
@@ -61,6 +71,7 @@ public abstract class PurchBuilder extends Bpu<PurchInfo> {
 	private PurchCreateObj packPurchCreateObj() {
 		PurchCreateObj dto = new PurchCreateObj();
 		dto.setTitle(getTitle());
+		dto.setSupplierUid(getSupplierUid());
 		dto.setSupplierName(getSupplierName());
 		dto.setSupplierBan(getSupplierBan());
 		return dto;
@@ -80,6 +91,11 @@ public abstract class PurchBuilder extends Bpu<PurchInfo> {
 			v = false;
 		}
 
+		if(DataFO.isEmptyString(getSupplierUid())) {
+			_msg.append("Supplier UID should NOT be empty.").append(System.lineSeparator());
+			v = false;
+		}
+		
 		if (DataFO.isEmptyString(getSupplierName())) {
 			_msg.append("Supplier name should NOT be empty.").append(System.lineSeparator());
 			v = false;

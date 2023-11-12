@@ -40,7 +40,7 @@ public interface PurchItemInfo extends ObjectModelInfo {
 
 	PartAcqInfo getRefPa();
 
-	List<InvtOrderItemInfo> getIoiListIoType21();
+	List<InvtOrderItemInfo> getIoiListIoType11();
 	
 	/** 取得所有供料供外的Ioi帳值。 */
 	double getIoType21Value();

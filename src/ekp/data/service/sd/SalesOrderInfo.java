@@ -10,6 +10,8 @@ public interface SalesOrderInfo extends ObjectModelInfo {
 
 	String getTitle();
 
+	String getCustomerUid();
+	
 	String getCustomerName();
 
 	String getCustomerBan();

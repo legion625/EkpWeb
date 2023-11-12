@@ -17,6 +17,7 @@ import ekp.data.service.invt.WrhsBinInfo;
 import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.pu.PurchInfo;
 import ekp.data.service.pu.PurchItemInfo;
+import ekp.data.service.sd.BizPartnerInfo;
 import ekp.pu.bpu.PuBpuType;
 import ekp.pu.bpu.PurchBuilder1;
 import ekp.pu.bpu.PurchBuilderAll;
@@ -115,10 +116,11 @@ public class PuBuilderDelegate {
 		return p;
 	}
 	
-	public PurchInfo buildPurchAll(TimeTraveler _tt,String _title, String _supplierName, String _supplierBan, WrhsBinInfo _wb, MaterialMasterInfo _mm, PartAcqInfo _pa
+	public PurchInfo buildPurchAll(TimeTraveler _tt,String _title, BizPartnerInfo _supplier, WrhsBinInfo _wb, MaterialMasterInfo _mm, PartAcqInfo _pa
 			, double _qty, double _value) {
 		PurchBuilderAll pb = bpuFacade.getBuilder(PuBpuType.P_ALL);
-		pb.appendTitle(_title).appendSupplierName(_supplierName).appendSupplierBan(_supplierBan);
+		pb.appendTitle(_title).appendSupplier(_supplier);
+//		.appendSupplierName(_supplierName).appendSupplierBan(_supplierBan);
 		pb.appendWb(_wb);
 		PurchItemBuilder1 pib = pb.addPiBuilder();
 		pib.appendMm(_mm).appendPa(_pa).appendQty(_qty).appendValue(_value);
@@ -138,13 +140,14 @@ public class PuBuilderDelegate {
 		
 		// check
 		assertEquals(_title, p.getTitle());
-		assertEquals(_supplierName, p.getSupplierName());
-		assertEquals(_supplierBan, p.getSupplierBan());
+		assertEquals(_supplier.getUid(), p.getSupplierUid());
+		assertEquals(_supplier.getName(), p.getSupplierName());
+		assertEquals(_supplier.getBan(), p.getSupplierBan());
 		assertEquals(1, p.getPurchItemList().size());
 		
 		PurchItemInfo pi = p.getPurchItemList().get(0);
 		assertNotNull(pi);
-		List<InvtOrderItemInfo> ioiList = pi.getIoiListIoType21();
+		List<InvtOrderItemInfo> ioiList = pi.getIoiListIoType11();
 		assertNotNull(ioiList);
 		assertEquals(1, ioiList.size());
 		

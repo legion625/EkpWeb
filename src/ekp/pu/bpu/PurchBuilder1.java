@@ -31,6 +31,10 @@ public class PurchBuilder1 extends PurchBuilder{
 		return (PurchBuilder1) super.appendTitle(title);
 	}
 
+	public PurchBuilder1 appendSupplierUid(String supplierUid) {
+		return (PurchBuilder1) super.appendSupplierUid(supplierUid);
+	}
+	
 	public PurchBuilder1 appendSupplierName(String supplierName) {
 		return (PurchBuilder1) super.appendSupplierName(supplierName);
 	}

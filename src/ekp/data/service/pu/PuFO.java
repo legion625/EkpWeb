@@ -14,6 +14,7 @@ public class PuFO {
 				_remote.getObjectUpdateTime());
 		dto.setPuNo(_remote.getPuNo());
 		dto.setTitle(_remote.getTitle());
+		dto.setSupplierUid(_remote.getSupplierUid());
 		dto.setSupplierName(_remote.getSupplierName());
 		dto.setSupplierBan(_remote.getSupplierBan());
 		dto.setPerfStatus(_remote.getPerfStatus());
@@ -23,8 +24,8 @@ public class PuFO {
 
 	public static PurchCreateObjRemote parsePurchCreateObjRemote(PurchCreateObj _dto) {
 		PurchCreateObjRemote remote = new PurchCreateObjRemote();
-		remote.setPuNo(_dto.getPuNo());
 		remote.setTitle(_dto.getTitle());
+		remote.setSupplierUid(_dto.getSupplierUid());
 		remote.setSupplierName(_dto.getSupplierName());
 		remote.setSupplierBan(_dto.getSupplierBan());
 		return remote;

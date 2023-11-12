@@ -3,6 +3,8 @@ package ekp.sd;
 import legion.biz.BpuType;
 
 public enum SdBpuType implements BpuType {
+	/* BizPartner */
+	BP(BizPartnerBuilder.class), //
 	/* SalesOrder */
 	SO_1(SalesOrderBuilder1.class), //
 	;
@@ -29,6 +31,7 @@ public enum SdBpuType implements BpuType {
 	@Override
 	public boolean matchBiz(Object... _args) {
 		switch (this) {
+		case BP:
 		case SO_1:
 			return true;
 		default:

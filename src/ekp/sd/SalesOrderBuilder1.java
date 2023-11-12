@@ -3,6 +3,7 @@ package ekp.sd;
 import java.util.ArrayList;
 import java.util.List;
 
+import ekp.data.service.sd.BizPartnerInfo;
 import ekp.data.service.sd.SalesOrderInfo;
 import legion.util.TimeTraveler;
 
@@ -31,14 +32,11 @@ public class SalesOrderBuilder1 extends SalesOrderBuilder {
 		return (SalesOrderBuilder1) super.appendTitle(title);
 	}
 
-	@Override
-	public SalesOrderBuilder1 appendCustomerName(String customerName) {
-		return (SalesOrderBuilder1) super.appendCustomerName(customerName);
-	}
-
-	@Override
-	public SalesOrderBuilder1 appendCustomerBan(String customerBan) {
-		return (SalesOrderBuilder1) super.appendCustomerBan(customerBan);
+	public SalesOrderBuilder1 appendCustomer(BizPartnerInfo customer) {
+		appendCustomerUid(customer==null?"":customer.getUid());
+		appendCustomerName(customer==null?"":customer.getName());
+		appendCustomerBan(customer==null?"":customer.getBan());
+		return this;
 	}
 
 	@Override
