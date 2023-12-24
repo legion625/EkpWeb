@@ -1,6 +1,12 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
+<style>
+    .z-listcell {
+        white-space: nowrap;
+    }
+</style>
+
 	<borderlayout vflex="1" apply="ekp.web.control.zk.invt.MmiComposer">
 		<west title="Material Master" open="true" width="50%" splittable="true">
 			<div vflex="1">
@@ -10,13 +16,13 @@
 				</hlayout>
 				<listbox id="lbxMaterialMaster" vflex="1" emptyMessage="(No data)" checkmark="true">
 					<listhead sizable="true">
-						<listheader width="50px"></listheader>
+						<listheader width="32px"></listheader>
 						<listheader label="料號" hflex="min" sort="auto(mano)" />
 						<listheader label="品名" hflex="min" sort="auto(name)" />
-						<listheader label="規格" hflex="min" sort="auto(specification)" />
 						<listheader label="計量單位" hflex="min" sort="auto(stdUnit)" />
 						<listheader label="庫存數量" hflex="min" sort="auto(sumStockQty)" style="text-align:left" align="right" />
 						<listheader label="庫存帳值" hflex="min" sort="auto(sumStockValue)" style="text-align:left" align="right" />
+						<listheader label="規格" hflex="min" sort="auto(specification)" />
 					</listhead>
 				</listbox>
 				<window id="wdCreateMm" title="Create material master" width="60%" height="140px" mode="highlighted"
@@ -57,13 +63,13 @@
 					</hlayout>
 					<listbox id="lbxMaterialInst" vflex="1" emptyMessage="無資料項" checkmark="true">
 						<listhead sizable="true">
-							<listheader width="50px"></listheader>
-							<listheader label="序號" sort="auto(misn)" />
-							<listheader label="獲取方式" sort="auto(miac)" />
-							<listheader label="數量" sort="auto(qty)" style="text-align:left" align="right" />
-							<listheader label="帳值" sort="auto(value)" style="text-align:left" align="right" />
-							<listheader label="生效日期" sort="auto(effDate)" />
-							<listheader label="失效日期" sort="auto(expDate)" />
+							<listheader width="32px"></listheader>
+							<listheader label="序號" width="75px" sort="auto(misn)" />
+							<listheader label="獲取方式" width="60px" sort="auto(miac)" />
+							<listheader label="數量" width="75px" sort="auto(qty)" style="text-align:left" align="right" />
+							<listheader label="帳值" width="90px" sort="auto(value)" style="text-align:left" align="right" />
+							<listheader label="生效日期" width="75px" sort="auto(effDate)" />
+							<listheader label="失效日期" width="75px" sort="auto(expDate)" />
 						</listhead>
 					</listbox>
 					<window id="wdCreateMi" title="Create material instance" width="400px" height="100px"
@@ -95,13 +101,13 @@
 						<center>
 							<listbox id="lbxMaterialBinStock" vflex="1" emptyMessage="無資料項" checkmark="true">
 								<listhead sizable="true">
-									<listheader width="50px"></listheader>
-									<listheader label="倉庫ID" sort="auto(wrhsLocId)" />
-									<listheader label="倉庫名稱" sort="auto(wrhsLocName)" />
-									<listheader label="儲位ID" sort="auto(wrhsLocName)" />
-									<listheader label="儲位名稱" sort="auto(wrhsBinName)" />
-									<listheader label="庫存數量" sort="auto(sumStockQty)" style="text-align:left" align="right"/>
-									<listheader label="庫存帳值" sort="auto(sumStockValue)" style="text-align:left" align="right"/>
+									<listheader width="32px"></listheader>
+									<listheader label="倉庫ID" width="50px" sort="auto(wrhsLocId)" />
+									<listheader label="倉庫名稱" width="65px" sort="auto(wrhsLocName)" />
+									<listheader label="儲位ID" width="50px" sort="auto(wrhsLocName)" />
+									<listheader label="儲位名稱" width="75px" sort="auto(wrhsBinName)" />
+									<listheader label="庫存數量" width="75px" sort="auto(sumStockQty)" style="text-align:left" align="right"/>
+									<listheader label="庫存帳值" width="90px" sort="auto(sumStockValue)" style="text-align:left" align="right"/>
 								</listhead>
 							</listbox>
 						</center>
@@ -113,14 +119,14 @@
 						<toolbarbutton id="btnAddPurchWithPost" label="新增採購登帳" iconSclass="fa fa-plus" />
 					</hlayout>
 					<listbox id="lbxPurchItem" vflex="1" emptyMessage="無資料項" >
-						<listhead>
-						<listheader label="採購案號" sort="auto(purch.puNo)" />
-						<listheader label="供應商名稱" sort="auto(purch.supplierName)" />
-						<listheader label="履約狀態" sort="auto(purch.perfStatus.name)" />
-						<listheader label="數量" sort="auto(qty)" style="text-align:left" align="right"/>
-						<listheader label="金額" sort="auto(value)" style="text-align:left" align="right"/>
-						<listheader label="獲取方式ID" sort="auto(refPa.id)" />
-						<listheader label="獲取方式名稱" sort="auto(refPa.name)" />
+						<listhead sizable="true">
+						<listheader label="採購案號" width="80px" sort="auto(purch.puNo)" />
+						<listheader label="供應商名稱" width="90px" sort="auto(purch.supplierName)" sclass="nowrap-column" />
+						<listheader label="履約狀態" width="60px" sort="auto(purch.perfStatus.name)" />
+						<listheader label="數量" width="75px" sort="auto(qty)" style="text-align:left" align="right"/>
+						<listheader label="金額" width="90px" sort="auto(value)" style="text-align:left" align="right"/>
+						<listheader label="獲取方式ID" width="90px" sort="auto(refPa.id)" />
+						<listheader label="獲取方式名稱" width="115px" sort="auto(refPa.name)" />
 						</listhead>
 					</listbox>
 					<window id="wdAddPurchWithPost" title="新增採購登帳" width="400px" height="200px" mode="highlighted"

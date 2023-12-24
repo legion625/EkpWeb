@@ -30,6 +30,8 @@ import org.zkoss.zul.Window;
 import com.google.common.collect.Lists;
 
 import ekp.DebugLogMark;
+import ekp.data.service.invt.MaterialBinStockBatchInfo;
+import ekp.data.service.invt.MaterialBinStockInfo;
 import ekp.data.service.invt.MaterialInstInfo;
 import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.invt.WrhsBinInfo;
@@ -72,8 +74,8 @@ public class MmiComposer extends SelectorComposer<Component> {
 	private Listbox lbxMaterialInst;
 	
 	// -------------------------------------------------------------------------------
-	/**/
-	// TODO lbxMaterialBinStock
+	@Wire
+	private Listbox lbxMaterialBinStock;
 	
 	// -------------------------------------------------------------------------------
 	@Wire
@@ -105,14 +107,14 @@ public class MmiComposer extends SelectorComposer<Component> {
 			li.appendChild(new Listcell());
 			li.appendChild(new Listcell(mm.getMano()));
 			li.appendChild(new Listcell(mm.getName()));
-			li.appendChild(new Listcell(mm.getSpecification()));
 			li.appendChild(new Listcell(mm.getStdUnitChtName()));
 			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(mm.getSumStockQty(), 2)));
 			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(mm.getSumStockValue(), 2)));
+			li.appendChild(new Listcell(mm.getSpecification()));
 			//
 			li.addEventListener(Events.ON_CLICK, evt -> {
 				refreshMiList(mm);
-				// TODO
+				refreshMbsList(mm);
 				refreshPiList(mm);
 			});
 		};
@@ -135,6 +137,18 @@ public class MmiComposer extends SelectorComposer<Component> {
 		lbxMaterialInst.setItemRenderer(miRenderer);
 		
 		ZkUtil.initCbb(cbbCreateMiMiac, MaterialInstAcqChannel.values(), false);
+		
+		/**/
+		ListitemRenderer<MaterialBinStockInfo> mbsbRenderer = (li, mbs, i)->{
+			li.appendChild(new Listcell());
+			li.appendChild(new Listcell(mbs.getWrhsLocId()));
+			li.appendChild(new Listcell(mbs.getWrhsLocName()));
+			li.appendChild(new Listcell(mbs.getWrhsBinId()));
+			li.appendChild(new Listcell(mbs.getWrhsBinName()));
+			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(mbs.getSumStockQty(),2)));
+			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(mbs.getSumStockValue(),2)));
+		};
+		lbxMaterialBinStock.setItemRenderer(mbsbRenderer);
 		
 		/**/
 		ListitemRenderer<PurchItemInfo> piRenderer = (li, pi, i) -> {
@@ -435,7 +449,11 @@ public class MmiComposer extends SelectorComposer<Component> {
 	}
 	
 	// -------------------------------------------------------------------------------
-	// TODO mbs
+	private void refreshMbsList(MaterialMasterInfo _mm) {
+		List<MaterialBinStockInfo> mbsList = _mm.getMbsList();
+		ListModelList<MaterialBinStockInfo> model = mbsList==null ? new ListModelList<>() : new ListModelList<>(mbsList);
+		lbxMaterialBinStock.setModel(model);
+	}
 	
 	// -------------------------------------------------------------------------------
 	private void refreshPiList(MaterialMasterInfo _mm) {
@@ -539,6 +557,11 @@ public class MmiComposer extends SelectorComposer<Component> {
 				ListModelList<PurchItemInfo> model = (ListModelList) lbxPurchItem.getModel();
 				model.addAll(p.getPurchItemList());
 				wdAddPurchWithPost_closed(new Event("evt"));
+				
+				// 更新mm
+				ListModelList<MaterialMasterInfo> mmModel = (ListModelList) lbxMaterialMaster.getListModel();
+				log.debug("mmModel.indexOf(mm): {}", mmModel.indexOf(mm));
+				mmModel.set(mmModel.indexOf(mm), mm.reload());
 			}
 			// 失敗
 			else {
