@@ -1,0 +1,42 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<div id="divMi" vflex="1" apply="ekp.web.control.zk.invt.mm.MiComposer">
+		<hlayout>
+			<toolbarbutton id="btnAddMi" label="新增物料實體" iconSclass="fa fa-plus" />
+			<toolbarbutton id="btnDeleteMi" label="移除物料實體" iconSclass="fas fa-trash-alt" />
+		</hlayout>
+		<listbox id="lbxMaterialInst" vflex="1" emptyMessage="無資料項" checkmark="true">
+			<listhead sizable="true">
+				<listheader width="32px"></listheader>
+				<listheader label="序號" width="75px" sort="auto(misn)" />
+				<listheader label="獲取方式" width="60px" sort="auto(miac)" />
+				<listheader label="數量" width="75px" sort="auto(qty)" style="text-align:left" align="right" />
+				<listheader label="帳值" width="90px" sort="auto(value)" style="text-align:left" align="right" />
+				<listheader label="生效日期" width="75px" sort="auto(effDate)" />
+				<listheader label="失效日期" width="75px" sort="auto(expDate)" />
+			</listhead>
+		</listbox>
+		<window id="wdCreateMi" title="Create material instance" width="400px" height="100px" mode="highlighted"
+			closable="true" visible="false" sizable="true">
+			<hlayout hflex="1">
+				<label value="獲取方式" />
+				<combobox id="cbbMiac" hflex="1" />
+				<label value="數量" />
+				<doublebox id="dbbQty" hflex="1" />
+				<label value="帳值" />
+				<doublebox id="dbbValue" hflex="1" />
+			</hlayout>
+			<hlayout>
+				<label value="生效日期" />
+				<datebox id="dtbEffDate" />
+				<label value="失效日期" />
+				<datebox id="dtbExpDate" />
+			</hlayout>
+			<separator spacing="5px" />
+			<div align="center">
+				<button id="btnSubmit" label="Submit" />
+				<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
+			</div>
+		</window>
+	</div>
+</zk>

@@ -7,7 +7,7 @@
     }
 </style>
 
-	<borderlayout vflex="1" apply="ekp.web.control.zk.invt.MmiComposer">
+	<borderlayout vflex="1" apply="ekp.web.control.zk.invt.mm.MmiComposer">
 		<west title="Material Master" open="true" width="50%" splittable="true">
 			<div vflex="1">
 				<hlayout>
@@ -57,7 +57,8 @@
 			</tabs>
 			<tabpanels>
 				<tabpanel vflex="1">
-					<hlayout>
+				<include id="icdMi" vflex="1"></include>
+					<!-- <hlayout>
 						<toolbarbutton id="btnAddMi" label="新增物料實體" iconSclass="fa fa-plus" />
 						<toolbarbutton id="btnDeleteMi" label="移除物料實體" iconSclass="fas fa-trash-alt" />
 					</hlayout>
@@ -94,6 +95,7 @@
 							<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
 						</div>
 					</window>
+					 -->
 				</tabpanel>
 				<!-- 倉儲管理 -->
 				<tabpanel>

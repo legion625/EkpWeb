@@ -34,7 +34,7 @@
 	<MenuItem text="庫儲">
 		<MenuItem text="出入庫憑單" navigateUrl="/legionmodule/pageTemplate/fnLeftTemplate.zul?fnUri=/invt/io/ioFn.zul&amp;cntUri=/invt/io/ioSearchFn.zul"></MenuItem>
 		<MenuItem text="庫房儲位管理" navigateUrl="/invt/wrhsLocBin.zul" iconSclass="fas fa-genderless"></MenuItem>
-		<MenuItem text="料項基本檔管理" navigateUrl="/invt/mmi.zul" iconSclass="fas fa-genderless"></MenuItem>
+		<MenuItem text="料項基本檔管理" navigateUrl="/invt/mm/mmi.zul" iconSclass="fas fa-genderless"></MenuItem>
 	</MenuItem>
 	<MenuItem text="採購" navigateUrl="/legionmodule/pageTemplate/fnLeftTemplate.zul?fnUri=/pu/puFn.zul&amp;cntUri=/pu/puSearchFn.zul"></MenuItem>
 	<MenuItem text="製造" navigateUrl="/legionmodule/pageTemplate/fnLeftTemplate.zul?fnUri=/mf/woFn.zul&amp;cntUri=/mf/woSearchFn.zul"></MenuItem>
