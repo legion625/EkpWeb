@@ -1,11 +1,7 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<style>
-    .z-listcell {
-        white-space: nowrap;
-    }
-</style>
+	<style>.z-listcell { white-space: nowrap; }</style>
 
 	<borderlayout vflex="1" apply="ekp.web.control.zk.invt.mm.MmiComposer">
 		<west title="Material Master" open="true" width="50%" splittable="true">
@@ -20,8 +16,10 @@
 						<listheader label="料號" hflex="min" sort="auto(mano)" />
 						<listheader label="品名" hflex="min" sort="auto(name)" />
 						<listheader label="計量單位" hflex="min" sort="auto(stdUnit)" />
-						<listheader label="庫存數量" hflex="min" sort="auto(sumStockQty)" style="text-align:left" align="right" />
-						<listheader label="庫存帳值" hflex="min" sort="auto(sumStockValue)" style="text-align:left" align="right" />
+						<listheader label="庫存數量" hflex="min" sort="auto(sumStockQty)" style="text-align:left"
+							align="right" />
+						<listheader label="庫存帳值" hflex="min" sort="auto(sumStockValue)" style="text-align:left"
+							align="right" />
 						<listheader label="規格" hflex="min" sort="auto(specification)" />
 					</listhead>
 				</listbox>
@@ -47,123 +45,90 @@
 				</window>
 			</div>
 		</west>
-		<center title="Material Instance" >
+		<center title="Material Instance">
 			<div vflex="1">
-			<tabbox vflex="1">
-			<tabs>
-				<tab label="物料實體" />
-				<tab label="倉儲管理"/>
-				<tab label="採購記錄"/>
-			</tabs>
-			<tabpanels>
-				<tabpanel vflex="1">
-				<include id="icdMi" vflex="1"></include>
-					<!-- <hlayout>
-						<toolbarbutton id="btnAddMi" label="新增物料實體" iconSclass="fa fa-plus" />
-						<toolbarbutton id="btnDeleteMi" label="移除物料實體" iconSclass="fas fa-trash-alt" />
-					</hlayout>
-					<listbox id="lbxMaterialInst" vflex="1" emptyMessage="無資料項" checkmark="true">
-						<listhead sizable="true">
-							<listheader width="32px"></listheader>
-							<listheader label="序號" width="75px" sort="auto(misn)" />
-							<listheader label="獲取方式" width="60px" sort="auto(miac)" />
-							<listheader label="數量" width="75px" sort="auto(qty)" style="text-align:left" align="right" />
-							<listheader label="帳值" width="90px" sort="auto(value)" style="text-align:left" align="right" />
-							<listheader label="生效日期" width="75px" sort="auto(effDate)" />
-							<listheader label="失效日期" width="75px" sort="auto(expDate)" />
-						</listhead>
-					</listbox>
-					<window id="wdCreateMi" title="Create material instance" width="400px" height="100px"
-						mode="highlighted" closable="true" visible="false" sizable="true">
-						<hlayout hflex="1">
-							<label value="獲取方式" />
-							<combobox id="cbbMiac" hflex="1" />
-							<label value="數量" />
-							<doublebox id="dbbQty" hflex="1" />
-							<label value="帳值" />
-							<doublebox id="dbbValue" hflex="1" />
-						</hlayout>
-						<hlayout>
-							<label value="生效日期" />
-							<datebox id="dtbEffDate" />
-							<label value="失效日期" />
-							<datebox id="dtbExpDate" />
-						</hlayout>
-						<separator spacing="5px" />
-						<div align="center">
-							<button id="btnSubmit" label="Submit" />
-							<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
-						</div>
-					</window>
-					 -->
-				</tabpanel>
-				<!-- 倉儲管理 -->
-				<tabpanel>
-					<borderlayout>
-						<center>
-							<listbox id="lbxMaterialBinStock" vflex="1" emptyMessage="無資料項" checkmark="true">
+				<tabbox vflex="1">
+					<tabs>
+						<tab label="物料實體" />
+						<tab label="倉儲管理" />
+						<tab label="採購記錄" />
+					</tabs>
+					<tabpanels>
+						<tabpanel vflex="1">
+							<include id="icdMi" vflex="1"></include>
+						</tabpanel>
+						<!-- 倉儲管理 -->
+						<tabpanel>
+							<borderlayout>
+								<center>
+									<listbox id="lbxMaterialBinStock" vflex="1" emptyMessage="無資料項" checkmark="true">
+										<listhead sizable="true">
+											<listheader width="32px"></listheader>
+											<listheader label="倉庫ID" width="50px" sort="auto(wrhsLocId)" />
+											<listheader label="倉庫名稱" width="65px" sort="auto(wrhsLocName)" />
+											<listheader label="儲位ID" width="50px" sort="auto(wrhsLocName)" />
+											<listheader label="儲位名稱" width="75px" sort="auto(wrhsBinName)" />
+											<listheader label="庫存數量" width="75px" sort="auto(sumStockQty)"
+												style="text-align:left" align="right" />
+											<listheader label="庫存帳值" width="90px" sort="auto(sumStockValue)"
+												style="text-align:left" align="right" />
+										</listhead>
+									</listbox>
+								</center>
+							</borderlayout>
+						</tabpanel>
+						<!-- 採購記錄 -->
+						<tabpanel>
+							<hlayout>
+								<toolbarbutton id="btnAddPurchWithPost" label="新增採購登帳" iconSclass="fa fa-plus" />
+							</hlayout>
+							<listbox id="lbxPurchItem" vflex="1" emptyMessage="無資料項">
 								<listhead sizable="true">
-									<listheader width="32px"></listheader>
-									<listheader label="倉庫ID" width="50px" sort="auto(wrhsLocId)" />
-									<listheader label="倉庫名稱" width="65px" sort="auto(wrhsLocName)" />
-									<listheader label="儲位ID" width="50px" sort="auto(wrhsLocName)" />
-									<listheader label="儲位名稱" width="75px" sort="auto(wrhsBinName)" />
-									<listheader label="庫存數量" width="75px" sort="auto(sumStockQty)" style="text-align:left" align="right"/>
-									<listheader label="庫存帳值" width="90px" sort="auto(sumStockValue)" style="text-align:left" align="right"/>
+									<listheader label="採購案號" width="80px" sort="auto(purch.puNo)" />
+									<listheader label="供應商名稱" width="90px" sort="auto(purch.supplierName)"
+										sclass="nowrap-column" />
+									<listheader label="履約狀態" width="60px" sort="auto(purch.perfStatus.name)" />
+									<listheader label="數量" width="75px" sort="auto(qty)" style="text-align:left"
+										align="right" />
+									<listheader label="金額" width="90px" sort="auto(value)" style="text-align:left"
+										align="right" />
+									<listheader label="獲取方式ID" width="90px" sort="auto(refPa.id)" />
+									<listheader label="獲取方式名稱" width="115px" sort="auto(refPa.name)" />
 								</listhead>
 							</listbox>
-						</center>
-					</borderlayout>
-				</tabpanel>
-				<!-- 採購記錄 -->
-				<tabpanel>
-					<hlayout>
-						<toolbarbutton id="btnAddPurchWithPost" label="新增採購登帳" iconSclass="fa fa-plus" />
-					</hlayout>
-					<listbox id="lbxPurchItem" vflex="1" emptyMessage="無資料項" >
-						<listhead sizable="true">
-						<listheader label="採購案號" width="80px" sort="auto(purch.puNo)" />
-						<listheader label="供應商名稱" width="90px" sort="auto(purch.supplierName)" sclass="nowrap-column" />
-						<listheader label="履約狀態" width="60px" sort="auto(purch.perfStatus.name)" />
-						<listheader label="數量" width="75px" sort="auto(qty)" style="text-align:left" align="right"/>
-						<listheader label="金額" width="90px" sort="auto(value)" style="text-align:left" align="right"/>
-						<listheader label="獲取方式ID" width="90px" sort="auto(refPa.id)" />
-						<listheader label="獲取方式名稱" width="115px" sort="auto(refPa.name)" />
-						</listhead>
-					</listbox>
-					<window id="wdAddPurchWithPost" title="新增採購登帳" width="400px" height="200px" mode="highlighted"
-					closable="true" visible="false" sizable="true">
-					<hlayout hflex="1">
-						<label value="料號" />
-						<label id="lbMano" hflex="1" />
-						<label value="獲取方式" />
-						<combobox id="cbbRefPa" hflex="1"/>
-					</hlayout>
-					<hlayout hflex="1">
-						<label value="供應商" />
-						<combobox id="cbbSupplier" hflex="1"/>
-						<label value="庫房儲位" />
-						<combobox id="cbbWb" hflex="1" />
-					</hlayout>
-					<hlayout hflex="1">
-						<label value="數量" />
-						<doublebox id="dbbQty" hflex="1"/>
-						<label value="金額" />
-						<doublebox id="dbbValue" hflex="1" />
-					</hlayout>
-					<separator spacing="5px" />
-					<div align="center">
-						<button id="btnSubmit" label="Submit" />
-						<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
-					</div>
-				</window>
-				</tabpanel>
-			</tabpanels>
-			</tabbox>
-			
-			
-				
+							<window id="wdAddPurchWithPost" title="新增採購登帳" width="400px" height="200px"
+								mode="highlighted" closable="true" visible="false" sizable="true">
+								<hlayout hflex="1">
+									<label value="料號" />
+									<label id="lbMano" hflex="1" />
+									<label value="獲取方式" />
+									<combobox id="cbbRefPa" hflex="1" />
+								</hlayout>
+								<hlayout hflex="1">
+									<label value="供應商" />
+									<combobox id="cbbSupplier" hflex="1" />
+									<label value="庫房儲位" />
+									<combobox id="cbbWb" hflex="1" />
+								</hlayout>
+								<hlayout hflex="1">
+									<label value="數量" />
+									<doublebox id="dbbQty" hflex="1" />
+									<label value="金額" />
+									<doublebox id="dbbValue" hflex="1" />
+								</hlayout>
+								<separator spacing="5px" />
+								<div align="center">
+									<button id="btnSubmit" label="Submit" />
+									<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
+								</div>
+							</window>
+						</tabpanel>
+					</tabpanels>
+				</tabbox>
+
+
+
 			</div>
-		</center> 
+		</center>
 	</borderlayout>
 </zk>

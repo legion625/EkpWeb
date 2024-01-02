@@ -86,7 +86,8 @@ public class PurchBuilderAll extends PurchBuilder {
 	// -------------------------------------------------------------------------------
 	@Override
 	public boolean verify(StringBuilder _msg, boolean _full) {
-		boolean result = true;
+		boolean result = super.verify(_msg, _full);
+		
 		if(getWb()==null) {
 			_msg.append("未指定儲位。").append(System.lineSeparator());
 			result = false;
@@ -95,6 +96,11 @@ public class PurchBuilderAll extends PurchBuilder {
 		if(getPurchItemBuilderList()==null || getPurchItemBuilderList().size()<=0) {
 			_msg.append("未填寫採購品項。").append(System.lineSeparator());
 			result = false;
+		}else {
+			if(getPurchItemBuilderList().stream().anyMatch(pib->!pib.isRefPa())){
+				_msg.append("未指定獲取方式。").append(System.lineSeparator());
+				result = false;	
+			}
 		}
 		
 		return result;

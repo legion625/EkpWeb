@@ -49,6 +49,7 @@ import ekp.invt.bpu.material.MaterialInstBuilder0;
 import ekp.invt.bpu.material.MaterialMasterBpuDel0;
 import ekp.invt.bpu.material.MaterialMasterBuilder0;
 import ekp.invt.type.MaterialInstAcqChannel;
+import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartUnit;
 import ekp.pu.bpu.PuBpuType;
 import ekp.pu.bpu.PurchBuilderAll;
@@ -72,9 +73,6 @@ public class MmiComposer extends SelectorComposer<Component> {
 	@Wire
 	private Listbox lbxMaterialMaster;
 
-//	@Wire
-//	private Listbox lbxMaterialInst;
-	
 	@Wire
 	private Include icdMi;
 	private MiComposer miComposer;
@@ -119,7 +117,6 @@ public class MmiComposer extends SelectorComposer<Component> {
 			li.appendChild(new Listcell(mm.getSpecification()));
 			//
 			li.addEventListener(Events.ON_CLICK, evt -> {
-//				refreshMiList(mm);
 				miComposer.refreshMiList(mm);
 				refreshMbsList(mm);
 				refreshPiList(mm);
@@ -139,22 +136,6 @@ public class MmiComposer extends SelectorComposer<Component> {
 				
 		};
 		miComposer.init(mmRunAfterSubmit);
-		
-//		/**/
-//		ListitemRenderer<MaterialInstInfo> miRenderer = (li, mi, i)->{
-//			li.appendChild(new Listcell());
-//			li.appendChild(new Listcell(mi.getMisn()));
-//			li.appendChild(new Listcell(mi.getMiacName()));
-//			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(mi.getQty(),2)));
-//			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(mi.getValue(),2)));
-//			li.appendChild(
-//					new Listcell(DateFormatUtil.transToDate(mi.getEffDate() <= 0 ? null : new Date(mi.getEffDate()))));
-//			li.appendChild(
-//					new Listcell(DateFormatUtil.transToDate(mi.getEffDate() <= 0 ? null : new Date(mi.getExpDate()))));
-//		};
-//		lbxMaterialInst.setItemRenderer(miRenderer);
-//		
-//		ZkUtil.initCbb(cbbCreateMiMiac, MaterialInstAcqChannel.values(), false);
 		
 		/**/
 		ListitemRenderer<MaterialBinStockInfo> mbsbRenderer = (li, mbs, i)->{
@@ -179,18 +160,6 @@ public class MmiComposer extends SelectorComposer<Component> {
 			li.appendChild(new Listcell(pi.getRefPa().getName()));
 		};
 		lbxPurchItem.setItemRenderer(piRenderer);
-		
-		
-		
-//		private Combobox cbbAddPurchWithPostRefPa;
-//		@Wire("#wdAddPurchWithPost #cbbSupplier")
-//		private Combobox cbbAddPurchWithPostSupplier;
-//		@Wire("#wdAddPurchWithPost #cbbWb")
-//		private Combobox cbbAddPurchWithPostWb;
-//		@Wire("#wdAddPurchWithPost #dbbQty")
-//		private Doublebox dbbAddPurchWithPostQty;
-//		@Wire("#wdAddPurchWithPost #dbbValue")
-//		private Doublebox dbbAddPurchWithPostValue;
 		
 	}
 	
@@ -312,159 +281,11 @@ public class MmiComposer extends SelectorComposer<Component> {
 	}
 	
 	// -------------------------------------------------------------------------------
-//	@Wire
-//	private Window wdCreateMi;
-//	@Wire("#wdCreateMi #cbbMiac")
-//	private Combobox cbbCreateMiMiac;
-//	@Wire("#wdCreateMi #dbbQty")
-//	private Doublebox dbbCreateMiQty;
-//	@Wire("#wdCreateMi #dbbValue")
-//	private Doublebox dbbCreateMiValue;
-//	@Wire("#wdCreateMi #dtbEffDate")
-//	private Datebox dtbCreateMiEffDate;
-//	@Wire("#wdCreateMi #dtbExpDate")
-//	private Datebox dtbCreateMiExpDate;
-//	
-//	@Listen(Events.ON_CLICK + "=#btnAddMi")
-//	public void btnAddMi_clicked() {
-//		MaterialMasterInfo mm = getSelectedMm();
-//		if (mm == null) {
-//			ZkMsgBox.exclamation("No material master selected.");
-//			return;
-//		}
-//		
-//		resetWdCreateMiBlanks();
-//		wdCreateMi.setVisible(true);
-//	}
-//	
-//	@Listen(Events.ON_CLICK+"=#wdCreateMi #btnResetBlanks")
-//	public void resetWdCreateMiBlanks() {
-//		cbbCreateMiMiac.setValue("");
-//		dbbCreateMiQty.setValue(null);
-//		dbbCreateMiValue.setValue(null);
-//		dtbCreateMiEffDate.setValue(null);
-//		dtbCreateMiExpDate.setValue(null);
-//	}
-//	
-//	@Listen(Events.ON_CLICK + "=#wdCreateMi #btnSubmit")
-//	public void wdCreateMi_btnsSubmit_clicked() {
-//		MaterialMasterInfo mm = getSelectedMm();
-//		if (mm == null) {
-//			ZkMsgBox.exclamation("No material master selected.");
-//			return;
-//		}
-//		
-//		MaterialInstBuilder0 b = BpuFacade.getInstance().getBuilder(InvtBpuType.MI_0);
-//		b.appendMmUid(mm.getUid());
-//		b.appendMiac(cbbCreateMiMiac.getSelectedItem()==null?null:cbbCreateMiMiac.getSelectedItem().getValue());
-//		b.appendQty(dbbCreateMiQty.getValue());
-//		b.appendValue(dbbCreateMiValue.getValue());
-//		b.appendEffDate(dtbCreateMiEffDate.getValue() == null ? 0 : dtbCreateMiEffDate.getValue().getTime());
-//		b.appendExpDate(dtbCreateMiExpDate.getValue() == null ? 0 : dtbCreateMiExpDate.getValue().getTime());
-//		StringBuilder msg = new StringBuilder();
-//		if (!b.verify(msg)) {
-//			ZkMsgBox.exclamation(msg.toString());
-//			return;
-//		}
-//		
-//		ZkMsgBox.confirm("Confirm create?", () -> {
-//			MaterialInstInfo mi = b.build(new StringBuilder(), new TimeTraveler());
-//			// 成功
-//			if (mi != null) {
-//				ZkNotification.info("Create MaterialInst [" + mi.getMisn() + "][" +mi.getMiacName() + "]["+mi.getQty()+"]["+mi.getValue()+"] success.");
-//				//
-//				ListModelList<MaterialInstInfo> model = (ListModelList) lbxMaterialInst.getModel();
-//				model.add(mi);
-//				//
-//				// TODO
-//				MaterialMasterInfo mmM = getSelectedMmFromModel(mi.getMmUid()); // 從model中找到mi的parent，若有的話，reload其miList。
-//				if (mmM != null)
-//					mmM.getMiList(true); // reload
-//
-//				wdCreateMi_closed(new Event("evt"));
-//			}
-//			// 失敗
-//			else {
-//				ZkNotification.error();
-//			}
-//		});
-//	}
-//	
-//	@Listen(Events.ON_CLOSE + "=#wdCreateMi")
-//	public void wdCreateMi_closed(Event _evt) {
-//		_evt.stopPropagation();
-//		wdCreateMi.setVisible(false);
-//	}
-//	
-//	// -------------------------------------------------------------------------------
-//	private MaterialInstInfo getSelectedMi() {
-//		ListModelList<MaterialInstInfo> model = (ListModelList) lbxMaterialInst.getListModel();
-//		Set<MaterialInstInfo> miSet = model.getSelection(); // 目前只開放單選
-//		if (miSet.isEmpty())
-//			return null;
-//		
-//		// 目前只開放單選，先挑一筆。
-//		MaterialInstInfo mi = miSet.iterator().next();
-//		return mi;
-//	}
-//	
-//	@Listen(Events.ON_CLICK + "=#btnDeleteMi")
-//	public void btnDeleteMi_clicked() {
-//		MaterialInstInfo mi = getSelectedMi();
-//		if (mi == null) {
-//			ZkMsgBox.exclamation("No material instance selected.");
-//			return;
-//		}
-//		
-//		MaterialInstBpuDel0 b = BpuFacade.getInstance().getBuilder(InvtBpuType.MI_$DEL0, mi);
-//		if (b == null) {
-//			log.warn("getBuilder return null.");
-//			ZkNotification.error();
-//			return;
-//		}
-//		StringBuilder msg = new StringBuilder();
-//		if (!b.verify(msg)) {
-//			ZkMsgBox.exclamation(msg.toString());
-//			return;
-//		}
-//		
-//		ZkMsgBox.confirm("Confirm delete?", () -> {
-//			Boolean result = b.build(new StringBuilder(), new TimeTraveler());
-//			// 成功
-//			if (result != null) {
-//				ZkNotification.info("Delete masterial instance [" + b.getMi().getMisn() + "][" + b.getMi().getMiacName()
-//						+ "]["+b.getMi().getQty()+"]["+b.getMi().getValue()+"] success.");
-//				//
-//				ListModelList<MaterialInstInfo> model = (ListModelList) lbxMaterialInst.getListModel();
-//				model.remove(mi);
-//				MaterialMasterInfo mmM = getSelectedMmFromModel(mi.getMmUid()); // 從model中找到mi的parent，若有的話，reload其wbList。
-//				log.debug("mmM: {}", mmM);
-//				if (mmM != null)
-//					mmM.getMiList(true); // reload
-//			}
-//			// 失敗
-//			else {
-//				ZkNotification.error();
-//			}
-//		});
-//	}
-	
-	
-	
-	
-	// -------------------------------------------------------------------------------
 	private void refreshMmList(List<MaterialMasterInfo> _mmList) {
 		ListModelList<MaterialMasterInfo> model = _mmList == null ? new ListModelList<>()
 				: new ListModelList<>(_mmList);
 		lbxMaterialMaster.setModel(model);
 	}
-	
-//	// -------------------------------------------------------------------------------
-//	private void refreshMiList(MaterialMasterInfo _mm) {
-//		List<MaterialInstInfo> miList = _mm.getMiList();
-//		ListModelList<MaterialInstInfo> model = miList == null ? new ListModelList<>() : new ListModelList<>(miList);
-//		lbxMaterialInst.setModel(model);
-//	}
 	
 	// -------------------------------------------------------------------------------
 	private void refreshMbsList(MaterialMasterInfo _mm) {
@@ -510,7 +331,7 @@ public class MmiComposer extends SelectorComposer<Component> {
 		//
 		lbAddPurchWithPostMano.setValue(mm.getMano());
 		//
-		ZkUtil.initCbb(cbbAddPurchWithPostRefPa, mm.getPaList(), PartAcqInfo::getPartPinWithId, PartAcqInfo::getName,
+		ZkUtil.initCbb(cbbAddPurchWithPostRefPa, mm.getPaList(PartAcquisitionType.PURCHASING), PartAcqInfo::getPartPinWithId, PartAcqInfo::getName,
 				false);
 		if (cbbAddPurchWithPostRefPa.getItemCount() > 0)
 			cbbAddPurchWithPostRefPa.setSelectedIndex(0);

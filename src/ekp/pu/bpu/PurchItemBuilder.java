@@ -174,7 +174,36 @@ public abstract class PurchItemBuilder extends Bpu<PurchItemInfo> {
 			}
 		}
 		
-		// TODO
+		
+		if(DataFO.isEmptyString(getMmUid())) {
+			_msg.append("Material master should NOT be empty.").append(System.lineSeparator());
+			v = false;
+		}
+
+		if(DataFO.isEmptyString(getMmMano())) {
+			_msg.append("Material master manoe should NOT be empty.").append(System.lineSeparator());
+			v = false;
+		}
+
+		if (DataFO.isEmptyString(getMmName())) {
+			_msg.append("Material master name should NOT be empty.").append(System.lineSeparator());
+			v = false;
+		}
+
+		if (getMmStdUnit() == null || PartUnit.UNDEFINED == getMmStdUnit()) {
+			_msg.append("Material master std unit should NOT be empty.").append(System.lineSeparator());
+			v = false;
+		}
+		
+		if (getMmStdUnit() == null || PartUnit.UNDEFINED == getMmStdUnit()) {
+			_msg.append("Material master std unit should NOT be empty.").append(System.lineSeparator());
+			v = false;
+		}
+		
+		if(getQty()==0 && getValue()==0) {
+			_msg.append("Qty/Value error.").append(System.lineSeparator());
+			v = false;
+		}
 		
 		return v;
 	}

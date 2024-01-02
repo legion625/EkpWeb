@@ -8,6 +8,7 @@ import ekp.data.service.pu.PurchItemInfo;
 import ekp.data.service.sd.SalesOrderInfo;
 import ekp.data.service.sd.SalesOrderItemInfo;
 import ekp.invt.type.InvtOrderType;
+import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartUnit;
 import legion.ObjectModelInfo;
 
@@ -87,8 +88,11 @@ public interface MaterialMasterInfo extends ObjectModelInfo{
 	}
 	
 	List<PurchItemInfo> getPiList();
-	
+
 	List<PartAcqInfo> getPaList();
-	
+
+	default List<PartAcqInfo> getPaList(PartAcquisitionType _paType) {
+		return getPaList().stream().filter(pa -> pa.getType() == _paType).collect(Collectors.toList());
+	}
 
 }
