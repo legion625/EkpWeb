@@ -2,8 +2,8 @@
 <zk>
 	<div id="divMi" vflex="1" apply="ekp.web.control.zk.invt.mm.MiComposer">
 		<hlayout>
-			<toolbarbutton id="btnAddMi" label="新增物料實體" iconSclass="fa fa-plus" />
-			<toolbarbutton id="btnDeleteMi" label="移除物料實體" iconSclass="fas fa-trash-alt" />
+			<toolbarbutton id="btnAddMi" label="新增物料實體" iconSclass="fa fa-plus" disabled="true"/>
+			<toolbarbutton id="btnDeleteMi" label="移除物料實體" iconSclass="fas fa-trash-alt" disabled="true"/>
 		</hlayout>
 		<listbox id="lbxMaterialInst" vflex="1" emptyMessage="無資料項" checkmark="true">
 			<listhead sizable="true">

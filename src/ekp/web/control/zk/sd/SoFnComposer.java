@@ -8,6 +8,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 
+import ekp.web.control.zk.sd.bp.BizPartnerComposer;
 import legion.util.LogUtil;
 import legion.web.control.zk.legionmodule.pageTemplate.FnCntProxy;
 import legion.web.zk.ZkMsgBox;
@@ -34,6 +35,14 @@ public class SoFnComposer extends SelectorComposer<Component> {
 		fnCntProxy.refreshCntUri(SoSearchFnComposer.SRC);
 	}
 
+	@Listen(Events.ON_CLICK + "=#btnGotoBizPartnerFnPage")
+	public void btnGotoBizPartnerFnPage_clicked() {
+		fnCntProxy.refreshCntUri(BizPartnerComposer.SRC);
+	}
+	
+	
+	
+	// -------------------------------------------------------------------------------
 	@Listen(Events.ON_CLICK + "=#btnCreateSo")
 	public void btnCreateSo_clicked() {
 		// TODO not implemented yet...

@@ -133,8 +133,10 @@ public class MmiComposer extends SelectorComposer<Component> {
 		miComposer = MiComposer.of(icdMi);
 		Consumer<MaterialInstInfo> mmRunAfterSubmit = mi -> {
 			MaterialMasterInfo mmM = getSelectedMmFromModel(mi.getMmUid()); // 從model中找到mi的parent，若有的話，reload其miList。
-			if (mmM != null)
+			if (mmM != null) {
 				mmM.getMiList(true); // reload
+			}
+				
 		};
 		miComposer.init(mmRunAfterSubmit);
 		
@@ -582,6 +584,7 @@ public class MmiComposer extends SelectorComposer<Component> {
 				
 				// 更新mi
 				miComposer.refreshMiList(mmReload);
+				refreshMbsList(mmReload);
 			}
 			// 失敗
 			else {

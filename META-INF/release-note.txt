@@ -1,3 +1,8 @@
+Min-Hua, 2024.01.02
+[change]
+1. [IV]MaterialMaster新增「倉儲管理」和「採購紀錄」頁面顯示。
+2. [SD]銷售模組新增「供應商管理」功能。
+
 Min-Hua, 2023.11.12
 [lib]
 1. ekp_kernel: 0.5.7 -> 0.6.0

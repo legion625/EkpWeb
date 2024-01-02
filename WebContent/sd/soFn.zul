@@ -2,7 +2,10 @@
 <zk>
 	<div vflex="1" apply="ekp.web.control.zk.sd.SoFnComposer">
 		<groupbox title="查詢">
+		<vlayout>
 			<button id="btnGotoSearchFnPage" label="查詢銷售訂單" />
+			<button id="btnGotoBizPartnerFnPage" label="供應商管理"></button>
+			</vlayout>
 		</groupbox>
 		<groupbox title="功能操作">
 			<button id="btnCreateSo" label="產生銷售訂單" />
