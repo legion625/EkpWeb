@@ -1,20 +1,19 @@
 package ekp.mf.bpu;
 
 import ekp.data.service.mf.WorkorderInfo;
-import ekp.invt.type.InvtOrderStatus;
 import ekp.mf.type.WorkorderStatus;
 import legion.util.TimeTraveler;
 
-public class WoBpuFinishWork extends WoBpu {
+public class WoBpuOver extends WoBpu {
 	/* base */
 	private WorkorderInfo wo;
 
 	/* data */
-	private long finishWorkTime;
+	private long overTime;
 
 	// -------------------------------------------------------------------------------
 	@Override
-	protected WoBpuFinishWork appendBase() {
+	protected WoBpuOver appendBase() {
 		/* base */
 		wo = (WorkorderInfo) args[0];
 		appendWo(wo);
@@ -26,15 +25,15 @@ public class WoBpuFinishWork extends WoBpu {
 
 	// -------------------------------------------------------------------------------
 	// -----------------------------------appender------------------------------------
-	public WoBpuFinishWork appendFinishWorkTime(long finishWorkTime) {
-		this.finishWorkTime = finishWorkTime;
+	public WoBpuOver appendOverTime(long overTime) {
+		this.overTime = overTime;
 		return this;
 	}
 
 	// -------------------------------------------------------------------------------
 	// ------------------------------------getter-------------------------------------
-	public long getFinishWorkTime() {
-		return finishWorkTime;
+	public long getOverTime() {
+		return overTime;
 	}
 
 	// -------------------------------------------------------------------------------
@@ -48,13 +47,13 @@ public class WoBpuFinishWork extends WoBpu {
 		boolean v = true;
 
 		/*  */
-		if (WorkorderStatus.WORKING != getWo().getStatus()) {
+		if (WorkorderStatus.FINISH_WORK != getWo().getStatus()) {
 			_msg.append("WorkorderStatus error.").append(System.lineSeparator());
 			v = false;
 		}
 
-		if (getFinishWorkTime() <= 0) {
-			_msg.append("getFinishWorkTime error.").append(System.lineSeparator());
+		if (getOverTime() <= 0) {
+			_msg.append("getOverTime error.").append(System.lineSeparator());
 			v = false;
 		}
 
@@ -63,16 +62,16 @@ public class WoBpuFinishWork extends WoBpu {
 
 	// -------------------------------------------------------------------------------
 	@Override
-	protected Boolean buildProcess(TimeTraveler _tt) {
+	public Boolean buildProcess(TimeTraveler _tt) {
 		TimeTraveler tt = new TimeTraveler();
 
 		/**/
-		if (!mfDataSerivce.woFinishWork(getWo().getUid(), getFinishWorkTime())) {
+		if (!mfDataSerivce.woOver(getWo().getUid(), getOverTime())) {
 			tt.travel();
-			log.error("mfDataSerivce.woFinishWork return false.");
+			log.error("mfDataSerivce.woOver return false.");
 			return false;
 		}
-		tt.addSite("revert woFinishWork", () -> mfDataSerivce.woRevertFinishWork(getWo().getUid()));
+		tt.addSite("revert woOver", () -> mfDataSerivce.woRevertOver(getWo().getUid()));
 		log.info("woFinishWork [{}][{}]", getWo().getUid(), getWo().getWoNo());
 
 		//

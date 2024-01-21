@@ -17,6 +17,7 @@ public enum MfBpuType implements BpuType {
 	WO_1(WoBuilder1.class, PartAcqInfo.class, PartCfgInfo.class), //
 	WO_$START(WoBpuStart.class, WorkorderInfo.class), //
 	WO_$FINISH_WORK(WoBpuFinishWork.class, WorkorderInfo.class), //
+	WO_$OVER(WoBpuOver.class, WorkorderInfo.class), //
 	
 	;
 
@@ -48,6 +49,8 @@ public enum MfBpuType implements BpuType {
 			return matchBizWoStart((WorkorderInfo)_args[0]);
 		case WO_$FINISH_WORK:
 			return matchBizWoFinishWork((WorkorderInfo)_args[0]);
+		case WO_$OVER:
+			return matchBizWoOver((WorkorderInfo)_args[0]);
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + this);
 		}
@@ -117,6 +120,21 @@ public enum MfBpuType implements BpuType {
 		}
 
 		if (WorkorderStatus.WORKING != _wo.getStatus()) {
+			log.debug("WorkorderStatus should be WORKING. [{}][{}][{}]", _wo.getUid(), _wo.getWoNo(),
+					_wo.getStatusName());
+			return false;
+		}
+
+		return true;
+	}
+	
+	private boolean matchBizWoOver(WorkorderInfo _wo) {
+		if (_wo == null) {
+			log.warn("_wo null.");
+			return false;
+		}
+		
+		if (WorkorderStatus.FINISH_WORK != _wo.getStatus()) {
 			log.debug("WorkorderStatus should be FINISH_WORK. [{}][{}][{}]", _wo.getUid(), _wo.getWoNo(),
 					_wo.getStatusName());
 			return false;

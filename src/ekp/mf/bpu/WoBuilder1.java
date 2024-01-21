@@ -42,9 +42,6 @@ public class WoBuilder1 extends WoBuilder {
 //			.appendQty(rqQty * ppart.getPartReqQty());
 			womBuilderList.add(womBuilder);
 		}
-		
-		
-		// none
 
 		return this;
 	}

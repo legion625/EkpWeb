@@ -62,6 +62,10 @@ public class MmiComposer extends SelectorComposer<Component> {
 	@Wire
 	private Include icdMm_pu;
 	private Mm_puComposer mm_puComposer;
+	
+	// -------------------------------------------------------------------------------
+	@Wire
+	private Include icdMm_wo;
 
 	// -------------------------------------------------------------------------------
 	private InvtService invtService = BusinessServiceFactory.getInstance().getService(InvtService.class);

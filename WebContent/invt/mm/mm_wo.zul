@@ -1,0 +1,32 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<div id="divmm_wo" vflex="1" apply="ekp.web.control.zk.invt.mm.Mm_woComposer">
+		<hlayout>
+			<toolbarbutton id="btnAddWoWithPost" label="新增工令登帳" iconSclass="fa fa-plus" />
+		</hlayout>
+		<listbox id="lbxWo" vflex="1" emptyMessage="無資料項">
+			<listhead sizable="true">
+				<listheader label="工令編號" />
+				<listheader label="工件編號" />
+				<listheader label="獲取方式ID" />
+				<listheader label="料號" />
+				<listheader label="構型ID" />
+				<listheader label="需求量" />
+				<listheader label="開工日期" />
+				<listheader label="完工日期" />
+				<listheader label="銷令日期" />
+			</listhead>
+			<window id="wdAddWoWithPost" title="新增工令登帳" width="400px" height="200px" mode="highlighted" closable="true"
+				visible="false" sizable="true">
+				<hlayout hflex="1">
+
+				</hlayout>
+				<separator spacing="5px" />
+				<div align="center">
+				<button id="btnSubmit" label="Submit" />
+				<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
+			</div>
+			</window>
+		</listbox>
+	</div>
+</zk>
