@@ -79,7 +79,8 @@
 						</tabpanel>
 						<!-- 採購記錄 -->
 						<tabpanel>
-							<hlayout>
+						<include id="icdMm_pu" vflex="1"></include>
+							<!-- <hlayout>
 								<toolbarbutton id="btnAddPurchWithPost" label="新增採購登帳" iconSclass="fa fa-plus" />
 							</hlayout>
 							<listbox id="lbxPurchItem" vflex="1" emptyMessage="無資料項">
@@ -121,7 +122,7 @@
 									<button id="btnSubmit" label="Submit" />
 									<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
 								</div>
-							</window>
+							</window> -->
 						</tabpanel>
 					</tabpanels>
 				</tabbox>

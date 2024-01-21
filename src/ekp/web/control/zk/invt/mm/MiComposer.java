@@ -56,7 +56,7 @@ public class MiComposer extends SelectorComposer<Component>{
 	private MaterialMasterInfo mm;
 	
 //	private Runnable runAfterSubmit;
-	private Consumer<MaterialInstInfo> mmRunAfterSubmit;
+	private Consumer<MaterialInstInfo> miRunAfterSubmit;
 	
 	// -------------------------------------------------------------------------------
 	@Override
@@ -69,7 +69,7 @@ public class MiComposer extends SelectorComposer<Component>{
 		}
 	}
 	
-	void init(Consumer<MaterialInstInfo> mmRunAfterSubmit) {
+	void init(Consumer<MaterialInstInfo> miRunAfterSubmit) {
 		/**/
 		ListitemRenderer<MaterialInstInfo> miRenderer = (li, mi, i) -> {
 			li.appendChild(new Listcell());
@@ -87,7 +87,7 @@ public class MiComposer extends SelectorComposer<Component>{
 		ZkUtil.initCbb(cbbCreateMiMiac, MaterialInstAcqChannel.values(), false);
 		
 		
-		this.mmRunAfterSubmit = mmRunAfterSubmit;
+		this.miRunAfterSubmit = miRunAfterSubmit;
 		
 	}
 	
@@ -160,8 +160,8 @@ public class MiComposer extends SelectorComposer<Component>{
 //				MaterialMasterInfo mmM = getSelectedMmFromModel(mi.getMmUid()); // 從model中找到mi的parent，若有的話，reload其miList。
 //				if (mmM != null)
 //					mmM.getMiList(true); // reload
-				if (mmRunAfterSubmit != null)
-					mmRunAfterSubmit.accept(mi);
+				if (miRunAfterSubmit != null)
+					miRunAfterSubmit.accept(mi);
 
 				wdCreateMi_closed(new Event("evt"));
 			}
@@ -224,8 +224,8 @@ public class MiComposer extends SelectorComposer<Component>{
 //				log.debug("mmM: {}", mmM);
 //				if (mmM != null)
 //					mmM.getMiList(true); // reload
-				if (mmRunAfterSubmit != null)
-					mmRunAfterSubmit.accept(mi);
+				if (miRunAfterSubmit != null)
+					miRunAfterSubmit.accept(mi);
 			}
 			// 失敗
 			else {
