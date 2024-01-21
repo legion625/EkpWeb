@@ -59,7 +59,8 @@
 						</tabpanel>
 						<!-- 倉儲管理 -->
 						<tabpanel>
-							<borderlayout>
+							<include id="icdMm_mbs" vflex="1"></include>
+							<!-- <borderlayout>
 								<center>
 									<listbox id="lbxMaterialBinStock" vflex="1" emptyMessage="無資料項" checkmark="true">
 										<listhead sizable="true">
@@ -75,7 +76,7 @@
 										</listhead>
 									</listbox>
 								</center>
-							</borderlayout>
+							</borderlayout> -->
 						</tabpanel>
 						<!-- 採購記錄 -->
 						<tabpanel>

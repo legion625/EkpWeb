@@ -55,7 +55,6 @@ public class MiComposer extends SelectorComposer<Component>{
 	// -------------------------------------------------------------------------------
 	private MaterialMasterInfo mm;
 	
-//	private Runnable runAfterSubmit;
 	private Consumer<MaterialInstInfo> miRunAfterSubmit;
 	
 	// -------------------------------------------------------------------------------
@@ -63,7 +62,6 @@ public class MiComposer extends SelectorComposer<Component>{
 	public void doAfterCompose(Component comp) {
 		try {
 			super.doAfterCompose(comp);
-//			init();
 		} catch (Throwable e) {
 			LogUtil.log(e, Level.ERROR);
 		}
@@ -107,7 +105,6 @@ public class MiComposer extends SelectorComposer<Component>{
 	
 	@Listen(Events.ON_CLICK + "=#btnAddMi")
 	public void btnAddMi_clicked() {
-//		MaterialMasterInfo mm = getSelectedMm();
 		if (mm == null) {
 			ZkMsgBox.exclamation("No material master selected.");
 			return;
@@ -128,7 +125,6 @@ public class MiComposer extends SelectorComposer<Component>{
 	
 	@Listen(Events.ON_CLICK + "=#wdCreateMi #btnSubmit")
 	public void wdCreateMi_btnsSubmit_clicked() {
-//		MaterialMasterInfo mm = getSelectedMm();
 		if (mm == null) {
 			ZkMsgBox.exclamation("No material master selected.");
 			return;
@@ -156,10 +152,6 @@ public class MiComposer extends SelectorComposer<Component>{
 				ListModelList<MaterialInstInfo> model = (ListModelList) lbxMaterialInst.getModel();
 				model.add(mi);
 				//
-//				// TODO
-//				MaterialMasterInfo mmM = getSelectedMmFromModel(mi.getMmUid()); // 從model中找到mi的parent，若有的話，reload其miList。
-//				if (mmM != null)
-//					mmM.getMiList(true); // reload
 				if (miRunAfterSubmit != null)
 					miRunAfterSubmit.accept(mi);
 
@@ -220,10 +212,6 @@ public class MiComposer extends SelectorComposer<Component>{
 				ListModelList<MaterialInstInfo> model = (ListModelList) lbxMaterialInst.getListModel();
 				model.remove(mi);
 				
-//				MaterialMasterInfo mmM = getSelectedMmFromModel(mi.getMmUid()); // 從model中找到mi的parent，若有的話，reload其wbList。
-//				log.debug("mmM: {}", mmM);
-//				if (mmM != null)
-//					mmM.getMiList(true); // reload
 				if (miRunAfterSubmit != null)
 					miRunAfterSubmit.accept(mi);
 			}

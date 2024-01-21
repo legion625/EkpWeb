@@ -23,7 +23,6 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Window;
 
-import ekp.data.service.invt.MaterialInstInfo;
 import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.invt.WrhsBinInfo;
 import ekp.data.service.mbom.PartAcqInfo;
@@ -60,11 +59,11 @@ public class Mm_puComposer extends SelectorComposer<Component> {
 	private MaterialMasterInfo mm;
 
 	private Consumer<PurchInfo> runAfterPurchBuildAll;
-	
+
 	// -------------------------------------------------------------------------------
 	private InvtService invtService = BusinessServiceFactory.getInstance().getService(InvtService.class);
 	private SdService sdService =  BusinessServiceFactory.getInstance().getService(SdService.class);
-	
+
 	// -------------------------------------------------------------------------------
 	@Override
 	public void doAfterCompose(Component comp) {
@@ -74,7 +73,7 @@ public class Mm_puComposer extends SelectorComposer<Component> {
 			LogUtil.log(e, Level.ERROR);
 		}
 	}
-	
+
 	void init(Consumer<PurchInfo> runAfterPurchBuildAll) {
 		/**/
 		ListitemRenderer<PurchItemInfo> piRenderer = (li, pi, i) -> {
@@ -87,10 +86,10 @@ public class Mm_puComposer extends SelectorComposer<Component> {
 			li.appendChild(new Listcell(pi.getRefPa().getName()));
 		};
 		lbxPurchItem.setItemRenderer(piRenderer);
-		
+
 		this.runAfterPurchBuildAll = runAfterPurchBuildAll;
 	}
-	
+
 	@Wire
 	private Window wdAddPurchWithPost;
 	@Wire("#wdAddPurchWithPost #lbMano")
@@ -105,15 +104,14 @@ public class Mm_puComposer extends SelectorComposer<Component> {
 	private Doublebox dbbAddPurchWithPostQty;
 	@Wire("#wdAddPurchWithPost #dbbValue")
 	private Doublebox dbbAddPurchWithPostValue;
-	
+
 	@Listen(Events.ON_CLICK + "=#btnAddPurchWithPost")
 	public void btnAddPurchWithPost_clicked() {
-//		MaterialMasterInfo mm = getSelectedMm();
 		if (mm == null) {
 			ZkNotification.warning("必須先選取料件主檔。");
 			return;
 		}
-		
+
 		resetWdAddPurchWithPostBlanks();
 
 		//
@@ -139,7 +137,7 @@ public class Mm_puComposer extends SelectorComposer<Component> {
 
 		wdAddPurchWithPost.setVisible(true);
 	}
-	
+
 	@Listen(Events.ON_CLICK + "=#wdAddPurchWithPost #btnResetBlanks")
 	public void resetWdAddPurchWithPostBlanks() {
 		lbAddPurchWithPostMano.setValue("");
@@ -149,16 +147,15 @@ public class Mm_puComposer extends SelectorComposer<Component> {
 		dbbAddPurchWithPostQty.setValue(null);
 		dbbAddPurchWithPostValue.setValue(null);
 	}
-	
+
 	@Listen(Events.ON_CLICK + "=#wdAddPurchWithPost #btnSubmit")
 	public void wdAddPurchWithPost_btnSubmit_clicked() {
 		if (mm == null) {
 			ZkMsgBox.exclamation("No material master selected.");
 			return;
 		}
-		
+
 		PurchBuilderAll b = BpuFacade.getInstance().getBuilder(PuBpuType.P_ALL);
-//		MaterialMasterInfo mm = getSelectedMm();
 		PartAcqInfo pa = cbbAddPurchWithPostRefPa.getSelectedItem() == null ? null
 				: cbbAddPurchWithPostRefPa.getSelectedItem().getValue();
 		BizPartnerInfo supplier = cbbAddPurchWithPostSupplier.getSelectedItem() == null ? null
@@ -171,7 +168,7 @@ public class Mm_puComposer extends SelectorComposer<Component> {
 		b.appendTitle(title);
 		b.appendSupplier(supplier).appendWb(wb);
 		b.addPiBuilder().appendMm(mm).appendPa(pa).appendQty(qty).appendValue(value);
-		
+
 		StringBuilder msg = new StringBuilder();
 		if (!b.verify(msg)) {
 			ZkMsgBox.exclamation(msg.toString());
@@ -183,24 +180,15 @@ public class Mm_puComposer extends SelectorComposer<Component> {
 			// 成功
 			if (p != null) {
 				ZkNotification.info("Add purch with post ["+p.getPuNo()+"][" + mm.getMano() + "][" + mm.getName() + "] success.");
-				 ;
+
 				ListModelList<PurchItemInfo> model = (ListModelList) lbxPurchItem.getModel();
 				model.addAll(p.getPurchItemList());
 				wdAddPurchWithPost_closed(new Event("evt"));
-				
-//				// 更新mm
-//				ListModelList<MaterialMasterInfo> mmModel = (ListModelList) lbxMaterialMaster.getListModel();
-//				log.debug("mmModel.indexOf(mm): {}", mmModel.indexOf(mm));
-//				MaterialMasterInfo mmReload = mm.reload();
-//				mmModel.set(mmModel.indexOf(mm), mmReload);
-//				
-//				// 更新mi
-//				miComposer.refreshMiList(mmReload);
-//				refreshMbsList(mmReload);
-				
+
+				//
 				if(runAfterPurchBuildAll!=null)
 					runAfterPurchBuildAll.accept(p);
-				
+
 			}
 			// 失敗
 			else {
@@ -208,17 +196,17 @@ public class Mm_puComposer extends SelectorComposer<Component> {
 			}
 		});
 	}
-	
+
 	@Listen(Events.ON_CLOSE + "=#wdAddPurchWithPost")
 	public void wdAddPurchWithPost_closed(Event _evt) {
 		_evt.stopPropagation();
 		wdAddPurchWithPost.setVisible(false);
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	void refreshPiList(MaterialMasterInfo _mm) {
 		this.mm = _mm;
-		
+
 		List<PurchItemInfo> piList =  _mm.getPiList();
 		ListModelList<PurchItemInfo> model = piList == null ? new ListModelList<>() : new ListModelList<>(piList);
 		lbxPurchItem.setModel(model);

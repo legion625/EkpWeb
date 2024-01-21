@@ -1,0 +1,16 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<div id="divMm_mbs" vflex="1" apply="ekp.web.control.zk.invt.mm.Mm_mbsComposer">
+		<listbox id="lbxMbs" vflex="1" emptyMessage="無資料項" checkmark="true">
+			<listhead sizable="true">
+				<listheader width="32px"></listheader>
+				<listheader label="倉庫ID" width="50px" sort="auto(wrhsLocId)" />
+				<listheader label="倉庫名稱" width="65px" sort="auto(wrhsLocName)" />
+				<listheader label="儲位ID" width="50px" sort="auto(wrhsLocName)" />
+				<listheader label="儲位名稱" width="75px" sort="auto(wrhsBinName)" />
+				<listheader label="庫存數量" width="75px" sort="auto(sumStockQty)" style="text-align:left" align="right" />
+				<listheader label="庫存帳值" width="90px" sort="auto(sumStockValue)" style="text-align:left" align="right" />
+			</listhead>
+		</listbox>
+	</div>
+</zk>

@@ -1,16 +1,12 @@
 package ekp.web.control.zk.invt.mm;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
-import org.zkoss.bind.init.ZKBinderPhaseListeners;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
@@ -18,10 +14,7 @@ import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Datebox;
-import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Include;
-import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
@@ -29,35 +22,18 @@ import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
-import com.google.common.collect.Lists;
-
-import ekp.DebugLogMark;
-import ekp.data.service.invt.MaterialBinStockBatchInfo;
-import ekp.data.service.invt.MaterialBinStockInfo;
 import ekp.data.service.invt.MaterialInstInfo;
 import ekp.data.service.invt.MaterialMasterInfo;
-import ekp.data.service.invt.WrhsBinInfo;
-import ekp.data.service.invt.WrhsLocInfo;
-import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.pu.PurchInfo;
 import ekp.data.service.pu.PurchItemInfo;
-import ekp.data.service.sd.BizPartnerInfo;
 import ekp.invt.InvtService;
 import ekp.invt.bpu.InvtBpuType;
-import ekp.invt.bpu.material.MaterialInstBpuDel0;
-import ekp.invt.bpu.material.MaterialInstBuilder0;
 import ekp.invt.bpu.material.MaterialMasterBpuDel0;
 import ekp.invt.bpu.material.MaterialMasterBuilder0;
-import ekp.invt.type.MaterialInstAcqChannel;
-import ekp.mbom.type.PartAcquisitionType;
 import ekp.mbom.type.PartUnit;
-import ekp.pu.bpu.PuBpuType;
-import ekp.pu.bpu.PurchBuilderAll;
 import ekp.sd.SdService;
 import legion.BusinessServiceFactory;
 import legion.biz.BpuFacade;
-import legion.util.DateFormatUtil;
-import legion.util.DateUtil;
 import legion.util.LogUtil;
 import legion.util.NumberFormatUtil;
 import legion.util.TimeTraveler;
@@ -76,21 +52,19 @@ public class MmiComposer extends SelectorComposer<Component> {
 	@Wire
 	private Include icdMi;
 	private MiComposer miComposer;
-	
+
 	// -------------------------------------------------------------------------------
 	@Wire
-	private Listbox lbxMaterialBinStock;
-	
+	private Include icdMm_mbs;
+	private Mm_mbsComposer mm_mbsComposer;
+
 	// -------------------------------------------------------------------------------
-//	@Wire
-//	private Listbox lbxPurchItem;
 	@Wire
 	private Include icdMm_pu;
 	private Mm_puComposer mm_puComposer;
 
 	// -------------------------------------------------------------------------------
 	private InvtService invtService = BusinessServiceFactory.getInstance().getService(InvtService.class);
-	private SdService sdService =  BusinessServiceFactory.getInstance().getService(SdService.class);
 
 	// -------------------------------------------------------------------------------
 	@Override
@@ -121,15 +95,14 @@ public class MmiComposer extends SelectorComposer<Component> {
 			//
 			li.addEventListener(Events.ON_CLICK, evt -> {
 				miComposer.refreshMiList(mm);
-				refreshMbsList(mm);
-//				refreshPiList(mm);
+				mm_mbsComposer.refreshMbsList(mm);
 				mm_puComposer.refreshPiList(mm);
 			});
 		};
 		lbxMaterialMaster.setItemRenderer(mmRenderer);
 
 		ZkUtil.initCbb(cbbCreateMmStdUnit, PartUnit.values(), false);
-		
+
 		/**/
 		miComposer = MiComposer.of(icdMi);
 		Consumer<MaterialInstInfo> miRunAfterSubmit = mi -> {
@@ -137,38 +110,19 @@ public class MmiComposer extends SelectorComposer<Component> {
 			if (mmM != null) {
 				mmM.getMiList(true); // reload
 			}
-				
+
 		};
 		miComposer.init(miRunAfterSubmit);
-		
+
 		/**/
-		ListitemRenderer<MaterialBinStockInfo> mbsbRenderer = (li, mbs, i)->{
-			li.appendChild(new Listcell());
-			li.appendChild(new Listcell(mbs.getWrhsLocId()));
-			li.appendChild(new Listcell(mbs.getWrhsLocName()));
-			li.appendChild(new Listcell(mbs.getWrhsBinId()));
-			li.appendChild(new Listcell(mbs.getWrhsBinName()));
-			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(mbs.getSumStockQty(),2)));
-			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(mbs.getSumStockValue(),2)));
-		};
-		lbxMaterialBinStock.setItemRenderer(mbsbRenderer);
-		
+		mm_mbsComposer = Mm_mbsComposer.of(icdMm_mbs);
+		mm_mbsComposer.init();
+
 		/**/
-//		ListitemRenderer<PurchItemInfo> piRenderer = (li, pi, i) -> {
-//			li.appendChild(new Listcell(pi.getPurch().getPuNo()));
-//			li.appendChild(new Listcell(pi.getPurch().getSupplierName()));
-//			li.appendChild(new Listcell(pi.getPurch().getPerfStatus().getName()));
-//			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(pi.getQty(), 2)));
-//			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(pi.getValue(),2)));
-//			li.appendChild(new Listcell(pi.getRefPa().getId()));
-//			li.appendChild(new Listcell(pi.getRefPa().getName()));
-//		};
-//		lbxPurchItem.setItemRenderer(piRenderer);
 		mm_puComposer = Mm_puComposer.of(icdMm_pu);
 		Consumer<PurchInfo> runAfterPurchBuildAll = pu->{
 			for(PurchItemInfo pi: pu.getPurchItemList()) {
 				pi.getMmUid();
-//				MaterialMasterInfo mmM = getSelectedMmFromModel(pi.getMmUid()); // 從model中找到pi對應的MaterialMaster。
 				ListModelList<MaterialMasterInfo> mmModel = (ListModelList) lbxMaterialMaster.getListModel();
 				MaterialMasterInfo mmM = mmModel.getInnerList().stream()
 						.filter(_mm -> _mm.getUid().equalsIgnoreCase(pi.getMmUid())).findAny().orElse(null);
@@ -177,17 +131,17 @@ public class MmiComposer extends SelectorComposer<Component> {
 					// 更新左側的Material Master
 					mmModel.set(mmModel.indexOf(mmM), mmReload);
 					mmM.getMiList(true); // reload
-					
+
 					// 更新mi
 					miComposer.refreshMiList(mmReload);
 					// 更新倉庫管理
-					refreshMbsList(mmReload);
+					mm_mbsComposer.refreshMbsList(mmReload);
 				}
 			}
 		};
 		mm_puComposer.init(runAfterPurchBuildAll); // TODO
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	@Wire
 	private Window wdCreateMm;
@@ -199,13 +153,13 @@ public class MmiComposer extends SelectorComposer<Component> {
 	private Textbox txbCreateMmSpec;
 	@Wire("#wdCreateMm #cbbStdUnit")
 	private Combobox cbbCreateMmStdUnit;
-	
+
 	@Listen(Events.ON_CLICK+"=#btnAddMm")
 	public void btnAddMm_clicked() {
 		resetWdCreateMmBlanks();
 		wdCreateMm.setVisible(true);
 	}
-	
+
 	@Listen(Events.ON_CLICK + "=#wdCreateMm #btnResetBlanks")
 	public void resetWdCreateMmBlanks() {
 		txbCreateMmMano.setValue("");
@@ -213,7 +167,7 @@ public class MmiComposer extends SelectorComposer<Component> {
 		txbCreateMmSpec.setValue("");
 		cbbCreateMmStdUnit.setValue("");
 	}
-	
+
 	@Listen(Events.ON_CLICK + "=#wdCreateMm #btnSubmit")
 	public void wdCreateMm_btnSubmit_clicked() {
 		MaterialMasterBuilder0 b = BpuFacade.getInstance().getBuilder(InvtBpuType.MM_0);
@@ -244,13 +198,13 @@ public class MmiComposer extends SelectorComposer<Component> {
 			}
 		});
 	}
-	
+
 	@Listen(Events.ON_CLOSE + "=#wdCreateMm")
 	public void wdCreateMm_closed(Event _evt) {
 		_evt.stopPropagation();
 		wdCreateMm.setVisible(false);
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	private MaterialMasterInfo getSelectedMm() {
 		ListModelList<MaterialMasterInfo> model = (ListModelList) lbxMaterialMaster.getListModel();
@@ -262,13 +216,13 @@ public class MmiComposer extends SelectorComposer<Component> {
 		MaterialMasterInfo mm = mmSet.iterator().next();
 		return mm;
 	}
-	
+
 	private MaterialMasterInfo getSelectedMmFromModel(String _mmUid) {
 		ListModelList<MaterialMasterInfo> mmModel = (ListModelList) lbxMaterialMaster.getListModel();
 		return mmModel.getInnerList().stream().filter(_mm -> _mm.getUid().equalsIgnoreCase(_mmUid)).findAny()
 				.orElse(null);
 	}
-	
+
 	@Listen(Events.ON_CLICK+"=#btnDeleteMm")
 	public void btnDeleteMm_clicked() {
 		// 目前只開放單選，先挑一筆。
@@ -277,7 +231,7 @@ public class MmiComposer extends SelectorComposer<Component> {
 			ZkMsgBox.exclamation("No material master selected.");
 			return;
 		}
-		
+
 		MaterialMasterBpuDel0 b = BpuFacade.getInstance().getBuilder(InvtBpuType.MM_$DEL0, mm);
 		if(b==null) {
 			log.warn("getBuilder return null.");
@@ -289,7 +243,7 @@ public class MmiComposer extends SelectorComposer<Component> {
 			ZkMsgBox.exclamation(msg.toString());
 			return;
 		}
-		
+
 		ZkMsgBox.confirm("Confirm delete?", () -> {
 			Boolean result = b.build(new StringBuilder(), new TimeTraveler());
 			// 成功
@@ -304,144 +258,11 @@ public class MmiComposer extends SelectorComposer<Component> {
 			}
 		});
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	private void refreshMmList(List<MaterialMasterInfo> _mmList) {
 		ListModelList<MaterialMasterInfo> model = _mmList == null ? new ListModelList<>()
 				: new ListModelList<>(_mmList);
 		lbxMaterialMaster.setModel(model);
 	}
-	
-	// -------------------------------------------------------------------------------
-	private void refreshMbsList(MaterialMasterInfo _mm) {
-		List<MaterialBinStockInfo> mbsList = _mm.getMbsList();
-		ListModelList<MaterialBinStockInfo> model = mbsList==null ? new ListModelList<>() : new ListModelList<>(mbsList);
-		lbxMaterialBinStock.setModel(model);
-	}
-	
-	// -------------------------------------------------------------------------------
-//	private void refreshPiList(MaterialMasterInfo _mm) {
-//		List<PurchItemInfo> piList =  _mm.getPiList();
-//		ListModelList<PurchItemInfo> model = piList == null ? new ListModelList<>() : new ListModelList<>(piList);
-//		lbxPurchItem.setModel(model);
-//	}
-	
-	
-	// -------------------------------------------------------------------------------
-//	@Wire
-//	private Window wdAddPurchWithPost;
-//	@Wire("#wdAddPurchWithPost #lbMano")
-//	private Label lbAddPurchWithPostMano;
-//	@Wire("#wdAddPurchWithPost #cbbRefPa")
-//	private Combobox cbbAddPurchWithPostRefPa;
-//	@Wire("#wdAddPurchWithPost #cbbSupplier")
-//	private Combobox cbbAddPurchWithPostSupplier;
-//	@Wire("#wdAddPurchWithPost #cbbWb")
-//	private Combobox cbbAddPurchWithPostWb;
-//	@Wire("#wdAddPurchWithPost #dbbQty")
-//	private Doublebox dbbAddPurchWithPostQty;
-//	@Wire("#wdAddPurchWithPost #dbbValue")
-//	private Doublebox dbbAddPurchWithPostValue;
-	
-//	@Listen(Events.ON_CLICK + "=#btnAddPurchWithPost")
-//	public void btnAddPurchWithPost_clicked() {
-//		resetWdAddPurchWithPostBlanks();
-//
-//		MaterialMasterInfo mm = getSelectedMm();
-//		if (mm == null) {
-//			ZkNotification.warning("必須先選取料件主檔。");
-//			return;
-//		}
-//
-//		//
-//		lbAddPurchWithPostMano.setValue(mm.getMano());
-//		//
-//		ZkUtil.initCbb(cbbAddPurchWithPostRefPa, mm.getPaList(PartAcquisitionType.PURCHASING), PartAcqInfo::getPartPinWithId, PartAcqInfo::getName,
-//				false);
-//		if (cbbAddPurchWithPostRefPa.getItemCount() > 0)
-//			cbbAddPurchWithPostRefPa.setSelectedIndex(0);
-//		//
-//		ZkUtil.initCbb(cbbAddPurchWithPostSupplier, sdService.loadBizPartnerList(), BizPartnerInfo::getName,
-//				BizPartnerInfo::getBan, false);
-//		if (cbbAddPurchWithPostSupplier.getItemCount() > 0)
-//			cbbAddPurchWithPostSupplier.setSelectedIndex(0);
-//		//
-//
-//		ZkUtil.initCbb(
-//				cbbAddPurchWithPostWb, invtService.loadWrhsLocList().stream()
-//						.flatMap(wl -> wl.getWrhsBinList().stream()).collect(Collectors.toList()),
-//				WrhsBinInfo::getId, WrhsBinInfo::getName, false);
-//		if (cbbAddPurchWithPostWb.getItemCount() > 0)
-//			cbbAddPurchWithPostWb.setSelectedIndex(0);
-//
-//		wdAddPurchWithPost.setVisible(true);
-//	}
-	
-	
-	
-//	@Listen(Events.ON_CLICK + "=#wdAddPurchWithPost #btnResetBlanks")
-//	public void resetWdAddPurchWithPostBlanks() {
-//		lbAddPurchWithPostMano.setValue("");
-//		cbbAddPurchWithPostRefPa.setValue("");
-//		cbbAddPurchWithPostSupplier.setValue("");
-//		cbbAddPurchWithPostWb.setValue("");
-//		dbbAddPurchWithPostQty.setValue(null);
-//		dbbAddPurchWithPostValue.setValue(null);
-//	}
-	
-//	@Listen(Events.ON_CLICK + "=#wdAddPurchWithPost #btnSubmit")
-//	public void wdAddPurchWithPost_btnSubmit_clicked() {
-//		PurchBuilderAll b = BpuFacade.getInstance().getBuilder(PuBpuType.P_ALL);
-//		MaterialMasterInfo mm = getSelectedMm();
-//		PartAcqInfo pa = cbbAddPurchWithPostRefPa.getSelectedItem() == null ? null
-//				: cbbAddPurchWithPostRefPa.getSelectedItem().getValue();
-//		BizPartnerInfo supplier = cbbAddPurchWithPostSupplier.getSelectedItem() == null ? null
-//				: cbbAddPurchWithPostSupplier.getSelectedItem().getValue();
-//		WrhsBinInfo wb = cbbAddPurchWithPostWb.getSelectedItem() == null ? null
-//				: cbbAddPurchWithPostWb.getSelectedItem().getValue();
-//		double qty = dbbAddPurchWithPostQty.getValue()==null?0:dbbAddPurchWithPostQty.getValue();
-//		double value = dbbAddPurchWithPostValue.getValue()==null?0:dbbAddPurchWithPostValue.getValue();
-//		String title = "採購" +mm.getName();
-//		b.appendTitle(title);
-//		b.appendSupplier(supplier).appendWb(wb);
-//		b.addPiBuilder().appendMm(mm).appendPa(pa).appendQty(qty).appendValue(value);
-//		
-//		StringBuilder msg = new StringBuilder();
-//		if (!b.verify(msg)) {
-//			ZkMsgBox.exclamation(msg.toString());
-//			return;
-//		}
-//
-//		ZkMsgBox.confirm("Confirm add purch with post?", () -> {
-//			PurchInfo p = b.build();
-//			// 成功
-//			if (p != null) {
-//				ZkNotification.info("Add purch with post ["+p.getPuNo()+"][" + mm.getMano() + "][" + mm.getName() + "] success.");
-//				 ;
-//				ListModelList<PurchItemInfo> model = (ListModelList) lbxPurchItem.getModel();
-//				model.addAll(p.getPurchItemList());
-//				wdAddPurchWithPost_closed(new Event("evt"));
-//				
-//				// 更新mm
-//				ListModelList<MaterialMasterInfo> mmModel = (ListModelList) lbxMaterialMaster.getListModel();
-//				log.debug("mmModel.indexOf(mm): {}", mmModel.indexOf(mm));
-//				MaterialMasterInfo mmReload = mm.reload();
-//				mmModel.set(mmModel.indexOf(mm), mmReload);
-//				
-//				// 更新mi
-//				miComposer.refreshMiList(mmReload);
-//				refreshMbsList(mmReload);
-//			}
-//			// 失敗
-//			else {
-//				ZkNotification.error();
-//			}
-//		});
-//	}
-	
-//	@Listen(Events.ON_CLOSE + "=#wdAddPurchWithPost")
-//	public void wdAddPurchWithPost_closed(Event _evt) {
-//		_evt.stopPropagation();
-//		wdAddPurchWithPost.setVisible(false);
-//	}
 }
