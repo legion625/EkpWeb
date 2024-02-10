@@ -2,13 +2,16 @@ package ekp.web.control.zk.mbom.prod;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.SelectorComposer;
+import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.DefaultTreeModel;
 import org.zkoss.zul.DefaultTreeNode;
@@ -16,11 +19,13 @@ import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.ListitemRenderer;
+import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.TreeNode;
 import org.zkoss.zul.Treecell;
 import org.zkoss.zul.TreeitemRenderer;
 import org.zkoss.zul.Treerow;
+import org.zkoss.zul.Window;
 
 import ekp.DebugLogMark;
 import ekp.data.service.invt.MaterialMasterInfo;
@@ -29,14 +34,22 @@ import ekp.data.service.mbom.ProdInfo;
 import ekp.data.service.mbom.ProdModInfo;
 import ekp.data.service.mbom.ProdModItemInfo;
 import ekp.invt.type.InvtOrderType;
+import ekp.mbom.issue.MbomBpuType;
+import ekp.mbom.issue.prod.ProdBpuDel0;
+import ekp.mbom.issue.prod.ProdBuilder0;
+import ekp.mbom.issue.prodMod.ProdModBuilder1;
 import ekp.util.DataUtil;
 import ekp.web.control.zk.mbom.dto.PartCfgTreeDto;
 import ekp.web.control.zk.mbom.dto.ProdCtlTreeDto;
 import ekp.web.control.zk.mbom.dto.ProdModPaTreeDto;
+import legion.biz.BpuFacade;
 import legion.util.LogUtil;
 import legion.util.NumberFormatUtil;
+import legion.util.TimeTraveler;
 import legion.util.query.QueryOperation;
 import legion.web.control.zk.legionmodule.pageTemplate.FnCntProxy;
+import legion.web.zk.ZkMsgBox;
+import legion.web.zk.ZkNotification;
 
 public class ProdListPageComposer extends SelectorComposer<Component> {
 	public final static String URI = "/mbom/prod/prodListPage.zul";
@@ -160,6 +173,106 @@ public class ProdListPageComposer extends SelectorComposer<Component> {
 	}
 
 	// -------------------------------------------------------------------------------
+	@Wire
+	private Window wdCreateProd;
+	@Wire("#wdCreateProd #txbId")
+	private Textbox txbCreateProdId;
+	@Wire("#wdCreateProd #txbName")
+	private Textbox txbCreateProdName;
+	
+	@Listen(Events.ON_CLICK+"=#btnCreateProd")
+	public void btnCreateProd_clicked() {
+		wdCreateProd_btnResetBlanks_clicked();
+		wdCreateProd.setVisible(true);
+	}
+	
+	@Listen(Events.ON_CLICK + "=#wdCreateProd #btnResetBlanks")
+	public void wdCreateProd_btnResetBlanks_clicked() {
+		txbCreateProdId.setValue("");
+		txbCreateProdName.setValue("");
+	}
+	
+	@Listen(Events.ON_CLICK + "=#wdCreateProd #btnSubmit")
+	public void wdCreateProd_btnSubmit_clicked() {
+		ProdBuilder0 pb = BpuFacade.getInstance().getBuilder(MbomBpuType.PROD_0);
+		pb.appendId(txbCreateProdId.getValue());
+		pb.appendName(txbCreateProdName.getValue());
+		StringBuilder msg = new StringBuilder();
+		if (!pb.verify(msg)) {
+			ZkMsgBox.exclamation(msg.toString());
+			return;
+		}
+		
+		ZkMsgBox.confirm("Confirm create?", () -> {
+			ProdInfo prod = pb.build(new StringBuilder(), new TimeTraveler());
+			// 成功
+			if(prod!=null) {
+				ZkNotification.info("Create product ["+prod.getId()+"]["+prod.getName()+"] success.");
+				ListModelList<ProdInfo> model =  (ListModelList)lbxProd.getModel();
+				model.add(prod);
+				wdCreateProd_closed(new Event("evt"));
+			}
+			// 失敗
+			else {
+				ZkNotification.error();
+			}
+		});
+	}
+
+	@Listen(Events.ON_CLOSE + "=#wdCreateProd")
+	public void wdCreateProd_closed(Event _evt) {
+		_evt.stopPropagation();
+		wdCreateProd.setVisible(false);
+	}
+	
+	private ProdInfo getSelectedProd() {
+		ListModelList<ProdInfo> model = (ListModelList) lbxProd.getListModel();
+		Set<ProdInfo> prodSet = model.getSelection(); // 目前只開放單選
+		if (prodSet.isEmpty())
+			return null;
+
+		// 目前只開放單選，先挑一筆。
+		ProdInfo prod = prodSet.iterator().next();
+		return prod;
+	}
+	
+	@Listen(Events.ON_CLICK+"=#btnDeleteProd")
+	public void btnDeleteProd_clicked() {
+		// 目前只開放單選，先挑一筆。
+		ProdInfo prod = getSelectedProd();
+		if (prod == null) {
+			ZkMsgBox.exclamation("No product selected.");
+			return;
+		}
+		
+		ProdBpuDel0 b = BpuFacade.getInstance().getBuilder(MbomBpuType.PROD_$DEL0, prod);
+		if(prod==null) {
+			log.warn("getBuilder return null.");
+			ZkNotification.error();
+			return;
+		}
+		StringBuilder msg = new StringBuilder();
+		if (!b.verify(msg)) {
+			ZkMsgBox.exclamation(msg.toString());
+			return;
+		}
+
+		ZkMsgBox.confirm("Confirm delete?", () -> {
+			Boolean result = b.build(new StringBuilder(), new TimeTraveler());
+			// 成功
+			if (result != null) {
+				ZkNotification.info("Delete productr [" + b.getProd().getId()+ "][" + b.getProd().getName() + "] success.");
+				ListModelList<ProdInfo> model = (ListModelList) lbxProd.getListModel();
+				model.remove(prod);
+			}
+			// 失敗
+			else {
+				ZkNotification.error();
+			}
+		});
+	}
+	
+	// -------------------------------------------------------------------------------
 	public void refreshProdList(List<ProdInfo> _prodList) {
 		ListModelList<ProdInfo> model = new ListModelList<>(_prodList);
 		lbxProd.setModel(model);
@@ -211,6 +324,97 @@ public class ProdListPageComposer extends SelectorComposer<Component> {
 	}
 
 	// -------------------------------------------------------------------------------
+	@Wire
+	private Window wdCreateProdMod;
+	@Wire("#wdCreateProdMod #txbId")
+	private Textbox txbCreateProdModId;
+	@Wire("#wdCreateProdMod #txbName")
+	private Textbox txbCreateProdModName;
+	@Wire("#wdCreateProdMod #txbDesp")
+	private Textbox txbCreateProdModDesp;
+	
+	@Listen(Events.ON_CLICK+"=#btnCreateProdMod")
+	public void btnCreateProdMod_clicked() {
+		wdCreateProdMod_btnResetBlanks_clicked();
+		wdCreateProdMod.setVisible(true);
+	}
+	
+	@Listen(Events.ON_CLICK + "=#wdCreateProdMod #btnResetBlanks")
+	public void wdCreateProdMod_btnResetBlanks_clicked() {
+		txbCreateProdModId.setValue("");
+		txbCreateProdModName.setValue("");
+		txbCreateProdModDesp.setValue("");
+	}
+
+	@Listen(Events.ON_CLICK + "=#wdCreateProdMod #btnSubmit")
+	public void wdCreateProdMod_btnSubmit_clicked() {
+		ProdInfo prod = getSelectedProd();
+		if (prod == null) {
+			ZkNotification.warning("No product selected.");
+			return;
+		}
+		ProdModBuilder1 b = BpuFacade.getInstance().getBuilder(MbomBpuType.PROD_MOD_1, prod);
+		b.appendId(txbCreateProdModId.getValue()).appendName(txbCreateProdModName.getValue())
+				.appendDesp(txbCreateProdModDesp.getValue());
+
+		StringBuilder msg = new StringBuilder();
+		if (!b.verify(msg)) {
+			ZkMsgBox.exclamation(msg.toString());
+			return;
+		}
+
+		ZkMsgBox.confirm("Confirm create?", () -> {
+			ProdModInfo prodMod = b.build(new StringBuilder(), new TimeTraveler());
+			// 成功
+			if (prodMod != null) {
+				ZkNotification.info("Create ProdMod [" + prodMod.getId() + "][" + prodMod.getName() + "] success.");
+				ListModelList<ProdModInfo> model = (ListModelList) lbxProdMod.getModel();
+				model.add(prodMod);
+				wdCreateProdMod_closed(new Event("evt"));
+			}
+			// 失敗
+			else {
+				ZkNotification.error();
+			}
+		});
+	}
+
+	@Listen(Events.ON_CLOSE + "=#wdCreateProdMod")
+	public void wdCreateProdMod_closed(Event _evt) {
+		_evt.stopPropagation();
+		wdCreateProdMod.setVisible(false);
+	}
+
+	private ProdModInfo getSelectedProdMod() {
+		ListModelList<ProdModInfo> model = (ListModelList)lbxProdMod.getListModel();
+		Set<ProdModInfo> prodModSet = model.getSelection(); // 目前只開放單選
+		if (prodModSet.isEmpty())
+			return null;
+		
+		// 目前只開放單選，先挑一筆。
+		ProdModInfo prodMod = prodModSet.iterator().next();
+		return prodMod;
+	}
+	
+	@Listen(Events.ON_CLICK+"=#btnDeleteProdMod")
+	public void btnDeleteProdMod_clicked() {
+		// 目前只開放單選，先挑一筆。
+		ProdModInfo prodMod = getSelectedProdMod();
+		if (prodMod == null) {
+			ZkMsgBox.exclamation("No product model selected.");
+			return;
+		}
+		
+		Prodmodbpu
+		
+		
+		
+	}
+	
+	
+	
+	
+	
 	private void refreshProdModInfo(ProdModInfo _pm) {
 		if(_pm==null)
 			return;

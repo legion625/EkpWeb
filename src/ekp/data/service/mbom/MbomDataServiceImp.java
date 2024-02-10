@@ -847,6 +847,19 @@ public class MbomDataServiceImp implements MbomDataService {
 			return null;
 		}
 	}
+	
+	@Override
+	public List<ProdCtlInfo> loadProdCtlListByProd(String _prodUid){
+		try {
+			List<ProdCtlRemote> remoteList = getEkpKernelRmi().loadProdCtlListByProd(_prodUid);
+			List<ProdCtlInfo> list = remoteList.stream().map(MbomFO::parseProdCtl).collect(Collectors.toList());
+			return list;
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return null;
+		}
+		
+	}
 
 	@Override
 	public List<ProdCtlInfo> loadProdCtlListLv1(String _prodUid) {

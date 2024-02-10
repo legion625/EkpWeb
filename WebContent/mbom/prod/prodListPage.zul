@@ -3,30 +3,71 @@
 	<borderlayout vflex="1" apply="ekp.web.control.zk.mbom.prod.ProdListPageComposer">
 		<west width="30%" splittable="true" open="true" collapsible="true">
 			<div vflex="1">
-				<groupbox title="產品" vflex="1">
+				<groupbox title="Product" vflex="1">
+					<hlayout>
+						<toolbarbutton id="btnCreateProd" label="Create product" iconSclass="fa fa-plus" />
+						<toolbarbutton id="btnDeleteProd" label="Delete product" iconSclass="fas fa-trash-alt" />
+					</hlayout>
 					<listbox id="lbxProd" vflex="1" emptyMessage="(No data)" checkmark="true">
 						<listhead sizable="true">
 							<listheader width="50px"></listheader>
 							<listheader label="ID" sort="auto(id)" />
-							<listheader label="名稱" sort="auto(name)" />
+							<listheader label="Name" sort="auto(name)" />
 						</listhead>
 					</listbox>
+					<window id="wdCreateProd" title="Create product" width="300px" height="140px" mode="highlighted"
+						closable="true" visible="false" sizable="true">
+						<hlayout hflex="1">
+							<label value="ID" />
+							<textbox id="txbId" hflex="1" />
+							<label value="Name" />
+							<textbox id="txbName" hflex="1" />
+						</hlayout>
+						<separator spacing="5px" />
+						<div align="center">
+							<button id="btnSubmit" label="Submit" />
+							<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
+						</div>
+					</window>
 				</groupbox>
-				<groupbox title="產品模型" vflex="1">
+				<groupbox title="Product model" vflex="1">
+					<hlayout>
+						<toolbarbutton id="btnCreateProdMod" label="Create product model" iconSclass="fa fa-plus" />
+						<toolbarbutton id="btnDeleteProdMod" label="Delete product model" iconSclass="fas fa-trash-alt" />
+					</hlayout>
 					<listbox id="lbxProdMod" vflex="1" emptyMessage="(No data)" checkmark="true">
 						<listhead sizable="true">
 							<listheader width="50px"></listheader>
 							<listheader label="ID" sort="auto(id)" />
-							<listheader label="名稱" sort="auto(name)" />
-							<listheader label="描述" sort="auto(desp)" />
+							<listheader label="Name" sort="auto(name)" />
+							<listheader label="Description" sort="auto(desp)" />
 						</listhead>
 					</listbox>
+					<window id="wdCreateProdMod" title="Create product model" width="300px" height="140px"
+						mode="highlighted" closable="true" visible="false" sizable="true">
+						<hlayout hflex="1">
+							<label value="ID" />
+							<textbox id="txbId" hflex="1" />
+							<label value="Name" />
+							<textbox id="txbName" hflex="1" />
+						</hlayout>
+						<hlayout>
+							<label value="Description" />
+							<textbox id="txbDesp" hflex="1" />
+						</hlayout>
+						<separator spacing="5px" />
+						<div align="center">
+							<button id="btnSubmit" label="Submit" />
+							<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
+						</div>
+					</window>
 				</groupbox>
 			</div>
 		</west>
 		<center>
 			<div vflex="1">
-				<groupbox title="產品型錄" vflex="1">
+				<groupbox title="Product Catalog" vflex="1">
+				
 					<tree id="treeProdCtl" vflex="1" checkmark="false">
 						<frozen columns="1"></frozen>
 						<treecols sizable="true">
@@ -36,7 +77,7 @@
 						</treecols>
 					</tree>
 				</groupbox>
-				<groupbox title="產品模型設定" vflex="1">
+				<groupbox title="Product model item" vflex="1">
 					<tabbox vflex="1">
 						<tabs>
 							<tab label="設定" />

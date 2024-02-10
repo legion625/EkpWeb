@@ -209,6 +209,8 @@ public interface MbomDataService extends IntegrationService {
 
 	public List<ProdCtlInfo> loadProdCtlList(String _parentUid);
 
+	public List<ProdCtlInfo> loadProdCtlListByProd(String _prodUid);
+	
 	public List<ProdCtlInfo> loadProdCtlListLv1(String _prodUid);
 
 	public boolean prodCtlAssignParent(String _uid, String _parentUid);

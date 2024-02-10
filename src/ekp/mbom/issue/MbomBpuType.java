@@ -34,6 +34,7 @@ import ekp.mbom.issue.partAcqRoutingStep.ParsBuilder1;
 import ekp.mbom.issue.partCfg.PartCfgBpuEditing;
 import ekp.mbom.issue.partCfg.PartCfgBpuPublish;
 import ekp.mbom.issue.prod.ProdBuilder0;
+import ekp.mbom.issue.prod.ProdBpuDel0;
 import ekp.mbom.issue.prod.ProdBpuEditCtl;
 import ekp.mbom.issue.prodCtl.ProdCtlBpuPartCfgConj;
 import ekp.mbom.issue.prodCtl.ProdCtlBuilder0;
@@ -76,6 +77,7 @@ public enum MbomBpuType implements BpuType {
 	
 	/* Prod, ProdCtl*/
 	PROD_0(ProdBuilder0.class), //
+	PROD_$DEL0(ProdBpuDel0.class,ProdInfo.class ), //
 	PROD_$EDIT_CTL(ProdBpuEditCtl.class, ProdInfo.class), //
 	PROD_CTL_0(ProdCtlBuilder0.class), //
 	PROD_CTL_$PART_CFG_CONJ(ProdCtlBpuPartCfgConj.class, ProdCtlInfo.class), //
@@ -153,6 +155,7 @@ public enum MbomBpuType implements BpuType {
 			return matchBizPartCfgPublish((PartCfgInfo) _args[0]);
 		/* prod */
 		case PROD_0:
+		case PROD_$DEL0:
 			return true;
 		case PROD_$EDIT_CTL:
 			return matchBizProdEditCtl((ProdInfo) _args[0]);
