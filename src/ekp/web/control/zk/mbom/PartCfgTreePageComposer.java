@@ -133,7 +133,7 @@ public class PartCfgTreePageComposer extends SelectorComposer<Component> {
 			// root part pin
 			li.appendChild(new Listcell(pc.getRootPartPin()));
 			//
-			li.appendChild(new Listcell(pc.getStatusName()));
+			li.appendChild(new Listcell(pc.getStatus().name()));
 			//
 			li.appendChild(new Listcell(pc.getDesp()));
 		};
@@ -151,7 +151,7 @@ public class PartCfgTreePageComposer extends SelectorComposer<Component> {
 			// name
 			li.appendChild(new Listcell(pa.getName()));
 			// type
-			li.appendChild(new Listcell(pa.getTypeName()));
+			li.appendChild(new Listcell(pa.getType().name()));
 			// partCfgList
 			lc = new Listcell();
 			List<PartCfgInfo> partCfgList = pa.getPartCfgList(false);
@@ -177,6 +177,8 @@ public class PartCfgTreePageComposer extends SelectorComposer<Component> {
 			}
 			PartCfgTreeDto data = tn.getData();
 
+			//
+			ti.getTreerow().appendChild(new Treecell());
 			// part pin
 			ti.getTreerow().appendChild(new Treecell(data.getPartPin()));
 			// part name

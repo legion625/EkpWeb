@@ -117,7 +117,7 @@ public class Mm_puComposer extends SelectorComposer<Component> {
 		//
 		lbAddPurchWithPostMano.setValue(mm.getMano());
 		//
-		ZkUtil.initCbb(cbbAddPurchWithPostRefPa, mm.getPaList(PartAcquisitionType.PURCHASING), PartAcqInfo::getPartPinWithId, PartAcqInfo::getName,
+		ZkUtil.initCbb(cbbAddPurchWithPostRefPa, mm.getPaList(PartAcquisitionType.PU), PartAcqInfo::getPartPinWithId, PartAcqInfo::getName,
 				false);
 		if (cbbAddPurchWithPostRefPa.getItemCount() > 0)
 			cbbAddPurchWithPostRefPa.setSelectedIndex(0);

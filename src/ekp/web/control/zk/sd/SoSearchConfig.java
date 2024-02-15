@@ -10,11 +10,11 @@ public class SoSearchConfig extends SearchConfig<SalesOrderQueryParam, SalesOrde
 
 	@Override
 	protected NormalSearchLine<SalesOrderQueryParam, SalesOrderInfo>[] initNormalSearchLines() {
-		NormalSearchLine nspSosn = NormalSearchLine.ofTxbLine("序號", SalesOrderQueryParam.SOSN);
-		NormalSearchLine nspTitle = NormalSearchLine.ofTxbLine("名稱", SalesOrderQueryParam.TITLE);
-		NormalSearchLine nspCustomerName = NormalSearchLine.ofTxbLine("客戶名稱", SalesOrderQueryParam.CUSTOMER_NAME);
-		NormalSearchLine nspCustomerBan = NormalSearchLine.ofTxbLine("客戶統編", SalesOrderQueryParam.CUSTOMER_BAN);
-		NormalSearchLine nspSalerName = NormalSearchLine.ofTxbLine("銷售人姓名", SalesOrderQueryParam.SALER_NAME);
+		NormalSearchLine nspSosn = NormalSearchLine.ofTxbLine("Sales Order No.", SalesOrderQueryParam.SOSN);
+		NormalSearchLine nspTitle = NormalSearchLine.ofTxbLine("Title", SalesOrderQueryParam.TITLE);
+		NormalSearchLine nspCustomerName = NormalSearchLine.ofTxbLine("Customer Name", SalesOrderQueryParam.CUSTOMER_NAME);
+		NormalSearchLine nspCustomerBan = NormalSearchLine.ofTxbLine("Customer BAN", SalesOrderQueryParam.CUSTOMER_BAN);
+		NormalSearchLine nspSalerName = NormalSearchLine.ofTxbLine("Sales Name", SalesOrderQueryParam.SALER_NAME);
 		return new NormalSearchLine[] {nspSosn,nspTitle, nspCustomerName, nspCustomerBan, nspSalerName };
 	}
 	

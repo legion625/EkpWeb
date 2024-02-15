@@ -150,16 +150,12 @@ public class PartListPageComposer extends SelectorComposer<Component> {
 			lc.appendChild(txbName);
 			li.appendChild(lc);
 			//
-			li.appendChild(new Listcell(p.getUnitName()));
+			li.appendChild(new Listcell(p.getUnit().name()));
 
 			// click event -> show part
 			li.addEventListener(Events.ON_CLICK, e -> {
 				// TODO
 				partInfoComposer.refreshPartInfo(p.reload());
-				
-//				fnCntProxy.refreshCntUri(PartInfoComposer.URI);
-//				PartInfoComposer partComposer = fnCntProxy.getComposer(PartInfoComposer.class);
-//				partComposer.refreshPartInfo(p.reload());
 			});
 		};
 		fltrCtrlLbxPart = LbxFltrCtrl.of(lbxPart, partRenderer);
@@ -168,8 +164,6 @@ public class PartListPageComposer extends SelectorComposer<Component> {
 		fltrCtrlLbxPart.initFilter(txbsFltrPart, cbbsFltrPart, null, null, this::filterPart);
 		
 		ZkUtil.initCbb(cbbFltrUnit, PartUnit.values(), true);
-		
-//		lbxPart.setItemRenderer(partRenderer);
 		
 		/**/
 		partInfoComposer = PartInfoComposer.of(icdPartInfo);
@@ -274,8 +268,6 @@ public class PartListPageComposer extends SelectorComposer<Component> {
 	// -------------------------------------------------------------------------------
 	// -------------------------------------------------------------------------------
 	public void setPartList(List<PartInfo> _partList) {
-//		ListModelList<PartInfo> model = _partList == null ? new ListModelList<>() : new ListModelList<>(_partList);
-//		lbxPart.setModel(model);
 		fltrCtrlLbxPart.refresh(_partList);
 	}
 

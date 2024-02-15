@@ -12,17 +12,17 @@ public class PuSearchConfig extends SearchConfig<PurchQueryParam, PurchInfo> {
 	@Override
 	protected NormalSearchLine<PurchQueryParam, PurchInfo>[] initNormalSearchLines() {
 
-		NormalSearchLine<PurchQueryParam, PurchInfo> nslPuNo = NormalSearchLine.ofTxbLine("購案案號",
+		NormalSearchLine<PurchQueryParam, PurchInfo> nslPuNo = NormalSearchLine.ofTxbLine("Purchase No.",
 				PurchQueryParam.PU_NO);
-		NormalSearchLine<PurchQueryParam, PurchInfo> nslTitle = NormalSearchLine.ofTxbLine("購案名稱",
+		NormalSearchLine<PurchQueryParam, PurchInfo> nslTitle = NormalSearchLine.ofTxbLine("Title",
 				PurchQueryParam.TITLE);
-		NormalSearchLine<PurchQueryParam, PurchInfo> nslSupplierBan = NormalSearchLine.ofTxbLine("供應商統編",
+		NormalSearchLine<PurchQueryParam, PurchInfo> nslSupplierBan = NormalSearchLine.ofTxbLine("Supplier BAN",
 				PurchQueryParam.SUPPLIER_BAN);
-		NormalSearchLine<PurchQueryParam, PurchInfo> nslSupplierName = NormalSearchLine.ofTxbLine("供應商名稱",
+		NormalSearchLine<PurchQueryParam, PurchInfo> nslSupplierName = NormalSearchLine.ofTxbLine("Supplier Name",
 				PurchQueryParam.SUPPLIER_NAME);
 		
 		NormalSearchLine<PurchQueryParam, PurchInfo> nslPerfStatusIdx = 
-				NormalSearchLine.ofCbbLine("履約狀態", PurchPerfStatus.values(),PurchQueryParam.PERF_STATUS_IDX);
+				NormalSearchLine.ofCbbLine("Contract Status", PurchPerfStatus.values(),PurchQueryParam.PERF_STATUS_IDX);
 
 		return new NormalSearchLine[] { nslPuNo, nslTitle, nslSupplierBan, nslSupplierName
 				, nslPerfStatusIdx};

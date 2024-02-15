@@ -174,7 +174,7 @@ public enum InvtBpuType implements BpuType {
 			return false;
 		}
 
-		if (PartAcquisitionType.OUTSOURCING != _partAcq.getType()) {
+		if (PartAcquisitionType.OS != _partAcq.getType()) {
 			log.trace("_partAcq.getType() should be OUTSOURCING but is [{}].", _partAcq.getType());
 			return false;
 		}

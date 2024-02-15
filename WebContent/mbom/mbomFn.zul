@@ -1,16 +1,16 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
 	<div vflex="1" apply="ekp.web.control.zk.mbom.MbomFnComposer">
-		<groupbox title="DEA-查詢MBOM">
+		<groupbox title="Digital Enterprise Architecture-Search MBOM">
 			<vlayout>
-				<button id="btnGotoSearchPartFnPage" label="查詢料件" />
-				<button id="btnGotoSearchPartCfgFnPage" label="查詢構型" />
-				<button id="btnGotoSearchPpartFnPage" label="查詢構型父子階關連" />
+				<button id="btnGotoSearchPartFnPage" label="Search parts" />
+				<button id="btnGotoSearchPartCfgFnPage" label="Search part configurations" />
+				<button id="btnGotoSearchPpartFnPage" label="Search routingstep-parts relation" />
 			</vlayout>
 		</groupbox>
-		<groupbox title="KBS-產品型錄與產品模型報價">
+		<groupbox title="Knowledge-based system">
 			<vlayout>
-			<button id="btnGotoProdPage" label="產品型錄" />
+			<button id="btnGotoProdPage" label="Product catalog and product model pricin" />
 			</vlayout>
 		</groupbox>
 		

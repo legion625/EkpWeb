@@ -41,7 +41,11 @@ public interface PartInfo extends ObjectModelInfo {
 
 	// -------------------------------------------------------------------------------
 	default String getUnitName() {
-		return (getUnit() == null ? PartUnit.UNDEFINED : getUnit()).getName();
+		return (getUnit() == null ? PartUnit.UNDEFINED : getUnit()).name();
+	}
+	
+	default String getUnitEngName() {
+		return (getUnit() == null ? PartUnit.UNDEFINED : getUnit()).getEngName();
 	}
 
 	PartInfo reload();

@@ -15,6 +15,7 @@ import ekp.data.service.mbom.PpartInfo;
 import ekp.data.service.mbom.PprocInfo;
 import ekp.data.service.mbom.ProdCtlInfo;
 import ekp.data.service.mbom.ProdInfo;
+import ekp.data.service.mbom.ProdModInfo;
 import ekp.data.service.mbom.ProdModItemInfo;
 import ekp.mbom.issue.parsPart.ParsPartBuilder0;
 import ekp.mbom.issue.parsPart.ParsPartBuilder1;
@@ -38,6 +39,7 @@ import ekp.mbom.issue.prod.ProdBpuDel0;
 import ekp.mbom.issue.prod.ProdBpuEditCtl;
 import ekp.mbom.issue.prodCtl.ProdCtlBpuPartCfgConj;
 import ekp.mbom.issue.prodCtl.ProdCtlBuilder0;
+import ekp.mbom.issue.prodMod.ProdModBpuDel0;
 import ekp.mbom.issue.prodMod.ProdModBuilder1;
 import ekp.mbom.issue.prodMod.ProdModItemBpuAssignPartAcqCfg;
 import ekp.mbom.issue.partCfg.PartCfgBuilder0;
@@ -84,6 +86,7 @@ public enum MbomBpuType implements BpuType {
 	
 	/* ProdMod, ProdModItem*/
 	PROD_MOD_1(ProdModBuilder1.class,ProdInfo.class), //
+	PROD_MOD_$DEL0(ProdModBpuDel0.class, ProdModInfo.class), //
 	PROD_MOD_ITEM_$ASSIGN_PART_ACQ_CFG(ProdModItemBpuAssignPartAcqCfg.class, ProdModItemInfo.class), //
 
 	;
@@ -165,6 +168,7 @@ public enum MbomBpuType implements BpuType {
 			return matchBizProdCtlPartCfgConj((ProdCtlInfo) _args[0]);
 		/* prod mod */
 		case PROD_MOD_1:
+		case PROD_MOD_$DEL0:
 			return true;
 		/* prod mod item */
 		case PROD_MOD_ITEM_$ASSIGN_PART_ACQ_CFG:

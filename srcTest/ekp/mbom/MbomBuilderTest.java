@@ -138,20 +138,20 @@ public class MbomBuilderTest extends AbstractEkpInitTest {
 		
 		/* PartAcq */
 		// A.漢堡
-		PartAcqInfo partAcq_A11_SP = mbomDel.buildPartAcqType0(part_A11, tt, "SP", "自製", SELF_PRODUCING);
+		PartAcqInfo partAcq_A11_SP = mbomDel.buildPartAcqType0(part_A11, tt, "SP", "自製", SP);
 		
 		// F.副餐
-		PartAcqInfo partAcq_F1S_SP = mbomDel.buildPartAcqType0(part_F1S, tt, "SP", "自製", SELF_PRODUCING); // 薯條（小）
-		PartAcqInfo partAcq_F1M_SP = mbomDel.buildPartAcqType0(part_F1M, tt, "SP", "自製", SELF_PRODUCING); // 薯條（中）
-		PartAcqInfo partAcq_F1L_SP = mbomDel.buildPartAcqType0(part_F1L, tt, "SP", "自製", SELF_PRODUCING); // 薯條（大）
+		PartAcqInfo partAcq_F1S_SP = mbomDel.buildPartAcqType0(part_F1S, tt, "SP", "自製", SP); // 薯條（小）
+		PartAcqInfo partAcq_F1M_SP = mbomDel.buildPartAcqType0(part_F1M, tt, "SP", "自製", SP); // 薯條（中）
+		PartAcqInfo partAcq_F1L_SP = mbomDel.buildPartAcqType0(part_F1L, tt, "SP", "自製", SP); // 薯條（大）
 		
 		// L.漢堡-麵包
-		PartAcqInfo partAcq_L22_PU = mbomDel.buildPartAcqType0(part_L22, tt, "PU", "採購", PURCHASING); 
+		PartAcqInfo partAcq_L22_PU = mbomDel.buildPartAcqType0(part_L22, tt, "PU", "採購", PU); 
 		
 		// M.漢堡-肉
-		PartAcqInfo partAcq_M11_SP1 = mbomDel.buildPartAcqType0(part_M11, tt, "SP1", "自製-臺灣", SELF_PRODUCING);
-		PartAcqInfo partAcq_M11_SP2 = mbomDel.buildPartAcqType0(part_M11, tt, "SP2", "自製-澳洲", SELF_PRODUCING);
-		PartAcqInfo partAcq_M11_SP3 = mbomDel.buildPartAcqType0(part_M11, tt, "SP3", "自製-美國", SELF_PRODUCING);
+		PartAcqInfo partAcq_M11_SP1 = mbomDel.buildPartAcqType0(part_M11, tt, "SP1", "自製-臺灣", SP);
+		PartAcqInfo partAcq_M11_SP2 = mbomDel.buildPartAcqType0(part_M11, tt, "SP2", "自製-澳洲", SP);
+		PartAcqInfo partAcq_M11_SP3 = mbomDel.buildPartAcqType0(part_M11, tt, "SP3", "自製-美國", SP);
 		
 		/* PartAcqRoutingStep */
 		// A.漢堡

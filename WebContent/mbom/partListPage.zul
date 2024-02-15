@@ -50,9 +50,4 @@
 		</div>
 		</center>
 	</borderlayout>
-	<!-- <panel vflex="1" apply="ekp.web.control.zk.mbom.PartListPageComposer">
-		<panelchildren>
-
-		</panelchildren>
-	</panel> -->
 </zk>

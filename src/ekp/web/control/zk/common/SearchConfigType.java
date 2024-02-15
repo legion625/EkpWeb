@@ -25,21 +25,15 @@ public enum SearchConfigType {
 	
 
 	// -------------------------------------------------------------------------------
-//	private Supplier<SearchConfig> fnGetSearchConfig;
 	private Class searchConfigClass;
 
 	// -------------------------------------------------------------------------------
-//	private SearchConfigType(Supplier<SearchConfig> fnGetSearchConfig) {
-//		this.fnGetSearchConfig = fnGetSearchConfig;
-//	}
-
 	private SearchConfigType(Class searchConfigClass) {
 		this.searchConfigClass = searchConfigClass;
 	}
 	
 	// -------------------------------------------------------------------------------
 	public SearchConfig getSearchConfigInstance() {
-//		ClassLoader.
 		try {
 			return (SearchConfig) searchConfigClass.getDeclaredConstructor().newInstance();
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
@@ -47,8 +41,6 @@ public enum SearchConfigType {
 			LogUtil.log(e);
 			return null;
 		}
-		
-//		return fnGetSearchConfig.get();
 	}
 
 	

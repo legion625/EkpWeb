@@ -134,9 +134,9 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 			// name
 			li.appendChild(new Listcell(pa.getName()));
 			// type
-			li.appendChild(new Listcell(pa.getTypeName()));
+			li.appendChild(new Listcell(pa.getType().name()));
 			// status
-			li.appendChild(new Listcell(pa.getStatusName()));
+			li.appendChild(new Listcell(pa.getStatus().name()));
 			// ref unit cost
 			lc = new Listcell();
 			Doublebox dbbRefUnitCost = new Doublebox(pa.getRefUnitCost());
@@ -190,7 +190,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 			// root part pin
 			li.appendChild(new Listcell(pc.getRootPartPin()));
 			// status
-			li.appendChild(new Listcell(pc.getStatusName()));
+			li.appendChild(new Listcell(pc.getStatus().name()));
 			// description
 			li.appendChild(new Listcell(pc.getDesp()));
 
@@ -860,7 +860,7 @@ public class PartInfoComposer extends SelectorComposer<Component> {
 		/* part */
 		lbPin.setValue(_part.getPin());
 		lbName.setValue(_part.getName());
-		lbUnit.setValue(_part.getUnitName());
+		lbUnit.setValue(_part.getUnitEngName());
 
 		/* part acq */
 		refreshPa(_part.getPaList(false));

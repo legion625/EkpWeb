@@ -72,13 +72,13 @@ public class PaBpuPublish extends PaBpu {
 		List<PpartInfo> ppartList = parsList.stream().flatMap(pars -> pars.getPpartList(true).stream())
 				.collect(Collectors.toList());
 
-		if (PartAcquisitionType.PURCHASING == getPa().getType()) {
+		if (PartAcquisitionType.PU == getPa().getType()) {
 			if (!parsList.isEmpty()) {
 				v = false;
 				_msg.append("Routing step list error.").append(System.lineSeparator());
 			}
-		} else if (PartAcquisitionType.OUTSOURCING == getPa().getType()
-				|| PartAcquisitionType.SELF_PRODUCING == getPa().getType()) {
+		} else if (PartAcquisitionType.OS == getPa().getType()
+				|| PartAcquisitionType.SP == getPa().getType()) {
 			if (parsList.isEmpty() || ppartList.isEmpty()) {
 				v = false;
 				_msg.append("Routing step list error.").append(System.lineSeparator());

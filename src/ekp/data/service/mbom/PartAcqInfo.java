@@ -46,11 +46,11 @@ public interface PartAcqInfo extends ObjectModelInfo {
 	}
 	
 	default String getStatusName() {
-		return (getStatus() == null ? PartAcqStatus.UNDEFINED : getStatus()).getName();
+		return (getStatus() == null ? PartAcqStatus.UNDEFINED : getStatus()).name();
 	}
 	
 	default String getTypeName() {
-		return (getType() == null ? PartAcquisitionType.UNDEFINED : getType()).getName();
+		return (getType() == null ? PartAcquisitionType.UNDEFINED : getType()).name();
 	}
 	
 	// -------------------------------------------------------------------------------

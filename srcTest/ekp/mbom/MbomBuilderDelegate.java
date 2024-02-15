@@ -129,15 +129,15 @@ public class MbomBuilderDelegate {
 	}
 	
 	public PartAcqInfo buildPartAcqType01(PartInfo _p, TimeTraveler _tt) {
-		return buildPartAcqType0(_p, _tt, "TEST_ACQ_ID_1", "TEST_ACQ_NAME_1", PartAcquisitionType.PURCHASING);
+		return buildPartAcqType0(_p, _tt, "TEST_ACQ_ID_1", "TEST_ACQ_NAME_1", PartAcquisitionType.PU);
 	}
 
 	public PartAcqInfo buildPartAcqType02(PartInfo _p, TimeTraveler _tt) {
-		return buildPartAcqType0(_p, _tt, "TEST_ACQ_ID_2", "TEST_ACQ_NAME_2", PartAcquisitionType.OUTSOURCING);
+		return buildPartAcqType0(_p, _tt, "TEST_ACQ_ID_2", "TEST_ACQ_NAME_2", PartAcquisitionType.OS);
 	}
 
 	public PartAcqInfo buildPartAcqType03(PartInfo _p, TimeTraveler _tt) {
-		return buildPartAcqType0(_p, _tt, "TEST_ACQ_ID_3", "TEST_ACQ_NAME_3", PartAcquisitionType.SELF_PRODUCING);
+		return buildPartAcqType0(_p, _tt, "TEST_ACQ_ID_3", "TEST_ACQ_NAME_3", PartAcquisitionType.SP);
 	}
 	
 	public boolean paAssignMm(TimeTraveler _tt, PartAcqInfo _pa, MaterialMasterInfo _mm) {

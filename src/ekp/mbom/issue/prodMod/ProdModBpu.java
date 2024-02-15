@@ -9,6 +9,7 @@ import ekp.data.service.mbom.ProdModInfo;
 import ekp.mbom.issue.prod.ProdBpu;
 import legion.DataServiceFactory;
 import legion.biz.Bpu;
+import legion.util.TimeTraveler;
 
 public abstract class ProdModBpu extends Bpu<Boolean> {
 	protected Logger log = LoggerFactory.getLogger(ProdModBpu.class);
@@ -24,6 +25,23 @@ public abstract class ProdModBpu extends Bpu<Boolean> {
 	// -------------------------------------------------------------------------------
 	// -----------------------------------appender------------------------------------
 	protected ProdModBpu appendProdMod(ProdModInfo prodMod) {
-		tjos/[]
+		this.prodMod = prodMod;
+		return this;
 	}
+
+	// -------------------------------------------------------------------------------
+	// ------------------------------------getter-------------------------------------
+	public ProdModInfo getProdMod() {
+		return prodMod;
+	}
+
+	// -------------------------------------------------------------------------------
+	@Override
+	public abstract boolean validate(StringBuilder _msg);
+
+	@Override
+	public abstract boolean verify(StringBuilder _msg, boolean _full);
+
+	@Override
+	protected abstract Boolean buildProcess(TimeTraveler _tt);
 }

@@ -148,10 +148,10 @@ public class PuScn1 extends AbstractEkpInitTest {
 		log.info("1a-1.建立partAfa。 [{}][{}][{}]", partAfa.getPin(), partAfa.getName(), partAfa.getUnitName());
 		/* 1a-2.建立pa */
 		log.info("1a-2.建立pa");
-		PartAcqInfo paA1 = mbomDel.buildPartAcqType0(partA, tt, "PART_ACQ_A1", "A1自製", PartAcquisitionType.SELF_PRODUCING);
-		PartAcqInfo paA2 = mbomDel.buildPartAcqType0(partA, tt, "PART_ACQ_A2", "A2委外", PartAcquisitionType.OUTSOURCING);
-		PartAcqInfo paA3 = mbomDel.buildPartAcqType0(partA, tt, "PART_ACQ_A3", "A3採購", PartAcquisitionType.PURCHASING);
-		PartAcqInfo paAfa3 = mbomDel.buildPartAcqType0(partAfa, tt, "PART_ACQ_Afa3", "Afa3自製", PartAcquisitionType.SELF_PRODUCING);
+		PartAcqInfo paA1 = mbomDel.buildPartAcqType0(partA, tt, "PART_ACQ_A1", "A1自製", PartAcquisitionType.SP);
+		PartAcqInfo paA2 = mbomDel.buildPartAcqType0(partA, tt, "PART_ACQ_A2", "A2委外", PartAcquisitionType.OS);
+		PartAcqInfo paA3 = mbomDel.buildPartAcqType0(partA, tt, "PART_ACQ_A3", "A3採購", PartAcquisitionType.PU);
+		PartAcqInfo paAfa3 = mbomDel.buildPartAcqType0(partAfa, tt, "PART_ACQ_Afa3", "Afa3自製", PartAcquisitionType.SP);
 		log.info("paA1: [{}][{}][{}][{}]", paA1.getId(), paA1.getName(), paA1.getTypeName(), paA1.getStatusName());
 		log.info("paA2: [{}][{}][{}][{}]", paA2.getId(), paA2.getName(), paA2.getTypeName(), paA2.getStatusName());
 		log.info("paA3: [{}][{}][{}][{}]", paA3.getId(), paA3.getName(), paA3.getTypeName(), paA3.getStatusName());
@@ -199,11 +199,11 @@ public class PuScn1 extends AbstractEkpInitTest {
 		
 		/* 1b-2.建立pa */
 		log.info("1b-2.建立pa");
-		PartAcqInfo paB1 = mbomDel.buildPartAcqType0(partB, tt, "PART_ACQ_B1", "B1採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paB1 = mbomDel.buildPartAcqType0(partB, tt, "PART_ACQ_B1", "B1採購", PartAcquisitionType.PU);
 		log.info("paB1: [{}][{}][{}][{}]", paB1.getId(), paB1.getName(), paB1.getTypeName(), paB1.getStatusName());
-		PartAcqInfo paB3 = mbomDel.buildPartAcqType0(partB, tt, "PART_ACQ_B3", "B3自製", PartAcquisitionType.SELF_PRODUCING);
+		PartAcqInfo paB3 = mbomDel.buildPartAcqType0(partB, tt, "PART_ACQ_B3", "B3自製", PartAcquisitionType.SP);
 		log.info("paB3: [{}][{}][{}][{}]", paB3.getId(), paB3.getName(), paB3.getTypeName(), paB3.getStatusName());
-		PartAcqInfo paBeta1 = mbomDel.buildPartAcqType0(partBeta, tt, "PART_ACQ_Beta1", "Beta1採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paBeta1 = mbomDel.buildPartAcqType0(partBeta, tt, "PART_ACQ_Beta1", "Beta1採購", PartAcquisitionType.PU);
 		log.info("paBeta1: [{}][{}][{}][{}]", paBeta1.getId(), paBeta1.getName(), paBeta1.getTypeName(), paBeta1.getStatusName());
 		
 		/* 1b-3.建立pars */
@@ -236,11 +236,11 @@ public class PuScn1 extends AbstractEkpInitTest {
 		PartInfo partGamma = mbomDel.buildPartType0(tt, "Gamma", "PART_Gamma", PartUnit.SHE);
 		log.info("1c-1.建立partGamma。 [{}][{}][{}]", partGamma.getPin(), partGamma.getName(), partGamma.getUnitName());
 		
-		PartAcqInfo paC1 = mbomDel.buildPartAcqType0(partC, tt, "PART_ACQ_C1", "C1採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paC1 = mbomDel.buildPartAcqType0(partC, tt, "PART_ACQ_C1", "C1採購", PartAcquisitionType.PU);
 		log.info("1c-2.建立paC1。 [{}][{}][{}][{}]", paC1.getId(), paC1.getName(), paC1.getTypeName(), paC1.getStatusName());
-		PartAcqInfo paC3 = mbomDel.buildPartAcqType0(partC, tt, "PART_ACQ_C3", "C3自製", PartAcquisitionType.SELF_PRODUCING);
+		PartAcqInfo paC3 = mbomDel.buildPartAcqType0(partC, tt, "PART_ACQ_C3", "C3自製", PartAcquisitionType.SP);
 		log.info("1c-2.建立paC3。 [{}][{}][{}][{}]", paC3.getId(), paC3.getName(), paC3.getTypeName(), paC3.getStatusName());
-		PartAcqInfo paGamma1 = mbomDel.buildPartAcqType0(partGamma, tt, "PART_ACQ_Gamma1", "Gamma1採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paGamma1 = mbomDel.buildPartAcqType0(partGamma, tt, "PART_ACQ_Gamma1", "Gamma1採購", PartAcquisitionType.PU);
 		log.info("1c-2.建立paGamma1。 [{}][{}][{}][{}]", paGamma1.getId(), paGamma1.getName(), paGamma1.getTypeName(), paGamma1.getStatusName());
 		
 		/* 1c-3.建立pars */
@@ -270,7 +270,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 		/* 1d.建立partD */
 		PartInfo partD = mbomDel.buildPartType0(tt, "D", "PART_D", PartUnit.MMT);
 		log.info("1d-1.建立partD。 [{}][{}][{}]", partD.getPin(), partD.getName(), partD.getUnitName());
-		PartAcqInfo paD = mbomDel.buildPartAcqType0(partD, tt, "PART_ACQ_D", "PART_D採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paD = mbomDel.buildPartAcqType0(partD, tt, "PART_ACQ_D", "PART_D採購", PartAcquisitionType.PU);
 		log.info("1d-2.建立paD。 [{}][{}][{}][{}]", paD.getId(), paD.getName(), paD.getTypeName(), paD.getStatusName());
 		assertTrue(mbomDel.paAssignMm(tt, paD, mmD));
 		paD = paD.reload();
@@ -282,7 +282,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 		/* 1e.建立partE */
 		PartInfo partE = mbomDel.buildPartType0(tt, "E", "PART_E", PartUnit.EAC);
 		log.info("1e-1.建立partE。 [{}][{}][{}]", partE.getPin(), partE.getName(), partE.getUnitName());
-		PartAcqInfo paE = mbomDel.buildPartAcqType0(partE, tt, "PART_ACQ_E", "PART_E採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paE = mbomDel.buildPartAcqType0(partE, tt, "PART_ACQ_E", "PART_E採購", PartAcquisitionType.PU);
 		log.info("1e-2.建立paE。 [{}][{}][{}][{}]", paE.getId(), paE.getName(), paE.getTypeName(), paE.getStatusName());
 		assertTrue(mbomDel.paAssignMm(tt, paE, mmE));
 		paE = paE.reload();
@@ -294,7 +294,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 		/* 1f.建立partF */
 		PartInfo partF = mbomDel.buildPartType0(tt, "F", "PART_F", PartUnit.CMK);
 		log.info("1f-1.建立partF。 [{}][{}][{}]", partF.getPin(), partF.getName(), partF.getUnitName());
-		PartAcqInfo paF = mbomDel.buildPartAcqType0(partF, tt, "PART_ACQ_F", "PART_F採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paF = mbomDel.buildPartAcqType0(partF, tt, "PART_ACQ_F", "PART_F採購", PartAcquisitionType.PU);
 		log.info("1f-2.建立paF。 [{}][{}][{}][{}]", paF.getId(), paF.getName(), paF.getTypeName(), paF.getStatusName());
 		assertTrue(mbomDel.paAssignMm(tt, paF, mmF));
 		paF = paF.reload();
@@ -306,7 +306,7 @@ public class PuScn1 extends AbstractEkpInitTest {
 		/* 1g.建partG */
 		PartInfo partG = mbomDel.buildPartType0(tt, "G", "PART_G", PartUnit.EAC);
 		log.info("1g-1.建立partG。 [{}][{}][{}]", partG.getPin(), partG.getName(), partG.getUnitName());
-		PartAcqInfo paG = mbomDel.buildPartAcqType0(partG, tt, "PART_ACQ_G", "PART_G採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paG = mbomDel.buildPartAcqType0(partG, tt, "PART_ACQ_G", "PART_G採購", PartAcquisitionType.PU);
 		log.info("1g-2.建立paG。 [{}][{}][{}][{}]", paG.getId(), paG.getName(), paG.getTypeName(), paG.getStatusName());
 		assertTrue(mbomDel.paAssignMm(tt, paG, mmG));
 		paG = paG.reload();

@@ -300,7 +300,7 @@ public class TransformerScn extends AbstractEkpInitTest {
 		/* 1.EL油入式電力變壓器 */
 		// EL-1P:自製單相繞組
 		PartAcqInfo paEl_sp_1p = mbomDel.buildPartAcqType0(pEl, tt, "SP-1P", "自製單相繞組",
-				PartAcquisitionType.SELF_PRODUCING);
+				PartAcquisitionType.SP);
 		assertNotNull(paEl_sp_1p);
 		assertTrue(mbomDel.paAssignMm(tt, paEl_sp_1p, mmEl1p)); // 指定料件主檔
 		ParsInfo parsEl_sp_1p = mbomDel.buildParsType1(paEl_sp_1p, tt,"010","組裝", "把原料組裝成完成品。"); // 建立Pars
@@ -317,7 +317,7 @@ public class TransformerScn extends AbstractEkpInitTest {
 		
 		// EL-3P:自製三相繞組（三相、火力發電用、水力抽蓄-銅、水力抽蓄-鋁）
 		PartAcqInfo paEl_sp_3p = mbomDel.buildPartAcqType0(pEl, tt, "SP-3P", "自製三相繞組",
-				PartAcquisitionType.SELF_PRODUCING); // EL-3P:自製三相繞組
+				PartAcquisitionType.SP); // EL-3P:自製三相繞組
 		assertNotNull(paEl_sp_3p);
 		assertTrue(mbomDel.paAssignMm(tt, paEl_sp_3p, mmEl3p)); // 指定料件主檔
 		ParsInfo parsEl_sp_3p = mbomDel.buildParsType1(paEl_sp_3p, tt,"010","組裝", "把原料組裝成完成品。"); // 建立Pars
@@ -335,7 +335,7 @@ public class TransformerScn extends AbstractEkpInitTest {
 		
 		// EL-F:自製油入式火力發電用變壓器
 		PartAcqInfo paEl_sp_f = mbomDel.buildPartAcqType0(pEl, tt, "SP-F", "自製火力發電用",
-				PartAcquisitionType.SELF_PRODUCING); // EL-F:自製火力發電用
+				PartAcquisitionType.SP); // EL-F:自製火力發電用
 		assertNotNull(paEl_sp_f);
 		assertTrue(mbomDel.paAssignMm(tt, paEl_sp_f, mmElF)); // 指定料件主檔
 		ParsInfo parsEl_sp_f = mbomDel.buildParsType1(paEl_sp_f, tt,"010","組裝", "把原料組裝成完成品。"); // 建立Pars
@@ -354,7 +354,7 @@ public class TransformerScn extends AbstractEkpInitTest {
 		
 		// EL-W:自製油入式水力抽蓄用變壓器
 		PartAcqInfo paEl_sp_w = mbomDel.buildPartAcqType0(pEl, tt, "SP-W", "自製水力抽蓄用",
-				PartAcquisitionType.SELF_PRODUCING); // EL-F:自製火水力抽蓄用
+				PartAcquisitionType.SP); // EL-F:自製火水力抽蓄用
 		assertNotNull(paEl_sp_w);
 		assertTrue(mbomDel.paAssignMm(tt, paEl_sp_w, mmElW)); // 指定料件主檔
 		ParsInfo parsEl_sp_w = mbomDel.buildParsType1(paEl_sp_w, tt,"010","組裝", "把原料組裝成完成品。"); // 建立Pars
@@ -375,7 +375,7 @@ public class TransformerScn extends AbstractEkpInitTest {
 		/* 1-1.EL-Winding繞組 */
 		// 自製銅線08繞組
 		PartAcqInfo paElWinding_sp_cu_08 = mbomDel.buildPartAcqType0(pElWinding, tt, "SP-CU-08", "自製銅線08繞組",
-				PartAcquisitionType.SELF_PRODUCING);
+				PartAcquisitionType.SP);
 		assertNotNull(paElWinding_sp_cu_08);
 		assertTrue(mbomDel.paAssignMm(tt, paElWinding_sp_cu_08, mmWdCu08)); // 指定料件主檔
 		ParsInfo parsEl_sp_cu_08 = mbomDel.buildParsType1(paElWinding_sp_cu_08, tt,"010","組裝", "把原料組裝成完成品。"); // 建立Pars
@@ -386,7 +386,7 @@ public class TransformerScn extends AbstractEkpInitTest {
 		
 		// 自製銅線12繞組
 		PartAcqInfo paElWinding_sp_cu_12 = mbomDel.buildPartAcqType0(pElWinding, tt, "SP-CU-12", "自製銅線12繞組",
-				PartAcquisitionType.SELF_PRODUCING);
+				PartAcquisitionType.SP);
 		assertNotNull(paElWinding_sp_cu_12);
 		assertTrue(mbomDel.paAssignMm(tt, paElWinding_sp_cu_12, mmWdCu12)); // 指定料件主檔
 		ParsInfo parsEl_sp_cu_12 = mbomDel.buildParsType1(paElWinding_sp_cu_12, tt,"010","組裝", "把原料組裝成完成品。"); // 建立Pars
@@ -397,7 +397,7 @@ public class TransformerScn extends AbstractEkpInitTest {
 
 		// 自製鋁線12繞組
 		PartAcqInfo paElWinding_sp_al_12 = mbomDel.buildPartAcqType0(pElWinding, tt, "SP-AL-12", "自製鋁線12繞組",
-				PartAcquisitionType.SELF_PRODUCING);
+				PartAcquisitionType.SP);
 		assertNotNull(paElWinding_sp_al_12);
 		assertTrue(mbomDel.paAssignMm(tt, paElWinding_sp_al_12, mmWdAl12)); // 指定料件主檔
 		ParsInfo parsEl_sp_al_12 = mbomDel.buildParsType1(paElWinding_sp_al_12, tt,"010","組裝", "把原料組裝成完成品。"); // 建立Pars
@@ -408,41 +408,41 @@ public class TransformerScn extends AbstractEkpInitTest {
 		
 		/* 1-1-1.EL-Winding-M繞組線圈 */
 		PartAcqInfo paElWindingM_pu_cu08 = mbomDel.buildPartAcqType0(pElWindingM, tt, "PU-CU08", "採購0.8mm銅線",
-				PartAcquisitionType.PURCHASING);
+				PartAcquisitionType.PU);
 		assertNotNull(paElWindingM_pu_cu08);
 		assertTrue(mbomDel.paAssignMm(tt, paElWindingM_pu_cu08, mmWdMCu08)); // 指定料件主檔
 		
 		PartAcqInfo paElWindingM_pu_cu12 = mbomDel.buildPartAcqType0(pElWindingM, tt, "PU-CU12", "採購1.2mm銅線",
-				PartAcquisitionType.PURCHASING);
+				PartAcquisitionType.PU);
 		assertNotNull(paElWindingM_pu_cu12);
 		assertTrue(mbomDel.paAssignMm(tt, paElWindingM_pu_cu12, mmWdMCu12)); // 指定料件主檔
 		
 		PartAcqInfo paElWindingM_pu_al12 = mbomDel.buildPartAcqType0(pElWindingM, tt, "PU-AL12", "採購1.2mm鋁線",
-				PartAcquisitionType.PURCHASING);
+				PartAcquisitionType.PU);
 		assertNotNull(paElWindingM_pu_al12);
 		assertTrue(mbomDel.paAssignMm(tt, paElWindingM_pu_al12, mmWdMAl12)); // 指定料件主檔
 		
 		/* 1-1-2.EL-Winding-EIP絕緣漆 */
 		PartAcqInfo paElWindingEip_pu_ep = mbomDel.buildPartAcqType0(pElWindingEip, tt, "PU-EP", "採購環氧樹脂絕緣漆",
-				PartAcquisitionType.PURCHASING);
+				PartAcquisitionType.PU);
 		assertNotNull(paElWindingEip_pu_ep);
 		assertTrue(mbomDel.paAssignMm(tt, paElWindingEip_pu_ep, mmEipEp)); // 指定料件主檔
 		
 		PartAcqInfo paElWindingEip_pu_pvdf = mbomDel.buildPartAcqType0(pElWindingEip, tt, "PU-PVDF", "採購氟碳絕緣漆",
-				PartAcquisitionType.PURCHASING);
+				PartAcquisitionType.PU);
 		assertNotNull(paElWindingEip_pu_pvdf);
 		assertTrue(mbomDel.paAssignMm(tt, paElWindingEip_pu_pvdf, mmEipPvdf)); // 指定料件主檔
 		
 		/* 1-1-3.EL-Winding-EIF絕緣紙 */
 		PartAcqInfo paElWindingEif_pu_ar = mbomDel.buildPartAcqType0(pElWindingEif, tt, "PU-AR", "採購Aramid(聚醯胺)絕緣紙",
-				PartAcquisitionType.PURCHASING);
+				PartAcquisitionType.PU);
 		assertNotNull(paElWindingEif_pu_ar);
 		assertTrue(mbomDel.paAssignMm(tt, paElWindingEif_pu_ar, mmEifAr)); // 指定料件主檔
 		
 		/* 1-2.EL-Core鐵芯 */
 		// 自製矽鋼片鐵芯
 		PartAcqInfo paElCore_sp_fe = mbomDel.buildPartAcqType0(pElCore, tt, "SP-FE", "自製矽鋼片鐵芯",
-				PartAcquisitionType.SELF_PRODUCING);
+				PartAcquisitionType.SP);
 		assertNotNull(paElCore_sp_fe);
 		assertTrue(mbomDel.paAssignMm(tt, paElCore_sp_fe, mmCrFe)); // 指定料件主檔
 		ParsInfo parsEl_sp_fe = mbomDel.buildParsType1(paElCore_sp_fe, tt,"010","組裝", "把原料組裝成完成品。"); // 建立Pars
@@ -453,7 +453,7 @@ public class TransformerScn extends AbstractEkpInitTest {
 		
 		// 自製高導磁性矽鋼片鐵芯
 		PartAcqInfo paElCore_sp_mag = mbomDel.buildPartAcqType0(pElCore, tt, "SP-MAG", "自製高導磁性矽鋼片鐵芯",
-				PartAcquisitionType.SELF_PRODUCING);
+				PartAcquisitionType.SP);
 		assertNotNull(paElCore_sp_mag);
 		assertTrue(mbomDel.paAssignMm(tt, paElCore_sp_mag, mmCrMag)); // 指定料件主檔
 		ParsInfo parsElCore_sp_mag = mbomDel.buildParsType1(paElCore_sp_mag, tt,"010","組裝", "把原料組裝成完成品。"); // 建立Pars
@@ -464,53 +464,53 @@ public class TransformerScn extends AbstractEkpInitTest {
 		
 		/* 1-2-1.EL-Core-SS矽鋼片 */
 		PartAcqInfo paElCoreSs_pu_35cs250 = mbomDel.buildPartAcqType0(pElCoreSs, tt, "PU-35CS250", "採購矽鋼片0.35mm",
-				PartAcquisitionType.PURCHASING);
+				PartAcquisitionType.PU);
 		assertNotNull(paElCoreSs_pu_35cs250);
 		assertTrue(mbomDel.paAssignMm(tt, paElCoreSs_pu_35cs250, mmSS35CS250)); // 指定料件主檔
 		
 		PartAcqInfo paElCoreSs_pu_35cs550 = mbomDel.buildPartAcqType0(pElCoreSs, tt, "PU-35CS550", "採購高導磁性矽鋼片0.35mm",
-				PartAcquisitionType.PURCHASING);
+				PartAcquisitionType.PU);
 		assertNotNull(paElCoreSs_pu_35cs550);
 		assertTrue(mbomDel.paAssignMm(tt, paElCoreSs_pu_35cs550, mmSS35CS550)); // 指定料件主檔
 		
 		/* 1-2-2.EL-Core-EIP絕緣漆 */
 		PartAcqInfo paElCoreEip_pu_ep = mbomDel.buildPartAcqType0(pElCoreEip, tt, "PU-EP", "採購環氧樹脂絕緣漆",
-				PartAcquisitionType.PURCHASING);
+				PartAcquisitionType.PU);
 		assertNotNull(paElCoreEip_pu_ep);
 		assertTrue(mbomDel.paAssignMm(tt, paElCoreEip_pu_ep, mmEipEp)); // 指定料件主檔
 		
 		/* 1-2-3.EL-Core-EIF絕緣紙 */
 		PartAcqInfo paElCoreEif_pu_ar = mbomDel.buildPartAcqType0(pElCoreEif, tt, "PU-AR", "採購Aramid(聚醯胺)絕緣紙",
-				PartAcquisitionType.PURCHASING);
+				PartAcquisitionType.PU);
 		assertNotNull(paElCoreEif_pu_ar);
 		assertTrue(mbomDel.paAssignMm(tt, paElCoreEif_pu_ar, mmEifAr)); // 指定料件主檔
 		
 		/* 1-3.EL-Leads引線 */
 		PartAcqInfo paElLeads_pu_cu08 = mbomDel.buildPartAcqType0(pElLeads, tt, "PU-CU08", "採購銅線0.8mm",
-				PartAcquisitionType.PURCHASING);
+				PartAcquisitionType.PU);
 		assertNotNull(paElLeads_pu_cu08);
 		assertTrue(mbomDel.paAssignMm(tt, paElLeads_pu_cu08, mmWdMCu08)); // 指定料件主檔
 		
 		PartAcqInfo paElLeads_pu_al08 = mbomDel.buildPartAcqType0(pElLeads, tt, "PU-AL08", "採購鋁線0.8mm",
-				PartAcquisitionType.PURCHASING);
+				PartAcquisitionType.PU);
 		assertNotNull(paElLeads_pu_al08);
 		assertTrue(mbomDel.paAssignMm(tt, paElLeads_pu_al08, mmWdMAl08)); // 指定料件主檔
 		
 		/* 1-4.EL-Terminal端子 */
 		PartAcqInfo paElTerminal_pu_cu = mbomDel.buildPartAcqType0(pElTerminal, tt, "PU-CU", "採購壓接端子-銅",
-				PartAcquisitionType.PURCHASING);
+				PartAcquisitionType.PU);
 		assertNotNull(paElTerminal_pu_cu);
 		assertTrue(mbomDel.paAssignMm(tt, paElTerminal_pu_cu, mmCtCu)); // 指定料件主檔
 		
 		PartAcqInfo paElTerminal_pu_al = mbomDel.buildPartAcqType0(pElTerminal, tt, "PU-AL", "採購壓接端子-鋁",
-				PartAcquisitionType.PURCHASING);
+				PartAcquisitionType.PU);
 		assertNotNull(paElTerminal_pu_al);
 		assertTrue(mbomDel.paAssignMm(tt, paElTerminal_pu_al, mmCtAl)); // 指定料件主檔
 		
 		/* 1.5.EL-Tank變壓器油箱 */
 		// 自製
 		PartAcqInfo paElTank_sp = mbomDel.buildPartAcqType0(pElTank, tt, "SP", "自製",
-				PartAcquisitionType.SELF_PRODUCING);
+				PartAcquisitionType.SP);
 		assertNotNull(paElTank_sp);
 		assertTrue(mbomDel.paAssignMm(tt, paElTank_sp, mmTk)); // 指定料件主檔
 		ParsInfo parsElTank_sp = mbomDel.buildParsType1(paElTank_sp, tt,"010","組裝", "把原料組裝成完成品。"); // 建立Pars
@@ -523,63 +523,63 @@ public class TransformerScn extends AbstractEkpInitTest {
 		
 		//
 		PartAcqInfo paElTank_pu_eclipse = mbomDel.buildPartAcqType0(pElTank, tt, "PU_ECLIPSE", "採購橢圓型儲油槽",
-				PartAcquisitionType.PURCHASING);
+				PartAcquisitionType.PU);
 		assertNotNull(paElTank_pu_eclipse);
 		assertTrue(mbomDel.paAssignMm(tt, paElTank_pu_eclipse, mmTkEclipse)); // 指定料件主檔
 		
 		/* 1-5-1.EL-Tank-C1油箱本體 */
 		PartAcqInfo paElTankC1_pu = mbomDel.buildPartAcqType0(pElTankC1, tt, "PU", "採購",
-				PartAcquisitionType.PURCHASING);
+				PartAcquisitionType.PU);
 		assertNotNull(paElTankC1_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElTankC1_pu, mmTkCpn1)); // 指定料件主檔
 		
 		/* 1-5-2.EL-Tank-C2油箱蓋 */
 		PartAcqInfo paElTankC2_pu = mbomDel.buildPartAcqType0(pElTankC2, tt, "PU", "採購",
-				PartAcquisitionType.PURCHASING);
+				PartAcquisitionType.PU);
 		assertNotNull(paElTankC2_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElTankC2_pu, mmTkCpn2)); // 指定料件主檔
 		
 		/* 1-5-3.EL-Tank-C3油箱接頭 */
 		PartAcqInfo paElTankC3_pu = mbomDel.buildPartAcqType0(pElTankC3, tt, "PU", "採購",
-				PartAcquisitionType.PURCHASING);
+				PartAcquisitionType.PU);
 		assertNotNull(paElTankC3_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElTankC3_pu, mmTkCpn3)); // 指定料件主檔
 		
 		/* 1-5-4.EL-Tank-C4油箱支架 */
 		PartAcqInfo paElTankC4_pu = mbomDel.buildPartAcqType0(pElTankC4, tt, "PU", "採購",
-				PartAcquisitionType.PURCHASING);
+				PartAcquisitionType.PU);
 		assertNotNull(paElTankC4_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElTankC4_pu, mmTkCpn4)); // 指定料件主檔
 		
 		/* 1-5-5.EL-Tank-C5O型環 */
 		PartAcqInfo paElTankC5_pu = mbomDel.buildPartAcqType0(pElTankC5, tt, "PU", "採購",
-				PartAcquisitionType.PURCHASING);
+				PartAcquisitionType.PU);
 		assertNotNull(paElTankC5_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElTankC5_pu, mmTkCpn5)); // 指定料件主檔
 		
 		/* 1-6.EL-Insulation絕緣油 */
 		PartAcqInfo paElInsulation_pu = mbomDel.buildPartAcqType0(pElInsulation, tt, "PU", "採購",
-				PartAcquisitionType.PURCHASING);
+				PartAcquisitionType.PU);
 		assertNotNull(paElInsulation_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElInsulation_pu, mmToTotal)); // 指定料件主檔
 		
 		/* 1-7.EL-PROT-L過載保護裝置 */
-		PartAcqInfo paElProtL_pu = mbomDel.buildPartAcqType0(pElProtL, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElProtL_pu = mbomDel.buildPartAcqType0(pElProtL, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElProtL_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElProtL_pu, mmProtL)); // 指定料件主檔
 		
 		/* 1-8.EL-PROT-SC短路保護裝置 */
-		PartAcqInfo paElProtSc_pu = mbomDel.buildPartAcqType0(pElProtSc, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElProtSc_pu = mbomDel.buildPartAcqType0(pElProtSc, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElProtSc_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElProtSc_pu, mmProtSc)); // 指定料件主檔
 		
 		/* 1-9.EL-WD-CONN相間繞組連接器 */
-		PartAcqInfo paElWdConn_pu = mbomDel.buildPartAcqType0(pElWdConn, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElWdConn_pu = mbomDel.buildPartAcqType0(pElWdConn, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElWdConn_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElWdConn_pu, mmWdConn)); // 指定料件主檔
 		
 		/* 1-10.EL-CS-A氣冷冷卻系統 */
-		PartAcqInfo paElCsA_sp = mbomDel.buildPartAcqType0(pElCsA, tt, "SP", "自製", PartAcquisitionType.SELF_PRODUCING);
+		PartAcqInfo paElCsA_sp = mbomDel.buildPartAcqType0(pElCsA, tt, "SP", "自製", PartAcquisitionType.SP);
 		assertNotNull(paElCsA_sp);
 		assertTrue(mbomDel.paAssignMm(tt, paElCsA_sp, mmCsA)); // 指定料件主檔
 		ParsInfo parsElCsA_sp = mbomDel.buildParsType1(paElCsA_sp, tt,"010","組裝", "把原料組裝成完成品。"); // 建立Pars
@@ -590,27 +590,27 @@ public class TransformerScn extends AbstractEkpInitTest {
 		assertNotNull(mbomDel.buildParsPart1(parsElCsA_sp, tt, pElCsAC4, 1)); // 1-10-4
 		
 		/* 1-10-1.EL-CS-A-C1風扇 */
-		PartAcqInfo paElCsAC1_pu = mbomDel.buildPartAcqType0(pElCsAC1, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElCsAC1_pu = mbomDel.buildPartAcqType0(pElCsAC1, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElCsAC1_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElCsAC1_pu, mmCsAC1)); // 指定料件主檔
 		
 		/* 1-10-2.EL-CS-A-C2風扇罩 */
-		PartAcqInfo paElCsAC2_pu = mbomDel.buildPartAcqType0(pElCsAC2, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElCsAC2_pu = mbomDel.buildPartAcqType0(pElCsAC2, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElCsAC2_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElCsAC2_pu, mmCsAC2)); // 指定料件主檔
 		
 		/* 1-10-3.EL-CS-A-C3風道 */
-		PartAcqInfo paElCsAC3_pu = mbomDel.buildPartAcqType0(pElCsAC3, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElCsAC3_pu = mbomDel.buildPartAcqType0(pElCsAC3, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElCsAC3_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElCsAC3_pu, mmCsAC3)); // 指定料件主檔
 		
 		/* 1-10-4.EL-CS-A-C4風扇控制器 */
-		PartAcqInfo paElCsAC4_pu = mbomDel.buildPartAcqType0(pElCsAC4, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElCsAC4_pu = mbomDel.buildPartAcqType0(pElCsAC4, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElCsAC4_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElCsAC4_pu, mmCsAC4)); // 指定料件主檔
 		
 		/* 1-11.EL-CS-L油冷冷卻系統 */
-		PartAcqInfo paElCsL_sp = mbomDel.buildPartAcqType0(pElCsL, tt, "SP", "自製", PartAcquisitionType.SELF_PRODUCING);
+		PartAcqInfo paElCsL_sp = mbomDel.buildPartAcqType0(pElCsL, tt, "SP", "自製", PartAcquisitionType.SP);
 		assertNotNull(paElCsL_sp);
 		assertTrue(mbomDel.paAssignMm(tt, paElCsL_sp, mmCsL)); // 指定料件主檔
 		ParsInfo parsElCsL_sp = mbomDel.buildParsType1(paElCsL_sp, tt,"010","組裝", "把原料組裝成完成品。"); // 建立Pars
@@ -621,27 +621,27 @@ public class TransformerScn extends AbstractEkpInitTest {
 		assertNotNull(mbomDel.buildParsPart1(parsElCsL_sp, tt, pElCsLC4, 1)); // 1-11-4
 		
 		/* 1-11-1.EL-CS-L-C1油箱 */
-		PartAcqInfo paElCsLC1_pu = mbomDel.buildPartAcqType0(pElCsLC1, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElCsLC1_pu = mbomDel.buildPartAcqType0(pElCsLC1, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElCsLC1_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElCsLC1_pu, mmCsLC1)); // 指定料件主檔
 		
 		/* 1-11-2.EL-CS-L-C2冷卻油 */
-		PartAcqInfo paElCsLC2_pu = mbomDel.buildPartAcqType0(pElCsLC2, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElCsLC2_pu = mbomDel.buildPartAcqType0(pElCsLC2, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElCsLC2_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElCsLC2_pu, mmCsLC2)); // 指定料件主檔
 		
 		/* 1-11-3.EL-CS-L-C3油泵 */
-		PartAcqInfo paElCsLC3_pu = mbomDel.buildPartAcqType0(pElCsLC3, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElCsLC3_pu = mbomDel.buildPartAcqType0(pElCsLC3, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElCsLC3_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElCsLC3_pu, mmCsLC3)); // 指定料件主檔
 		
 		/* 1-11-4.EL-CS-L-C4油冷卻器 */
-		PartAcqInfo paElCsLC4_pu = mbomDel.buildPartAcqType0(pElCsLC4, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElCsLC4_pu = mbomDel.buildPartAcqType0(pElCsLC4, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElCsLC4_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElCsLC4_pu, mmCsLC4)); // 指定料件主檔
 		
 		/* 1-12.EL-CS-W水冷冷卻系統 */
-		PartAcqInfo paElCsW_sp = mbomDel.buildPartAcqType0(pElCsW, tt, "SP", "自製", PartAcquisitionType.SELF_PRODUCING);
+		PartAcqInfo paElCsW_sp = mbomDel.buildPartAcqType0(pElCsW, tt, "SP", "自製", PartAcquisitionType.SP);
 		assertNotNull(paElCsW_sp);
 		assertTrue(mbomDel.paAssignMm(tt, paElCsW_sp, mmCsW)); // 指定料件主檔
 		ParsInfo parsElCsW_sp = mbomDel.buildParsType1(paElCsW_sp, tt,"010","組裝", "把原料組裝成完成品。"); // 建立Pars
@@ -654,37 +654,37 @@ public class TransformerScn extends AbstractEkpInitTest {
 		assertNotNull(mbomDel.buildParsPart1(parsElCsW_sp, tt, pElCsWC6, 1)); // 1-12-6
 		
 		/* 1-12-1.EL-CS-W-C1冷卻水管 */
-		PartAcqInfo paElCsWC1_pu = mbomDel.buildPartAcqType0(pElCsWC1, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElCsWC1_pu = mbomDel.buildPartAcqType0(pElCsWC1, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElCsWC1_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElCsWC1_pu, mmCsWC1)); // 指定料件主檔
 		
 		/* 1-12-2.EL-CS-W-C2水泵 */
-		PartAcqInfo paElCsWC2_pu = mbomDel.buildPartAcqType0(pElCsWC2, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElCsWC2_pu = mbomDel.buildPartAcqType0(pElCsWC2, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElCsWC2_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElCsWC2_pu, mmCsWC2)); // 指定料件主檔
 		
 		/* 1-12-3.EL-CS-W-C3水冷器 */
-		PartAcqInfo paElCsWC3_pu = mbomDel.buildPartAcqType0(pElCsWC3, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElCsWC3_pu = mbomDel.buildPartAcqType0(pElCsWC3, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElCsWC3_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElCsWC3_pu, mmCsWC3)); // 指定料件主檔
 		
 		/* 1-12-4.EL-CS-W-C4水箱 */
-		PartAcqInfo paElCsWC4_pu = mbomDel.buildPartAcqType0(pElCsWC4, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElCsWC4_pu = mbomDel.buildPartAcqType0(pElCsWC4, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElCsWC4_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElCsWC4_pu, mmCsWC4)); // 指定料件主檔
 		
 		/* 1-12-5.EL-CS-W-C5水溫感測器 */
-		PartAcqInfo paElCsWC5_pu = mbomDel.buildPartAcqType0(pElCsWC5, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElCsWC5_pu = mbomDel.buildPartAcqType0(pElCsWC5, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElCsWC5_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElCsWC5_pu, mmCsWC5)); // 指定料件主檔
 		
 		/* 1-12-6.EL-CS-W-C6水泵控制器 */
-		PartAcqInfo paElCsWC6_pu = mbomDel.buildPartAcqType0(pElCsWC6, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElCsWC6_pu = mbomDel.buildPartAcqType0(pElCsWC6, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElCsWC6_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElCsWC6_pu, mmCsWC6)); // 指定料件主檔
 	
 		/* 1-13.EL-IMB絕緣監測系統 */
-		PartAcqInfo paElImb = mbomDel.buildPartAcqType0(pElImb, tt, "SP", "自製", PartAcquisitionType.SELF_PRODUCING);
+		PartAcqInfo paElImb = mbomDel.buildPartAcqType0(pElImb, tt, "SP", "自製", PartAcquisitionType.SP);
 		assertNotNull(paElImb);
 		assertTrue(mbomDel.paAssignMm(tt, paElImb, mmImb)); // 指定料件主檔
 		ParsInfo parsElImb = mbomDel.buildParsType1(paElImb, tt,"010","組裝", "把原料組裝成完成品。"); // 建立Pars
@@ -698,32 +698,32 @@ public class TransformerScn extends AbstractEkpInitTest {
 		
 		
 		/* 1-13-1.EL-IMB-I1絕緣監測儀 */
-		PartAcqInfo paElImbI1_pu = mbomDel.buildPartAcqType0(pElImbI1, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElImbI1_pu = mbomDel.buildPartAcqType0(pElImbI1, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElImbI1_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElImbI1_pu, mmImbI1)); // 指定料件主檔
 		
 		/* 1-13-2.EL-IMB-I1C絕緣監測儀附件 */
-		PartAcqInfo paElImbI1c_pu = mbomDel.buildPartAcqType0(pElImbI1c, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElImbI1c_pu = mbomDel.buildPartAcqType0(pElImbI1c, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElImbI1c_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElImbI1c_pu, mmImbI1c)); // 指定料件主檔
 		
 		/* 1-13-3.EL-IMB-I2絕緣電阻測試儀 */
-		PartAcqInfo paElImbI2_pu = mbomDel.buildPartAcqType0(pElImbI2, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElImbI2_pu = mbomDel.buildPartAcqType0(pElImbI2, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElImbI2_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElImbI2_pu, mmImbI2)); // 指定料件主檔
 		
 		/* 1-13-4.EL-IMB-I2C絕緣電阻測試儀附件 */
-		PartAcqInfo paElImbI2c_pu = mbomDel.buildPartAcqType0(pElImbI2c, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElImbI2c_pu = mbomDel.buildPartAcqType0(pElImbI2c, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElImbI2c_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElImbI2c_pu, mmImbI2c)); // 指定料件主檔
 		
 		/* 1-13-5.EL-IMB-I3絕緣油測試儀 */
-		PartAcqInfo paElImbI3_pu = mbomDel.buildPartAcqType0(pElImbI3, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElImbI3_pu = mbomDel.buildPartAcqType0(pElImbI3, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElImbI3_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElImbI3_pu, mmImbI3)); // 指定料件主檔
 		
 		/* 1-13-6.EL-IMB-I3C絕緣油測試儀附件 */
-		PartAcqInfo paElImbI3c_pu = mbomDel.buildPartAcqType0(pElImbI3c, tt, "PU", "採購", PartAcquisitionType.PURCHASING);
+		PartAcqInfo paElImbI3c_pu = mbomDel.buildPartAcqType0(pElImbI3c, tt, "PU", "採購", PartAcquisitionType.PU);
 		assertNotNull(paElImbI3c_pu);
 		assertTrue(mbomDel.paAssignMm(tt, paElImbI3c_pu, mmImbI3c)); // 指定料件主檔
 		

@@ -3,16 +3,16 @@
 	<borderlayout vflex="1" apply="ekp.web.control.zk.mbom.prod.ProdListPageComposer">
 		<west width="30%" splittable="true" open="true" collapsible="true">
 			<div vflex="1">
-				<groupbox title="Product" vflex="1">
+				<groupbox title="Product" >
 					<hlayout>
 						<toolbarbutton id="btnCreateProd" label="Create product" iconSclass="fa fa-plus" />
 						<toolbarbutton id="btnDeleteProd" label="Delete product" iconSclass="fas fa-trash-alt" />
 					</hlayout>
-					<listbox id="lbxProd" vflex="1" emptyMessage="(No data)" checkmark="true">
+					<listbox id="lbxProd"  emptyMessage="(No data)" checkmark="true">
 						<listhead sizable="true">
-							<listheader width="50px"></listheader>
-							<listheader label="ID" sort="auto(id)" />
-							<listheader label="Name" sort="auto(name)" />
+							<listheader width="35px"></listheader>
+							<listheader label="ID" width="50px" sort="auto(id)" />
+							<listheader label="Name" width="80px" sort="auto(name)" />
 						</listhead>
 					</listbox>
 					<window id="wdCreateProd" title="Create product" width="300px" height="140px" mode="highlighted"
@@ -30,17 +30,17 @@
 						</div>
 					</window>
 				</groupbox>
-				<groupbox title="Product model" vflex="1">
+				<groupbox title="Product model" >
 					<hlayout>
 						<toolbarbutton id="btnCreateProdMod" label="Create product model" iconSclass="fa fa-plus" />
 						<toolbarbutton id="btnDeleteProdMod" label="Delete product model" iconSclass="fas fa-trash-alt" />
 					</hlayout>
-					<listbox id="lbxProdMod" vflex="1" emptyMessage="(No data)" checkmark="true">
+					<listbox id="lbxProdMod" emptyMessage="(No data)" checkmark="true">
 						<listhead sizable="true">
-							<listheader width="50px"></listheader>
-							<listheader label="ID" sort="auto(id)" />
-							<listheader label="Name" sort="auto(name)" />
-							<listheader label="Description" sort="auto(desp)" />
+							<listheader width="35px"></listheader>
+							<listheader label="ID" width="50px" sort="auto(id)" />
+							<listheader label="Name" width="80px" sort="auto(name)" />
+							<listheader label="Description" width="200px" sort="auto(desp)" />
 						</listhead>
 					</listbox>
 					<window id="wdCreateProdMod" title="Create product model" width="300px" height="140px"
@@ -66,9 +66,8 @@
 		</west>
 		<center>
 			<div vflex="1">
-				<groupbox title="Product Catalog" vflex="1">
-				
-					<tree id="treeProdCtl" vflex="1" checkmark="false">
+				<groupbox title="Product Catalog" >
+					<tree id="treeProdCtl" checkmark="false">
 						<frozen columns="1"></frozen>
 						<treecols sizable="true">
 							<treecol label="Name" width="110px" />
@@ -77,43 +76,43 @@
 						</treecols>
 					</tree>
 				</groupbox>
-				<groupbox title="Product model item" vflex="1">
-					<tabbox vflex="1">
+				<groupbox title="Product model item" >
+					<tabbox >
 						<tabs>
-							<tab label="設定" />
-							<tab label="展開MBOM" />
+							<tab label="Settings" />
+							<tab label="MBOM tree" />
 						</tabs>
 						<tabpanels>
 							<tabpanel vflex="1">
-								<listbox id="lbxProdModItem" vflex="1" emptyMessage="(No data)" checkmark="true">
+								<listbox id="lbxProdModItem"  emptyMessage="(No data)" checkmark="true">
 									<listhead sizable="true">
 										<listheader width="50px"></listheader>
-										<listheader label="產品型錄名稱" width="100px" sort="auto(prodCtl.name)" />
-										<listheader label="已設定" width="60px" sort="auto(partAcqCfgAssigned)" />
-										<listheader label="構型ID" width="100px" sort="auto(partCfgId)" />
-										<listheader label="獲取方式ID" width="100px" sort="auto(partAcqId)" />
+										<listheader label="Prod. Ctl. name" width="100px" sort="auto(prodCtl.name)" />
+										<listheader label="Assigned" width="60px" sort="auto(partAcqCfgAssigned)" />
+										<listheader label="Part Cfg. ID" width="100px" sort="auto(partCfgId)" />
+										<listheader label="Part Acq. ID" width="100px" sort="auto(partAcqId)" />
 									</listhead>
 								</listbox>
 							</tabpanel>
 							<tabpanel vflex="1">
-								<tree id="treeProdModPa" vflex="1" checkmark="false">
+								<tree id="treeProdModPa" checkmark="false">
 									<frozen columns="1"></frozen>
 									<treecols sizable="true">
-										<treecol label="Part pin" width="150px" />
+										<treecol label="Part pin" width="100px" />
 										<treecol label="Qty" width="60px" style="text-align:left" align="right" />
-										<treecol label="構型ID" width="150px" />
-										<treecol label="Acq name" width="100px" />
-										<treecol label="料號" width="100px" />
-										<treecol label="Acq ref. unit cost" width="110px" style="text-align:left"
+										<treecol label="Part Cfg. ID" width="150px" />
+										<treecol label="Part Acq. name" width="100px" />
+										<treecol label="Mat. No." width="100px" />
+										<treecol label="Acq. ref. unit cost" hflex="min" style="text-align:left"
 											align="right" />
-										<treecol label="累加標準料費" width="90px" style="text-align:left" align="right" />
-										<treecol label="平均庫儲單價" width="90px" style="text-align:left" align="right" />
+										<treecol label="Acc. Std. Mat. cost" hflex="min" style="text-align:left" align="right" />
+										<treecol label="Avg. Invt. unit price" hflex="min" style="text-align:left" align="right" />
 										
-										<treecol label="平均採購入庫單價" width="110px" style="text-align:left" align="right" />
-										<treecol label="平均自製入庫單價" width="110px" style="text-align:left" align="right" />
-										<treecol label="平均料件領用單價" width="110px" style="text-align:left" align="right" />
-										<treecol label="平均成品出庫單價" width="110px" style="text-align:left" align="right" />
-										<treecol label="平均訂單單價" width="90px" style="text-align:left" align="right" />
+										<treecol label="Avg. PU price" hflex="min" style="text-align:left" align="right" />
+										<treecol label="Avg. SP price" hflex="min" style="text-align:left" align="right" />
+										<treecol label="Avg. Mat. issue price" hflex="min" style="text-align:left" align="right" />
+										<treecol label="Avg. finished product price" hflex="min" style="text-align:left" align="right" />
+										<treecol label="Avg. order price" hflex="min" style="text-align:left" align="right" />
 									</treecols>
 								</tree>
 							</tabpanel>

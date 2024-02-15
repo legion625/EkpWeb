@@ -10,13 +10,13 @@ public class PpartSkewerSearchConfig extends SearchConfig<PpartSkewerQueryParam,
 
 	@Override
 	protected NormalSearchLine<PpartSkewerQueryParam, PpartSkewer>[] initNormalSearchLines() {
-		NormalSearchLine nspParentPartPin = NormalSearchLine.ofTxbLine("父階PIN", PpartSkewerQueryParam.P_PIN);
-		NormalSearchLine nspParentPartName= NormalSearchLine.ofTxbLine("父階料件名稱", PpartSkewerQueryParam.P_NAME);
-		NormalSearchLine nspPaId =  NormalSearchLine.ofTxbLine("父階獲取方式ID", PpartSkewerQueryParam.PA_ID);
-		NormalSearchLine nspPaName=  NormalSearchLine.ofTxbLine("父階獲取方式名稱", PpartSkewerQueryParam.PA_NAME);
-		NormalSearchLine nspPartPin =  NormalSearchLine.ofTxbLine("子階PIN", PpartSkewerQueryParam.PART_PIN);
-		NormalSearchLine nspPartName=  NormalSearchLine.ofTxbLine("子階料件名稱", PpartSkewerQueryParam.PART_NAME);
-		NormalSearchLine nspPartCfgRootPartPin = NormalSearchLine.ofTxbLine("構型根節點PIN", PpartSkewerQueryParam.PC_ROOT_PART_PIN);
+		NormalSearchLine nspParentPartPin = NormalSearchLine.ofTxbLine("Parent Part PIN", PpartSkewerQueryParam.P_PIN);
+		NormalSearchLine nspParentPartName= NormalSearchLine.ofTxbLine("Parent Part Name", PpartSkewerQueryParam.P_NAME);
+		NormalSearchLine nspPaId =  NormalSearchLine.ofTxbLine("Parent Part Acq. ID", PpartSkewerQueryParam.PA_ID);
+		NormalSearchLine nspPaName=  NormalSearchLine.ofTxbLine("Parent Part Acq. Name", PpartSkewerQueryParam.PA_NAME);
+		NormalSearchLine nspPartPin =  NormalSearchLine.ofTxbLine("Child Part PIN", PpartSkewerQueryParam.PART_PIN);
+		NormalSearchLine nspPartName=  NormalSearchLine.ofTxbLine("Child Part Name", PpartSkewerQueryParam.PART_NAME);
+		NormalSearchLine nspPartCfgRootPartPin = NormalSearchLine.ofTxbLine("Part Conf. Root Part PIN", PpartSkewerQueryParam.PC_ROOT_PART_PIN);
 		return new NormalSearchLine[] {
 				nspParentPartPin, nspParentPartName, nspPaId,nspPaName, nspPartPin
 				, nspPartName, nspPartCfgRootPartPin

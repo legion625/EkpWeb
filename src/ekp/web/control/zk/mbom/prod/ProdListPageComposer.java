@@ -37,6 +37,7 @@ import ekp.invt.type.InvtOrderType;
 import ekp.mbom.issue.MbomBpuType;
 import ekp.mbom.issue.prod.ProdBpuDel0;
 import ekp.mbom.issue.prod.ProdBuilder0;
+import ekp.mbom.issue.prodMod.ProdModBpuDel0;
 import ekp.mbom.issue.prodMod.ProdModBuilder1;
 import ekp.util.DataUtil;
 import ekp.web.control.zk.mbom.dto.PartCfgTreeDto;
@@ -405,10 +406,31 @@ public class ProdListPageComposer extends SelectorComposer<Component> {
 			return;
 		}
 		
-		Prodmodbpu
-		
-		
-		
+		ProdModBpuDel0 b = BpuFacade.getInstance().getBuilder(MbomBpuType.PROD_MOD_$DEL0, prodMod);
+		if(prodMod==null) {
+			log.warn("getBuilder return null.");
+			ZkNotification.error();
+			return;
+		}
+		StringBuilder msg = new StringBuilder();
+		if (!b.verify(msg)) {
+			ZkMsgBox.exclamation(msg.toString());
+			return;
+		}
+
+		ZkMsgBox.confirm("Confirm delete?", () -> {
+			Boolean result = b.build(new StringBuilder(), new TimeTraveler());
+			// 成功
+			if (result != null) {
+				ZkNotification.info("Delete product model [" + b.getProdMod().getId()+ "][" + b.getProdMod().getName() + "] success.");
+				ListModelList<ProdModInfo> model = (ListModelList) lbxProdMod.getListModel();
+				model.remove(prodMod);
+			}
+			// 失敗
+			else {
+				ZkNotification.error();
+			}
+		});
 	}
 	
 	

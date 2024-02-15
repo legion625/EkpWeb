@@ -28,11 +28,11 @@
 						<frozen columns="2"/>
 							<listhead sizable="true">
 								<listheader width="40px" />
-								<listheader label="Id" width="80px" />
-								<listheader label="Name" width="150px" />
+								<listheader label="Id" width="100px" />
+								<listheader label="Name" hflex="min" />
 								<listheader label="Type" width="50px" />
-								<listheader label="Status" width="80px" />
-								<listheader label="Referenced unit cost" width="130px" />
+								<listheader label="Status" width="100px" />
+								<listheader label="Referenced unit cost" width="130px" align="right" style="text-align:left"/>
 								<listheader label="Referenced part configuraions" />
 							</listhead>
 						</listbox>
@@ -78,8 +78,8 @@
 							<listbox id="lbxPars" emptyMessage="(No data)" checkmark="true">
 								<listhead sizable="true">
 									<listheader width="40px" />
-									<listheader label="Seq" width="100px" sort="auto(seq)"/>
-									<listheader label="Name" width="180px" />
+									<listheader label="Seq" hflex="min" sort="auto(seq)"/>
+									<listheader label="Name"  width="180px" />
 									<listheader label="Description" />
 								</listhead>
 							</listbox>
