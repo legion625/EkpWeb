@@ -2,13 +2,73 @@
 <zk>
 	<div vflex="1" apply="ekp.web.control.zk.sd.SoFnComposer">
 		<groupbox title="查詢">
-		<vlayout>
-			<button id="btnGotoSearchFnPage" label="查詢銷售訂單" />
-			<button id="btnGotoBizPartnerFnPage" label="供應商管理"></button>
+			<vlayout>
+				<button id="btnGotoSearchFnPage" label="查詢銷售訂單" />
+				<button id="btnGotoBizPartnerFnPage" label="供應商管理"></button>
 			</vlayout>
 		</groupbox>
 		<groupbox title="功能操作">
 			<button id="btnCreateSo" label="產生銷售訂單" />
+			<window id="wdCreateSo" title="Create sales order" width="60%" height="600px" mode="highlighted"
+				closable="true" visible="false" sizable="true">
+				<borderlayout vflex="1">
+				<north>
+				<hlayout hflex="1">
+								<label value="顧客" />
+								<combobox id="cbbCustomer" />
+							</hlayout>
+				</north>
+				<center vflex="1">
+					<div vflex="1">
+
+						<listbox id="lbxMmQvData" vflex="1" emptyMessage="(no data)">
+							<listhead>
+								<listheader width="45px">
+									<toolbarbutton id="btnAddMmQvData" iconSclass="fa fa-plus" />
+								</listheader>
+								<listheader label="Mano" />
+								<listheader label="Name" />
+								<listheader label="Spec." />
+								<listheader label="Qty." />
+								<listheader label="Value" />
+							</listhead>
+						</listbox>
+
+
+					</div>
+				</center>
+				<east width="500px" vflex="1" collapsible="true" open="true" splittable="true">
+					<div vflex="1">
+						<listbox id="lbxMm" vflex="1" emptyMessage="(no data)">
+							<auxhead>
+								<auxheader>
+									<textbox hflex="1" />
+								</auxheader>
+								<auxheader>
+									<textbox hflex="1"/>
+								</auxheader>
+								<auxheader>
+								</auxheader>
+							</auxhead>
+							<listhead>
+								<listheader label="Mano" />
+								<listheader label="Name" />
+								<listheader label="Spec." />
+							</listhead>
+						</listbox>
+						<label value="Drag and drop to set the material master."></label>
+					</div>
+				</east>
+				<south>
+					<div align="center">
+						<separator spacing="5px" />
+						<button id="btnSubmit" label="Submit" />
+						<toolbarbutton id="btnResetBlanks" label="Reset blanks" />
+					</div>
+				</south>
+				</borderlayout>
+
+			</window>
 		</groupbox>
 	</div>
 </zk>

@@ -73,14 +73,14 @@
 						</hlayout>
 						<tree id="treePartCfg" vflex="1" checkmark="true">
 							<treecols sizable="true">
-							<treecol label="" width="35px" />
+							<treecol label="" hflex="min"/>
 								<treecol label="Part pin" width="80px" />
 								<treecol label="Part name" width="180px" />
-								<treecol label="Part unit" width="100px" />
+								<treecol label="Part unit" hflex="min" />
 								<treecol label="Acq id" width="100px" />
 								<treecol label="Acq name" width="100px" />
-								<treecol label="Acq type" width="100px" />
-								<treecol label="Acq status" width="100px" />
+								<treecol label="Acq type" hflex="min" />
+								<treecol label="Acq status" hflex="min" />
 								<treecol label="Required quantity" width="120px" style="text-align:left" align="right"/>
 								<treecol label="Acq ref. unit cost" width="140px" style="text-align:left" align="right"/>
 							</treecols>
