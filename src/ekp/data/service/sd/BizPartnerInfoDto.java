@@ -10,6 +10,8 @@ public class BizPartnerInfoDto extends ObjectModelInfoDto implements BizPartnerI
 	private String bpsn;
 	private String name;
 	private String ban;
+	private boolean supplier;
+	private boolean customer;
 
 	@Override
 	public String getBpsn() {
@@ -37,4 +39,23 @@ public class BizPartnerInfoDto extends ObjectModelInfoDto implements BizPartnerI
 	void setBan(String ban) {
 		this.ban = ban;
 	}
+	
+	@Override
+	public boolean isSupplier() {
+		return supplier;
+	}
+
+	void setSupplier(boolean supplier) {
+		this.supplier = supplier;
+	}
+	
+	@Override
+	public boolean isCustomer() {
+		return customer;
+	}
+
+	void setCustomer(boolean customer) {
+		this.customer = customer;
+	}
+	
 }

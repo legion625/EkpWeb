@@ -98,6 +98,26 @@ public class SdDataServiceImp implements SdDataService {
 		}
 	}
 
+	@Override
+	public boolean bpToggleSupplier(String _uid, boolean _supplier) {
+		try {
+			return getEkpKernelRmi().bpToggleSupplier(_uid, _supplier);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+
+	@Override
+	public boolean bpToggleCustomer(String _uid, boolean _customer) {
+		try {
+			return getEkpKernelRmi().bpToggleCustomer(_uid, _customer);
+		} catch (Throwable e) {
+			LogUtil.log(log, e, Level.ERROR);
+			return false;
+		}
+	}
+
 	// -------------------------------------------------------------------------------
 	// ----------------------------------SalesOrder-----------------------------------
 	@Override

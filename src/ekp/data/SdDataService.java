@@ -30,6 +30,8 @@ public interface SdDataService extends IntegrationService, EkpKernelRmi {
 	public BizPartnerInfo loadBizPartner(String _uid) ;
 	public BizPartnerInfo loadBizPartnerByBpsn(String _bpsn) ;
 	public List<BizPartnerInfo> loadBizPartnerList() ;
+	public boolean bpToggleSupplier(String _uid, boolean _supplier); 
+	public boolean bpToggleCustomer(String _uid, boolean _customer);
 	
 	// -------------------------------------------------------------------------------
 	// ----------------------------------SalesOrder-----------------------------------

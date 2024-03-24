@@ -5,10 +5,12 @@ import java.util.Map;
 
 import ekp.data.InvtDataService;
 import ekp.data.service.invt.InvtOrderInfo;
+import ekp.data.service.invt.InvtOrderItemInfo;
 import ekp.data.service.invt.MaterialBinStockCreateObj;
 import ekp.data.service.invt.MaterialBinStockInfo;
 import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.invt.WrhsLocInfo;
+import ekp.data.service.invt.query.InvtOrderItemQueryParam;
 import ekp.data.service.invt.query.InvtOrderQueryParam;
 import ekp.data.service.invt.query.MaterialMasterQueryParam;
 import legion.DataServiceFactory;
@@ -41,8 +43,17 @@ public class InvtServiceImp implements InvtService {
 	@Override
 	public QueryOperation<InvtOrderQueryParam, InvtOrderInfo> searchInvtOrder(
 			QueryOperation<InvtOrderQueryParam, InvtOrderInfo> _param,
-			Map<InvtOrderQueryParam, QueryValue[]> _existsDetailMap){
+			Map<InvtOrderQueryParam, QueryValue[]> _existsDetailMap) {
 		return dataService.searchInvtOrder(_param, _existsDetailMap);
+	}
+
+	// -------------------------------------------------------------------------------
+	// ---------------------------------InvtOrderItem---------------------------------
+	@Override
+	public QueryOperation<InvtOrderItemQueryParam, InvtOrderItemInfo> searchInvtOrderItem(
+			QueryOperation<InvtOrderItemQueryParam, InvtOrderItemInfo> _param,
+			Map<InvtOrderItemQueryParam, QueryValue[]> _existsDetailMap) {
+		return dataService.searchInvtOrderItem(_param, _existsDetailMap);
 	}
 	
 	// -------------------------------------------------------------------------------

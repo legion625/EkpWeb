@@ -13,6 +13,7 @@ import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.ListitemRenderer;
+import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
@@ -21,6 +22,7 @@ import ekp.data.service.sd.BizPartnerInfo;
 import ekp.sd.BizPartnerBuilder;
 import ekp.sd.SdBpuType;
 import ekp.sd.SdService;
+import ekp.util.DataUtil;
 import legion.BusinessServiceFactory;
 import legion.biz.BpuFacade;
 import legion.util.LogUtil;
@@ -32,6 +34,8 @@ public class BizPartnerComposer extends SelectorComposer<Component> {
 	public final static String SRC = "/sd/bp/bizPartner.zul";
 
 	// -------------------------------------------------------------------------------
+	@Wire
+	private Radiogroup rgToggle;
 	@Wire
 	private Listbox lbxBp;
 
@@ -59,6 +63,8 @@ public class BizPartnerComposer extends SelectorComposer<Component> {
 			li.appendChild(new Listcell(bp.getBpsn()));
 			li.appendChild(new Listcell(bp.getName()));
 			li.appendChild(new Listcell(bp.getBan()));
+			li.appendChild(new Listcell(DataUtil.getStr(bp.isSupplier())));
+			li.appendChild(new Listcell(DataUtil.getStr(bp.isCustomer())));
 		};
 		lbxBp.setItemRenderer(bpRenderer);
 
@@ -68,8 +74,9 @@ public class BizPartnerComposer extends SelectorComposer<Component> {
 	private void refreshBpList(List<BizPartnerInfo> _bpList) {
 		ListModelList<BizPartnerInfo> model = _bpList == null ? new ListModelList<>() : new ListModelList<>(_bpList);
 		lbxBp.setModel(model);
+		model.setMultiple(true);
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	@Wire
 	private Window wdCreateBp;
@@ -77,8 +84,8 @@ public class BizPartnerComposer extends SelectorComposer<Component> {
 	private Textbox txbCreateBpName;
 	@Wire("#wdCreateBp #txbBan")
 	private Textbox txbCreateBpBan;
-	
-	@Listen(Events.ON_CLICK+"=#btnCreateBp")
+
+	@Listen(Events.ON_CLICK + "=#btnCreateBp")
 	public void btnCreateBp_clicked() {
 		wdCreateBp_btnResetBlanks_clicked();
 		wdCreateBp.setVisible(true);
@@ -121,6 +128,80 @@ public class BizPartnerComposer extends SelectorComposer<Component> {
 	public void wdCreateBp_closed(Event _evt) {
 		_evt.stopPropagation();
 		wdCreateBp.setVisible(false);
+	}
+
+	// -------------------------------------------------------------------------------
+	private List<BizPartnerInfo> getSelectedBpList() {
+		ListModelList<BizPartnerInfo> model = (ListModelList) lbxBp.getModel();
+		return model.getSelection().stream().toList();
+	}
+
+	private boolean isToggle() {
+		return rgToggle.getSelectedIndex() == 1;
+	}
+
+	@Listen(Events.ON_CLICK + "=#btnToggleSupplier")
+	public void btnToggleSupplier_clicked() {
+		List<BizPartnerInfo> selectedBpList = getSelectedBpList();
+		if (selectedBpList == null || selectedBpList.size() <= 0) {
+			ZkNotification.warning("Please select some business partners.");
+			return;
+		}
+
+		boolean toggle = isToggle();
+
+		TimeTraveler tt = new TimeTraveler();
+		SdService sdService = BusinessServiceFactory.getInstance().getService(SdService.class);
+		for (BizPartnerInfo bp : selectedBpList) {
+			boolean origSupplier = bp.isSupplier();
+			boolean t = sdService.bpToggleSupplier(bp.getUid(), toggle);
+			if (t == false) {
+				tt.travel();
+				ZkNotification.error();
+				return;
+			}
+			tt.addSite("revert bpToggleSupplier", () -> sdService.bpToggleSupplier(bp.getUid(), origSupplier));
+		}
+
+		ZkNotification.info("Toggle complete.");
+		tt = null;
+		
+		//
+		List<BizPartnerInfo> bpList = BusinessServiceFactory.getInstance().getService(SdService.class)
+				.loadBizPartnerList();
+		refreshBpList(bpList);
+	}
+
+	@Listen(Events.ON_CLICK + "=#btnToggleCustomer")
+	public void btnToggleCustomer_clicked() {
+		List<BizPartnerInfo> selectedBpList = getSelectedBpList();
+		if (selectedBpList == null || selectedBpList.size() <= 0) {
+			ZkNotification.warning("Please select some business partners.");
+			return;
+		}
+
+		boolean toggle = isToggle();
+
+		TimeTraveler tt = new TimeTraveler();
+		SdService sdService = BusinessServiceFactory.getInstance().getService(SdService.class);
+		for (BizPartnerInfo bp : selectedBpList) {
+			boolean origCustomer = bp.isCustomer();
+			boolean t = sdService.bpToggleCustomer(bp.getUid(), toggle);
+			if (t == false) {
+				tt.travel();
+				ZkNotification.error();
+				return;
+			}
+			tt.addSite("revert bpToggleCustomer", () -> sdService.bpToggleCustomer(bp.getUid(), origCustomer));
+		}
+
+		ZkNotification.info("Toggle complete.");
+		tt = null;
+		
+		//
+		List<BizPartnerInfo> bpList = BusinessServiceFactory.getInstance().getService(SdService.class)
+				.loadBizPartnerList();
+		refreshBpList(bpList);
 	}
 
 }

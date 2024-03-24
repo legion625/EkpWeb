@@ -27,8 +27,11 @@ public class SalesOrderItemBuilder1 extends SalesOrderItemBuilder{
 	// -------------------------------------------------------------------------------
 	public SalesOrderItemBuilder1 appendMm(MaterialMasterInfo mm) {
 		this.mm = mm;
-		appendMmUid(mm.getUid()).appendMmMano(mm.getMano()).appendMmName(mm.getName())
-				.appendMmSpec(mm.getSpecification());
+		if (mm == null)
+			appendMmUid("").appendMmMano("").appendMmName("").appendMmSpec("");
+		else
+			appendMmUid(mm.getUid()).appendMmMano(mm.getMano()).appendMmName(mm.getName())
+					.appendMmSpec(mm.getSpecification());
 		return this;
 	}
 	public SalesOrderItemBuilder1 appendQty(double qty) {
@@ -56,6 +59,11 @@ public class SalesOrderItemBuilder1 extends SalesOrderItemBuilder{
 		
 		if (getMm() == null) {
 			_msg.append("料件基本檔有誤。").append(System.lineSeparator());
+			v = false;
+		}
+
+		if (getQty() <= 0 || getValue() <= 0) {
+			_msg.append("數量或是金額有誤。").append(System.lineSeparator());
 			v = false;
 		}
 

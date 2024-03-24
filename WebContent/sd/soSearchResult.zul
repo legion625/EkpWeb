@@ -1,16 +1,62 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
 	<div vflex="1" apply="ekp.web.control.zk.sd.SoSearchResultComposer">
-		<listbox id="lbxSo" vflex="1" emptyMessage="(no data)">
-			<listhead sizable="true">
-				<listheader label="序號" width="80px" sort="auto(sosn)" />
-				<listheader label="名稱" width="80px" sort="auto(title)" />
-				<listheader label="客戶名稱" width="120px" sort="auto(customerName)" />
-				<listheader label="客戶統編" width="80px" sort="auto(customerBan)" />
-				<listheader label="銷售人姓名" width="80px" sort="auto(salerName)" />
-				<listheader label="銷售日期" width="80px" sort="auto(saleDate)" />
-				<listheader label="金額" width="80px" style="text-align:left" align="right" sort="auto(sumSoiAmt)" />
-			</listhead>
-		</listbox>
+		<borderlayout>
+			<center>
+				<listbox id="lbxSo" vflex="1" emptyMessage="(no data)" checkmark="true">
+					<listhead sizable="true">
+						<listheader label="" width="45px" />
+						<listheader label="序號" width="80px" sort="auto(sosn)" />
+						<listheader label="名稱" width="120px" sort="auto(title)" />
+						<listheader label="客戶名稱" width="200px" sort="auto(customerName)" />
+						<listheader label="客戶統編" width="80px" sort="auto(customerBan)" />
+						<listheader label="銷售人姓名" width="80px" sort="auto(salerName)" visible="false" />
+						<listheader label="銷售日期" width="80px" sort="auto(saleDate)" visible="false" />
+						<listheader label="金額" width="80px" style="text-align:left" align="right"
+							sort="auto(sumSoiAmt)" />
+					</listhead>
+				</listbox>
+			</center>
+			<south height="300px" splittable="true">
+				<tabbox vflex="1">
+					<tabs>
+						<tab label="Sales order items" />
+						<tab label="Invt. order items" />
+					</tabs>
+					<tabpanels>
+						<tabpanel vflex="1">
+							<listbox id="lbxSoi" vflex="1" emptyMessage="(no data)" checkmark="true">
+								<listhead sizable="true">
+									<listheader label="" width="45px" />
+									<listheader label="Mano" width="100px" />
+									<listheader label="Name" hflex="min" />
+									<listheader label="Spec." hflex="min" />
+									<listheader label="Qty." hflex="min" style="text-align:left" align="right" />
+									<listheader label="Value" hflex="min" style="text-align:left" align="right" />
+									<listheader label="All delivered?" hflex="min" />
+									<listheader label="Finish delivered date" hflex="min" />
+								</listhead>
+							</listbox>
+						</tabpanel>
+						<tabpanel>
+							<listbox id="lbxIoi" vflex="1" emptyMessage="(no data)" checkmark="true">
+								<listhead sizable="true">
+									<listheader label="IOSN" />
+									<listheader label="Order status" />
+									<listheader label="Order apply date" />
+									<listheader label="Order approve date" />
+									<listheader label="Order remark" />
+									<listheader label="Mat. Mstr. Mano" />
+									<listheader label="Mat. Mstr. Name" />
+									<listheader label="Order Qty." />
+									<listheader label="Order value" />
+								</listhead>
+							</listbox>
+						</tabpanel>
+					</tabpanels>
+				</tabbox>
+			</south>
+		</borderlayout>
+
 	</div>
 </zk>

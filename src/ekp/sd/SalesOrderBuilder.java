@@ -148,9 +148,13 @@ public abstract class SalesOrderBuilder extends Bpu<SalesOrderInfo> {
 		//
 		if (getSalesOrderItemBuilderList() == null || getSalesOrderItemBuilderList().size() <= 0) {
 			_msg.append("銷售訂單項目必須>0。").append(System.lineSeparator());
-			return false;
+			v = false;
+		}else {
+			for (SalesOrderItemBuilder soib : getSalesOrderItemBuilderList())
+				if (!soib.verify(_msg, _full))
+					v = false;
 		}
-		
+
 		return v;
 	}
 	
@@ -159,20 +163,21 @@ public abstract class SalesOrderBuilder extends Bpu<SalesOrderInfo> {
 	
 	protected final SalesOrderInfo buildSalesOrderBasic(TimeTraveler _tt) {
 		TimeTraveler tt = new TimeTraveler();
-		
+
 		/* 1.SalesOrder */
 		SalesOrderInfo so = sdDataService.createSalesOrder(packSalesOrderCreateObj());
-		if(so==null) {
+		if (so == null) {
 			tt.travel();
 			log.error("sdDataService.createSalesOrder return null.");
 			return null;
 		}
-		tt.addSite("revert createSalesOrder", () ->sdDataService.deleteSalesOrder(so.getUid()));
-		log.info("sdDataService.createSalesOrder [{}][{}][{}][{}][{}]", so.getUid(), so.getSosn(), so.getTitle(), so.getCustomerName(), so.getCustomerBan());
-		
+		tt.addSite("revert createSalesOrder", () -> sdDataService.deleteSalesOrder(so.getUid()));
+		log.info("sdDataService.createSalesOrder [{}][{}][{}][{}][{}]", so.getUid(), so.getSosn(), so.getTitle(),
+				so.getCustomerName(), so.getCustomerBan());
+
 		/* 2.SalesOrderItem */
 		for (SalesOrderItemBuilder soiBuilder : getSalesOrderItemBuilderList()) {
-			
+
 			soiBuilder.appendSoUid(so.getUid());
 			log.debug("soiBuilder.getSoUid(): {}", soiBuilder.getSoUid());
 			SalesOrderItemInfo soi = soiBuilder.build(new StringBuilder(), tt);
@@ -182,11 +187,11 @@ public abstract class SalesOrderBuilder extends Bpu<SalesOrderInfo> {
 				return null;
 			} // copy sites inside
 		}
-		
+
 		//
 		if (_tt != null)
 			_tt.copySitesFrom(tt);
-		
+
 		return so.reload();
 	}
 

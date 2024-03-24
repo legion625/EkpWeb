@@ -3,13 +3,23 @@
 	<div vflex="1" apply="ekp.web.control.zk.sd.bp.BizPartnerComposer">
 		<hlayout>
 			<toolbarbutton id="btnCreateBp" label="新增供應商" iconSclass="fa fa-plus" />
+			<groupbox>
+			<radiogroup id="rgToggle">
+				<radio label="×"  checked="false"/>
+				<radio label="✓" checked="true"/>
+			</radiogroup>
+			<toolbarbutton id="btnToggleSupplier" label="指定為供應商" iconSclass="fa fa-plus" />
+			<toolbarbutton id="btnToggleCustomer" label="指定為客戶" iconSclass="fa fa-plus" />
+			</groupbox>
 		</hlayout>
-		<listbox id="lbxBp" vflex="1" emptyMessage="(No data)" checkmark="false">
+		<listbox id="lbxBp" vflex="1" emptyMessage="(No data)" checkmark="true">
 			<listhead sizable="true">
-				<listheader width="32px" visible="false"/>
+				<listheader width="32px" />
 				<listheader label="編號" hflex="min" />
 				<listheader label="名稱" hflex="min" />
 				<listheader label="統一編號" hflex="min" />
+				<listheader label="Is supplier?" hflex="min" />
+				<listheader label="Is cusomter?" hflex="min" />
 			</listhead>
 		</listbox>
 		<window id="wdCreateBp" title="Create business partner" mode="highlighted" closable="true" visible="false"

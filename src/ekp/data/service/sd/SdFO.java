@@ -17,6 +17,8 @@ public class SdFO {
 		dto.setBpsn(_remote.getBpsn());
 		dto.setName(_remote.getName());
 		dto.setBan(_remote.getBan());
+		dto.setSupplier(_remote.isSupplier());
+		dto.setCustomer(_remote.isCustomer());
 		return dto;
 	}
 	

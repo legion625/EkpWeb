@@ -122,6 +122,13 @@ public class InvtOrderItemInfoDto extends ObjectModelInfoDto implements InvtOrde
 	public InvtOrderInfo getIo() {
 		return ioLoader.getObj(getIoUid());
 	}
+
+	private BizObjLoader<MaterialMasterInfo> mmLoader = BizObjLoader.MM.get();
+
+	@Override
+	public MaterialMasterInfo getMm() {
+		return mmLoader.getObj(getMmUid());
+	}
 	
 	private BizObjLoader<List<MbsbStmtInfo>> mbsbStmtListLoader = BizObjLoader.of(
 			() -> DataServiceFactory.getInstance().getService(InvtDataService.class).loadMbsbStmtListByIoi(getUid()));

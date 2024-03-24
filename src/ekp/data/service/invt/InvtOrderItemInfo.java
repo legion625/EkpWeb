@@ -37,6 +37,9 @@ public interface InvtOrderItemInfo extends ObjectModelInfo {
 	// -------------------------------------------------------------------------------
 	InvtOrderInfo getIo();
 	
+	MaterialMasterInfo getMm();
+	
 	List<MbsbStmtInfo> getMbsbStmtList();
+	
 
 }
