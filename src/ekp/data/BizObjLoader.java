@@ -6,6 +6,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import ekp.data.service.invt.InvtOrderInfo;
+import ekp.data.service.invt.MaterialBinStockInfo;
+import ekp.data.service.invt.MaterialInstInfo;
 import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.mbom.ParsInfo;
 import ekp.data.service.mbom.PartAcqInfo;
@@ -61,6 +63,9 @@ public class BizObjLoader<T> {
 	// -------------------------------------------------------------------------------
 	private static InvtDataService invtDataService = DataServiceFactory.getInstance().getService(InvtDataService.class);
 	public final static Supplier<BizObjLoader<MaterialMasterInfo>> MM = () -> of(invtDataService::loadMaterialMaster);
+	public final static Supplier<BizObjLoader<MaterialInstInfo>> MI = ()->of(invtDataService::loadMaterialInst);
+	public final static Supplier<BizObjLoader<MaterialBinStockInfo>> MBS = ()->of(invtDataService::loadMaterialBinStock);
+	
 	
 	// -------------------------------------------------------------------------------
 	private static MbomDataService mbomDataService = DataServiceFactory.getInstance().getService(MbomDataService.class);

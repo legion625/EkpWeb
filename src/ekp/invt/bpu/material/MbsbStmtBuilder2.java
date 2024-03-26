@@ -30,10 +30,16 @@ public class MbsbStmtBuilder2 extends MbsbStmtBuilder{
 	
 	// -------------------------------------------------------------------------------
 	// -----------------------------------appender------------------------------------
-	@Override
-	public MbsbStmtBuilder2 appendMbsbUid(String mbsbUid) {
-		return (MbsbStmtBuilder2) super.appendMbsbUid(mbsbUid);
-	}
+//	@Override
+//	public MbsbStmtBuilder2 appendMbsbUid(String mbsbUid) {
+//		return (MbsbStmtBuilder2) super.appendMbsbUid(mbsbUid);
+//	}
+	
+	public MbsbStmtBuilder2 appendMbsb(MaterialBinStockBatchInfo mbsb) {
+		this.mbsb = mbsb;
+		super.appendMbsbUid(mbsb.getUid());
+		return this;
+	} 
 
 	public MbsbStmtBuilder2 appendIoi(InvtOrderItemInfo ioi) {
 		this.ioi = ioi;
@@ -54,11 +60,17 @@ public class MbsbStmtBuilder2 extends MbsbStmtBuilder{
 	
 	// -------------------------------------------------------------------------------
 	// ------------------------------------getter-------------------------------------
+	public MaterialBinStockBatchInfo getMbsb() {
+		return mbsb;
+	}
+	
 	public InvtOrderItemInfo getIoi() {
 		return ioi;
 	}
 	
 	
+	
+
 	// -------------------------------------------------------------------------------
 	@Override
 	public boolean verify(StringBuilder _msg, boolean _full) {

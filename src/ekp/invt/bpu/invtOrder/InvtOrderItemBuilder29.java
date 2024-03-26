@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import ekp.data.MfDataService;
 import ekp.data.SdDataService;
 import ekp.data.service.invt.InvtOrderItemInfo;
+import ekp.data.service.invt.MaterialBinStockBatchInfo;
 import ekp.data.service.invt.MbsbStmtInfo;
 import ekp.data.service.mf.WorkorderMaterialInfo;
 import ekp.data.service.sd.SalesOrderItemInfo;
@@ -49,10 +50,12 @@ public class InvtOrderItemBuilder29 extends InvtOrderItemBuilder {
 
 	// -------------------------------------------------------------------------------
 	// -----------------------------------appender------------------------------------
-	public MbsbStmtBuilder2 addMbsbStmtBuilder(String _mbsbUid, double _stmtQty, double _stmtValue) {
+//	public MbsbStmtBuilder2 addMbsbStmtBuilder(String _mbsbUid, double _stmtQty, double _stmtValue) {
+	public MbsbStmtBuilder2 addMbsbStmtBuilder(MaterialBinStockBatchInfo _mbsb, double _stmtQty, double _stmtValue) {
 		MbsbStmtBuilder2 b = new MbsbStmtBuilder2();
 		b.init();
-		b.appendMbsbUid(_mbsbUid);
+//		b.appendMbsbUid(_mbsbUid);
+		b.appendMbsb(_mbsb);
 		b.appendStmtQty(_stmtQty).appendStmtValue(_stmtValue);
 		mbsbStmtBuilderList.add(b);
 		return b;

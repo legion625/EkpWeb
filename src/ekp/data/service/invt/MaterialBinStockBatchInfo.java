@@ -15,6 +15,11 @@ public interface MaterialBinStockBatchInfo extends ObjectModelInfo{
 	double getStockValue();
 	
 	// -------------------------------------------------------------------------------
+	MaterialBinStockInfo getMbs(boolean _reload);
+	default MaterialBinStockInfo getMbs() {
+		return getMbs(false);
+	}
+	
 	MaterialInstInfo getMi(boolean _reload);
 	default MaterialInstInfo getMi() {
 		return getMi(false);

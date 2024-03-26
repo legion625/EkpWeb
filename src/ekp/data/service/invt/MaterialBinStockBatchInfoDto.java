@@ -58,12 +58,18 @@ public class MaterialBinStockBatchInfoDto extends ObjectModelInfoDto implements 
 	}
 
 	// -------------------------------------------------------------------------------
-	private BizObjLoader<MaterialInstInfo> miLoader = BizObjLoader
-			.of(() -> DataServiceFactory.getInstance().getService(InvtDataService.class).loadMaterialInst(getMiUid()));
+	private BizObjLoader<MaterialBinStockInfo> mbsLoader = BizObjLoader.MBS.get();
+	
+	@Override
+	public MaterialBinStockInfo getMbs(boolean _reload) {
+		return mbsLoader.getObj(getMbsUid(), _reload);
+	}
+	
+	private BizObjLoader<MaterialInstInfo> miLoader = BizObjLoader.MI.get();
 
 	@Override
 	public MaterialInstInfo getMi(boolean _reload) {
-		return miLoader.getObj(_reload);
+		return miLoader.getObj(getMiUid(), _reload);
 	}
 
 	private BizObjLoader<List<MbsbStmtInfo>> stmtListLoader = BizObjLoader

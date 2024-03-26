@@ -204,7 +204,8 @@ public class WoBuilderAll extends WoBuilder {
 					continue;
 				alcQty = Math.min(a, mbsb.getStockQty()); // 先找出「待分配數量」和「庫存數量」的較小值，作為「分配量」
 				double stmtValue = alcQty * mbsb.getStockValue() / mbsb.getStockQty();
-				ioib22.addMbsbStmtBuilder(mbsb.getUid(), alcQty, stmtValue);
+//				ioib22.addMbsbStmtBuilder(mbsb.getUid(), alcQty, stmtValue);
+				ioib22.addMbsbStmtBuilder(mbsb, alcQty, stmtValue);
 				a -= alcQty; // 更新「待分配數量」。（mbsb的數量只是參考，要在kernel到時該帳被post時才會生效。）
 				if (a <= 0) // 若A已分配滿足，結束for迴圈。
 					break;

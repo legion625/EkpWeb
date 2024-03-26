@@ -3,19 +3,67 @@
 	<div vflex="1" apply="ekp.web.control.zk.sd.SoSearchResultComposer">
 		<borderlayout>
 			<center>
-				<listbox id="lbxSo" vflex="1" emptyMessage="(no data)" checkmark="true">
-					<listhead sizable="true">
-						<listheader label="" width="45px" />
-						<listheader label="序號" width="80px" sort="auto(sosn)" />
-						<listheader label="名稱" width="120px" sort="auto(title)" />
-						<listheader label="客戶名稱" width="200px" sort="auto(customerName)" />
-						<listheader label="客戶統編" width="80px" sort="auto(customerBan)" />
-						<listheader label="銷售人姓名" width="80px" sort="auto(salerName)" visible="false" />
-						<listheader label="銷售日期" width="80px" sort="auto(saleDate)" visible="false" />
-						<listheader label="金額" width="80px" style="text-align:left" align="right"
-							sort="auto(sumSoiAmt)" />
-					</listhead>
-				</listbox>
+				<div vflex="1">
+					<hlayout>
+						<button id="btnSoDeliver" label="Deliver" disabled="true" />
+						<window id="wdSoDeliver" title="Deliver sales order" width="60%" height="600px"
+							mode="highlighted" closable="true" visible="false" sizable="true" >
+							<hlayout vflex="1">
+							<vlayout vflex="1" hflex="1">
+								<groupbox title="sales order item" vflex="1" hflex="1">
+									<listbox id="lbxIoib" vflex="1" emptyMessage="(no data)" checkmark="true">
+										<listhead sizable="true">
+											<listheader label="" width="45px" />
+											<listheader label="Mano" />
+											<listheader label="Name" />
+											<listheader label="Qty required" style="text-align:left" align="right" />
+											<listheader label="Qty allocated" style="text-align:left" align="right"/>
+										</listhead>
+									</listbox>
+								</groupbox>
+								<groupbox title="selected material bin stock batch" vflex="1" hflex="1">
+									<listbox id="lbxSelMbsbStmtBuilder" vflex="1" emptyMessage="(no data)" checkmark="true">
+									<listhead sizable="true">
+										<listheader label="Mano" />
+										<listheader label="Wrhs. location" />
+										<listheader label="Wrhs. bin" />
+										<listheader label="MISN" />
+										<listheader label="Statement qty." />
+										<listheader label="Statement value" /></listhead>
+									</listbox>
+								</groupbox>
+							</vlayout>
+
+							<groupbox title="Available material bin stock value" vflex="1" hflex="1">
+								<listbox id="lbxAvlMbsb" vflex="1" emptyMessage="(no data)" checkmark="true">
+									<listhead sizable="true">
+										<listheader label="Mano" />
+										<listheader label="Wrhs. location" />
+										<listheader label="Wrhs. bin" />
+										<listheader label="MISN" />
+										<listheader label="Stock qty." />
+										<listheader label="Stock value" />
+									</listhead>
+								</listbox>
+							</groupbox>
+							</hlayout>
+
+						</window>
+					</hlayout>
+					<listbox id="lbxSo" vflex="1" emptyMessage="(no data)" checkmark="true">
+						<listhead sizable="true">
+							<listheader label="" width="45px" />
+							<listheader label="序號" width="80px" sort="auto(sosn)" />
+							<listheader label="名稱" width="120px" sort="auto(title)" />
+							<listheader label="客戶名稱" width="200px" sort="auto(customerName)" />
+							<listheader label="客戶統編" width="80px" sort="auto(customerBan)" />
+							<listheader label="銷售人姓名" width="80px" sort="auto(salerName)" visible="false" />
+							<listheader label="銷售日期" width="80px" sort="auto(saleDate)" visible="false" />
+							<listheader label="金額" width="80px" style="text-align:left" align="right"
+								sort="auto(sumSoiAmt)" />
+						</listhead>
+					</listbox>
+				</div>
 			</center>
 			<south height="300px" splittable="true">
 				<tabbox vflex="1">

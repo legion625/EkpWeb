@@ -11,6 +11,8 @@ import legion.util.DataFO;
 
 public class DataUtil {
 	public final static String NO_DATA = "(No data)";
+	public final static String USER_ID = "USER1";
+	public final static String USER_NAME = "Chao";
 	
 	public static String getStrJ(List<String> _strList) {
 		return _strList.stream().collect(Collectors.joining(","));
@@ -96,4 +98,6 @@ public class DataUtil {
 		}
 		return result;
 	}
+	
+	// -------------------------------------------------------------------------------
 }

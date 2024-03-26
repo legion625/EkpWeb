@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ekp.data.service.invt.InvtOrderItemInfo;
+import ekp.data.service.invt.MaterialBinStockBatchInfo;
 import ekp.data.service.invt.MbsbStmtInfo;
 import ekp.invt.bpu.material.MbsbStmtBuilder2;
 import ekp.invt.type.InvtOrderType;
@@ -55,10 +56,12 @@ public class InvtOrderItemBuilder21 extends InvtOrderItemBuilder {
 		return (InvtOrderItemBuilder21) super.appendOrderValue(orderValue);
 	}
 	
-	public MbsbStmtBuilder2 addMbsbStmtBuilder(String _mbsbUid, double _stmtQty, double _stmtValue) {
+//	public MbsbStmtBuilder2 addMbsbStmtBuilder(String _mbsbUid, double _stmtQty, double _stmtValue) {
+	public MbsbStmtBuilder2 addMbsbStmtBuilder(MaterialBinStockBatchInfo _mbsb, double _stmtQty, double _stmtValue) {
 		MbsbStmtBuilder2 b = new MbsbStmtBuilder2();
 		b.init();
-		b.appendMbsbUid(_mbsbUid);
+//		b.appendMbsbUid(_mbsbUid);
+		b.appendMbsb(_mbsb);
 		b.appendStmtQty(_stmtQty).appendStmtValue(_stmtValue);
 		mbsbStmtBuilderList.add(b);
 		return b;

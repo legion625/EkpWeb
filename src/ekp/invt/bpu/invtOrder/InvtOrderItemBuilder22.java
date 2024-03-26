@@ -48,10 +48,12 @@ public class InvtOrderItemBuilder22 extends InvtOrderItemBuilder {
 
 	// -------------------------------------------------------------------------------
 	// -----------------------------------appender------------------------------------
-	public MbsbStmtBuilder2 addMbsbStmtBuilder(String _mbsbUid, double _stmtQty, double _stmtValue) {
+//	public MbsbStmtBuilder2 addMbsbStmtBuilder(String _mbsbUid, double _stmtQty, double _stmtValue) {
+	public MbsbStmtBuilder2 addMbsbStmtBuilder(MaterialBinStockBatchInfo _mbsb, double _stmtQty, double _stmtValue) {
 		MbsbStmtBuilder2 b = new MbsbStmtBuilder2();
 		b.init();
-		b.appendMbsbUid(_mbsbUid);
+//		b.appendMbsbUid(_mbsbUid);
+		b.appendMbsb(_mbsb);
 		b.appendStmtQty(_stmtQty).appendStmtValue(_stmtValue);
 		mbsbStmtBuilderList.add(b);
 		return b;
