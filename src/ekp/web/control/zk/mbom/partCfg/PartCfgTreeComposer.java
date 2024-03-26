@@ -87,6 +87,8 @@ public class PartCfgTreeComposer extends SelectorComposer<Component> {
 			PartCfgTreeDto data = tn.getData();
 			Treecell tc;
 
+			// checkmark
+			ti.getTreerow().appendChild(new Treecell(""));
 			// part pin
 			ti.getTreerow().appendChild(new Treecell(data.getPartPin()));
 			// part name

@@ -20,6 +20,8 @@
 							align="right" />
 						<listheader label="庫存帳值" hflex="min" sort="auto(sumStockValue)" style="text-align:left"
 							align="right" />
+							<listheader label="平均庫存單價" hflex="min" sort="auto(avgStockValue)"  style="text-align:left"
+							align="right" />
 						<listheader label="規格" hflex="min" sort="auto(specification)" />
 					</listhead>
 				</listbox>

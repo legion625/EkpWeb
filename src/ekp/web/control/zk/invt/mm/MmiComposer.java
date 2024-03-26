@@ -95,6 +95,7 @@ public class MmiComposer extends SelectorComposer<Component> {
 			li.appendChild(new Listcell(mm.getStdUnitChtName()));
 			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(mm.getSumStockQty(), 2)));
 			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(mm.getSumStockValue(), 2)));
+			li.appendChild(new Listcell(NumberFormatUtil.getDecimalString(mm.getAvgStockValue(), 2)));
 			li.appendChild(new Listcell(mm.getSpecification()));
 			//
 			li.addEventListener(Events.ON_CLICK, evt -> {

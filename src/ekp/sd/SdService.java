@@ -16,9 +16,15 @@ public interface SdService extends BusinessService {
 	// ----------------------------------BizPartner-----------------------------------
 	public List<BizPartnerInfo> loadBizPartnerList();
 	
+	default List<BizPartnerInfo> loadSupplierList(){
+		return loadBizPartnerList().stream().filter(BizPartnerInfo::isSupplier).toList();
+	}
+	
 	default List<BizPartnerInfo> loadCustomerList(){
 		return loadBizPartnerList().stream().filter(BizPartnerInfo::isCustomer).toList();
 	}
+	
+	
 	
 	public boolean bpToggleSupplier(String _uid, boolean _supplier); 
 	public boolean bpToggleCustomer(String _uid, boolean _customer);
