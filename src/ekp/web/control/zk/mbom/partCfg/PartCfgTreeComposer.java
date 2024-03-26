@@ -5,11 +5,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.SelectorComposer;
@@ -24,6 +26,7 @@ import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Tree;
+import org.zkoss.zul.TreeModel;
 import org.zkoss.zul.TreeNode;
 import org.zkoss.zul.Treecell;
 import org.zkoss.zul.Treecol;
@@ -35,12 +38,14 @@ import ekp.DebugLogMark;
 import ekp.data.service.mbom.PartAcqInfo;
 import ekp.data.service.mbom.PartCfgInfo;
 import ekp.data.service.mbom.PartInfo;
+import ekp.data.service.pu.PurchInfo;
 import ekp.mbom.issue.MbomBpuType;
 import ekp.mbom.issue.part.PartBpuPcAssignPa;
 import ekp.mbom.issue.partAcq.PaBpuPublish;
 import ekp.mbom.issue.partAcq.PaBpuUpdateRefUnitCost;
 import ekp.web.control.zk.mbom.PartCfgTreePageComposer;
 import ekp.web.control.zk.mbom.dto.PartCfgTreeDto;
+import ekp.web.control.zk.pu.WdAddPurchWithPostComposer;
 import legion.biz.BpuFacade;
 import legion.util.LogUtil;
 import legion.util.TimeTraveler;
@@ -58,12 +63,20 @@ public class PartCfgTreeComposer extends SelectorComposer<Component> {
 	}
 
 	// -------------------------------------------------------------------------------
+	
+	@Wire
+	private Include icdWdAddPurchWithpost;
+	private WdAddPurchWithPostComposer wdAddPurchWithPostComposer;
+	
 	@Wire
 	private Tree treePartCfg;
 	
 	@Wire
 	private Radiogroup rg;
 
+	// -------------------------------------------------------------------------------
+	private PartCfgInfo pc;
+	
 	// -------------------------------------------------------------------------------
 	@Override
 	public void doAfterCompose(Component comp) {
@@ -77,6 +90,36 @@ public class PartCfgTreeComposer extends SelectorComposer<Component> {
 
 	// -------------------------------------------------------------------------------
 	private void init() {
+		/**/
+		wdAddPurchWithPostComposer = WdAddPurchWithPostComposer.of(icdWdAddPurchWithpost);
+		Consumer<PurchInfo> runAfterPurchBuildAll = p -> {
+			if (pc != null) {
+				pc = pc.reload();
+				refreshPartCfgTree(pc);
+				
+				//
+//				getSelectedPartCfgTreeNode().getData().reloadPa();
+				
+//				Executions.schedule(treePartCfg.getDesktop(), e->{
+//					log.debug("Executions.schedule");
+//					DefaultTreeModel<PartCfgTreeDto> model  =(DefaultTreeModel) treePartCfg.getModel();
+//					model.notify();
+//				}, new Event(""));
+//				model.
+//				= new DefaultTreeModel<>(rootTn);
+//				model.notifyAll();
+//				model.notify();
+				
+//				treePartCfg.re
+//				PartCfgTreeDto data = tn.getData();
+				
+//				// (要加這段畫面才會刷新)
+//				ListModelList model = (ListModelList) lbxCreateSoMmQvData.getModel();
+//				model.notifyChange(d);
+			}
+		};
+		wdAddPurchWithPostComposer.init(runAfterPurchBuildAll);
+		
 		/* tree */
 		TreeitemRenderer<DefaultTreeNode<PartCfgTreeDto>> renderer = (ti, tn, i) -> {
 			Treerow tr = ti.getTreerow();
@@ -103,8 +146,11 @@ public class PartCfgTreeComposer extends SelectorComposer<Component> {
 			
 			ti.getTreerow().appendChild(new Treecell(data.getPa().getMmMano()));
 			
-			// qty
+			// qty-required
 			ti.getTreerow().appendChild(new Treecell(data.getPpartReqQtyDisplay()));
+			// qty-sum stock
+			ti.getTreerow().appendChild(new Treecell(data.getPaMmSumStockQtyDisplay()));
+			
 			//
 			tc = new Treecell();
 			Doublebox dbbPaRefUnitCost = new Doublebox(data.getPaRefUnitCost());
@@ -149,6 +195,13 @@ public class PartCfgTreeComposer extends SelectorComposer<Component> {
 	}
 
 	// -------------------------------------------------------------------------------
+	@Listen(Events.ON_CLICK+"=#btnAddPurchWithPost")
+	public void btnAddPurchWithPost_clicked() {
+		TreeNode<PartCfgTreeDto> tn =  getSelectedPartCfgTreeNode();
+		wdAddPurchWithPostComposer.showWindow(tn==null?null:tn.getData().getPa());
+	}
+	
+	// -------------------------------------------------------------------------------
 	@Listen(Events.ON_CHECK+"=#rg")
 	public void rg_checked() {
 		List<Treecol> tcList = treePartCfg.getTreecols().getChildren();
@@ -160,7 +213,7 @@ public class PartCfgTreeComposer extends SelectorComposer<Component> {
 		}
 		// 僅顯示金額
 		else if (rg.getSelectedIndex() == 1) {
-			int[] idx1 = new int[] { 0, 1, 5,7, 8, 9, 10, 11, 12, 13, 14,15 };
+			int[] idx1 = new int[] { 1, 2, 6,8, 9, 10, 11, 12, 13, 14, 15,16, 17 };
 			int j = 0;
 			for (int i = 0; i < tcList.size(); i++) {
 				if (idx1[j] == i) {
@@ -183,12 +236,13 @@ public class PartCfgTreeComposer extends SelectorComposer<Component> {
 	}
 
 	public void refreshPartCfgTree(PartCfgInfo _partCfg) {
+		this.pc = _partCfg;
 		if (_partCfg == null) {
 			treePartCfg.setModel(null);
 			return;
 		}
 
-		PartCfgTreeDto partCfgTreeDto = PartCfgTreeDto.of(_partCfg);
+		PartCfgTreeDto partCfgTreeDto = PartCfgTreeDto.of(_partCfg, _partCfg.getRootPart());
 		DefaultTreeNode<PartCfgTreeDto> rootTn = partCfgTreeDto.packRootTreeNode4Model();
 		DefaultTreeModel<PartCfgTreeDto> model = new DefaultTreeModel<>(rootTn);
 		treePartCfg.setModel(model);

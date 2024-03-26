@@ -21,7 +21,7 @@ public class ProdCtlTreeDto {
 		this.prodCtl = prodCtl;
 		this.childrenList = childrenList;
 	}
-	
+
 	public static ProdCtlTreeDto of(ProdCtlInfo _prodCtl) {
 		ProdCtlInfo prodCtl = _prodCtl;
 		List<ProdCtlTreeDto> childrenList = new ArrayList<>();
@@ -39,16 +39,18 @@ public class ProdCtlTreeDto {
 	public List<ProdCtlTreeDto> getChildrenList() {
 		return childrenList;
 	}
-	
+
 	// ---------------------------------------------------------------------------
 	public String getLvDisplay() {
-		return DataUtil.nodataIfEmpty(getProdCtl(), pc->""+pc.getLv());
+		return DataUtil.nodataIfEmpty(getProdCtl(), pc -> "" + pc.getLv());
 	}
+
 	public String getName() {
 		return DataUtil.nodataIfEmpty(getProdCtl(), ProdCtlInfo::getName);
 	}
+
 	public String getReqDisplay() {
-		return DataUtil.nodataIfEmpty(getProdCtl(), pc->DataUtil.getStr(pc.isReq()));
+		return DataUtil.nodataIfEmpty(getProdCtl(), pc -> DataUtil.getStr(pc.isReq()));
 	}
 
 	public String getPartAcqsStr() {
@@ -56,27 +58,23 @@ public class ProdCtlTreeDto {
 				pc -> DataUtil.getStrJ(pc.getPcpccList().stream().filter(pcpcc -> pcpcc.getPartAcq() != null)
 						.map(pcpcc -> pcpcc.getPartAcq().getId()).distinct().collect(Collectors.toList())));
 	}
-	
+
 	public String getPcpccDisplay() {
-		return DataUtil.nodataIfEmpty(getProdCtl(),
-				pc -> DataUtil.getStrJ(pc.getPcpccList().stream()
-						.map(pcpcc -> pcpcc.getDisplay()).distinct().collect(Collectors.toList())));
+		return DataUtil.nodataIfEmpty(getProdCtl(), pc -> DataUtil.getStrJ(
+				pc.getPcpccList().stream().map(pcpcc -> pcpcc.getDisplay()).distinct().collect(Collectors.toList())));
 	}
-	
-	
-	
+
 	// ---------------------------------------------------------------------------
 	public static DefaultTreeNode packRootTreeNode4Model(ProdInfo _prod) {
 		List<ProdCtlInfo> prodCtlList = _prod.getProdCtlListLv1();
-		List<ProdCtlTreeDto> treeDtoList = 
-				prodCtlList.stream().map(pc->of(pc)).collect(Collectors.toList());
+		List<ProdCtlTreeDto> treeDtoList = prodCtlList.stream().map(pc -> of(pc)).collect(Collectors.toList());
 		DefaultTreeNode[] rootTreeNodes = new DefaultTreeNode[prodCtlList.size()];
 		for (int i = 0; i < treeDtoList.size(); i++) {
 			rootTreeNodes[i] = treeDtoList.get(i).packTreeNode();
 		}
 		return new DefaultTreeNode(new ProdCtlTreeDto(null, treeDtoList), rootTreeNodes);
 	}
-	
+
 	public DefaultTreeNode<ProdCtlTreeDto> packTreeNode() {
 		if (getChildrenList() == null || getChildrenList().isEmpty()) {
 			return new DefaultTreeNode<ProdCtlTreeDto>(this);

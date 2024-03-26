@@ -3,6 +3,7 @@
 	<div id="divMm_pu" vflex="1" apply="ekp.web.control.zk.invt.mm.Mm_puComposer">
 		<hlayout>
 			<toolbarbutton id="btnAddPurchWithPost" label="新增採購登帳" iconSclass="fa fa-plus" />
+			<include id="icdWdAddPurchWithpost" />
 		</hlayout>
 		<listbox id="lbxPurchItem" vflex="1" emptyMessage="無資料項">
 			<listhead sizable="true">
@@ -15,6 +16,6 @@
 				<listheader label="獲取方式名稱" width="115px" sort="auto(refPa.name)" />
 			</listhead>
 		</listbox>
-		<include id="icdWdAddPurchWithpost" />
+		
 	</div>
 </zk>

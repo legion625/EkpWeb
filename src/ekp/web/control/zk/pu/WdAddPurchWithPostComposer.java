@@ -19,6 +19,8 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Window;
 
+import com.google.common.collect.Lists;
+
 import ekp.data.service.invt.MaterialMasterInfo;
 import ekp.data.service.invt.WrhsBinInfo;
 import ekp.data.service.mbom.PartAcqInfo;
@@ -83,7 +85,7 @@ public class WdAddPurchWithPostComposer extends SelectorComposer<Component> {
 	public void init(Consumer<PurchInfo> runAfterPurchBuildAll) {
 		this.runAfterPurchBuildAll = runAfterPurchBuildAll;
 	}
-	
+
 	// -------------------------------------------------------------------------------
 	public void showWindow(MaterialMasterInfo _mm) {
 		if (_mm == null) {
@@ -98,6 +100,43 @@ public class WdAddPurchWithPostComposer extends SelectorComposer<Component> {
 		lbAddPurchWithPostMano.setValue(_mm.getMano());
 		//
 		ZkUtil.initCbb(cbbAddPurchWithPostRefPa, _mm.getPaList(PartAcquisitionType.PU), PartAcqInfo::getPartPinWithId,
+				PartAcqInfo::getName, false);
+		if (cbbAddPurchWithPostRefPa.getItemCount() > 0)
+			cbbAddPurchWithPostRefPa.setSelectedIndex(0);
+		//
+		ZkUtil.initCbb(cbbAddPurchWithPostSupplier, sdService.loadSupplierList(), BizPartnerInfo::getName,
+				BizPartnerInfo::getBan, false);
+		if (cbbAddPurchWithPostSupplier.getItemCount() > 0)
+			cbbAddPurchWithPostSupplier.setSelectedIndex(0);
+		//
+
+		ZkUtil.initCbb(
+				cbbAddPurchWithPostWb, invtService.loadWrhsLocList().stream()
+						.flatMap(wl -> wl.getWrhsBinList().stream()).collect(Collectors.toList()),
+				WrhsBinInfo::getId, WrhsBinInfo::getName, false);
+		if (cbbAddPurchWithPostWb.getItemCount() > 0)
+			cbbAddPurchWithPostWb.setSelectedIndex(0);
+
+		wdAddPurchWithPost.setVisible(true);
+	}
+
+	public void showWindow(PartAcqInfo _pa) {
+		if (_pa == null) {
+			ZkNotification.warning("必須先選擇獲取方式。");
+			return;
+		} else if (PartAcquisitionType.PU != _pa.getType()) {
+			ZkNotification.warning("獲取方式必須是「採購」。");
+			return;
+		}
+		this.mm = _pa.getMm();
+
+		resetWdAddPurchWithPostBlanks();
+
+		//
+		lbAddPurchWithPostMano.setValue(_pa.getMmMano());
+		//
+
+		ZkUtil.initCbb(cbbAddPurchWithPostRefPa, Lists.newArrayList(_pa), PartAcqInfo::getPartPinWithId,
 				PartAcqInfo::getName, false);
 		if (cbbAddPurchWithPostRefPa.getItemCount() > 0)
 			cbbAddPurchWithPostRefPa.setSelectedIndex(0);
@@ -151,15 +190,10 @@ public class WdAddPurchWithPostComposer extends SelectorComposer<Component> {
 			if (p != null) {
 				ZkNotification.info("Add purch with post [" + p.getPuNo() + "][" + mm.getMano() + "][" + mm.getName()
 						+ "] success.");
-
-//				ListModelList<PurchItemInfo> model = (ListModelList) lbxPurchItem.getModel();
-//				model.addAll(p.getPurchItemList());
 				wdAddPurchWithPost_closed(new Event("evt"));
-
 				//
 				if (runAfterPurchBuildAll != null)
 					runAfterPurchBuildAll.accept(p);
-
 			}
 			// 失敗
 			else {

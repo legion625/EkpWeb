@@ -2,15 +2,17 @@
 <zk>
 	<div id="divPartCfgTree" vflex="1" apply="ekp.web.control.zk.mbom.partCfg.PartCfgTreeComposer">
 		<toolbar>
-			<toolbarbutton label="新增採購登帳" />
+			<toolbarbutton id="btnAddPurchWithPost" label="新增採購登帳" iconSclass="fa fa-plus"/>
+			
 			<toolbarbutton label="btn2" />
 			<toolbarbutton label="btn3" />
 			<toolbarbutton label="btn4" />
 		</toolbar>
+		<include id="icdWdAddPurchWithpost" />
 		<tree id="treePartCfg" vflex="1" checkmark="true">
 			<frozen columns="1"></frozen>
 			<treecols sizable="true">
-				<treecol label="" width="45px" />
+				<treecol label="" hflex="min" />
 				<treecol label="Part pin" width="150px" />
 				<treecol label="Part name" width="130px" />
 				<treecol label="Part unit" width="70px" />
@@ -20,10 +22,8 @@
 				<treecol label="Acq status" width="80px" visible="false" />
 				<treecol label="料號" width="80px" />
 				<treecol label="Required quantity" width="110px" style="text-align:left" align="right" />
+				<treecol label="Stock quantity" width="110px" style="text-align:left" align="right" />
 				<treecol label="Acq ref. unit cost" width="110px" style="text-align:left" align="right" />
-
-
-
 
 				<treecol label="平均庫儲單價" width="90px" style="text-align:left" align="right" />
 				<treecol label="平均採購入庫單價" width="110px" style="text-align:left" align="right" />

@@ -19,6 +19,7 @@ import legion.util.NumberFormatUtil;
 
 public class PartCfgTreeDto {
 	private static Logger log = LoggerFactory.getLogger(PartCfgTreeDto.class);
+//	private static Logger log = LoggerFactory.getLogger(DebugLogMark.class);
 	
 	private PpartInfo ppart; // root: no ppart
 	private PartInfo p;
@@ -32,24 +33,19 @@ public class PartCfgTreeDto {
 		this.childrenList = childrenList;
 	}
 
-	public static PartCfgTreeDto of(PartCfgInfo _partCfg) {
-		return of(_partCfg, _partCfg.getRootPart());
-	}
 	
 	public static PartCfgTreeDto of(PartCfgInfo _partCfg, PartInfo _thisPart) {
 		log.debug("PartCfgTreeDto.of");
-//		PartInfo rootPart = _partCfg.getRootPart();
 		PartInfo thisPart = _thisPart;
-		log.debug("thisPart: {}\t{}", thisPart.getPin(), thisPart.getName());
-		if(_thisPart==null) {
-			thisPart = _partCfg.getRootPart();
-			log.debug("thisPart: {}\t{}", thisPart.getPin(), thisPart.getName());
-		}
-			
-//		PartAcqInfo rootPa = rootPart.getPa(_partCfg);
 		
+		if (_thisPart == null) {
+			thisPart = _partCfg.getRootPart();
+			
+		}
+		log.debug("thisPart: {}\t{}", thisPart.getPin(), thisPart.getName());
+			
 		PartAcqInfo thisPa = thisPart.getPa(_partCfg, true);
-		log.debug("thisPa: {}", thisPa);
+//		log.debug("thisPa: {}", thisPa);
 		PpartInfo ppart = null;
 		List<PartCfgTreeDto> childrenList = new ArrayList<>();
 
@@ -57,24 +53,13 @@ public class PartCfgTreeDto {
 		for (PpartInfo childPpart : thisPa.getPpartList()) {
 			childrenList.add(of(_partCfg, childPpart));
 		}
+//		log.debug("pin:{}\tchildrenList.size(): {}", thisPart.getPin(), childrenList.size());
+		
 
 //		return new PartCfgTreeDto(ppart, rootPart, rootPa, childrenList);
 		return new PartCfgTreeDto(ppart, thisPart, thisPa, childrenList);
 	}
 	
-//	public static PartCfgTreeDto of(PartCfgInfo _partCfg) {
-//		PartInfo rootPart = _partCfg.getRootPart();
-//		PartAcqInfo rootPa = rootPart.getPa(_partCfg);
-//		PpartInfo ppart = null;
-//		List<PartCfgTreeDto> childrenList = new ArrayList<>();
-//
-//		for (PpartInfo childPpart : rootPa.getPpartList()) {
-//			childrenList.add(of(_partCfg, childPpart));
-//		}
-//
-//		return new PartCfgTreeDto(ppart, rootPart, rootPa, childrenList);
-//	}
-
 	private static PartCfgTreeDto of(PartCfgInfo _partCfg, PpartInfo _ppart) {
 		PpartInfo ppart = _ppart;
 		PartInfo p = ppart.getPart();
@@ -84,6 +69,8 @@ public class PartCfgTreeDto {
 			for (PpartInfo childPpart : pa.getPpartList()) {
 				childrenList.add(of(_partCfg, childPpart));
 			}
+		
+		log.debug("pin:{}\tchildrenList.size(): {}", p.getPin(), childrenList.size());
 		return new PartCfgTreeDto(ppart, p, pa, childrenList);
 	}
 
@@ -136,6 +123,10 @@ public class PartCfgTreeDto {
 	}
 	public String getPaMmMano() {
 		return DataUtil.nodataIfEmpty(getPa(), PartAcqInfo::getMmMano);
+	}
+	
+	public String getPaMmSumStockQtyDisplay() {
+		return DataUtil.nodataIfEmpty(getPa(), pa->NumberFormatUtil.getDecimalString(pa.getMm().getSumStockQty(), 2));
 	}
 	
 	public String getPpartReqQtyDisplay() {
@@ -199,12 +190,15 @@ public class PartCfgTreeDto {
 	}
 
 	public DefaultTreeNode<PartCfgTreeDto> packTreeNode() {
+		log.debug("packTreeNode: {}\t{}", getP().getPin(), getChildrenList().size());
 		if (getChildrenList() == null || getChildrenList().isEmpty()) {
+			log.debug("empty");
 			return new DefaultTreeNode<PartCfgTreeDto>(this);
 		} else {
 			List<DefaultTreeNode<PartCfgTreeDto>> childrenTreeNodeList = new ArrayList<>();
 			for (PartCfgTreeDto childDto : getChildrenList())
 				childrenTreeNodeList.add(childDto.packTreeNode());
+			log.debug("childrenTreeNodeList.size(): {}", childrenTreeNodeList.size());
 			return new DefaultTreeNode<PartCfgTreeDto>(this, childrenTreeNodeList);
 		}
 	}
